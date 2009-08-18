@@ -397,19 +397,19 @@
          <copy todir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/classes">
             <fileset
                dir="${test.temp.portlet}"
-               includes="org.gatein.pc/@{testsuiteversion}/@{testsuitetype}/common/**"/>
+               includes="org/gatein/pc/@{testsuiteversion}/@{testsuitetype}/common/**"/>
             <fileset
                dir="${test.temp.portlet}"
-               includes="org.gatein.pc/@{testsuiteversion}/common/**"/>
+               includes="org/gatein/pc/@{testsuiteversion}/common/**"/>
             <fileset
                dir="${test.temp.portlet}"
-               includes="org.gatein.pc/common/**"/>
+               includes="org/gatein/pc/common/**"/>
             <fileset
                dir="${test.temp.portlet}"
-               includes="org.gatein.pc/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}/**"/>
+               includes="org/gatein/pc/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}/**"/>
             <fileset
                dir="${test.temp.portlet}"
-               includes="org.gatein.pc/framework/**"/>
+               includes="org/gatein/pc/framework/**"/>
          </copy>
          <copy todir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/lib">
             <fileset

@@ -3,10 +3,6 @@
 	<classpathentry kind="src" output="api/target/classes" path="api/src/main/java"/>
 	<classpathentry kind="src" output="api/target/test-classes" path="api/src/test/java"/>
 	<classpathentry kind="src" path="exo/src/main/java"/>
-	<classpathentry kind="src" output="portlet/target/classes" path="portlet/src/main/java"/>
-	<classpathentry excluding="**" kind="src" output="portlet/target/classes" path="portlet/src/main/resources"/>
-	<classpathentry kind="src" output="portlet/target/test-classes" path="portlet/src/test/java"/>
-	<classpathentry excluding="**" kind="src" output="portlet/target/test-classes" path="portlet/src/test/resources"/>
 	<classpathentry kind="src" output="controller/target/classes" path="controller/src/main/java"/>
 	<classpathentry kind="src" output="controller/target/test-classes" path="controller/src/test/java"/>
 	<classpathentry excluding="**" kind="src" output="controller/target/test-classes" path="controller/src/test/resources"/>

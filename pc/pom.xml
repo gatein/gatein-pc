@@ -76,7 +76,7 @@
                   </executions>
                   <configuration>
                      <testExcludes>
-                        <exclude>org.gatein.pc.unit/reports/*</exclude>
+                        <exclude>org/gatein/pc/unit/reports/*</exclude>
                      </testExcludes>
                   </configuration>
                </plugin>
