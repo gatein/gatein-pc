@@ -1,0 +1,12 @@
+<component>
+   
+   <fileSets>
+
+      <fileSet>
+         <directory>src/main/resources/jboss50</directory>
+         <outputDirectory></outputDirectory>
+      </fileSet>
+
+   </fileSets>
+
+</component>

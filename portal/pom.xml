@@ -1,0 +1,164 @@
+<!--
+  ~ JBoss, a division of Red Hat
+  ~ Copyright 2009, Red Hat Middleware, LLC, and individual
+  ~ contributors as indicated by the @authors tag. See the
+  ~ copyright.txt in the distribution for a full listing of
+  ~ individual contributors.
+  ~
+  ~ This is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU Lesser General Public License as
+  ~ published by the Free Software Foundation; either version 2.1 of
+  ~ the License, or (at your option) any later version.
+  ~
+  ~ This software is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public
+  ~ License along with this software; if not, write to the Free
+  ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.gatein.pc</groupId>
+      <artifactId>module-parent</artifactId>
+      <version>trunk-SNAPSHOT</version>
+      <relativePath>../build/pom.xml</relativePath>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>pc-portal</artifactId>
+   <packaging>jar</packaging>
+   <name>GateIn - Portlet Container (portal)</name>
+   <description>Simple portal for demo</description>
+   <dependencies>
+
+      <dependency>
+         <groupId>org.gatein.common</groupId>
+         <artifactId>common-mc</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-wci</artifactId>
+         <type>jar</type>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-pc</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-controller</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-mc</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-api</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-federation</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-exo-integration</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>concurrent</groupId>
+         <artifactId>concurrent</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.microcontainer</groupId>
+         <artifactId>jboss-kernel</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-common-logging-jdk</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-common-logging-log4j</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>commons-logging</groupId>
+         <artifactId>commons-logging</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>commons-httpclient</groupId>
+         <artifactId>commons-httpclient</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.ccpp</groupId>
+         <artifactId>ccpp</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>javax.portlet</groupId>
+         <artifactId>portlet-api</artifactId>
+      </dependency>
+
+      <!-- JSTL for Tomcat -->
+      <dependency>
+         <groupId>apache-taglibs</groupId>
+         <artifactId>jstl</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>apache-taglibs</groupId>
+         <artifactId>standard</artifactId>
+      </dependency>
+
+
+      <dependency>
+         <groupId>org.exoplatform.kernel</groupId>
+         <artifactId>exo.kernel.container</artifactId>
+         <version>${version.exo.kernel}</version>
+         <scope>provided</scope>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <plugins>
+
+         <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+               <finalName>simple-portal</finalName>
+               <descriptors>
+                  <descriptor>src/assemble/simple-portal-jboss42.xml</descriptor>
+                  <descriptor>src/assemble/simple-portal-tomcat60.xml</descriptor>
+                  <descriptor>src/assemble/simple-portal-jboss50.xml</descriptor>
+               </descriptors>
+            </configuration>
+            <executions>
+               <execution>
+                  <id>make-assembly</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>attached</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+
+   </build>
+
+</project>

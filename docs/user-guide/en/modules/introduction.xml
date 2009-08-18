@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="introduction">
+   <chapterinfo>
+      <author>
+         <firstname>Julien</firstname>
+         <surname>Viet</surname>
+         <email>julien@jboss.org</email>
+      </author>
+      <author>
+         <firstname>Chris</firstname>
+         <surname>Laprun</surname>
+         <email>chris.laprun@jboss.com</email>
+      </author>
+   </chapterinfo>
+   <title>Introduction</title>
+   <sect1>
+      <title>Motivation</title>
+      <para>JBoss Portlet Container is the next generation portlet container on which future versions of JBoss Portal,
+         and the JBoss Portal platform will be based. It provides a standard-compliant implementation of the JSR-286
+         Portlet 2.0 specification. It has been developed with reusability in mind so that advanced users, who don't
+         require a full-fledged portal, can leverage the portlet management services it provides in their own
+         applications. JBoss Portlet Container is available through the business-friendly LGPL open source license.
+      </para>
+   </sect1>
+   <sect1>
+      <title>Audience</title>
+      <para>JBoss Portlet Container is targeted at developers and advanced users who want to be able to deploy
+         portlet-based applications but don't need a full-fledged portal.
+      </para>
+   </sect1>
+   <sect1>
+      <title>Simple Portal: showcasing JBoss Portlet Container</title>
+      <para>A simple portal has been built on top of the base portlet container. A JSP taglib is also provided to make
+         it easy to display portlet content in JSP pages. We also provide samples of portlets implementing some of the
+         advanced capabilities of JSR-286.
+      </para>
+   </sect1>
+   <sect1>
+      <title>Resources</title>
+      <itemizedlist>
+         <listitem>
+            <ulink url="http://labs.jboss.com/portletcontainer/">Project website</ulink>
+         </listitem>
+         <listitem>
+            <ulink url="http://labs.jboss.com/wiki/JBPC_Home">Project Wiki</ulink>
+         </listitem>
+      </itemizedlist>
+   </sect1>
+</chapter>

@@ -1,0 +1,17 @@
+<component>
+   
+   <fileSets>
+
+      <fileSet>
+         <directory>src/main/resources/simple-portal-war</directory>
+         <outputDirectory>simple-portal.war</outputDirectory>
+      </fileSet>
+
+      <fileSet>
+         <directory>target/classes</directory>
+         <outputDirectory>simple-portal.war/WEB-INF/classes</outputDirectory>
+      </fileSet>
+
+   </fileSets>
+
+</component>

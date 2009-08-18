@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.gatein.pc</groupId>
+   <artifactId>module-aggregator</artifactId>
+   <packaging>pom</packaging>
+   <name>GateIn - Portlet Container (aggregator)</name>
+   <version>trunk-SNAPSHOT</version>
+
+   <dependencies/>
+
+   <distributionManagement>
+      <repository>
+      <!-- Copy the distribution jar file to a local checkout of the maven repository -->
+      <!-- This variable can be set in $MAVEN_HOME/conf/settings.xml -->
+      <id>repository.jboss.org</id>
+      <url>file://${jboss.repository.root}</url>
+      </repository>
+      <snapshotRepository>
+         <id>snapshots.jboss.org</id>
+         <name>JBoss Snapshot Repository</name>
+         <url>dav:https://snapshots.jboss.org/maven2</url>
+         <uniqueVersion>true</uniqueVersion>
+      </snapshotRepository>
+   </distributionManagement>
+
+   <profiles>
+      <profile>
+         <id>default</id>
+         <modules>
+            <module>build</module>
+            <module>jsr168api</module>
+            <module>pc</module>
+            <module>controller</module>
+            <module>bridge</module>
+            <module>federation</module>
+            <module>management</module>
+            <module>mc</module>
+            <module>test</module>
+            <module>portal</module>
+            <module>samples</module>
+            <module>docs</module>
+            <module>api</module>
+            <module>exo</module>
+         </modules>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+         </activation>
+      </profile>
+      <profile>
+         <id>docs</id>
+         <modules>
+            <module>docs</module>
+         </modules>
+      </profile>
+      <profile>
+         <id>test</id>
+         <modules>
+            <module>build</module>
+            <module>portlet</module>
+            <module>controller</module>
+            <module>mc</module>
+            <module>test</module>
+         </modules>
+      </profile>
+      <profile>
+         <id>portal</id>
+         <modules>
+            <module>build</module>
+            <module>portlet</module>
+            <module>controller</module>
+            <module>mc</module>
+            <module>portal</module>
+            <module>samples</module>
+         </modules>
+      </profile>
+      <profile>
+         <id>release</id>
+         <modules>
+            <module>build</module>
+            <module>portlet</module>
+            <module>controller</module>
+            <module>mc</module>
+            <module>portal</module>
+            <module>samples</module>
+            <module>docs</module>
+         </modules>
+      </profile>
+   </profiles>
+
+   <modules>
+   </modules>
+
+   <reporting>
+      <plugins>
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-javadoc-plugin</artifactId>
+           <configuration>
+              <aggregate>true</aggregate>
+           </configuration>
+         </plugin>
+      </plugins>
+  </reporting>
+
+
+</project>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3CR3//EN"
+   "../../docbook-support/support/docbook-dtd/docbookx.dtd" [
+   <!ENTITY introduction SYSTEM "modules/introduction.xml">
+   <!ENTITY installation SYSTEM "modules/installation.xml">
+   <!ENTITY simpleportal SYSTEM "modules/simpleportal.xml">
+   ]>
+<book lang="en">
+   <bookinfo>
+      <title>JBoss Portlet Container</title>
+      <subtitle>User Guide</subtitle>
+      <releaseinfo>Release 2.0</releaseinfo>
+      <author>
+         <firstname>Julien</firstname>
+         <surname>Viet</surname>
+         <email>julien@jboss-portal.org</email>
+      </author>
+      <author>
+         <firstname>Chris</firstname>
+         <surname>Laprun</surname>
+         <email>chris.laprun@jboss.com</email>
+      </author>
+   </bookinfo>
+   <toc/>
+   <!-- Introduction --> &introduction;
+   <!-- Installation --> &installation;
+   <!-- Simple portal --> &simpleportal;
+
+</book>

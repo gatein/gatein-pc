@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="installation">
+   <chapterinfo>
+      <author>
+         <firstname>Julien</firstname>
+         <surname>Viet</surname>
+         <email>julien@jboss.org</email>
+      </author>
+      <author>
+         <firstname>Chris</firstname>
+         <surname>Laprun</surname>
+         <email>chris.laprun@jboss.com</email>
+      </author>
+   </chapterinfo>
+
+   <title>Installation</title>
+   <sect1>
+      <title>Downloading and installing</title>
+      <para>Two bundled versions are provided to showcase JBoss Portlet Container in action with minimum effort. Theses
+         bundles each include a servlet container configured with the Simple Portal demonstration portal along with
+         some JSR-286 compliant portlets. You will need to have Java 5 configured on your machine to run the
+         demonstration portal.
+         You can download Java 5 at<ulink url="http://java.sun.com/javase/downloads/index_jdk5.jsp">
+         http://java.sun.com/javase/downloads/index_jdk5.jsp</ulink>. Once you have Java installed, you are ready to
+         download one of JBoss Portlet Container bundles. The following link has the list of downloads for JBoss Portlet
+         Container:<ulink url="http://labs.jboss.com/portletcontainer/download">
+         http://labs.jboss.com/portal/portletcontainer/download</ulink>. Two bundles are currently provided: one with
+         Tomcat 6.0.16 and one with JBoss Application Server 4.2.2.GA.
+      </para>
+      <sect2>
+         <title>JBoss AS 4.2.x bundle</title>
+         <para>
+            Of note in the bundle are the following directories:
+            <itemizedlist>
+               <listitem>
+                  <emphasis role="bold">bin</emphasis>
+                  - Contains the startup/shutdown commands for JBoss Application Server
+               </listitem>
+               <listitem>
+                  <emphasis role="bold">docs</emphasis>
+                  - Contains documentation for JBoss Application Server
+               </listitem>
+               <listitem>
+                  <emphasis role="bold">jbosspc-docs</emphasis>
+                  - Contains documentation for JBoss Portlet Container (this document included)
+               </listitem>
+               <listitem>
+                  <emphasis role="bold">server</emphasis>
+                  - Contains JBoss Application Server configuration and the
+                  <filename>simple-portal.war</filename>
+                  file along with several sample portlets in the
+                  <filename>deploy</filename>
+                  directory of the
+                  <emphasis>default</emphasis>
+                  configuration
+               </listitem>
+            </itemizedlist>
+         </para>
+         <para>
+            To start the demonstration portal, go to the
+            <filename>bin</filename>
+            directory and execute either
+            <filename>run.sh</filename>
+            or
+            <filename>run.bat</filename>
+            (depending on your platform).
+         </para>
+      </sect2>
+      <sect2>
+         <title>Tomcat 6.0.x bundle</title>
+         <para>
+            Of note in the bundle are the following directories:
+            <itemizedlist>
+               <listitem>
+                  <emphasis role="bold">bin</emphasis>
+                  - Contains the startup/shutdown commands for Tomcat
+               </listitem>
+               <listitem>
+                  <emphasis role="bold">logs</emphasis>
+                  - Contains the logs once the servlet container is started (the most interesting one being one with
+                  <emphasis>locahost</emphasis>
+                  in its name)
+               </listitem>
+               <listitem>
+                  <emphasis role="bold">jbosspc-docs</emphasis>
+                  - Contains documentation for JBoss Portlet Container (this document included)
+               </listitem>
+               <listitem>
+                  <emphasis role="bold">lib</emphasis>
+                  - Contains Tomcat libraries to which several support libraries for JBoss Portlet Container have been
+                  added
+               </listitem>
+               <listitem>
+                  <emphasis role="bold">webapps</emphasis>
+                  - Contains Tomcat default applications and the
+                  <filename>simple-portal.war</filename>
+                  file along with several sample portlets
+               </listitem>
+            </itemizedlist>
+         </para>
+         <para>
+            To start the demonstration portal, go to the
+            <filename>bin</filename>
+            directory and execute either
+            <filename>startup.sh</filename>
+            or
+            <filename>startup.bat</filename>
+            (depending on your platform).
+         </para>
+      </sect2>
+   </sect1>
+
+   <sect1>
+      <title>Testing Portal Container's demonstration portal</title>
+      <para>Once the servlet container is started, bring up your web browser and go to the following URL:
+         <ulink url="http://localhost:8080/simple-portal">http://localhost:8080/simple-portal</ulink>.
+         You should see the default page for Portlet Container's demonstration portal:
+         <mediaobject>
+            <imageobject>
+               <imagedata align="center" fileref="images/simple-portal.png" format="PNG"
+                          scale="60" valign="middle"/>
+            </imageobject>
+            <caption>
+               <para>Default page for Portlet Container's demonstration portal.</para>
+            </caption>
+         </mediaobject>
+      </para>
+   </sect1>
+</chapter>
