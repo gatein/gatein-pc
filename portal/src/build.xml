@@ -316,7 +316,7 @@
 
    <target name="package-tests">
 
-      <unjar src="${dependency.portal-portlet-tests.test-jar}" dest="${test.temp.portlet}"/>
+      <unjar src="${dependency.gatein-pc-tests.test-jar}" dest="${test.temp.portlet}"/>
 
       <!--Portlet test framework lib jar-->
       <jar jarfile="${test.temp.lib}/portal-portlet-test-framework-lib.jar">

@@ -428,21 +428,21 @@
 
    <target name="package-tests">
 
-      <unjar src="${dependency.portal-portlet-tests.test-jar}" dest="${test.temp.portlet}"/>
+      <unjar src="${dependency.gatein-pc-tests.test-jar}" dest="${test.temp.portlet}"/>
 
       <!--Portlet test framework lib jar-->
       <jar jarfile="${test.temp.lib}/portal-portlet-test-framework-lib.jar">
 
          <!-- -->
-         <fileset dir="${test.temp.portlet}" includes="org.gatein.pc.unit/**"/>
+         <fileset dir="${test.temp.portlet}" includes="org/gatein/pc/unit/**"/>
 
          <!--  JSR 168 TLD -->
          <zipfileset
-            src="${dependency.portal-portlet-portlet.jar}"
+            src="${dependency.gatein-pc-pc.jar}"
             includes="META-INF/portlet.tld"
             fullpath="META-INF/portlet.tld"/>
          <zipfileset
-            src="${dependency.portal-portlet-portlet.jar}"
+            src="${dependency.gatein-pc-pc.jar}"
             includes="META-INF/portlet_2_0.tld"
             fullpath="META-INF/portlet_2_0.tld"/>
       </jar>
