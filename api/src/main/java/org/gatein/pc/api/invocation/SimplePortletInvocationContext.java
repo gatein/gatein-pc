@@ -25,6 +25,9 @@ package org.gatein.pc.api.invocation;
 import java.io.IOException;
 import java.io.Writer;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.gatein.common.util.MarkupInfo;
 import org.gatein.pc.api.ActionURL;
 import org.gatein.pc.api.ContainerURL;
@@ -42,16 +45,19 @@ public class SimplePortletInvocationContext implements PortletInvocationContext
 
    private MarkupInfo markupInfo;
    private String baseURL;
+   private HttpServletResponse response;
    
-   public SimplePortletInvocationContext(MarkupInfo markupInfo, String baseURL)
+   public SimplePortletInvocationContext(MarkupInfo markupInfo, String baseURL, HttpServletResponse response)
    {
       this.markupInfo = markupInfo;
       this.baseURL = baseURL;
+      this.response = response;
    }
    
    public String encodeResourceURL(String url) throws IllegalArgumentException
    {
-      throw new IllegalArgumentException("EncodeResourceURL method not yet supported");
+	  return response.encodeURL(url);
+      //throw new IllegalArgumentException("EncodeResourceURL method not yet supported");
    }
 
    public MarkupInfo getMarkupInfo()
