@@ -1,4 +1,4 @@
-<%@ page import="org.jboss.portal.common.util.Exceptions" %>
+<%@ page import="org.gatein.common.util.Exceptions" %>
 <%@ page language="java" %>
 
 <div class="portlet">

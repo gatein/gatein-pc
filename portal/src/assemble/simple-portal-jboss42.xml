@@ -42,11 +42,12 @@
             <include>org.gatein.pc:pc-pc</include>
             <include>org.gatein.pc:pc-api</include>
             <include>org.gatein.pc:pc-federation</include>
-
             <include>javax.ccpp:ccpp</include>
             <include>javax.portlet:portlet-api</include>
             <include>org.exoplatform.kernel:exo.kernel.container</include>
             <include>org.exoplatform.kernel:exo.kernel.commons</include>
+            <!-- temporarly till we get rid of this dependency -->
+            <include>org.exoplatform.portletcontainer:exo.pc.component.common</include>
             <include>picocontainer:picocontainer</include>
             <include>javax.xml.bind:jaxb-api</include>
             <include>org.jibx:jibx-run</include>
@@ -63,11 +64,11 @@
          <outputDirectory>simple-portal.war/WEB-INF/lib</outputDirectory>
          <includes>
 
-            <include>org.jboss.portal.common:common-mc</include>
-            <include>org.gatein.pc:portlet-controller</include>
-            <include>org.gatein.pc:portlet-mc</include>
-            <include>org.gatein.pc:portlet-exo</include>
-
+            <include>org.gatein.common:common-mc</include>
+            <include>org.gatein.pc:pc-controller</include>
+            <include>org.gatein.pc:pc-mc</include>
+            <include>org.gatein.pc:pc-exo-integration</include>
+            <include>org.gatein.pc:pc-samples</include>
             <include>org.jboss:jboss-common-core</include>
             <include>org.jboss:jboss-reflect</include>
             <include>org.jboss:jboss-mdr</include>

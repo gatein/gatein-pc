@@ -35,7 +35,7 @@ import org.gatein.pc.unit.annotations.TestCase;
  * - UnavailableExceptionDuringRenderPortlet
  *
  * This test is disabled. Specification doesn't defined strictly portal behaviour when
- * one of the portlets throws PortletException. Currently in JBoss Portal if one portlet
+ * one of the portlets throws PortletException. Currently in GateIn Portal if one portlet
  * throws an PortletException than the rest of portlet of the page is not rendered - code 500
  * is returned. Tests are based on different behaviour where rest of portlets are rendered.
  *

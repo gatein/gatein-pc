@@ -15,7 +15,7 @@
    <title>Simple Portal</title>
    <sect1>
       <title>Motivation</title>
-      <para>A spin-off of the JBoss Portlet Container product is a portal called<emphasis>Simple Portal</emphasis>. As
+      <para>A spin-off of the GateIn Portlet Container product is a portal called<emphasis>Simple Portal</emphasis>. As
          its name implies, Simple Portal provides an easy to use portal for small-sized sites that only require
          aggregation of portlets in portal pages, without the extra features of a full-fledged portal. In particular the
          following features are not addressed by Simple Portal:
@@ -58,8 +58,8 @@
       <sect2>
          <title>Portlet deployment</title>
          <para>Simple Portal integrates with a few web containers in order to provide handling of portlet deployment and
-            runtime. This feature leverages JBoss Portal's Web Service Provider Interface (SPI). In particular, JBoss
-            Portlet Container uses the Web SPI in order to transparently react to the life cycle of WAR files that
+            runtime. This feature leverages GateIn Portal's Web Service Provider Interface (SPI). In particular, GateIn
+            Portlet Container uses the Web SPI (GateIn Web Container Integration (WCI))in order to transparently react to the life cycle of WAR files that
             contains portlet components as they are deployed or undeployed on the target servlet container. The SPI
             defines two levels of integrations.
          </para>
@@ -96,7 +96,7 @@
             </listitem>
          </itemizedlist>
          <page>If you need more advanced page creation capabilities, you should consider using a more advanced portal
-            product such as JBoss Portal.
+            product such as GateIn Portal.
          </page>
          <sect3>
             <title>Page creation</title>
@@ -148,7 +148,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                <listitem>It defines a scope for the coordination features.</listitem>
             </itemizedlist>
             <para>Currently, only one portal page can be specified per JSP file but this should be extended to several
-               portal pages per JSP file in future versions of JBoss Portlet Container.
+               portal pages per JSP file in future versions of GateIn Portlet Container.
             </para>
             <para>Access to portlet information within a portal page is done by defining a reference to the portlet
                using the

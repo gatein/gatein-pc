@@ -7,7 +7,7 @@
       <relativePath>../build/pom.xml</relativePath>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <artifactId>portlet-samples</artifactId>
+   <artifactId>pc-samples</artifactId>
    <packaging>jar</packaging>
    <name>GateIn - Portlet Container (samples)</name>
 

@@ -77,7 +77,6 @@
          <artifactId>pc-exo-integration</artifactId>
          <version>${project.version}</version>
       </dependency>
-
       <dependency>
          <groupId>concurrent</groupId>
          <artifactId>concurrent</artifactId>
@@ -131,6 +130,13 @@
          <artifactId>exo.kernel.container</artifactId>
          <version>${version.exo.kernel}</version>
          <scope>provided</scope>
+      </dependency>
+       
+      <!-- Temporarly until we get rid of that dependency -->
+      <dependency>
+         <groupId>org.exoplatform.portletcontainer</groupId>
+         <artifactId>exo.pc.component.common</artifactId>
+         <version>2.1.2</version>
       </dependency>
    </dependencies>
 

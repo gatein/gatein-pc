@@ -14,7 +14,7 @@
          <directory>target/classes</directory>
          <outputDirectory>WEB-INF/classes</outputDirectory>
          <includes>
-           <include>org.gatein.pc/samples/basic/**</include>
+           <include>org/gatein/pc/samples/basic/**</include>
          </includes>
       </fileSet>
    </fileSets>

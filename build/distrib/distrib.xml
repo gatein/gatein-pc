@@ -1,4 +1,4 @@
-<project default="all" name="JBoss Portlet Container">
+<project default="all" name="GateIn Portlet Container">
 
    <property name="source.dir" value="../.."/>
    <property name="src.docs.dir" value="${source.dir}/docs"/>
@@ -37,7 +37,7 @@
       </copy>
    </target>
 
-   <!-- Build JBoss Portlet Container (currently only builds docs as maven build is assumed -->
+   <!-- Build GateIn Portlet Container (currently only builds docs as maven build is assumed -->
    <target name="build"/>
 
    <!-- Package the different distributions -->
@@ -53,7 +53,7 @@
    </target>
 
    <!--
-    | JBoss Portlet Container source distribution
+    | GateIn Portlet Container source distribution
    -->
    <target name="package-src" description="package source distribution" unless="no-src">
       <antcall target="__package-distrib">
@@ -69,7 +69,7 @@
    </target>
 
    <!--
-      | JBoss Portlet Container binary distribution for AS 4.2.x
+      | GateIn Portlet Container binary distribution for AS 4.2.x
    -->
    <target name="package-jboss42" description="package AS binary" if="JBOSS_4_2_PATH" unless="no-jboss">
 
@@ -107,7 +107,7 @@
    </target>
 
    <!--
-      | JBoss Portlet Container binary distribution for AS 5.0.x
+      | GateIn Portlet Container binary distribution for AS 5.0.x
    -->
    <target name="package-jboss50" description="package AS binary" if="JBOSS_5_0_PATH" unless="no-jboss">
 
@@ -149,7 +149,7 @@
 
 
    <!--
-      | JBoss Portlet Container binary distribution for Tomcat 6.x
+      | GateIn Portlet Container binary distribution for Tomcat 6.x
    -->
    <target name="package-tomcat60" description="package Tomcat binary" if="TOMCAT_6_0_PATH" unless="no-tomcat">
 
@@ -217,7 +217,7 @@
 
    <target name="__package-distrib">
       <mkdir dir="${todir}"/>
-      <copy file="JBossPC-README.txt" todir="${todir}"/>
+      <copy file="GateInPC-README.txt" todir="${todir}"/>
       <antcall target="__package-doc">
          <param name="todir" value="${todir}/jbosspc-docs"/>
       </antcall>

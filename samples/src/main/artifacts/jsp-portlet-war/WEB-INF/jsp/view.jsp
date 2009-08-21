@@ -22,29 +22,29 @@
 ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.                 ~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-<%@ taglib uri="http://java.sun.com/portlet" prefix="portlet" %>
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ page isELIgnored="false" %>
 
 <portlet:defineObjects/>
 
 <table border="0" cellspacing="2" cellpadding="2">
-   <tr>
+   <!--tr>
       <td align="center"><a href="http://portal.demo.jboss.com" target="_blank"><img
          src="<%= renderRequest.getContextPath() %>/images/dodemo.gif" border="0"
-         alt="Try the latest release of JBoss Portal, live and online."></a>
+         alt="Try the latest release of GateIn Portal, live and online."></a>
          <a href="http://labs.jboss.com/portal/jbossportal/download/index.html" target="_blank"><img
             src="<%= renderRequest.getContextPath() %>/images/getcode.gif" border="0"
             alt="Download JBoss Portal and have it up and running in minutes."></a>
          <a href="http://www.portletswap.com" target="_blank"><img
             src="<%= renderRequest.getContextPath() %>/images/accessorize.gif" border="0"
             alt="Download portlets and layouts for your new JBoss Portal installation."></a></td>
-   </tr>
+   </tr-->
    <tr>
       <td></td>
    </tr>
    <tr>
       <td class="portlet-section-alternate">
-         <font class="portlet-font">This is an installation of <b>JBoss Portlet Container 2.0
+         <font class="portlet-font">This is an installation of <b>GateIn Portlet Container 2.1
          </b>. You may
             log in at any time, using the <i>Login</i> link at the top-right of this page, with the following
             credentials:</font>
@@ -55,10 +55,10 @@
          <b>user/user</b> or <b>admin/admin</b>
       </td>
    </tr>
-   <tr>
+   <!--tr>
       <td align="center">
          If you are in need of guidance with regards to navigating, configuring, or operating the portal, please view
-         our <a href="http://labs.jboss.com/portal/jbossportal/docs/index.html" target="_blank">online documentation</a>.
+         our <a href="http://www.jboss.org/portal/jbossportal/docs/index.html" target="_blank">online documentation</a>.
       </td>
-   </tr>
+   </tr-->
 </table>

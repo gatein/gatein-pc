@@ -65,12 +65,11 @@
       </path>
 
       <path id="portal-common">
-         <pathelement path="${dependency.portal-common-mc.jar}"/>
+         <pathelement path="${dependency.gatein-common-mc.jar}"/>
       </path>
 
       <path id="portal-common-shared">
-         <pathelement path="${dependency.portal-common-portal.jar}"/>
-         <pathelement path="${dependency.portal-common-common.jar}"/>
+         <pathelement path="${dependency.gatein-common-common.jar}"/>
       </path>
 
       <path id="portal-web">
@@ -81,15 +80,15 @@
       </path>
 
       <path id="portal-portlet">
-         <pathelement path="${dependency.portal-portlet-controller.jar}"/>
-         <pathelement path="${dependency.portal-portlet-mc.jar}"/>
-         <pathelement path="${dependency.portal-portlet-tests.jar}"/>
+         <pathelement path="${dependency.gatein-pc-controller.jar}"/>
+         <pathelement path="${dependency.gatein-pc-mc.jar}"/>
+         <pathelement path="${dependency.gatein-pc-tests.jar}"/>
       </path>
 
       <path id="portal-portlet-shared">
-         <path location="${dependency.portal-portlet-portlet.jar}"/>
-         <path location="${dependency.portal-portlet-api.jar}"/>
-         <path location="${dependency.jsr168api.jar}"/>
+         <path location="${dependency.gatein-pc-pc.jar}"/>
+         <path location="${dependency.gatein-pc-api.jar}"/>
+         <path location="${dependency.gatein-jsr168api.jar}"/>
       </path>
 
       <path id="exo">
