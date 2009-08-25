@@ -174,9 +174,9 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
             if (modifiedContext != null)
             {
                // update state if needed
-               if (clonedContext instanceof StatefulPortletContext)
+               if (modifiedContext instanceof StatefulPortletContext)
                {
-                  StatefulPortletContext statefulClonedContext = (StatefulPortletContext)clonedContext;
+                  StatefulPortletContext statefulClonedContext = (StatefulPortletContext)modifiedContext;
                   Serializable state = statefulClonedContext.getState();
                   PortletStateType stateType = statefulClonedContext.getType();
                   try
@@ -206,12 +206,12 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       }
    }
 
-   public PortletContext createClone(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
+   public PortletContext createClone(PortletStateType stateType, PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
       ConsumerContext consumerContext = getConsumerContext(portletContext);
 
       //
-      PortletContext clonedContext = super.createClone(consumerContext.producerPortletContext);
+      PortletContext clonedContext = super.createClone(stateType, consumerContext.producerPortletContext);
 
       if (clonedContext instanceof StatefulPortletContext)
       {

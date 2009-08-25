@@ -121,6 +121,11 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
 
    public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
+     return _getPortlet(portletContext);
+   }
+
+   private <S extends Serializable> Portlet _getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
       if (portletContext == null)
       {
          throw new IllegalArgumentException("No null portlet id accepted");
@@ -134,9 +139,10 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       {
          if (portletContext instanceof StatefulPortletContext)
          {
-            StatefulPortletContext<PortletState> statefulPortletContext = (StatefulPortletContext)portletContext;
-            PortletState state = statefulPortletContext.getState();
+            StatefulPortletContext<S> statefulPortletContext = (StatefulPortletContext)portletContext;
+            S state = statefulPortletContext.getState();
 
+            //
             try
             {
                PortletState portletState = stateConverter.unmarshall(statefulPortletContext.getType(), state);
@@ -240,7 +246,15 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
 
          //
          PortletStateType<?> stateType = instanceCtx.getStateType();
-         boolean persistLocally = stateType == null || stateManagementPolicy.persistLocally();
+         boolean persistLocally;
+         if (stateType == null)
+         {
+            persistLocally = true;
+         }
+         else
+         {
+            persistLocally = stateManagementPolicy.persistLocally();
+         }
 
          //
          switch(access)
@@ -349,7 +363,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       return response;
    }
 
-   public PortletContext createClone(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
+   public PortletContext createClone(PortletStateType stateType, PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
       if (portletContext == null)
       {
@@ -361,7 +375,15 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       InternalContext context = getStateContext(portletContext);
 
       //
-      boolean persistLocally = !(portletContext instanceof StatefulPortletContext) || stateManagementPolicy.persistLocally();
+      boolean persistLocally;
+      if (stateType == null)
+      {
+        persistLocally = true;
+      }
+      else
+      {
+        persistLocally = stateManagementPolicy.persistLocally();
+      }
 
       //
       if (context.isStateful())
@@ -386,7 +408,6 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          }
          else
          {
-            PortletStateType<PortletContext> stateType = ((StatefulPortletContext)portletContext).getType();
             return marshall(stateType, statefulContext.getPortletId(), statefulContext.getProperties());
          }
       }
@@ -401,7 +422,6 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          }
          else
          {
-            PortletStateType<PortletContext> stateType = ((StatefulPortletContext)portletContext).getType();
             return marshall(stateType, portletId, newState);
          }
       }

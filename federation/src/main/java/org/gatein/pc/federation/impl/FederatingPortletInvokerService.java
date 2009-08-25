@@ -30,6 +30,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.state.DestroyCloneFailure;
@@ -154,10 +155,10 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       return federated.invoke(invocation);
    }
 
-   public PortletContext createClone(PortletContext compoundPortletContext) throws PortletInvokerException
+   public PortletContext createClone(PortletStateType stateType, PortletContext compoundPortletContext) throws PortletInvokerException
    {
       FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
-      return federated.createClone(compoundPortletContext);
+      return federated.createClone(stateType, compoundPortletContext);
    }
 
    public List<DestroyCloneFailure> destroyClones(List<PortletContext> portletContexts) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
@@ -278,9 +279,9 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
          return invoker.invoke(invocation);
       }
 
-      public PortletContext createClone(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
+      public PortletContext createClone(PortletStateType stateType, PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
       {
-         return invoker.createClone(portletContext);
+         return invoker.createClone(stateType, portletContext);
       }
 
       public List<DestroyCloneFailure> destroyClones(List<PortletContext> portletContexts) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException

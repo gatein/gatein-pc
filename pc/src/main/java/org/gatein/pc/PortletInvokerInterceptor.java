@@ -31,6 +31,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletStateType;
 
 import java.util.Set;
 import java.util.List;
@@ -86,9 +87,9 @@ public class PortletInvokerInterceptor implements PortletInvoker
       return safeGetNext().invoke(invocation);
    }
 
-   public PortletContext createClone(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
+   public PortletContext createClone(PortletStateType stateType, PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
-      return safeGetNext().createClone(portletContext);
+      return safeGetNext().createClone(stateType, portletContext);
    }
 
    public List<DestroyCloneFailure> destroyClones(List<PortletContext> portletContexts) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException

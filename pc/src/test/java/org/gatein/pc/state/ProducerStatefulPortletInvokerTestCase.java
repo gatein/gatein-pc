@@ -25,6 +25,7 @@ package org.gatein.pc.state;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.state.PropertyMap;
 import org.gatein.pc.impl.state.StateManagementPolicyService;
 import org.gatein.pc.impl.state.StateConverterV0;
@@ -126,7 +127,7 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
    protected PortletContext createLocalClone(PortletContext portletRef) throws Exception
    {
       stateManagementPolicy.setPersistLocally(true);
-      PortletContext cloneContext = producer.createClone(portletRef);
+      PortletContext cloneContext = producer.createClone(null, portletRef);
       stateManagementPolicy.setPersistLocally(persistLocally);
       return cloneContext;
    }
@@ -148,7 +149,7 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
 
    protected PortletContext createClone(PortletContext portletRef) throws PortletInvokerException
    {
-      return producer.createClone(portletRef);
+      return producer.createClone(persistLocally ? null : PortletStateType.OPAQUE, portletRef);
    }
 
    protected PortletContext setProperties(PortletContext portletRef, PropertyChange[] changes) throws PortletInvokerException
@@ -210,7 +211,12 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
    protected ActionInvocation createAction(PortletContext portletRef, AccessMode accessMode)
    {
       ActionContextImpl actionCtx = new ActionContextImpl();
-      AbstractInstanceContext instanceCtx = new AbstractInstanceContext("blah", accessMode);
+      AbstractInstanceContext instanceCtx = new AbstractInstanceContext("blah", accessMode) {
+        @Override
+        public PortletStateType<?> getStateType() {
+          return persistLocally ? null : PortletStateType.OPAQUE;
+        }
+      };
 
       //
       ActionInvocation action = new ActionInvocation(actionCtx);

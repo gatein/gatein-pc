@@ -157,10 +157,10 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
       }
    }
 
-   public PortletContext createClone(PortletContext compoundPortletContext) throws PortletInvokerException
+   public PortletContext createClone(PortletStateType stateType, PortletContext compoundPortletContext) throws PortletInvokerException
    {
       PortletContext portletContext = dereference(compoundPortletContext);
-      PortletContext cloneContext = portletInvoker.createClone(portletContext);
+      PortletContext cloneContext = portletInvoker.createClone(stateType, portletContext);
       return reference(cloneContext);
    }
 

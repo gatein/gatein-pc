@@ -28,6 +28,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.state.PropertyMap;
 import org.gatein.pc.support.info.PortletInfoSupport;
 import org.gatein.pc.api.invocation.PortletInvocation;
@@ -197,7 +198,7 @@ public class PortletInvokerSupport implements PortletInvoker
       return props;
    }
 
-   public PortletContext createClone(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
+   public PortletContext createClone(PortletStateType stateType, PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
       throw new UnsupportedOperationException();
    }

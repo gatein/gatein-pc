@@ -69,13 +69,14 @@ public interface PortletInvoker
    /**
     * Clone a portlet.
     *
-    * @param portletContext the portlet context to clone
-    * @return the clone id
+    * @param stateType the portle state type desired
+    * @param portletContext the portlet context to clone  @return the clone id
+    * @return the cloned portlet context
     * @throws IllegalArgumentException      if the portletId is null
     * @throws UnsupportedOperationException if the invoker does not support this operation
     * @throws PortletInvokerException a portlet invoker exception
     */
-   PortletContext createClone(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
+   PortletContext createClone(PortletStateType stateType, PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
 
    /**
     * Destroy a cloned portlet.

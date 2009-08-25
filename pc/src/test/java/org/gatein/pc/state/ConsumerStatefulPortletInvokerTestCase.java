@@ -25,6 +25,7 @@ package org.gatein.pc.state;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.state.PropertyMap;
 import org.gatein.pc.support.info.PortletInfoSupport;
 import org.gatein.pc.support.PortletInvokerSupport;
@@ -161,7 +162,7 @@ public class ConsumerStatefulPortletInvokerTestCase extends AbstractStatefulPort
    protected PortletContext createLocalClone(PortletContext portletRef) throws Exception
    {
       stateManagementPolicy.setPersistLocally(true);
-      PortletContext cloneRef = consumer.createClone(portletRef);
+      PortletContext cloneRef = consumer.createClone(null, portletRef);
       stateManagementPolicy.setPersistLocally(persistLocally);
       return cloneRef;
    }
@@ -188,7 +189,7 @@ public class ConsumerStatefulPortletInvokerTestCase extends AbstractStatefulPort
 
    protected PortletContext createClone(PortletContext portletRef) throws PortletInvokerException
    {
-      return consumer.createClone(portletRef);
+      return consumer.createClone(persistLocally ? null : PortletStateType.OPAQUE, portletRef);
    }
 
    protected PortletContext setProperties(PortletContext portletRef, PropertyChange[] changes) throws PortletInvokerException
