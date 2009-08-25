@@ -40,7 +40,7 @@
       <version.apache.commons-httpclient>3.0.1</version.apache.commons-httpclient>
       <version.jboss.microcontainer>2.0.2.GA</version.jboss.microcontainer>
       <version.jboss.reflect>2.0.2.GA</version.jboss.reflect>
-      <version.cargo>1.0-alpha-6</version.cargo>
+      <version.cargo>1.0.1-SNAPSHOT</version.cargo>
       <version.junit>3.8.2</version.junit>
       <version.ant>1.7.0</version.ant>
       <version.sun-jaxb>2.1.4</version.sun-jaxb>
@@ -53,15 +53,14 @@
    </properties>
 
    <repositories>
-      <repository>
-         <id>repository.jboss.org</id>
-         <name>JBoss Repository</name>
-         <layout>default</layout>
-         <url>http://repository.jboss.org/maven2/</url>
-         <snapshots>
-            <enabled>false</enabled>
-         </snapshots>
-      </repository>
+  <repository>
+    <id>codehaus snapshot repository</id>
+    <url>http://snapshots.repository.codehaus.org/</url>
+    <releases>
+      <enabled>true</enabled>
+    </releases>
+  </repository>
+
       <repository>
          <id>snapshots.jboss.org</id>
          <name>JBoss Snapshots Repository</name>
@@ -82,6 +81,15 @@
          <name>Codehaus Repository</name>
          <layout>default</layout>
          <url>http://repository.codehaus.org/</url>
+         <snapshots>
+            <enabled>false</enabled>
+         </snapshots>
+      </repository>
+      <repository>
+         <id>repository.jboss.org</id>
+         <name>JBoss Repository</name>
+         <layout>default</layout>
+         <url>http://repository.jboss.org/maven2/</url>
          <snapshots>
             <enabled>false</enabled>
          </snapshots>
@@ -130,7 +138,14 @@
    </build>
 
    <pluginRepositories>
-      <pluginRepository>
+  <pluginRepository>
+    <id>codehaus snapshot repository</id>
+    <url>http://snapshots.repository.codehaus.org/</url>
+    <releases>
+      <enabled>true</enabled>
+    </releases>
+  </pluginRepository>
+        <pluginRepository>
          <id>apache.org</id>
          <name>Maven Plugin Snapshots</name>
          <url>http://people.apache.org/repo/m2-snapshot-repository</url>

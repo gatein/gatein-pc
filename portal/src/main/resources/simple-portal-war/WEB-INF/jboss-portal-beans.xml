@@ -21,7 +21,7 @@
   ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA        ~
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.                  ~
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<!--<deployment xmlns="urn:jboss:bean-deployer:2.0">-->
+<deployment xmlns="urn:jboss:bean-deployer:2.0">
 <!---->
 <!--   <bean name="PortletApplicationDeployer" class="org.gatein.pc.mc.PortletApplicationDeployer">-->
 <!--      <alias>PortletApplicationRegistry</alias>-->
@@ -167,7 +167,7 @@
       <property name="next"><inject bean="ContextDispatcherInterceptor"/></property>
    </bean>
    <bean name="ContextDispatcherInterceptor" class="org.gatein.pc.aspects.portlet.ContextDispatcherInterceptor">
-      <property name="servletContainerFactory"><inject bean="ServletContainerFactory"/></property>
+      <property name="servletContainer"><inject bean="ServletContainer"/></property>
       <property name="next"><inject bean="ProducerCacheInterceptor"/></property>
    </bean>
    <bean name="ProducerCacheInterceptor" class="org.gatein.pc.aspects.portlet.ProducerCacheInterceptor">
