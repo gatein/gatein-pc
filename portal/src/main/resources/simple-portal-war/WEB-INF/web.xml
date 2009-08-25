@@ -47,7 +47,7 @@
       <url-pattern>*.jsp</url-pattern>
    </filter-mapping>
   <listener>
-<!--      <listener-class>org.jboss.portal.common.mc.bootstrap.WebBootstrap</listener-class> -->
+<!--      <listener-class>org.gatein.common.mc.bootstrap.WebBootstrap</listener-class> -->
        <listener-class>org.gatein.pc.portal.exo.kernel.KernelListener</listener-class>
    </listener>
    <servlet>

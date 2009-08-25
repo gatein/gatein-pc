@@ -186,13 +186,11 @@
                </execution>
             </executions>
             <configuration>
-
-               <!--Uncomment if needed-->
-               <!--<jpda>false</jpda>-->
-               <!--<jpdaPort>9000</jpdaPort>-->
-               <!--<jpdaSuspend>true</jpdaSuspend>-->
-               <!--<failOnError>false</failOnError>-->
-               <!--<assertions>true</assertions>-->
+               <jpda>false</jpda>
+               <jpdaPort>9000</jpdaPort>
+               <jpdaSuspend>true</jpdaSuspend>
+               <failOnError>false</failOnError>
+               <assertions>true</assertions>
                <testsuites>
                   <testsuite>
                      <config>local-jboss-unit.xml</config>

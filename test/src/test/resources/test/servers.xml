@@ -44,7 +44,7 @@
       </node>
    </server>
    <server>
-      <server-name>RemoteJBoss_4_2_0</server-name>
+      <server-name>RemoteJBoss_4_2</server-name>
       <node>
          <node-id>default</node-id>
          <service>
@@ -62,61 +62,7 @@
       </node>
    </server>
    <server>
-      <server-name>RemoteJBoss_4_2_1</server-name>
-      <node>
-         <node-id>default</node-id>
-         <service>
-            <service-name>TestDriverServer</service-name>
-            <interface>org.jboss.unit.remote.driver.RemoteTestDriver</interface>
-            <uri>socket://localhost:5400</uri>
-         </service>
-         <deployer>
-            <remote>
-               <name>jboss4x</name>
-               <host>localhost</host>
-               <port>8080</port>
-            </remote>
-         </deployer>
-      </node>
-   </server>
-   <server>
-      <server-name>RemoteJBoss_4_2_2</server-name>
-      <node>
-         <node-id>default</node-id>
-         <service>
-            <service-name>TestDriverServer</service-name>
-            <interface>org.jboss.unit.remote.driver.RemoteTestDriver</interface>
-            <uri>socket://localhost:5400</uri>
-         </service>
-         <deployer>
-            <remote>
-               <name>jboss4x</name>
-               <host>localhost</host>
-               <port>8080</port>
-            </remote>
-         </deployer>
-      </node>
-   </server>
-   <server>
-      <server-name>RemoteJBoss_4_2_3</server-name>
-      <node>
-         <node-id>default</node-id>
-         <service>
-            <service-name>TestDriverServer</service-name>
-            <interface>org.jboss.unit.remote.driver.RemoteTestDriver</interface>
-            <uri>socket://localhost:5400</uri>
-         </service>
-         <deployer>
-            <remote>
-               <name>jboss4x</name>
-               <host>localhost</host>
-               <port>8080</port>
-            </remote>
-         </deployer>
-      </node>
-   </server>
-   <server>
-      <server-name>RemoteJBoss_5_0</server-name>
+      <server-name>RemoteJBoss_5_1</server-name>
       <node>
          <node-id>default</node-id>
          <service>

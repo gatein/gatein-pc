@@ -150,7 +150,7 @@
                <descriptors>
                   <descriptor>src/assemble/simple-portal-jboss42.xml</descriptor>
                   <descriptor>src/assemble/simple-portal-tomcat60.xml</descriptor>
-                  <descriptor>src/assemble/simple-portal-jboss50.xml</descriptor>
+                  <descriptor>src/assemble/simple-portal-jboss51.xml</descriptor>
                </descriptors>
             </configuration>
             <executions>

@@ -30,7 +30,7 @@
 
    <componentDescriptors>
       <componentDescriptor>src/assemble/simple-portal-war.xml</componentDescriptor>
-      <componentDescriptor>src/assemble/simple-portal-war-jboss50.xml</componentDescriptor>
+      <componentDescriptor>src/assemble/simple-portal-war-jboss51.xml</componentDescriptor>
    </componentDescriptors>
 
    <dependencySets>

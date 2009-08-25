@@ -31,7 +31,7 @@
       <param-value>/WEB-INF/jboss-portal-beans.xml</param-value>
    </context-param>
    <listener>
-      <listener-class>org.jboss.portal.common.mc.bootstrap.WebBootstrap</listener-class>
+      <listener-class>org.gatein.common.mc.bootstrap.WebBootstrap</listener-class>
    </listener>
    <servlet>
       <servlet-name>PortalServlet</servlet-name>
