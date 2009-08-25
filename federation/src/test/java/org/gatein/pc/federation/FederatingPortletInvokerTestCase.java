@@ -73,6 +73,7 @@ public class FederatingPortletInvokerTestCase
       fooInfo.getMeta().setDisplayName("FooPortlet");
 
       // Wire
+      federatedInvoker.addPortlet("MyPortlet", fooInfo);
       federatingInvoker.registerInvoker("foo", federatedInvoker);
 
       // Basic setup

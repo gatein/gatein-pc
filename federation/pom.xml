@@ -47,6 +47,13 @@
                </execution>
             </executions>
             <configuration>
+               <!--
+               <jpda>true</jpda>
+               <jpdaPort>9000</jpdaPort>
+               <jpdaSuspend>true</jpdaSuspend>
+               <failOnError>false</failOnError>
+               <assertions>true</assertions>
+               -->
                <testsuites>
                   <testsuite>
                      <config>jboss-unit.xml</config>

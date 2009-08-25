@@ -220,7 +220,7 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
 
    private PortletContext dereference(PortletContext compoundPortletContext)
    {
-      String portletId = compoundPortletContext.getId().substring(id.length() + 1);
+      String portletId = compoundPortletContext.getId().substring(id.length() + FederatingPortletInvokerService.SEPARATOR.length());
       if (compoundPortletContext instanceof StatefulPortletContext)
       {
          StatefulPortletContext<?> compoundStatefulPortletContext = (StatefulPortletContext<?>)compoundPortletContext;
