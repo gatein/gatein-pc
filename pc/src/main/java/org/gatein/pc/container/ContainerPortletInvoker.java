@@ -22,7 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.container;
 
-import org.gatein.common.invocation.InvocationException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
@@ -101,7 +100,7 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
       return portlet;
    }
 
-   public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException, InvocationException
+   public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException, org.gatein.pc.api.invocation.InvocationException
    {
       // Get portlet container
       PortletContext ctx = invocation.getTarget();

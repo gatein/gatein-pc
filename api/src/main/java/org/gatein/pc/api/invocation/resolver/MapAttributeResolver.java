@@ -1,6 +1,6 @@
 /******************************************************************************
  * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
+ * Copyright 2009, Red Hat Middleware, LLC, and individual                    *
  * contributors as indicated by the @authors tag. See the                     *
  * copyright.txt in the distribution for a full listing of                    *
  * individual contributors.                                                   *
@@ -20,19 +20,67 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
+package org.gatein.pc.api.invocation.resolver;
 
-package org.gatein.pc.state.producer;
+import org.gatein.pc.api.invocation.AttributeResolver;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision: 5776 $
- * @since 2.6
+ * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
+ * @version $Revision: 7228 $
  */
-@SuppressWarnings("serial")
-public class PortletStateChangeRequiredException extends org.gatein.pc.api.invocation.InvocationException
+@SuppressWarnings("unchecked")
+public class MapAttributeResolver implements AttributeResolver
 {
-   public PortletStateChangeRequiredException(String message)
+
+   /** . */
+   private final Map attributes;
+
+   public MapAttributeResolver(Map attributes)
    {
-      super(message);
+      if (attributes == null)
+      {
+         throw new IllegalArgumentException();
+      }
+      this.attributes = attributes;
+   }
+
+   public MapAttributeResolver()
+   {
+      this(new HashMap());
+   }
+
+
+   public Set getKeys()
+   {
+      return attributes.keySet();
+   }
+
+   public Object getAttribute(Object attrKey) throws IllegalArgumentException
+   {
+      if (attrKey == null)
+      {
+         throw new IllegalArgumentException();
+      }
+      return attributes.get(attrKey);
+   }
+
+   public void setAttribute(Object attrKey, Object attrValue) throws IllegalArgumentException
+   {
+      if (attrKey == null)
+      {
+         throw new IllegalArgumentException();
+      }
+      if (attrValue != null)
+      {
+         attributes.put(attrKey, attrValue);
+      }
+      else
+      {
+         attributes.remove(attrKey);
+      }
    }
 }

@@ -24,7 +24,7 @@ package org.gatein.pc.impl.jsr168;
 
 import org.gatein.common.concurrent.Valve;
 import org.gatein.common.i18n.ResourceBundleManager;
-import org.gatein.common.invocation.InvocationException;
+import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.aspects.portlet.ContextDispatcherInterceptor;
 import org.gatein.pc.container.PortletApplication;
@@ -490,7 +490,7 @@ public class PortletContainerImpl implements PortletContainerObject
       }
       else
       {
-        throw new InvocationException("Unexpected invocation " + invocation);
+        throw new org.gatein.pc.api.invocation.InvocationException("Unexpected invocation " + invocation);
       }
 
       //

@@ -1,6 +1,6 @@
 /******************************************************************************
  * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
+ * Copyright 2009, Red Hat Middleware, LLC, and individual                    *
  * contributors as indicated by the @authors tag. See the                     *
  * copyright.txt in the distribution for a full listing of                    *
  * individual contributors.                                                   *
@@ -20,19 +20,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-
-package org.gatein.pc.state.producer;
+package org.gatein.pc.api.invocation;
 
 /**
- * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision: 5776 $
- * @since 2.6
+ * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
+ * @version $Revision: 5451 $
  */
-@SuppressWarnings("serial")
-public class PortletStateChangeRequiredException extends org.gatein.pc.api.invocation.InvocationException
+public class InvocationException extends RuntimeException
 {
-   public PortletStateChangeRequiredException(String message)
+
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 7607329736844391861L;
+
+   public InvocationException()
+   {
+   }
+
+   public InvocationException(String message)
    {
       super(message);
+   }
+
+   public InvocationException(Throwable cause)
+   {
+      super(cause);
+   }
+
+   public InvocationException(String message, Throwable cause)
+   {
+      super(message, cause);
    }
 }

@@ -23,9 +23,9 @@
 package org.gatein.pc.impl.spi;
 
 import org.gatein.common.util.Tools;
-import org.gatein.common.invocation.resolver.PrincipalAttributeResolver;
-import org.gatein.common.invocation.resolver.MapAttributeResolver;
-import org.gatein.common.invocation.AttributeResolver;
+import org.gatein.pc.api.invocation.resolver.PrincipalAttributeResolver;
+import org.gatein.pc.api.invocation.resolver.MapAttributeResolver;
+import org.gatein.pc.api.invocation.AttributeResolver;
 import org.gatein.pc.api.spi.UserContext;
 
 import javax.servlet.http.HttpServletRequest;

@@ -22,7 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.federation.impl;
 
-import org.gatein.common.invocation.InvocationException;
 import org.gatein.pc.federation.FederatedPortletInvoker;
 import org.gatein.pc.federation.FederatingPortletInvoker;
 import org.gatein.pc.api.Portlet;
@@ -139,7 +138,7 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
       }
    }
 
-   public PortletInvocationResponse invoke(PortletInvocation invocation) throws InvocationException, PortletInvokerException
+   public PortletInvocationResponse invoke(PortletInvocation invocation) throws org.gatein.pc.api.invocation.InvocationException, PortletInvokerException
    {
       PortletContext compoundPortletContext = invocation.getTarget();
       PortletContext portletContext = dereference(compoundPortletContext);

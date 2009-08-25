@@ -22,8 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.api.invocation;
 
-import org.gatein.common.invocation.AttributeResolver;
-import org.gatein.common.invocation.resolver.MapAttributeResolver;
+import org.gatein.pc.api.invocation.resolver.MapAttributeResolver;
 import org.gatein.pc.api.spi.InstanceContext;
 import org.gatein.pc.api.spi.PortalContext;
 import org.gatein.pc.api.spi.PortletInvocationContext;

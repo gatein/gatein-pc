@@ -20,19 +20,68 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
+package org.gatein.pc.api.invocation.resolver;
 
-package org.gatein.pc.state.producer;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 /**
- * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
- * @version $Revision: 5776 $
- * @since 2.6
+ * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
+ * @version $Revision: 7228 $
  */
-@SuppressWarnings("serial")
-public class PortletStateChangeRequiredException extends org.gatein.pc.api.invocation.InvocationException
+public class PrincipalAttributeResolver extends AbstractSessionAttributeResolver
 {
-   public PortletStateChangeRequiredException(String message)
+
+   /** . */
+   private String cachedPrincipalName;
+
+   /** . */
+   private String cachedMapKey;
+
+   public PrincipalAttributeResolver(HttpServletRequest req)
    {
-      super(message);
+      super(req);
+   }
+
+   protected String getMapKey()
+   {
+      Principal principal = req.getUserPrincipal();
+
+      //
+      if (cachedMapKey != null)
+      {
+         if (cachedPrincipalName == null)
+         {
+            if (principal != null)
+            {
+               cachedMapKey = null;
+            }
+         }
+         else
+         {
+            if (principal == null || (cachedPrincipalName.equals(principal.getName()) == false))
+            {
+               cachedMapKey = null;
+            }
+         }
+      }
+
+      //
+      if (cachedMapKey == null)
+      {
+         if (principal == null)
+         {
+            cachedMapKey = "portal.principal";
+            cachedPrincipalName = null;
+         }
+         else
+         {
+            cachedMapKey = "portal.principal." + principal.getName();
+            cachedPrincipalName = principal.getName();
+         }
+      }
+
+      //
+      return cachedMapKey;
    }
 }

@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.container;
 
-import org.gatein.common.invocation.InvocationException;
+import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.invocation.PortletInvocation;
@@ -57,7 +57,7 @@ public interface PortletContainer
     * @throws org.gatein.pc.api.PortletInvokerException a portlet invoker exception
     * @throws InvocationException an invocation exception
     */
-   PortletInvocationResponse dispatch(PortletInvocation invocation) throws PortletInvokerException, InvocationException;
+   PortletInvocationResponse dispatch(PortletInvocation invocation) throws PortletInvokerException, org.gatein.pc.api.invocation.InvocationException;
 
    /**
     * Returns the wired application.

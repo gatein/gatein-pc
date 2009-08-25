@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.state.producer;
 
-import org.gatein.common.invocation.InvocationException;
+import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.InvalidPortletIdException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
