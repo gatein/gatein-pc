@@ -37,9 +37,10 @@ import org.gatein.pc.aspects.portlet.SecureTransportInterceptor;
 import org.gatein.pc.aspects.portlet.ValveInterceptor;
 import org.gatein.pc.container.ContainerPortletDispatcher;
 import org.gatein.pc.container.ContainerPortletInvoker;
-import org.gatein.pc.impl.state.StateConverterV0;
+import org.gatein.pc.impl.state.MapStateConverter;
 import org.gatein.pc.impl.state.StateManagementPolicyService;
 import org.gatein.pc.impl.state.producer.PortletStatePersistenceManagerService;
+import org.gatein.pc.state.StateConverter;
 import org.gatein.pc.state.producer.PortletStatePersistenceManager;
 import org.gatein.pc.state.producer.ProducerPortletInvoker;
 import org.jboss.portal.test.framework.impl.generic.server.GenericServiceExporter;
@@ -75,10 +76,10 @@ public class ExoKernelIntegration extends HttpServlet
 
       // The producer state management policy
       StateManagementPolicyService producerStateManagementPolicy = new StateManagementPolicyService();
-      producerStateManagementPolicy.setPersistLocally(true);
+      producerStateManagementPolicy.setPersistLocally(false);
 
       // The producer state converter
-      StateConverterV0 producerStateConverter = new StateConverterV0();
+      StateConverter producerStateConverter = new MapStateConverter();
 
       // The portlet container invoker
       ContainerPortletInvoker containerPortletInvoker = new ContainerPortletInvoker();
@@ -143,7 +144,7 @@ public class ExoKernelIntegration extends HttpServlet
       //federatingPortletInvoker.registerInvoker(LOCAL_PORTLET_INVOKER_ID, containerPortletInvoker);//containerPortletInvoker);
 
       /* register with container */
-      container.registerComponentInstance(PortletInvoker.class, consumerPortletInvoker); //federatingPortletInvoker);
+      container.registerComponentInstance(PortletInvoker.class, consumerPortletInvoker);
       
       portletApplicationRegistry.start();
       

@@ -39,7 +39,7 @@ public class PortletContext implements Serializable
    /** . */
    protected final String id;
 
-   PortletContext(String id) throws IllegalArgumentException
+   protected PortletContext(String id) throws IllegalArgumentException
    {
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(id, "portlet id", "PortletContext");
       this.id = id;

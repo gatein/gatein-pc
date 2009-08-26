@@ -40,9 +40,11 @@ import org.gatein.pc.container.ContainerPortletInvoker;
 import org.gatein.pc.federation.FederatingPortletInvoker;
 import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
 import org.gatein.pc.impl.state.StateConverterV0;
+import org.gatein.pc.impl.state.MapStateConverter;
 import org.gatein.pc.impl.state.StateManagementPolicyService;
 import org.gatein.pc.impl.state.producer.PortletStatePersistenceManagerService;
 import org.gatein.pc.mc.PortletApplicationDeployer;
+import org.gatein.pc.state.StateConverter;
 import org.gatein.pc.state.producer.PortletStatePersistenceManager;
 import org.gatein.pc.state.producer.ProducerPortletInvoker;
 import org.gatein.wci.ServletContainer;
@@ -70,10 +72,10 @@ public class ExoKernelIntegration extends HttpServlet
 
       // The producer state management policy
       StateManagementPolicyService producerStateManagementPolicy = new StateManagementPolicyService();
-      producerStateManagementPolicy.setPersistLocally(true);
+      producerStateManagementPolicy.setPersistLocally(false);
 
       // The producer state converter
-      StateConverterV0 producerStateConverter = new StateConverterV0();
+      StateConverter producerStateConverter = new MapStateConverter();//StateConverterV0();
 
       // The portlet container invoker
       ContainerPortletInvoker containerPortletInvoker = new ContainerPortletInvoker();
@@ -136,7 +138,7 @@ public class ExoKernelIntegration extends HttpServlet
       // register local portlet invoker with federating portlet invoker
       federatingPortletInvoker.registerInvoker(FederatingPortletInvoker.LOCAL_PORTLET_INVOKER_ID, consumerPortletInvoker);
       /* register with container */
-      container.registerComponentInstance(PortletInvoker.class, federatingPortletInvoker);//consumerPortletInvoker); //federatingPortletInvoker);
+      container.registerComponentInstance(PortletInvoker.class, federatingPortletInvoker);
       
       portletApplicationRegistry.start();
    }

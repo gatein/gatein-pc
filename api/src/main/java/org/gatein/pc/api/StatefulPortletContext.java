@@ -54,7 +54,7 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
    /** . */
    private final PortletStateType<S> type;
 
-   StatefulPortletContext(String id, PortletStateType<S> type, S state) throws IllegalArgumentException
+   protected StatefulPortletContext(String id, PortletStateType<S> type, S state) throws IllegalArgumentException
    {
       super(id);
 
