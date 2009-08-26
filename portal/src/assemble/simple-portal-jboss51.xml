@@ -22,7 +22,7 @@
   -->
 
 <assembly>
-   <id>jboss50</id>
+   <id>jboss51</id>
    <formats>
       <format>dir</format>
    </formats>

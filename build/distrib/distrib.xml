@@ -11,13 +11,13 @@
    <property name="demo.release.name" value="jboss-portletcontainer-${demo.release.version}"/>
    <property name="pc.release.name.src" value="${pc.release.name}-src"/>
    <property name="demo.release.name.jboss42" value="${demo.release.name}-jbossas42"/>
-   <property name="demo.release.name.jboss50" value="${demo.release.name}-jbossas50"/>
+   <property name="demo.release.name.jboss51" value="${demo.release.name}-jbossas51"/>
    <property name="demo.release.name.tomcat60" value="${demo.release.name}-tomcat6"/>
 
    <!-- -->
    <property name="pc.build.src" value="output/${pc.release.name.src}"/>
    <property name="pc.build.bin.as42" value="output/${demo.release.name.jboss42}"/>
-   <property name="pc.build.bin.as50" value="output/${demo.release.name.jboss50}"/>
+   <property name="pc.build.bin.as51" value="output/${demo.release.name.jboss51}"/>
    <property name="pc.build.bin.tomcat6" value="output/${demo.release.name.tomcat60}"/>
 
    <!-- Clean -->
@@ -48,7 +48,7 @@
 
       <antcall target="package-src"/>
       <antcall target="package-jboss42"/>
-      <antcall target="package-jboss50"/>
+      <antcall target="package-jboss51"/>
       <antcall target="package-tomcat60"/>
    </target>
 
@@ -107,33 +107,33 @@
    </target>
 
    <!--
-      | GateIn Portlet Container binary distribution for AS 5.0.x
+      | GateIn Portlet Container binary distribution for AS 5.1.x
    -->
-   <target name="package-jboss50" description="package AS binary" if="JBOSS_5_0_PATH" unless="no-jboss">
+   <target name="package-jboss51" description="package AS binary" if="JBOSS_5_1_PATH" unless="no-jboss">
 
       <!-- -->
-      <unzip src="${JBOSS_5_0_PATH}" dest="${pc.build.bin.as50}">
+      <unzip src="${JBOSS_5_1_PATH}" dest="${pc.build.bin.as51}">
          <mapper type="regexp" from="^[^\/]*\/(.*)$$" to="\1"/>
       </unzip>
-      <chmod dir="${pc.build.bin.as50}/bin" perm="ugo+rx" includes="**/*.sh"/>
+      <chmod dir="${pc.build.bin.as51}/bin" perm="ugo+rx" includes="**/*.sh"/>
 
       <!-- -->
       <antcall target="__package-binary">
-         <param name="bin.dir" value="${pc.build.bin.as50}"/>
-         <param name="deploy.dir" value="${pc.build.bin.as50}/server/default/deploy"/>
-         <param name="samples.dir" value="${pc.build.bin.as50}/server/default/deploy/samples"/>
+         <param name="bin.dir" value="${pc.build.bin.as51}"/>
+         <param name="deploy.dir" value="${pc.build.bin.as51}/server/default/deploy"/>
+         <param name="samples.dir" value="${pc.build.bin.as51}/server/default/deploy/samples"/>
       </antcall>
 
       <!-- Simple portal -->
-      <copy todir="${pc.build.bin.as50}/server/default/deploy/simple-portal.sar">
+      <copy todir="${pc.build.bin.as51}/server/default/deploy/simple-portal.sar">
          <fileset
-            dir="${source.dir}/portal/target/simple-portal-jboss50.dir/simple-portal"/>
+            dir="${source.dir}/portal/target/simple-portal-jboss51.dir/simple-portal"/>
       </copy>
 
       <!-- Taglib integration -->
       <!--
-      <copy todir="${pc.build.bin.as50}" overwrite="true" filtering="true">
-         <fileset dir="jboss-5.0"/>
+      <copy todir="${pc.build.bin.as51}" overwrite="true" filtering="true">
+         <fileset dir="jboss-5.1"/>
          <filterset>
             <filter token="maven.version" value="${maven.version}"/>
          </filterset>
@@ -142,7 +142,7 @@
 
       <!-- -->
       <antcall target="__zip">
-         <param name="release.name" value="${demo.release.name.jboss50}"/>
+         <param name="release.name" value="${demo.release.name.jboss51}"/>
       </antcall>
    </target>
 
@@ -254,11 +254,11 @@
             </not>
          </and>
       </condition>
-      <condition property="JBOSS_5_0_PATH" value="${env.JBOSS_5_0_PATH}">
+      <condition property="JBOSS_5_1_PATH" value="${env.JBOSS_5_1_PATH}">
          <and>
-            <isset property="env.JBOSS_5_0_PATH"/>
+            <isset property="env.JBOSS_5_1_PATH"/>
             <not>
-               <isset property="JBOSS_5_0_PATH"/>
+               <isset property="JBOSS_5_1_PATH"/>
             </not>
          </and>
       </condition>
@@ -271,9 +271,9 @@
          </and>
       </condition>
 
-      <echo message="Set JBOSS_4_2_PATH and/or JBOSS_5_0_PATH and/or TOMCAT_6_0_PATH variables for binary distributions:"/>
+      <echo message="Set JBOSS_4_2_PATH and/or JBOSS_5_1_PATH and/or TOMCAT_6_0_PATH variables for binary distributions:"/>
       <echo message="JBoss AS 4.2.x path: ${JBOSS_4_2_PATH}"/>
-      <echo message="JBoss AS 5.0.x path: ${JBOSS_5_0_PATH}"/>
+      <echo message="JBoss AS 5.1.x path: ${JBOSS_5_1_PATH}"/>
       <echo message="Tomcat 6.x path:     ${TOMCAT_6_0_PATH}"/>
       <echo message="Useful variables:"/>
       <echo message="no-doc: do not generate documentation if set to true. Currently: ${no-doc}"/>

@@ -768,7 +768,7 @@
          <configuration>
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
-            <!--property name="cargo.jvmargs" value="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9000"/-->
+            <!--<property name="cargo.jvmargs" value="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9000"/>-->
             <deployable type="war" file="${test.temp.lib}/manager.war"/>
             <deployable type="war" file="${test.temp.lib}/tomcat-6.0/portlet-test.war"/>
          </configuration>
