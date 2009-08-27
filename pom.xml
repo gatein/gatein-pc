@@ -41,7 +41,6 @@
             <module>samples</module>
             <module>docs</module>
             <module>api</module>
-            <module>exo</module>
          </modules>
          <activation>
             <activeByDefault>true</activeByDefault>

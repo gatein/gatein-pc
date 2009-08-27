@@ -35,7 +35,7 @@ import org.gatein.pc.impl.metadata.PortletMetaDataConstants;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "supportsType")
+@XmlType(name = "supportsType", propOrder={"mimeType", "portletModes", "windowStates"})
 public class SupportsMetaData
 {
 

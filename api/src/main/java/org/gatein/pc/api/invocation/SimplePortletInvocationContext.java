@@ -24,8 +24,6 @@ package org.gatein.pc.api.invocation;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,10 +33,8 @@ import org.gatein.pc.api.ActionURL;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.RenderURL;
 import org.gatein.pc.api.ResourceURL;
-import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.URLFormat;
 import org.gatein.pc.api.spi.PortletInvocationContext;
-
 
 /**
  * @author <a href="mailto:mwringe@redhat.com">Matt Wringe</a>
@@ -50,13 +46,11 @@ public class SimplePortletInvocationContext implements PortletInvocationContext
    private MarkupInfo markupInfo;
    private String baseURL;
    private HttpServletResponse response;
-   private HttpServletRequest request;
    
-   public SimplePortletInvocationContext(MarkupInfo markupInfo, String baseURL, HttpServletRequest request, HttpServletResponse response)
+   public SimplePortletInvocationContext(MarkupInfo markupInfo, String baseURL, HttpServletResponse response)
    {
       this.markupInfo = markupInfo;
       this.baseURL = baseURL;
-      this.request = request;
       this.response = response;
    }
    
@@ -94,24 +88,9 @@ public class SimplePortletInvocationContext implements PortletInvocationContext
       
       url += "&portal:type=" + type;
       
-      url += "&portal:isSecure=" + request.isSecure(); 
+      //TODO: fix this part
+      url += "&portal:isSecure=" + "false";
       
-      if (containerURL instanceof ActionURL)
-      {
-    	  ActionURL actionURL = (ActionURL) containerURL;
-    	  Map<String, String[]> map = StateString.decodeOpaqueValue(actionURL.getInteractionState().getStringValue());
-    	  Iterator<String> keys = map.keySet().iterator();
-    	  while (keys.hasNext())
-    	  {
-    		  String key = keys.next();
-    		  String[] values = map.get(key);
-    		  for (String value : values)
-    		  {
-    			  url += "&" + key + "=" + value;
-    		  }
-    	  }
-      }
-
       return url;
    }
 
@@ -120,5 +99,6 @@ public class SimplePortletInvocationContext implements PortletInvocationContext
       String url = renderURL(containerURL, format);
       writer.write(url);
    }
+
 }
 

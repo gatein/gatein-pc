@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "container-runtime-optionType")
+@XmlType(name = "container-runtime-optionType", propOrder={"name", "values"})
 public class ContainerRuntimeMetaData
 {
 

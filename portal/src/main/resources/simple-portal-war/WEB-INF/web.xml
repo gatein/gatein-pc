@@ -26,10 +26,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
-<!--   <context-param>
+   <context-param>
       <param-name>jboss.portal.mc.beans_resource_location</param-name>
       <param-value>/WEB-INF/jboss-portal-beans.xml</param-value>
-   </context-param> -->
+   </context-param>
    <filter>
       <filter-name>ErrorHandlingFilter</filter-name>
       <filter-class>org.gatein.pc.portal.ErrorHandlingFilter</filter-class>
@@ -46,18 +46,12 @@
       <filter-name>ControllerFilter</filter-name>
       <url-pattern>*.jsp</url-pattern>
    </filter-mapping>
-  <listener>
-<!--      <listener-class>org.gatein.common.mc.bootstrap.WebBootstrap</listener-class> -->
-       <listener-class>org.gatein.pc.portal.exo.kernel.KernelListener</listener-class>
+   <listener>
+       <listener-class>org.gatein.common.mc.bootstrap.WebBootstrap</listener-class>
    </listener>
    <servlet>
       <servlet-name>ContainerServlet</servlet-name>
       <servlet-class>org.gatein.wci.impl.tomcat.TC6ContainerServlet</servlet-class>
-      <load-on-startup>0</load-on-startup>
-   </servlet>
-   <servlet>
-      <servlet-name>exoint</servlet-name>
-      <servlet-class>org.gatein.pc.exo.ExoKernelIntegration</servlet-class>
-      <load-on-startup>0</load-on-startup>
+      <load-on-startup>1</load-on-startup>
    </servlet>
 </web-app>

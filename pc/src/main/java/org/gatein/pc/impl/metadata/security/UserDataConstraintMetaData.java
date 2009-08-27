@@ -33,7 +33,7 @@ import org.gatein.pc.impl.metadata.common.DescribableMetaData;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "user-data-constraint")
+@XmlType(name = "user-data-constraint", propOrder={"description", "transportGuarantee"})
 public class UserDataConstraintMetaData extends DescribableMetaData
 {
 
@@ -41,7 +41,7 @@ public class UserDataConstraintMetaData extends DescribableMetaData
    private String id;
 
    /** The user transport quarantee */
-   private TransportGuarantee transportQuarantee;
+   private TransportGuarantee transportGuarantee;
    
    public UserDataConstraintMetaData() {}
    
@@ -62,13 +62,13 @@ public class UserDataConstraintMetaData extends DescribableMetaData
    }
 
    @XmlElement(name = "transport-guarantee")
-   public TransportGuarantee getTransportQuarantee()
+   public TransportGuarantee getTransportGuarantee()
    {
-      return transportQuarantee;
+      return transportGuarantee;
    }
 
-   public void setTransportQuarantee(TransportGuarantee transportQuarantee)
+   public void setTransportGuarantee(TransportGuarantee transportGuarantee)
    {
-      this.transportQuarantee = transportQuarantee;
+      this.transportGuarantee = transportGuarantee;
    }
 }

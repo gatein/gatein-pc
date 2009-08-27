@@ -25,8 +25,12 @@ package org.gatein.pc.mc.metadata.impl;
 
 import org.gatein.pc.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.impl.metadata.PortletMetaDataConstants;
+import org.jboss.xb.annotations.JBossXmlConstants;
+import org.jboss.xb.annotations.JBossXmlModelGroup;
 import org.jboss.xb.annotations.JBossXmlSchema;
 
+import javax.xml.bind.annotation.XmlAccessOrder;
+import javax.xml.bind.annotation.XmlAccessorOrder;
 import javax.xml.bind.annotation.XmlNs;
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,7 +42,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 
 @XmlRootElement(name = "portlet-app")
-@XmlType(name = "portlet-appType")
+@XmlType(name = "portlet-appType", propOrder={"portlets", "customPortletModes", "customWindowStates", "userAttributes", "securityConstraints", "resourceBundle", "filters", "filterMapping", "defaultNamespace", "events", "publicRenderParameters", "listeners", "containerRuntimeOptions"})
 @JBossXmlSchema(xmlns = {@XmlNs(namespaceURI = PortletMetaDataConstants.PORTLET_JSR_286_NS, prefix = "portlet")},
    ignoreUnresolvedFieldOrClass = false,
    namespace = PortletMetaDataConstants.PORTLET_JSR_286_NS,

@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision$
  */
 @XmlRootElement(name = "portlet-app")
-@XmlType(name = "portlet-appType")
+@XmlType(name = "portlet-appType", propOrder={"portlets", "customPortletModes", "customWindowStates", "userAttributes", "securityConstraints", "portletCollection"})
 @JBossXmlSchema(xmlns = {@XmlNs(namespaceURI = PortletMetaDataConstants.PORTLET_JSR_168_NS, prefix = "portlet")},
    ignoreUnresolvedFieldOrClass = false,
    namespace = PortletMetaDataConstants.PORTLET_JSR_168_NS,

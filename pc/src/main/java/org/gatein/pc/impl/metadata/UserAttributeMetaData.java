@@ -32,7 +32,7 @@ import org.gatein.pc.impl.metadata.common.DescribableMetaData;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "user-attributeType")
+@XmlType(name = "user-attributeType", propOrder={"description", "name"})
 public class UserAttributeMetaData extends DescribableMetaData
 {
 

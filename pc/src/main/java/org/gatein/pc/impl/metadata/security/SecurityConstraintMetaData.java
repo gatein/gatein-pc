@@ -34,7 +34,7 @@ import org.gatein.pc.impl.metadata.adapter.LocalizedStringAdapter;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "security-constraintType")
+@XmlType(name = "security-constraintType", propOrder={"displayName", "portletList", "userDataConstraint"})
 public class SecurityConstraintMetaData
 {
 

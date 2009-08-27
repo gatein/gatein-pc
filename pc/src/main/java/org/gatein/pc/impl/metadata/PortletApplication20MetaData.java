@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gatein.pc.impl.metadata.adapter.ContainerRuntimeAdapter;
@@ -45,6 +46,7 @@ import org.gatein.pc.impl.metadata.filter.FilterMetaData;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
+@XmlType(name = "portlet-appType", propOrder={"portlets", "customPortletModes", "customWindowStates", "userAttributes", "securityConstraints", "resourceBundle", "filters", "filterMapping", "defaultNamespace", "events", "publicRenderParameters", "listeners", "containerRuntimeOptions"})
 public class PortletApplication20MetaData extends PortletApplication10MetaData
 {
    /** The resource bundle (JSR 286) */

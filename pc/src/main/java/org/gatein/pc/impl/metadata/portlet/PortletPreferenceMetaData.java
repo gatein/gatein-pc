@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "portlet-preferenceType")
+@XmlType(name = "portlet-preferenceType", propOrder={"name", "value", "readOnly"})
 public class PortletPreferenceMetaData
 {
 

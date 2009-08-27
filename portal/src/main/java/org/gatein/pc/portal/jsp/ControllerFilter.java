@@ -47,6 +47,7 @@ import org.gatein.pc.controller.state.PortletPageNavigationalState;
 import org.gatein.pc.controller.state.PortletPageNavigationalStateSerialization;
 import org.gatein.common.io.IOTools;
 import org.gatein.common.io.SerializationFilter;
+import org.gatein.common.mc.bootstrap.WebBootstrap;
 import org.gatein.common.util.Base64;
 import org.gatein.common.util.Base64.EncodingOption;
 import org.gatein.wci.util.RequestDecoder;
@@ -101,10 +102,7 @@ public class ControllerFilter implements Filter
 
    public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException, PortletInvokerException
    {
-      //PortletInvoker invoker = (PortletInvoker)getServletContext().getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
-
-      ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
-      PortletInvoker invoker = (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class);
+      PortletInvoker invoker = (PortletInvoker)getServletContext().getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
 
       //
       PortalPrepareResponse prepareResponse = new PortalPrepareResponse(req, resp);

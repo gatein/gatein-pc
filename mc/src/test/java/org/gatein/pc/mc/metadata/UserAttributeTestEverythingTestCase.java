@@ -75,7 +75,7 @@ public class UserAttributeTestEverythingTestCase extends AbstractMetaDataTestCas
       {
          String xmlFile = "metadata/userAttribute/portlet2.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall20(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
 

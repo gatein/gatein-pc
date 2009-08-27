@@ -60,8 +60,8 @@ public class AdminPortlet extends GenericPortlet
       if (applicationId != null)
       {
          // Use an alias
-         //PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute("PortletApplicationDeployer");
-         PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute("jboss.portal:service=PortletApplicationDeployer");
+         PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute(WebBootstrap.BEAN_PREFIX + "PortletApplicationDeployer");
+         //PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute("jboss.portal:service=PortletApplicationDeployer");
 
          //
          ManagedPortletApplication application = registry.getManagedPortletApplication(applicationId);

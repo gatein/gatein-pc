@@ -52,7 +52,7 @@ import org.gatein.wci.WebAppListener;
 import org.jboss.xb.binding.JBossXBException;
 import org.jboss.xb.binding.Unmarshaller;
 import org.jboss.xb.binding.UnmarshallerFactory;
-import org.jboss.xb.binding.sunday.unmarshalling.DefaultSchemaResolver;
+import org.jboss.xb.binding.resolver.MutableSchemaResolver;
 import org.jboss.xb.binding.sunday.unmarshalling.SingletonSchemaResolverFactory;
 
 import java.io.IOException;
@@ -74,13 +74,13 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
       try
       {
          SingletonSchemaResolverFactory factory = SingletonSchemaResolverFactory.getInstance();
-         DefaultSchemaResolver resolver = (DefaultSchemaResolver)factory.getSchemaBindingResolver();
+         MutableSchemaResolver resolver = factory.getSchemaBindingResolver();
 
          /** SchemaResolver */
-         resolver.addSchemaLocation(PORTLET_JSR_168_NS, "portlet-app_1_0.xsd");
-         resolver.addSchemaLocation(PORTLET_JSR_286_NS, "portlet-app_2_0.xsd");
-         resolver.addClassBinding(PORTLET_JSR_286_NS, AnnotationPortletApplication20MetaData.class);
-         resolver.addClassBinding(PORTLET_JSR_168_NS, AnnotationPortletApplication10MetaData.class);
+         resolver.mapSchemaLocation(PORTLET_JSR_168_NS, "portlet-app_1_0.xsd");
+         resolver.mapSchemaLocation(PORTLET_JSR_286_NS, "portlet-app_2_0.xsd");
+         resolver.mapLocationToClass(PORTLET_JSR_286_NS, AnnotationPortletApplication20MetaData.class);
+         resolver.mapLocationToClass(PORTLET_JSR_168_NS, AnnotationPortletApplication10MetaData.class);
       }
       catch (Exception e)
       {

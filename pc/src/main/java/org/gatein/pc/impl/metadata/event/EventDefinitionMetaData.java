@@ -38,7 +38,7 @@ import org.gatein.pc.impl.metadata.common.DescribableMetaData;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "event-definitionType")
+@XmlType(name = "event-definitionType", propOrder={"description", "qname", "name", "alias", "valueType"})
 public class EventDefinitionMetaData extends DescribableMetaData
 {
    /** The event definition id */

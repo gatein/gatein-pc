@@ -224,7 +224,7 @@ public class PortletTestEverythingTestCase extends AbstractMetaDataTestCase
       {
          String xmlFile = "metadata/portlet/portlet2.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall20(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -384,7 +384,7 @@ public class PortletTestEverythingTestCase extends AbstractMetaDataTestCase
       {
          String xmlFile = "metadata/portlet/portlet2-jsr286.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall20(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());

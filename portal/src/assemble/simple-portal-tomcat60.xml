@@ -77,9 +77,13 @@
             <include>org.gatein.common:common-mc</include>
             <include>org.gatein.pc:pc-controller</include>
             <include>org.gatein.pc:pc-mc</include>
+            
+            
             <include>org.gatein.pc:pc-exo-integration</include>
             <include>org.gatein.pc:pc-samples</include>
             <include>org.jboss:jboss-common-core</include>
+            <include>org.jboss.microcontainer:jboss-kernel</include>
+            <include>org.jboss.microcontainer:jboss-dependency</include>
             <include>org.jboss:jboss-reflect</include>
             <include>org.jboss:jboss-mdr</include>
             <include>org.jboss:jbossxb</include>

@@ -287,8 +287,8 @@
                         <property name="dependency.gatein-pc-pc.jar" value="${maven.dependency.org.gatein.pc.pc-pc.jar.path}"/>
                         <property name="dependency.gatein-pc-controller.jar" value="${maven.dependency.org.gatein.pc.pc-controller.jar.path}"/>
                         <property name="dependency.gatein-pc-mc.jar" value="${maven.dependency.org.gatein.pc.pc-mc.jar.path}"/>
-                        <property name="dependency.gatein-pc-tests.test-jar" value="${maven.dependency.org.gatein.pc.pc-pc.tests.jar.path}"/>
-<!-- <property name="dependency.portal-portlet-tests.test-jar" value="${maven.dependency.org.gatein.pc.portlet-portlet.tests.jar.path}"/>  -->
+                        <property name="dependency.gatein-pc-tests.test-jar" value="${maven.dependency.org.gatein.pc.pc-pc.tests.test-jar.path}"/>
+                   <!-- <property name="dependency.gatein-pc-tests.test-jar" value="${maven.dependency.org.gatein.pc.pc-pc.tests.jar.path}"/>  -->
                         <property name="dependency.gatein-pc-api.jar" value="${maven.dependency.org.gatein.pc.pc-api.jar.path}"/>
 
                         <property name="dependency.jboss-unit.jar" value="${maven.dependency.org.jboss.unit.jboss-unit.jar.path}"/>

@@ -62,7 +62,7 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication10MetaData md = this.unmarshall10("metadata/general/portlet2.xml");
+         PortletApplication20MetaData md = this.unmarshall20("metadata/general/portlet2.xml");
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -138,7 +138,7 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication10MetaData md = this.unmarshall10("metadata/general/portlet-app_2_0.xml");
+         PortletApplication20MetaData md = this.unmarshall20("metadata/general/portlet-app_2_0.xml");
          assertEquals("2.0", md.getVersion());
          assertTrue(md instanceof PortletApplication20MetaData);
       }
