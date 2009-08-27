@@ -59,6 +59,9 @@ public class ControllerRequestParameterMapFactory
       Map<String, String> parameters = new HashMap<String, String>();
 
       //
+      parameters.put(ControllerRequestParameterNames.WINDOW_ID, windowId);
+
+      //
       String type;
       if (containerURL instanceof ActionURL)
       {

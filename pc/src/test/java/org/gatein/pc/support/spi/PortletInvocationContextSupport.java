@@ -22,7 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.support.spi;
 
-import org.gatein.common.invocation.AbstractInvocationContext;
 import org.gatein.common.util.MarkupInfo;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.URLFormat;
@@ -36,7 +35,7 @@ import java.io.IOException;
  * @version $Revision: 5064 $
  */
 @SuppressWarnings("unchecked")
-public class PortletInvocationContextSupport extends AbstractInvocationContext implements PortletInvocationContext
+public class PortletInvocationContextSupport implements PortletInvocationContext
 {
 
    public MarkupInfo getMarkupInfo()

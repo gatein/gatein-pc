@@ -38,6 +38,7 @@ import org.gatein.pc.aspects.portlet.ValveInterceptor;
 import org.gatein.pc.container.ContainerPortletDispatcher;
 import org.gatein.pc.container.ContainerPortletInvoker;
 import org.gatein.pc.impl.state.MapStateConverter;
+import org.gatein.pc.impl.state.StateConverterV0;
 import org.gatein.pc.impl.state.StateManagementPolicyService;
 import org.gatein.pc.impl.state.producer.PortletStatePersistenceManagerService;
 import org.gatein.pc.state.StateConverter;
@@ -76,10 +77,10 @@ public class ExoKernelIntegration extends HttpServlet
 
       // The producer state management policy
       StateManagementPolicyService producerStateManagementPolicy = new StateManagementPolicyService();
-      producerStateManagementPolicy.setPersistLocally(false);
+      producerStateManagementPolicy.setPersistLocally(true);//false);
 
       // The producer state converter
-      StateConverter producerStateConverter = new MapStateConverter();
+      StateConverter producerStateConverter = new StateConverterV0();//MapStateConverter();
 
       // The portlet container invoker
       ContainerPortletInvoker containerPortletInvoker = new ContainerPortletInvoker();
