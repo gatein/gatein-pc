@@ -41,6 +41,8 @@ import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.io.Serialization;
 
+import org.gatein.common.mc.bootstrap.WebBootstrap;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,11 +74,12 @@ import java.util.Collection;
       super(req, resp);
 
       //
-      //this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
+      this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
       
-      ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
-      this.portletInvoker = (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class);
-
+      //ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
+      //this.portletInvoker = (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class);
+      //System.out.println("PORTLET INVOKER PCCI2: " + (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class));
+      
       
       this.eventControllerContext = new EventControllerContextImpl(portletInvoker);
       this.stateControllerContext = new StateControllerContextImpl(this);

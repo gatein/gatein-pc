@@ -39,6 +39,8 @@ import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.io.Serialization;
 
+import org.gatein.common.mc.bootstrap.WebBootstrap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletContext;
@@ -72,9 +74,11 @@ public class TCKPortletControllerContext extends AbstractPortletControllerContex
       super(req, resp);
 
       //
-      //this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
-      ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
-      this.portletInvoker = (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class);
+      this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
+      
+      //ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
+      //this.portletInvoker = (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class);
+      //System.out.println("PORTLET INVOKER TCKPCC2: " + (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class));
 
       
       this.stateControllerContext = new TCKStateControllerContext(new StateControllerContextImpl(this));
