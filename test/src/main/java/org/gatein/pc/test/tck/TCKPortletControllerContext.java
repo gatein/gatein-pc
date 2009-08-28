@@ -22,8 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.test.tck;
 
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
 import org.gatein.pc.controller.impl.AbstractPortletControllerContext;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletInvokerException;
@@ -75,11 +73,6 @@ public class TCKPortletControllerContext extends AbstractPortletControllerContex
 
       //
       this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
-      
-      //ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
-      //this.portletInvoker = (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class);
-      //System.out.println("PORTLET INVOKER TCKPCC2: " + (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class));
-
       
       this.stateControllerContext = new TCKStateControllerContext(new StateControllerContextImpl(this));
       this.eventControllerContext = new EventControllerContextImpl(portletInvoker);

@@ -22,8 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.portal.jsp;
 
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
 import org.gatein.pc.controller.impl.PortletURLRenderer;
 import org.gatein.pc.controller.impl.URLParameterConstants;
 import org.gatein.pc.controller.impl.ControllerRequestFactory;

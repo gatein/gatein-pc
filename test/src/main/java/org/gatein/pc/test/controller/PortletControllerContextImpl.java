@@ -23,8 +23,6 @@
 
 package org.gatein.pc.test.controller;
 
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
@@ -75,12 +73,7 @@ import java.util.Collection;
 
       //
       this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
-      
-      //ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
-      //this.portletInvoker = (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class);
-      //System.out.println("PORTLET INVOKER PCCI2: " + (PortletInvoker)exoContainer.getComponentInstance(PortletInvoker.class));
-      
-      
+
       this.eventControllerContext = new EventControllerContextImpl(portletInvoker);
       this.stateControllerContext = new StateControllerContextImpl(this);
       this.serialization = new PortletPageNavigationalStateSerialization(stateControllerContext);
