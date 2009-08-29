@@ -1,0 +1,284 @@
+<project default="all" name="JBoss Portlet Container">
+
+   <property name="source.dir" value="../.."/>
+   <property name="src.docs.dir" value="${source.dir}/docs"/>
+   <property name="pc.release.version" value="2.0.8"/>
+   <property name="demo.release.version" value="2.0.8"/>
+   <property name="maven.version" value="2.0.8"/>
+
+   <!-- -->
+   <property name="pc.release.name" value="jboss-portletcontainer-${pc.release.version}"/>
+   <property name="demo.release.name" value="jboss-portletcontainer-${demo.release.version}"/>
+   <property name="pc.release.name.src" value="${pc.release.name}-src"/>
+   <property name="demo.release.name.jboss42" value="${demo.release.name}-jbossas42"/>
+   <property name="demo.release.name.jboss50" value="${demo.release.name}-jbossas50"/>
+   <property name="demo.release.name.tomcat60" value="${demo.release.name}-tomcat6"/>
+
+   <!-- -->
+   <property name="pc.build.src" value="output/${pc.release.name.src}"/>
+   <property name="pc.build.bin.as42" value="output/${demo.release.name.jboss42}"/>
+   <property name="pc.build.bin.as50" value="output/${demo.release.name.jboss50}"/>
+   <property name="pc.build.bin.tomcat6" value="output/${demo.release.name.tomcat60}"/>
+
+   <!-- Clean -->
+   <target name="clean">
+      <delete dir="output"/>
+   </target>
+
+   <!-- Build and compress everything -->
+   <target name="all" depends="__check-env,licenses,build,package"
+           description="do everything - build source, doc, distro"/>
+
+   <!-- Licenses -->
+   <target name="licenses" unless="no-doc">
+      <mkdir dir="output/jbosspc-docs/licenses"/>
+      <copy todir="output/jbosspc-docs/licenses">
+         <fileset dir="../licences" includes="*.txt"/>
+      </copy>
+   </target>
+
+   <!-- Build JBoss Portlet Container (currently only builds docs as maven build is assumed -->
+   <target name="build"/>
+
+   <!-- Package the different distributions -->
+   <target name="package">
+
+      <!-- Create the output directory -->
+      <mkdir dir="output"/>
+
+      <antcall target="package-src"/>
+      <antcall target="package-jboss42"/>
+      <antcall target="package-jboss50"/>
+      <antcall target="package-tomcat60"/>
+   </target>
+
+   <!--
+    | JBoss Portlet Container source distribution
+   -->
+   <target name="package-src" description="package source distribution" unless="no-src">
+      <antcall target="__package-distrib">
+         <param name="todir" value="${pc.build.src}"/>
+      </antcall>
+      <copy todir="${pc.build.src}">
+         <fileset dir="${source.dir}" includes="**/*"
+                  excludes="**/target/**,**/.svn/*,**/*.iml,**/*.ipr,**/*.iws,results.txt"/>
+      </copy>
+      <antcall target="__zip">
+         <param name="release.name" value="${pc.release.name.src}"/>
+      </antcall>
+   </target>
+
+   <!--
+      | JBoss Portlet Container binary distribution for AS 4.2.x
+   -->
+   <target name="package-jboss42" description="package AS binary" if="JBOSS_4_2_PATH" unless="no-jboss">
+
+      <!-- -->
+      <unzip src="${JBOSS_4_2_PATH}" dest="${pc.build.bin.as42}">
+         <mapper type="regexp" from="^[^\/]*\/(.*)$$" to="\1"/>
+      </unzip>
+      <chmod dir="${pc.build.bin.as42}/bin" perm="ugo+rx" includes="**/*.sh"/>
+
+      <!-- -->
+      <antcall target="__package-binary">
+         <param name="bin.dir" value="${pc.build.bin.as42}"/>
+         <param name="deploy.dir" value="${pc.build.bin.as42}/server/default/deploy"/>
+         <param name="samples.dir" value="${pc.build.bin.as42}/server/default/deploy/samples"/>
+      </antcall>
+
+      <!-- Simple portal -->
+      <copy todir="${pc.build.bin.as42}/server/default/deploy/simple-portal">
+         <fileset
+            dir="${source.dir}/portal/target/simple-portal-jboss42.dir/simple-portal"/>
+      </copy>
+
+      <!-- Taglib integration -->
+      <copy todir="${pc.build.bin.as42}" overwrite="true" filtering="true">
+         <fileset dir="jboss-4.2"/>
+         <filterset>
+            <filter token="maven.version" value="${maven.version}"/>
+         </filterset>
+      </copy>
+
+      <!-- -->
+      <antcall target="__zip">
+         <param name="release.name" value="${demo.release.name.jboss42}"/>
+      </antcall>
+   </target>
+
+   <!--
+      | JBoss Portlet Container binary distribution for AS 5.0.x
+   -->
+   <target name="package-jboss50" description="package AS binary" if="JBOSS_5_0_PATH" unless="no-jboss">
+
+      <!-- -->
+      <unzip src="${JBOSS_5_0_PATH}" dest="${pc.build.bin.as50}">
+         <mapper type="regexp" from="^[^\/]*\/(.*)$$" to="\1"/>
+      </unzip>
+      <chmod dir="${pc.build.bin.as50}/bin" perm="ugo+rx" includes="**/*.sh"/>
+
+      <!-- -->
+      <antcall target="__package-binary">
+         <param name="bin.dir" value="${pc.build.bin.as50}"/>
+         <param name="deploy.dir" value="${pc.build.bin.as50}/server/default/deploy"/>
+         <param name="samples.dir" value="${pc.build.bin.as50}/server/default/deploy/samples"/>
+      </antcall>
+
+      <!-- Simple portal -->
+      <copy todir="${pc.build.bin.as50}/server/default/deploy/simple-portal.sar">
+         <fileset
+            dir="${source.dir}/portal/target/simple-portal-jboss50.dir/simple-portal"/>
+      </copy>
+
+      <!-- Taglib integration -->
+      <!--
+      <copy todir="${pc.build.bin.as50}" overwrite="true" filtering="true">
+         <fileset dir="jboss-5.0"/>
+         <filterset>
+            <filter token="maven.version" value="${maven.version}"/>
+         </filterset>
+      </copy>
+      -->
+
+      <!-- -->
+      <antcall target="__zip">
+         <param name="release.name" value="${demo.release.name.jboss50}"/>
+      </antcall>
+   </target>
+
+
+
+   <!--
+      | JBoss Portlet Container binary distribution for Tomcat 6.x
+   -->
+   <target name="package-tomcat60" description="package Tomcat binary" if="TOMCAT_6_0_PATH" unless="no-tomcat">
+
+      <!-- -->
+      <unzip src="${TOMCAT_6_0_PATH}" dest="${pc.build.bin.tomcat6}">
+         <mapper type="regexp" from="^[^\/]*\/(.*)$$" to="\1"/>
+      </unzip>
+      <chmod dir="${pc.build.bin.tomcat6}/bin" perm="ugo+rx" includes="**/*.sh"/>
+
+      <!-- -->
+      <antcall target="__package-binary">
+         <param name="bin.dir" value="${pc.build.bin.tomcat6}"/>
+         <param name="deploy.dir" value="${pc.build.bin.tomcat6}/webapps"/>
+         <param name="samples.dir" value="${pc.build.bin.tomcat6}/webapps"/>
+      </antcall>
+
+      <!-- -->
+      <copy todir="${pc.build.bin.tomcat6}/lib">
+         <fileset
+            dir="${source.dir}/portal/target/simple-portal-tomcat60.dir/simple-portal/lib"
+            includes="**/*.jar"/>
+      </copy>
+      <jar file="${pc.build.bin.tomcat6}/webapps/simple-portal.war">
+         <fileset
+            dir="${source.dir}/portal/target/simple-portal-tomcat60.dir/simple-portal/simple-portal.war"
+            includes="**"/>
+      </jar>
+
+      <!-- -->
+      <antcall target="__zip">
+         <param name="release.name" value="${demo.release.name.tomcat60}"/>
+      </antcall>
+   </target>
+
+   <!--
+      | Internal tasks
+   -->
+
+   <target name="__package-standalone-binary" if="bin-alone">
+      <mkdir dir="${bin.dir}/lib"/>
+      <copy todir="${bin.dir}/lib" flatten="true">
+         <fileset dir="${source.dir}" includes="**/target/*.jar" excludes="**/*sources.jar"/>
+      </copy>
+      <copy todir="${bin.dir}/samples">
+         <fileset dir="${source.dir}/samples/target" includes="*.war"/>
+         <fileset dir="${source.dir}/docs/user-guide/target/docbook" includes="*.war"/>
+      </copy>
+   </target>
+
+   <target name="__package-binary">
+      <antcall target="__package-distrib">
+         <param name="todir" value="${bin.dir}"/>
+      </antcall>
+      <antcall target="__package-bundled-binary"/>
+   </target>
+
+   <target name="__package-bundled-binary" unless="bin-alone">
+      <copy todir="${samples.dir}">
+         <fileset dir="${source.dir}/samples/target" includes="*.war"/>
+      </copy>
+      <copy
+         file="${source.dir}/docs/user-guide/target/attach/user-guide-en-US-${maven.version}-html.war"
+         tofile="${samples.dir}/jbosspc-docs.war"/>
+   </target>
+
+   <target name="__package-distrib">
+      <mkdir dir="${todir}"/>
+      <copy file="JBossPC-README.txt" todir="${todir}"/>
+      <antcall target="__package-doc">
+         <param name="todir" value="${todir}/jbosspc-docs"/>
+      </antcall>
+   </target>
+
+   <target name="__package-doc" unless="no-doc">
+      <sequential>
+         <mkdir dir="${todir}"/>
+         <mkdir dir="${todir}/user-guide"/>
+         <copy todir="${todir}/user-guide">
+            <fileset dir="${src.docs.dir}/user-guide/target/docbook" includes="html_single/**"/>
+            <fileset dir="${src.docs.dir}/user-guide/target/docbook" includes="html/**"/>
+            <fileset dir="${src.docs.dir}/user-guide/target/docbook/pdf" includes="*.pdf"/>
+         </copy>
+      </sequential>
+   </target>
+
+   <target name="__zip" unless="no-zip">
+      <tar destfile="output/${release.name}.tar.gz" compression="gzip" longfile="gnu">
+         <tarfileset prefix="${release.name}" filemode="775" dir="output/${release.name}"/>
+      </tar>
+      <checksum file="output/${release.name}.tar.gz"/>
+   </target>
+
+   <target name="__check-env">
+      <property environment="env"/>
+
+      <!--If properties are not in command line check if they are set in env-->
+      <condition property="JBOSS_4_2_PATH" value="${env.JBOSS_4_2_PATH}">
+         <and>
+            <isset property="env.JBOSS_4_2_PATH"/>
+            <not>
+               <isset property="JBOSS_4_2_PATH"/>
+            </not>
+         </and>
+      </condition>
+      <condition property="JBOSS_5_0_PATH" value="${env.JBOSS_5_0_PATH}">
+         <and>
+            <isset property="env.JBOSS_5_0_PATH"/>
+            <not>
+               <isset property="JBOSS_5_0_PATH"/>
+            </not>
+         </and>
+      </condition>
+      <condition property="TOMCAT_6_0_PATH" value="${env.TOMCAT_6_0_PATH}">
+         <and>
+            <isset property="env.TOMCAT_6_0_PATH"/>
+            <not>
+               <isset property="TOMCAT_6_0_PATH"/>
+            </not>
+         </and>
+      </condition>
+
+      <echo message="Set JBOSS_4_2_PATH and/or JBOSS_5_0_PATH and/or TOMCAT_6_0_PATH variables for binary distributions:"/>
+      <echo message="JBoss AS 4.2.x path: ${JBOSS_4_2_PATH}"/>
+      <echo message="JBoss AS 5.0.x path: ${JBOSS_5_0_PATH}"/>
+      <echo message="Tomcat 6.x path:     ${TOMCAT_6_0_PATH}"/>
+      <echo message="Useful variables:"/>
+      <echo message="no-doc: do not generate documentation if set to true. Currently: ${no-doc}"/>
+      <echo message="no-zip: do not compress packages if set to true. Currently: ${no-zip}"/>
+      <echo message="no-tomcat: do not generate Tomcat distribution even if Tomcat path is set. Currently: ${no-tomcat}"/>
+      <echo message="no-jboss: do not generate JBoss distribution even if JBoss path is set. Currently: ${no-jboss}"/>
+   </target>
+</project>

@@ -1,0 +1,22 @@
+<assembly>
+   <id>basic-portlet</id>
+   <formats>
+      <format>war</format>
+   </formats>
+   <includeBaseDirectory>false</includeBaseDirectory>
+
+   <fileSets>
+      <fileSet>
+         <directory>src/main/artifacts/basic-portlet-war</directory>
+         <outputDirectory></outputDirectory>
+      </fileSet>
+      <fileSet>
+         <directory>target/classes</directory>
+         <outputDirectory>WEB-INF/classes</outputDirectory>
+         <includes>
+           <include>org/jboss/portal/portlet/samples/basic/**</include>
+         </includes>
+      </fileSet>
+   </fileSets>
+
+</assembly>

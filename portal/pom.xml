@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.gatein.pc</groupId>
+      <artifactId>module-parent</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+      <relativePath>../build/pom.xml</relativePath>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>pc-portal</artifactId>
+   <packaging>jar</packaging>
+   <name>Portlet Container Simple Portal</name>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>org.gatein.common</groupId>
+         <artifactId>common-mc</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-wci</artifactId>
+         <type>jar</type>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-portlet</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-controller</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-mc</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-api</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>concurrent</groupId>
+         <artifactId>concurrent</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.microcontainer</groupId>
+         <artifactId>jboss-kernel</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-common-logging-jdk</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-common-logging-log4j</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>commons-logging</groupId>
+         <artifactId>commons-logging</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>commons-httpclient</groupId>
+         <artifactId>commons-httpclient</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.ccpp</groupId>
+         <artifactId>ccpp</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>javax.portlet</groupId>
+         <artifactId>portlet-api</artifactId>
+      </dependency>
+
+      <!-- JSTL for Tomcat -->
+      <dependency>
+         <groupId>apache-taglibs</groupId>
+         <artifactId>jstl</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>apache-taglibs</groupId>
+         <artifactId>standard</artifactId>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <plugins>
+
+         <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+               <finalName>simple-portal</finalName>
+               <descriptors>
+                  <descriptor>src/assemble/simple-portal-jboss42.xml</descriptor>
+                  <descriptor>src/assemble/simple-portal-tomcat60.xml</descriptor>
+                  <descriptor>src/assemble/simple-portal-jboss50.xml</descriptor>
+               </descriptors>
+            </configuration>
+            <executions>
+               <execution>
+                  <id>make-assembly</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>attached</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+
+   </build>
+
+</project>

@@ -1,0 +1,388 @@
+body,
+div.container {
+   font: normal 12px Lucida Sans, Trebuchet, tahoma, sans-serif;
+}
+
+.align-center {
+   text-align: center;
+}
+
+.align-left {
+   text-align: left;
+}
+
+.align-center-margin {
+   margin: 0 auto 0 auto;
+}
+
+.float-left {
+   float: left;
+}
+
+.float-right {
+   float: right;
+}
+
+.align-left {
+   text-align: left;
+}
+
+.align-right {
+   text-align: right;
+}
+
+.half-width {
+   width: 49%;
+}
+
+.quarter-width {
+   width: 24.9%;
+}
+
+.three-quarter-width {
+   width: 74.9%;
+}
+
+.full-width {
+   width: 100%;
+}
+
+.third-width {
+   width: 32.9%;
+}
+
+.two-third-width {
+   width: 65.5%;
+}
+
+.tenpx-top-bottom {
+   margin: 10px 0 10px 0;
+}
+
+.relative {
+   position: relative
+}
+
+.absolute {
+   position: absolute
+}
+
+p.white-padded {
+   color: #fff;
+   padding: 5px;
+}
+
+.clear {
+   clear: both;
+}
+
+img {
+   margin: 0;
+   padding: 0;
+   border: 0;
+}
+
+.zero {
+   margin: 0;
+   padding: 0;
+   border: 0;
+}
+
+body,
+   div,
+   form,
+   ul,
+   li {
+   margin: 0;
+   padding: 0;
+}
+
+ul {
+
+}
+
+ul li {
+   list-style-position:inside;
+}
+
+.hidden {
+   display: none;
+}
+
+/*--------------------------------Decoration*/
+
+h2 {
+   font-size: 1.9em;
+   color: #fff;
+   margin: 0;
+   padding: 0;
+}
+
+h2.title {
+   font-size: 1.9em;
+   color: #fff;
+   margin: 0;
+   padding: 0;
+}
+
+h3 {
+   font-size: 1.0em;
+   color: #fff;
+   margin: 0;
+   padding: 0;
+}
+
+a {
+   color: #990000;
+}
+
+p {
+   margin: 0;
+   padding: 0;
+}
+
+/*-------------------------------Container Decoration*/
+
+div#container>div.header {
+   height: 40px;
+   background-color: #000;
+}
+
+div#container div.header div.logo {
+   background-image: url( /simple-portal/images/logo-header.gif );
+   background-repeat: no-repeat;
+   background-position: top left;
+   height: 40px;
+}
+
+div#container div.header div.pc20 {
+   text-align: right;
+}
+
+div#container div.header div.secondary-nav {
+   font-size: 11px;
+   padding: 3px 5px 0 0;
+   text-align: right;
+}
+
+div#container div.header div.pc20 img {
+   margin: 5px 10px 0 0;
+}
+
+div#container div.nav {
+   background-image: url( /simple-portal/images/nav-bg.gif );
+   background-repeat: repeat-x;
+   background-position: top left;
+   border-top: 1px solid #878787;
+   border-bottom: 1px solid #383838;
+   height: 24px;
+}
+
+div#container div.nav ul {
+   height: 24px;
+   margin: 0 0 0 10px;
+}
+
+div#container div.nav ul li {
+   display: inline;
+   float: left;
+   text-align: center;
+   height: 24px; /*border: 1px solid #929292;*/
+}
+
+div#container div.nav ul li a,
+   div#container div.nav ul li a:hover {
+   display: block;
+   height: 16px;
+   padding: 5px 14px 4px 14px;
+   background-repeat: repeat-x;
+   background-position: top left;
+   text-decoration: none;
+   font: bold 11px;
+}
+
+div#container div.nav ul li a {
+   color: #fff; /*background-image: url( /simple-portal/images/inactive-button-bg.gif );*/
+}
+
+div#container div.nav ul li a:hover,
+   div#container div.nav ul li a.selected {
+   color: #fff;
+   background-image: url( /simple-portal/images/active-button2-bg.gif );
+}
+
+div#container div#content {
+   background-image: url( /simple-portal/images/portal-bg.gif );
+   background-repeat: repeat-x;
+   background-position: top left;
+   min-height: 600px;
+   padding: 10px;
+}
+
+/*-------------------------------Portlet Decoration*/
+
+div#container div#content div.portlet {
+   border: 1px solid #969696;
+   background-color: #e2e2e2;
+   padding: 2px;
+   float: left;
+   margin: 10px;
+   width: 95%;
+}
+
+div#container div#content div.portlet-frame {
+   background-color: #fff;
+   border: 1px solid #fff;
+}
+
+div#container div#content div.portlet div.header {
+   background-image: url( /simple-portal/images/portlet-titlebg.gif );
+   background-repeat: repeat-x;
+   background-position: top left;
+   height: 20px;
+}
+
+div#container div#content div.portlet div.header div.header-layer {
+   background-image: url( /simple-portal/images/portlet-title-rt-bg.gif );
+   background-repeat: no-repeat;
+   background-position: top right;
+   height: 20px;
+}
+
+div#container div#content div.portlet div.header div.header-layer div.title h2 {
+   font: bold 12px Lucida Sans, Trebuchet, tahoma, sans-serif;
+   color: #fff;
+   padding: 2px;
+}
+
+div#container div#content div.portlet div.header div.header-layer div.controls {
+   text-align: right;
+   padding: 3px 0 0 0;
+}
+
+div#container div#content div.portlet div.header div.header-layer div.controls span.mode-button {
+   text-align: right;
+   padding: 0 5px 0 0;
+}
+
+div#container div#content div.portlet div.header div.header-layer div.controls span.mode-button a {
+   color: #e1d77e;
+   font: normal 11px;
+   text-decoration: none;
+}
+
+/*----------------------------------Error portlet*/
+
+div.error-container {
+   padding: 5px;
+   background-color: #fff;
+}
+
+h3.error-header {
+   background-color: #cc1100;
+   color: #fff;
+   padding: 3px;
+}
+
+div.error-container ul {
+   list-style: none;
+   list-style-position: inside;
+}
+
+div.error-container ul li {
+   padding: 3px 0 3px 0;
+   border-bottom: 1px solid #777777;
+}
+
+div.error-container ul li span {
+   font-weight: bold;
+   color: #cc1100
+}
+
+div.exception code {
+   color: #33ff00;
+}
+
+/*-------------------------------------Remote Window*/
+
+div.remote-container {
+   padding: 8px 0 0 0;
+}
+
+div.remote-container ul {
+   list-style: none;
+   list-style-position: inside;
+   width: 90%;
+   margin: 0 auto 0 auto;
+}
+
+div.remote-container ul li {
+   padding: 3px 0 3px 0;
+   border-bottom: 1px solid #777777;
+}
+
+div.remote-container ul li a {
+   color: #332299
+}
+
+/*-------------------------------------Home page*/
+
+div#container div#content div.main-content {
+   padding: 5px;
+   width: 950px;
+   border-bottom: 1px solid #777777;
+}
+
+div#container div#content div.main-content p {
+   padding: 5px;
+}
+
+div#container div#content div.content-box {
+   background-image: url( /simple-portal/images/content-box-bg.gif );
+   background-repeat: repeat-x;
+   background-position: top right;
+   height: 200px ;
+   width: 300px;
+   margin: 0 13px 0 13px;
+}
+
+div#container div#content div.content-box div.box-header {
+   position: relative;
+   height: 28px;
+   width: 100%;
+}
+
+div#container div#content div.content-box div.box-header h3{
+   padding: 4px 0 0 10px;
+   font-size:1.2em;
+}
+
+
+div#container div#content div.content-box div.box-header img.left {
+   position: absolute;
+   top: 0;
+   left: 0;
+}
+
+div#container div#content div.content-box div.box-header img.right {
+   position: absolute;
+   top: 0;
+   right: 0;
+}
+
+div#container div#content div.content-box div.box-content {
+   padding: 5px;
+}
+
+/*-------------------------------------Wiki page*/
+
+div#container div#content div.wiki-content {
+   padding: 5px;
+   border-bottom: 1px solid #777777;
+}
+
+div#container div#content div.wiki-content p {
+   padding: 5px;
+}
+
+/*-------------------------------------Debugger*/
