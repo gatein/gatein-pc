@@ -28,6 +28,7 @@
          <artifactId>pc-portlet</artifactId>
          <version>${project.version}</version>
          <type>test-jar</type>
+         <classifier>tests</classifier>
       </dependency>
       <dependency>
          <groupId>org.gatein.pc</groupId>
