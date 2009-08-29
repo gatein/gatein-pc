@@ -76,7 +76,7 @@
                   </executions>
                   <configuration>
                      <testExcludes>
-                        <exclude>org/jboss/portal/unit/reports/*</exclude>
+                        <exclude>org/gatein/pc/test/unit/reports/*</exclude>
                      </testExcludes>
                   </configuration>
                </plugin>
