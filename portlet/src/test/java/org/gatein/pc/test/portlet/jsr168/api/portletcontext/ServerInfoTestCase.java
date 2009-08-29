@@ -47,7 +47,7 @@ public class ServerInfoTestCase
 {
 
    /** . */
-   private static final String VERSION_REGEX = "JBossPortletContainer/[0-9]+\\.[0-9]+";
+   private static final String VERSION_REGEX = "JBossPortletContainer/[0-9]+\\.[0-9]+(|\\.SNAPSHOT)";
 
    /** . */
    private static final Pattern VERSION_PATTERN = Pattern.compile(VERSION_REGEX, Pattern.CASE_INSENSITIVE);
