@@ -306,7 +306,7 @@
             </and>
          </condition>
       </fail>
-      <!--<fail message="Please set the environment variable JBOSS_5_0_HOME">
+      <fail message="Please set the environment variable JBOSS_5_0_HOME">
          <condition>
             <and>
                <not>
@@ -314,7 +314,7 @@
                </not>
             </and>
          </condition>
-      </fail>-->
+      </fail>
    </target>
 
    <target name="__evaluate_properties.local">
@@ -729,7 +729,7 @@
       <echo message="jboss-5.0-shared : ${jboss-5.0-shared-property}"/>
 
       <cargo
-         containerId="jboss5x"
+         containerId="jboss51x"
          home="${test.jboss-5.0.home}"
          log="${cargo.log.dir}/cargo.${test.id}.shutdown.log"
          output="${cargo.log.dir}/cargo.${test.id}.server.log"
@@ -753,7 +753,7 @@
 
    <target name="__cargo.jboss-5.0.stop" depends="__cargo.setup">
       <cargo
-         containerId="jboss5x"
+         containerId="jboss51x"
          home="${test.jboss-5.0.home}"
          log="${cargo.log.dir}/cargo.${test.id}.startup.log"
          action="stop">
@@ -804,7 +804,7 @@
 
    <target name="tests.jboss">
       <antcall target="tests.jboss-4.2"/>
-      <!-- <antcall target="tests.jboss-5.0"/> -->
+      <antcall target="tests.jboss-5.0"/>
    </target>
 
    <target name="tests.local">
@@ -836,7 +836,7 @@
          <configuration>
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
-            <!--<property name="cargo.jvmargs" value="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9000"/>-->
+<!--            <property name="cargo.jvmargs" value="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9000"/> -->
             <deployable type="war" file="${test.temp.lib}/manager.war"/>
             <deployable type="war" file="${test.temp.lib}/tomcat-6.0/portlet-test.war"/>
          </configuration>

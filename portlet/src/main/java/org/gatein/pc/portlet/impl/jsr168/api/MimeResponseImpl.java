@@ -125,8 +125,11 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
 
    public void setContentType(String contentType)
    {
-      responseContent.setContentType(contentType);
-      contentTypeSet = true;
+	  if (responseContent.getContentType() == null)
+	  {
+		  responseContent.setContentType(contentType);
+		  contentTypeSet = true;
+	  }
    }
 
    public PrintWriter getWriter() throws IOException
