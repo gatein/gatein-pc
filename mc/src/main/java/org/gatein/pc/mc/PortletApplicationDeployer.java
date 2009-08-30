@@ -268,7 +268,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
       broadcaster = null;
    }
 
-   private PortletApplication10MetaData buildPortletApplicationMetaData(WebApp webApp)
+   protected PortletApplication10MetaData buildPortletApplicationMetaData(WebApp webApp)
    {
       try
       {

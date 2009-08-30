@@ -33,6 +33,7 @@ import org.gatein.common.reflect.NoSuchClassException;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.reflect.Constructor;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -85,8 +86,33 @@ public class ContainerInfoBuilderContextImpl implements ContainerInfoBuilderCont
       ResourceBundleManager bundleMgr = portletBundleMgrs.get(portletMD.getPortletName());
       if (bundleMgr == null)
       {
-         String baseName = portletMD.getResourceBundle();
-         ResourceBundleFactory rbf = new SimpleResourceBundleFactory(webApp.getClassLoader(), baseName);
+         ResourceBundleFactory rbf = null;
+         String rbfName = metaData.getResourceBundleFactoryName();
+         if (rbfName != null)
+         {
+            try
+            {
+               Class<?> tmpClass = webApp.getClassLoader().loadClass(rbfName);
+               if (ResourceBundleFactory.class.isAssignableFrom(tmpClass))
+               {
+                  Class<? extends ResourceBundleFactory> rbfClass = tmpClass.asSubclass(ResourceBundleFactory.class);
+                  Constructor<? extends ResourceBundleFactory> rbfCtor = rbfClass.getConstructor(ClassLoader.class, String.class);
+                  rbf = rbfCtor.newInstance(webApp.getClassLoader(), portletMD.getResourceBundle());
+               }
+            }
+            catch (Exception e)
+            {
+               // Need to log
+            }
+         }
+
+         //
+         if (rbf == null)
+         {
+            rbf = new SimpleResourceBundleFactory(webApp.getClassLoader(), portletMD.getResourceBundle());
+         }
+
+         //
          bundleMgr = new ResourceBundleManager(null, rbf);
          portletBundleMgrs.put(portletMD.getPortletName(), bundleMgr);
       }

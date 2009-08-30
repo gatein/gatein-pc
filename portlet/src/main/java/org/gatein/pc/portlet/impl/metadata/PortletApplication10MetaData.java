@@ -75,6 +75,9 @@ public class PortletApplication10MetaData
    /** The security constraints */
    private List<SecurityConstraintMetaData> securityConstraints;
 
+   /** The resource bundle factory class name. */
+   private String resourceBundleFactoryName;
+
    @XmlAttribute(name = "id")
    public String getId()
    {
@@ -216,5 +219,15 @@ public class PortletApplication10MetaData
          this.securityConstraints = new ArrayList<SecurityConstraintMetaData>();
       }
       this.securityConstraints.add(securityConstraint);
+   }
+
+   public String getResourceBundleFactoryName()
+   {
+      return resourceBundleFactoryName;
+   }
+
+   public void setResourceBundleFactoryName(String resourceBundleFactoryName)
+   {
+      this.resourceBundleFactoryName = resourceBundleFactoryName;
    }
 }
