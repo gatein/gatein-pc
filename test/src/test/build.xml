@@ -160,6 +160,7 @@
          <path location="${dependency.activation.jar}"/>
          <path location="${dependency.jaxb.jar}"/>
          <path location="${dependency.ccpp.jar}"/>
+         <path location="${dependency.jboss-serialization.jar}"/>
       </path>
 
       <path id="jetty-6.1">

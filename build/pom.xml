@@ -31,7 +31,8 @@
       <version.apache.tomcat>5.5.12</version.apache.tomcat>
       <version.jboss-logging>2.0.4.GA</version.jboss-logging>
       <version.jbossxb>2.0.0.GA</version.jbossxb>
-      <version.jboss-remoting>2.2.1.GA</version.jboss-remoting>
+      <version.jboss-remoting>2.5.0.GA</version.jboss-remoting>
+      <version.jboss.serialization>1.0.3.GA</version.jboss.serialization>
       <version.gatein.common>2.0.0-SNAPSHOT</version.gatein.common>
       <version.gatein.wci>2.0.0-SNAPSHOT</version.gatein.wci>
       <version.jboss.unit>1.2.3</version.jboss.unit>
@@ -230,9 +231,14 @@
          </dependency>
 
          <dependency>
-            <groupId>jboss</groupId>
+            <groupId>org.jboss.remoting</groupId>
             <artifactId>jboss-remoting</artifactId>
             <version>${version.jboss-remoting}</version>
+         </dependency>
+         <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-serialization</artifactId>
+            <version>${version.jboss.serialization}</version>
          </dependency>
 
          <dependency>

@@ -94,7 +94,7 @@
       </dependency>
 
       <dependency>
-         <groupId>jboss</groupId>
+         <groupId>org.jboss.remoting</groupId>
          <artifactId>jboss-remoting</artifactId>
       </dependency>
 
@@ -111,6 +111,11 @@
       <dependency>
          <groupId>org.jboss</groupId>
          <artifactId>jboss-reflect</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-serialization</artifactId>
          <scope>test</scope>
       </dependency>
 
@@ -274,7 +279,7 @@
                         <property name="dependency.jboss-unit-remote.jar" value="${maven.dependency.org.jboss.unit.jboss-unit-remote.jar.path}"/>
                         <property name="dependency.portal-test.jar" value="${maven.dependency.org.jboss.unit.portal-test.jar.path}"/>
                         <property name="dependency.portal-test-generic.jar" value="${maven.dependency.org.jboss.unit.portal-test-generic.jar.path}"/>
-                        <property name="dependency.jboss-remoting.jar" value="${maven.dependency.jboss.jboss-remoting.jar.path}"/>
+                        <property name="dependency.jboss-remoting.jar" value="${maven.dependency.org.jboss.remoting.jboss-remoting.jar.path}"/>
 
                         <property name="dependency.concurrent.jar" value="${maven.dependency.concurrent.concurrent.jar.path}"/>
                         <property name="dependency.trove.jar" value="${maven.dependency.trove.trove.jar.path}"/>
@@ -292,6 +297,7 @@
                         <property name="dependency.xercesImpl.jar" value="${maven.dependency.apache-xerces.xercesImpl.jar.path}"/>
                         <property name="dependency.xml-apis.jar" value="${maven.dependency.apache-xerces.xml-apis.jar.path}"/>
                         <property name="dependency.jbossxb.jar" value="${maven.dependency.org.jboss.jbossxb.jar.path}"/>
+                        <property name="dependency.jboss-serialization.jar" value="${maven.dependency.jboss.jboss-serialization.jar.path}"/>
 
                         <property name="dependency.cargo-core-uberjar.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-uberjar.jar.path}"/>
                         <property name="dependency.cargo-ant.jar" value="${maven.dependency.org.codehaus.cargo.cargo-ant.jar.path}"/>
