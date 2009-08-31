@@ -4,11 +4,8 @@
    <groupId>org.gatein.pc</groupId>
    <artifactId>module-aggregator</artifactId>
    <packaging>pom</packaging>
-   <name>JBoss Portal Portlet Module Aggregator</name>
-   <version>3.0.0-SNAPSHOT</version>
-   <url>http://labs.jboss.com/jbossportal</url>
-
-   <dependencies/>
+   <name>GateIn - Portlet Container (aggregator)</name>
+   <version>2.1.0-SNAPSHOT</version>
 
    <distributionManagement>
       <repository>
