@@ -14,7 +14,7 @@
          <directory>target/classes</directory>
          <outputDirectory>WEB-INF/classes</outputDirectory>
          <includes>
-           <include>org/jboss/portal/portlet/samples/eventdebug/**</include>
+           <include>org/gatein/pc/samples/eventdebug/**</include>
          </includes>
       </fileSet>
    </fileSets>

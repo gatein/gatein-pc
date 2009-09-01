@@ -14,7 +14,7 @@
          <directory>target/classes</directory>
          <outputDirectory>WEB-INF/classes</outputDirectory>
          <includes>
-            <include>org/jboss/portal/portlet/samples/google/**</include>
+            <include>org/gatein/pc/samples/google/**</include>
          </includes>
       </fileSet>
    </fileSets>

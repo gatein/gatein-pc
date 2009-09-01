@@ -14,7 +14,7 @@
          <directory>target/classes</directory>
          <outputDirectory>WEB-INF/classes</outputDirectory>
          <includes>
-            <include>org/jboss/portal/portlet/samples/shoppingcart/**</include>
+            <include>org/gatein/pc/samples/shoppingcart/**</include>
          </includes>
       </fileSet>
    </fileSets>

@@ -14,7 +14,7 @@
          <directory>target/classes</directory>
          <outputDirectory>WEB-INF/classes</outputDirectory>
          <includes>
-            <include>org/jboss/portal/portlet/samples/remotecontroller/**</include>
+            <include>org/gatein/pc/samples/remotecontroller/**</include>
          </includes>
       </fileSet>
    </fileSets>
