@@ -37,7 +37,7 @@ import org.gatein.pc.portlet.impl.metadata.adapter.PortletPreferencesListAdapter
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "portlet-preferencesType")
+@XmlType(name = "portlet-preferencesType", propOrder={"portletPreferences", "preferenceValidator"})
 public class PortletPreferencesMetaData
 {
 

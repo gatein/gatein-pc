@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version $Revision$
  */
 
-@XmlType(name = "filter-mappingType")
+@XmlType(name = "filter-mappingType", propOrder={"name", "portletNames"})
 public class FilterMappingMetaData
 {
 

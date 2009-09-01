@@ -63,8 +63,7 @@ public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTes
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         fail(e);
       }
    }
 
@@ -76,7 +75,7 @@ public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTes
 
          String xmlFile = "metadata/customPortletMode/portlet2.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall20(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -106,8 +105,7 @@ public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTes
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         fail(e);
       }
    }
 

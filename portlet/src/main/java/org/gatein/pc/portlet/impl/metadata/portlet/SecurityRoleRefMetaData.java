@@ -34,7 +34,7 @@ import org.gatein.pc.portlet.impl.metadata.common.DescribableMetaData;
  * @version $Revision$
  */
 
-@XmlType(name = "security-role-refType")
+@XmlType(name = "security-role-refType", propOrder={"description", "roleName", "roleLink"})
 public class SecurityRoleRefMetaData extends DescribableMetaData
 {
 

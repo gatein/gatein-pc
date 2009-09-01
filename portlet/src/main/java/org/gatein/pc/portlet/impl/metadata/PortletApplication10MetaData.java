@@ -51,7 +51,8 @@ import org.gatein.pc.portlet.impl.metadata.CustomPortletModeMetaData;
  */
 
 @XmlRootElement(name = "portlet-app")
-@XmlType(name = "portlet-appType")
+@XmlType(name = "portlet-appType", propOrder={"portlets", "customPortletModes", "customWindowStates", "userAttributes",
+  "securityConstraints", "portletCollection"})
 public class PortletApplication10MetaData
 {
    /** The portlet application id. */

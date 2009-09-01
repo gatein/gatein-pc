@@ -31,7 +31,7 @@ import javax.xml.namespace.QName;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "event-definition-referenceType")
+@XmlType(name = "event-definition-referenceType", propOrder={"name", "qname"})
 public class EventDefinitionReferenceMetaData
 {
 

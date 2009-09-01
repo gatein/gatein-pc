@@ -33,7 +33,7 @@ import org.gatein.pc.portlet.impl.metadata.PortletMetaDataConstants;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "custom-portlet-modeType")
+@XmlType(name = "custom-portlet-modeType", propOrder={"description", "portletMode", "portalManaged"})
 public class CustomPortletModeMetaData extends DescribableMetaData
 {
 

@@ -835,7 +835,7 @@ public class ContainerInfoBuilder
       {
          if (securityConstraintMD.getPortletList().getPortletNames().contains(portletMD.getPortletName()))
          {
-            containerSecurity.addTransportGuarantee(securityConstraintMD.getUserDataConstraint().getTransportQuarantee());
+            containerSecurity.addTransportGuarantee(securityConstraintMD.getUserDataConstraint().getTransportGuarantee());
          }
       }
 

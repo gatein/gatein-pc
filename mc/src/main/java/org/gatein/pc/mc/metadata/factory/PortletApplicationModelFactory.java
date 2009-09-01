@@ -722,7 +722,7 @@ public class PortletApplicationModelFactory implements GenericObjectModelFactory
          UserDataConstraintMetaData md = (UserDataConstraintMetaData)object;
          if ("transport-guarantee".equals(localName))
          {
-            md.setTransportQuarantee(TransportGuarantee.valueOf(value));
+            md.setTransportGuarantee(TransportGuarantee.valueOf(value));
          }
       }
 

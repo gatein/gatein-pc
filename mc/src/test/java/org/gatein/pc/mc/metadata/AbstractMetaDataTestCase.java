@@ -39,8 +39,9 @@ import org.jboss.unit.api.pojo.annotations.Parameter;
 import org.jboss.xb.binding.JBossXBException;
 import org.jboss.xb.binding.Unmarshaller;
 import org.jboss.xb.binding.UnmarshallerFactory;
-import org.jboss.xb.binding.sunday.unmarshalling.DefaultSchemaResolver;
+import org.jboss.xb.binding.resolver.MutableSchemaResolver;
 import org.jboss.xb.binding.sunday.unmarshalling.SingletonSchemaResolverFactory;
+import org.jboss.xb.builder.JBossXBBuilder;
 import org.xml.sax.SAXException;
 import static org.jboss.unit.api.Assert.*;
 import org.jboss.util.xml.JBossEntityResolver;
@@ -62,7 +63,7 @@ public abstract class AbstractMetaDataTestCase
    protected static SingletonSchemaResolverFactory factory;
 
    /** The schema resolver. */
-   protected static DefaultSchemaResolver resolver;
+   protected static MutableSchemaResolver resolver;
 
    /** The unmarshaller. */
    protected Unmarshaller unmarshaller = null;
@@ -81,17 +82,16 @@ public abstract class AbstractMetaDataTestCase
       try
       {
          factory = SingletonSchemaResolverFactory.getInstance();
-         resolver = (DefaultSchemaResolver) factory.getSchemaBindingResolver();
+         resolver =  factory.getSchemaBindingResolver();
 
-         /** SchemaResolver */
-      // The two following lines are not effective, we need for now to register xsd globally
-//         resolver.addSchemaLocation(PORTLET_JSR_168_NS, "portlet-app_1_0.xsd");
-//         resolver.addSchemaLocation(PORTLET_JSR_286_NS, "portlet-app_2_0.xsd");
          JBossEntityResolver.registerEntity(PORTLET_JSR_168_NS, "metadata/portlet-app_1_0.xsd");
          JBossEntityResolver.registerEntity(PORTLET_JSR_286_NS, "metadata/portlet-app_2_0.xsd");
 
-         resolver.addClassBinding(PORTLET_JSR_286_NS, AnnotationPortletApplication20MetaData.class);
-         resolver.addClassBinding(PORTLET_JSR_168_NS, AnnotationPortletApplication10MetaData.class);
+         /** SchemaResolver */
+         resolver.mapSchemaLocation(PORTLET_JSR_168_NS, "portlet-app_1_0.xsd");
+         resolver.mapSchemaLocation(PORTLET_JSR_286_NS, "portlet-app_2_0.xsd");
+         resolver.mapLocationToClass(PORTLET_JSR_286_NS, AnnotationPortletApplication20MetaData.class);
+         resolver.mapLocationToClass(PORTLET_JSR_168_NS, AnnotationPortletApplication10MetaData.class);
       }
       catch (Exception e)
       {
@@ -103,7 +103,7 @@ public abstract class AbstractMetaDataTestCase
    {
       if (ANNOTATION_BINDING.equals(parser))
       {
-         return this.unmarshallAnnotation(file);
+         return this.unmarshallAnnotation(file, AnnotationPortletApplication10MetaData.class);
       }
       else if (FACTORY_BINDING.equals(parser))
       {
@@ -119,7 +119,7 @@ public abstract class AbstractMetaDataTestCase
    {
       if (ANNOTATION_BINDING.equals(parser))
       {
-         return (PortletApplication20MetaData)this.unmarshallAnnotation(file);
+         return this.unmarshallAnnotation(file, AnnotationPortletApplication20MetaData.class);
       }
       else if (FACTORY_BINDING.equals(parser))
       {
@@ -129,19 +129,6 @@ public abstract class AbstractMetaDataTestCase
       {
          throw new IllegalArgumentException("Wrong parameter for parser.");
       }
-   }
-
-   private PortletApplication10MetaData unmarshallAnnotation(String file) throws JBossXBException, SAXException,
-         IOException
-   {
-      /** validate */
-      unmarshaller = UnmarshallerFactory.newInstance().newUnmarshaller();
-      unmarshaller.setNamespaceAware(true);
-      unmarshaller.setSchemaValidation(true);
-      unmarshaller.setValidation(true);
-
-      /** unmarshal */
-      return (PortletApplication10MetaData) unmarshaller.unmarshal(getPath(file), resolver);
    }
 
    private PortletApplication10MetaData unmarshallWithFactory(String file) throws JBossXBException
@@ -156,6 +143,18 @@ public abstract class AbstractMetaDataTestCase
       /** unmarshal */
       return (PortletApplication10MetaData) unmarshaller.unmarshal(getStream(file), new ValueTrimmingFilter(factory),
             null);
+   }
+
+   private <T> T unmarshallAnnotation(String file, Class<T> clazz) throws JBossXBException
+   {
+	    /** validate */
+	    unmarshaller = UnmarshallerFactory.newInstance().newUnmarshaller();
+	    unmarshaller.setNamespaceAware(true);
+	    unmarshaller.setSchemaValidation(true);
+	    unmarshaller.setValidation(true);
+     
+	    /** unmarshal */
+	    return clazz.cast(unmarshaller.unmarshal(getPath(file), JBossXBBuilder.build(clazz)));
    }
 
    protected String getPath(String file)

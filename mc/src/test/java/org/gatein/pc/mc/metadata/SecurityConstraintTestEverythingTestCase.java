@@ -56,7 +56,7 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
          assertNotNull(scd1);
          assertEquals("test", scd1.getDisplayName().getDefaultString());
          assertEquals("Test", scd1.getDisplayName().getString(new Locale("de"), false));
-         assertEquals(TransportGuarantee.NONE, scd1.getUserDataConstraint().getTransportQuarantee());
+         assertEquals(TransportGuarantee.NONE, scd1.getUserDataConstraint().getTransportGuarantee());
          
          assertEquals("foo", scd1.getPortletList().getPortletNames().get(0));
          assertEquals("foobar", scd1.getPortletList().getPortletNames().get(1));
@@ -64,7 +64,7 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
          
          SecurityConstraintMetaData scd2 = md.getSecurityConstraints().get(1);
          assertNotNull(scd2);
-         assertEquals(TransportGuarantee.INTEGRAL, scd2.getUserDataConstraint().getTransportQuarantee());
+         assertEquals(TransportGuarantee.INTEGRAL, scd2.getUserDataConstraint().getTransportGuarantee());
          assertEquals("foo", scd2.getPortletList().getPortletNames().get(0));
          assertEquals("fooConstraint", scd1.getUserDataConstraint().getDescription().getDefaultString());
          assertEquals("FooConstraint", scd1.getUserDataConstraint().getDescription().getString(new Locale("de"), false));
@@ -137,7 +137,7 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
 
          String xmlFile = "metadata/security/portlet2.xml";
 
-         PortletApplication10MetaData md = unmarshall10( xmlFile);
+         PortletApplication20MetaData md = this.unmarshall20( xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -148,14 +148,14 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
          assertEquals("Test", scd1.getDisplayName().getString(new Locale("de"), false));
          assertEquals("foo", scd1.getId());
          
-         assertEquals(TransportGuarantee.NONE, scd1.getUserDataConstraint().getTransportQuarantee());
+         assertEquals(TransportGuarantee.NONE, scd1.getUserDataConstraint().getTransportGuarantee());
          assertEquals("foo", scd1.getPortletList().getPortletNames().get(0));
          assertEquals("foobar", scd1.getPortletList().getPortletNames().get(1));
          
 
          SecurityConstraintMetaData scd2 = md.getSecurityConstraints().get(1);
          assertNotNull(scd2);
-         assertEquals(TransportGuarantee.INTEGRAL, scd2.getUserDataConstraint().getTransportQuarantee());
+         assertEquals(TransportGuarantee.INTEGRAL, scd2.getUserDataConstraint().getTransportGuarantee());
          assertEquals("foo", scd2.getPortletList().getPortletNames().get(0));
          assertEquals("fooConstraint", scd1.getUserDataConstraint().getDescription().getDefaultString());
          assertEquals("FooConstraint", scd1.getUserDataConstraint().getDescription().getString(new Locale("de"), false));

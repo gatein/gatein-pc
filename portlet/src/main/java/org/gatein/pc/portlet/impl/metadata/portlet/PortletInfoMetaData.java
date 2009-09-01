@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "portlet-infoType")
+@XmlType(name = "portlet-infoType", propOrder={"title", "shortTitle", "keywords"})
 public class PortletInfoMetaData
 {
 

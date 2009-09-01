@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-@XmlType(name = "init-paramType")
+@XmlType(name = "init-paramType", propOrder={"description", "name", "value"})
 public class InitParamMetaData extends DescribableMetaData
 {
 

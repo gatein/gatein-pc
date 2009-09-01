@@ -30,7 +30,7 @@
       <version.javax.servlet.jsp>2.1</version.javax.servlet.jsp>
       <version.apache.tomcat>5.5.12</version.apache.tomcat>
       <version.jboss-logging>2.0.4.GA</version.jboss-logging>
-      <version.jbossxb>2.0.0.GA</version.jbossxb>
+      <version.jbossxb>2.0.1.GA</version.jbossxb>
       <version.jboss-remoting>2.5.0.GA</version.jboss-remoting>
       <version.jboss.serialization>1.0.3.GA</version.jboss.serialization>
       <version.gatein.common>2.0.0-SNAPSHOT</version.gatein.common>
@@ -39,7 +39,7 @@
       <version.log4j>1.2.14</version.log4j>
       <version.apache.commons-logging>1.1.1</version.apache.commons-logging>
       <version.apache.commons-httpclient>3.0.1</version.apache.commons-httpclient>
-      <version.jboss.microcontainer>2.0.2.GA</version.jboss.microcontainer>
+      <version.jboss.microcontainer>2.0.6.GA</version.jboss.microcontainer>
       <version.jboss.reflect>2.0.2.GA</version.jboss.reflect>
       <version.cargo>1.0.1-SNAPSHOT</version.cargo>
       <version.junit>3.8.2</version.junit>
