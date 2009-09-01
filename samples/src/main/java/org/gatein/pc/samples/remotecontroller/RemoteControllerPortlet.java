@@ -29,7 +29,7 @@ public class RemoteControllerPortlet extends GenericPortlet
    {
       renderResponse.setContentType("text/html");
       PrintWriter printWriter = renderResponse.getWriter();
-      String namespace = renderResponse.getNamespace();
+      String namespace = "n_" + renderResponse.getNamespace();
       printWriter.print("<p><a href='#' onclick=\"" + namespace + "_remote=" + namespace + "_openRemote('");
       ResourceURL resource = renderResponse.createResourceURL();
       printWriter.print(resource);
@@ -43,7 +43,7 @@ public class RemoteControllerPortlet extends GenericPortlet
       try
       {
          printWriter = renderResponse.getWriter();
-         String namespace = renderResponse.getNamespace();
+         String namespace = "n_" + renderResponse.getNamespace();
          String remoteWindowName = namespace + "_remote";
          printWriter.print("<script type='text/javascript'>var " + remoteWindowName + "; function " + namespace
             + "_openRemote(url){window.name='" + namespace + "_parent';window.open(url, '" + remoteWindowName
@@ -63,7 +63,7 @@ public class RemoteControllerPortlet extends GenericPortlet
    {
       resourceResponse.setContentType("text/html");
       PrintWriter writer = resourceResponse.getWriter();
-      String namespace = resourceResponse.getNamespace();
+      String namespace = "n_" + resourceResponse.getNamespace();
       writer.print("<html><head><script type='text/javascript'>function openLinkInParent(url){window.open(url,'"
          + namespace + "_parent');}</script>\n<link rel=\"stylesheet\" href='" + resourceRequest.getContextPath() + "/css/master.css' type=\"text/css\"/></head><body>");
       PortletURL url = resourceResponse.createRenderURL();

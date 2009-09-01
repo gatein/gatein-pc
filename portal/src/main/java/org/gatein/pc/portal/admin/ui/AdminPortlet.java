@@ -23,6 +23,7 @@
 package org.gatein.pc.portal.admin.ui;
 
 import org.gatein.common.i18n.LocalizedString;
+import org.gatein.common.mc.bootstrap.WebBootstrap;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
 import org.gatein.pc.portlet.container.managed.ManagedPortletApplication;
 import org.gatein.pc.portlet.container.managed.ManagedPortletContainer;
@@ -59,7 +60,7 @@ public class AdminPortlet extends GenericPortlet
       if (applicationId != null)
       {
          // Use an alias
-         PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute("PortletApplicationDeployer");
+         PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute(WebBootstrap.BEAN_PREFIX + "PortletApplicationDeployer");
 
          //
          ManagedPortletApplication application = registry.getManagedPortletApplication(applicationId);
@@ -112,7 +113,7 @@ public class AdminPortlet extends GenericPortlet
       //rd.include(request, response);
 
       // Use an alias
-      PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute("PortletApplicationDeployer");
+      PortletApplicationRegistry registry = (PortletApplicationRegistry)getPortletContext().getAttribute(WebBootstrap.BEAN_PREFIX + "PortletApplicationDeployer");
 
       //
       writer.print("" +

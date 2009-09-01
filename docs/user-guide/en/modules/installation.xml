@@ -16,16 +16,16 @@
    <title>Installation</title>
    <sect1>
       <title>Downloading and installing</title>
-      <para>Two bundled versions are provided to showcase JBoss Portlet Container in action with minimum effort. Theses
+      <para>Two bundled versions are provided to showcase Gatein Portlet Container in action with minimum effort. Theses
          bundles each include a servlet container configured with the Simple Portal demonstration portal along with
          some JSR-286 compliant portlets. You will need to have Java 5 configured on your machine to run the
          demonstration portal.
          You can download Java 5 at<ulink url="http://java.sun.com/javase/downloads/index_jdk5.jsp">
          http://java.sun.com/javase/downloads/index_jdk5.jsp</ulink>. Once you have Java installed, you are ready to
-         download one of JBoss Portlet Container bundles. The following link has the list of downloads for JBoss Portlet
-         Container:<ulink url="http://labs.jboss.com/portletcontainer/download">
+         download one of GateIn Portlet Container bundles. The following link has the list of downloads for Gatein Portlet
+         Container:<ulink url="http://www.jboss.org/gatein/portletcontainer/download">
          http://labs.jboss.com/portal/portletcontainer/download</ulink>. Two bundles are currently provided: one with
-         Tomcat 6.0.16 and one with JBoss Application Server 4.2.2.GA.
+         Tomcat 6.0 one with JBoss Application Server 4.2 and one with JBoss Application Server 5.1.
       </para>
       <sect2>
          <title>JBoss AS 4.2.x bundle</title>
@@ -41,8 +41,8 @@
                   - Contains documentation for JBoss Application Server
                </listitem>
                <listitem>
-                  <emphasis role="bold">jbosspc-docs</emphasis>
-                  - Contains documentation for JBoss Portlet Container (this document included)
+                  <emphasis role="bold">gateinpc-docs</emphasis>
+                  - Contains documentation for GateIn Portlet Container (this document included)
                </listitem>
                <listitem>
                   <emphasis role="bold">server</emphasis>
@@ -82,12 +82,12 @@
                   in its name)
                </listitem>
                <listitem>
-                  <emphasis role="bold">jbosspc-docs</emphasis>
-                  - Contains documentation for JBoss Portlet Container (this document included)
+                  <emphasis role="bold">gateinpc-docs</emphasis>
+                  - Contains documentation for GateIn Portlet Container (this document included)
                </listitem>
                <listitem>
                   <emphasis role="bold">lib</emphasis>
-                  - Contains Tomcat libraries to which several support libraries for JBoss Portlet Container have been
+                  - Contains Tomcat libraries to which several support libraries for GateIn Portlet Container have been
                   added
                </listitem>
                <listitem>
