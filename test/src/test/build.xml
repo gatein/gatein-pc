@@ -119,7 +119,7 @@
          <path location="${dependency.ccpp.jar}"/>
       </path>
 
-      <path id="jboss-5.0">
+      <path id="jboss-5.1">
          <path refid="portal-common"/>
          <path refid="portal-web"/>
          <path refid="portal-portlet"/>
@@ -127,7 +127,7 @@
          <path location="${dependency.jboss-common-core.jar}"/>
       </path>
 
-      <path id="jboss-5.0-shared">
+      <path id="jboss-5.1-shared">
          <path refid="portal-common-shared"/>
          <path refid="portal-web-shared"/>
          <path refid="portal-portlet-shared"/>
@@ -230,11 +230,11 @@
             </not>
          </and>
       </condition>
-      <condition property="JBOSS_5_0_HOME" value="${env.JBOSS_5_0_HOME}">
+      <condition property="JBOSS_5_1_0_HOME" value="${env.JBOSS_5_1_0_HOME}">
          <and>
-            <isset property="env.JBOSS_5_0_HOME"/>
+            <isset property="env.JBOSS_5_1_0_HOME"/>
             <not>
-               <isset property="JBOSS_5_0_HOME"/>
+               <isset property="JBOSS_5_1_0_HOME"/>
             </not>
          </and>
       </condition>
@@ -259,7 +259,7 @@
       <echo message="JBOSS_4_2_1_HOME: ${JBOSS_4_2_1_HOME}"/>
       <echo message="JBOSS_4_2_2_HOME: ${JBOSS_4_2_2_HOME}"/>
       <echo message="JBOSS_4_2_3_HOME: ${JBOSS_4_2_3_HOME}"/>
-      <echo message="JBOSS_5_0_HOME: ${JBOSS_5_0_HOME}"/>
+      <echo message="JBOSS_5_1_0_HOME: ${JBOSS_5_1_0_HOME}"/>
       <echo message="TOMCAT_6_0_HOME: ${TOMCAT_6_0_HOME}"/>
       <echo message="JETTY_6_1_HOME: ${JETTY_6_1_HOME}"/>
    </target>
@@ -307,11 +307,11 @@
             </and>
          </condition>
       </fail>
-      <fail message="Please set the environment variable JBOSS_5_0_HOME">
+      <fail message="Please set the environment variable JBOSS_5_1_0_HOME">
          <condition>
             <and>
                <not>
-                  <isset property="JBOSS_5_0_HOME"/>
+                  <isset property="JBOSS_5_1_0_HOME"/>
                </not>
             </and>
          </condition>
@@ -540,18 +540,18 @@
          <fileset dir="${test.temp.dir}/jboss-4.2/portlet-test-war"/>
       </jar>
 
-      <!-- JBoss 5.0 portlet-test.war -->
-      <copy todir="${test.temp.dir}/jboss-5.0/portlet-test-war">
+      <!-- JBoss 5.1 portlet-test.war -->
+      <copy todir="${test.temp.dir}/jboss-5.1/portlet-test-war">
          <fileset dir="${target}/test-classes/portlet-test-war"/>
-         <fileset dir="${target}/test-classes/jboss-5.0/portlet-test-war"/>
+         <fileset dir="${target}/test-classes/jboss-5.1/portlet-test-war"/>
       </copy>
-      <copy todir="${test.temp.dir}/jboss-5.0/portlet-test-war/WEB-INF/lib" flatten="true">
+      <copy todir="${test.temp.dir}/jboss-5.1/portlet-test-war/WEB-INF/lib" flatten="true">
          <fileset dir="${test.temp.lib}" includes="portlet-test-lib.jar"/>
-         <path refid="jboss-5.0"/>
+         <path refid="jboss-5.1"/>
       </copy>
-      <mkdir dir="${test.temp.lib}/jboss-5.0"/>
-      <jar jarfile="${test.temp.lib}/jboss-5.0/portlet-test.war">
-         <fileset dir="${test.temp.dir}/jboss-5.0/portlet-test-war">
+      <mkdir dir="${test.temp.lib}/jboss-5.1"/>
+      <jar jarfile="${test.temp.lib}/jboss-5.1/portlet-test.war">
+         <fileset dir="${test.temp.dir}/jboss-5.1/portlet-test-war">
             <exclude name="**/jboss-kernel*.jar"/>
          </fileset>
       </jar>
@@ -720,7 +720,7 @@
       <antcall target="__tests.jboss-4.2.3"/>
    </target>
 
-   <target name="__cargo.jboss-5.0.start" depends="__cargo.setup">
+   <target name="__cargo.jboss-5.1.start" depends="__cargo.setup">
       <!-- The lib portal-test-lib.jar must be loaded at the shared level rather than in the war file
            otherwise it is somehow inspected and produce a NoClassDefFoundError in the web service integration
            layer on the class org/jboss/portal/test/framework/driver/remote/RemoteTestDriver for some unknown
@@ -728,12 +728,12 @@
            org.jboss.ws.integration.jboss42.DeployerInterceptorJSE.isWebserviceDeployment(DeployerInterceptorJSE.java:84)
         -->
 
-      <property name="jboss-5.0-shared-property" refid="jboss-5.0-shared"/>
-      <echo message="jboss-5.0-shared : ${jboss-5.0-shared-property}"/>
+      <property name="jboss-5.1-shared-property" refid="jboss-5.1-shared"/>
+      <echo message="jboss-5.1-shared : ${jboss-5.1-shared-property}"/>
 
       <cargo
          containerId="jboss51x"
-         home="${test.jboss-5.0.home}"
+         home="${test.jboss-5.1.home}"
          log="${cargo.log.dir}/cargo.${test.id}.shutdown.log"
          output="${cargo.log.dir}/cargo.${test.id}.server.log"
          action="start"
@@ -741,74 +741,74 @@
          <!--<sysproperty key="java.io.tmpdir" value="${target}/cargo-tmp"/>-->
          <sharedClasspath>
 
-            <path refid="jboss-5.0-shared"/>
+            <path refid="jboss-5.1-shared"/>
 
          </sharedClasspath>
-         <configuration home="${test.jboss-5.0.tempdir}">
+         <configuration home="${test.jboss-5.1.tempdir}">
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
             <property name="cargo.rmi.port" value="1099"/>
             <property name="cargo.jvmargs" value="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n"/>
-            <deployable type="war" file="${test.temp.lib}/jboss-5.0/portlet-test.war"/>
-            <file file="${target}/test-classes/jboss-5.0/config/context.xml" tofile="deploy/jbossweb.sar/context.xml" overwrite="true"/>
+            <deployable type="war" file="${test.temp.lib}/jboss-5.1/portlet-test.war"/>
+            <file file="${target}/test-classes/jboss-5.1/config/context.xml" tofile="deploy/jbossweb.sar/context.xml" overwrite="true"/>
          </configuration>
       </cargo>
    </target>
 
-   <target name="__cargo.jboss-5.0.stop" depends="__cargo.setup">
+   <target name="__cargo.jboss-5.1.stop" depends="__cargo.setup">
       <cargo
          containerId="jboss51x"
-         home="${test.jboss-5.0.home}"
+         home="${test.jboss-5.1.home}"
          log="${cargo.log.dir}/cargo.${test.id}.startup.log"
          action="stop">
          <!--<sysproperty key="java.io.tmpdir" value="${target}/cargo-tmp"/>-->
-         <configuration home="${test.jboss-5.0.tempdir}">
+         <configuration home="${test.jboss-5.1.tempdir}">
             <property name="cargo.rmi.port" value="1099"/>
          </configuration>
       </cargo>
    </target>
 
-   <target name="tests.jboss-5.0.container-servlet" if="${test.jboss-5.0.home.variable-name}">
-      <echo message="Starting JBoss 5.0 container-servlet tests with ${test.jboss-5.0.home}"/>
-      <antcall target="__cargo.jboss-5.0.start">
+   <target name="tests.jboss-5.1.container-servlet" if="${test.jboss-5.1.home.variable-name}">
+      <echo message="Starting JBoss 5.1 container-servlet tests with ${test.jboss-5.1.home}"/>
+      <antcall target="__cargo.jboss-5.1.start">
          <param name="cargo.wait" value="false"/>
          <param name="test.spi.server.path" value="${test.archive.path}"/>
       </antcall>
       <antcall target="__tests.remote">
-         <param name="test.server.name" value="${test.jboss-5.0.name}"/>
-         <param name="test.deploy.name" value="jboss-5.0-container-servlet"/>
+         <param name="test.server.name" value="${test.jboss-5.1.name}"/>
+         <param name="test.deploy.name" value="jboss-5.1-container-servlet"/>
       </antcall>
-      <antcall target="__cargo.jboss-5.0.stop">
+      <antcall target="__cargo.jboss-5.1.stop">
       </antcall>
    </target>
 
-   <target name="tests.jboss-5.0.generic" if="${test.jboss-5.0.home.variable-name}">
-      <echo message="Starting JBoss 5.0 generic tests with ${test.jboss-5.0.home}"/>
-      <antcall target="__cargo.jboss-5.0.start">
+   <target name="tests.jboss-5.1.generic" if="${test.jboss-5.1.home.variable-name}">
+      <echo message="Starting JBoss 5.1 generic tests with ${test.jboss-5.1.home}"/>
+      <antcall target="__cargo.jboss-5.1.start">
          <param name="cargo.wait" value="false"/>
          <param name="test.spi.server.path" value="${test.archive.path}"/>
       </antcall>
       <antcall target="__tests.remote">
-         <param name="test.server.name" value="${test.jboss-5.0.name}"/>
-         <param name="test.deploy.name" value="jboss-5.0-generic"/>
+         <param name="test.server.name" value="${test.jboss-5.1.name}"/>
+         <param name="test.deploy.name" value="jboss-5.1-generic"/>
       </antcall>
-      <antcall target="__cargo.jboss-5.0.stop">
+      <antcall target="__cargo.jboss-5.1.stop">
       </antcall>
    </target>
 
-   <target name="tests.jboss-5.0" if="JBOSS_5_0_HOME">
-      <antcall target="tests.jboss-5.0.container-servlet">
-         <param name="test.id" value="JBoss-5_0-container-servlet"/>
-         <param name="test.jboss-5.0.name" value="RemoteJBoss_5_0"/>
-         <param name="test.jboss-5.0.home" value="${JBOSS_5_0_HOME}"/>
-         <param name="test.jboss-5.0.home.variable-name" value="JBOSS_5_0_HOME"/>
-         <param name="test.jboss-5.0.tempdir" value="${target}/cargo-tmp/5_0"/>
+   <target name="tests.jboss-5.1" if="JBOSS_5_1_HOME">
+      <antcall target="tests.jboss-5.1.container-servlet">
+         <param name="test.id" value="JBoss-5_1-container-servlet"/>
+         <param name="test.jboss-5.1.name" value="RemoteJBoss_5_1"/>
+         <param name="test.jboss-5.1.home" value="${JBOSS_5_1_0_HOME}"/>
+         <param name="test.jboss-5.1.home.variable-name" value="JBOSS_5_1_0_HOME"/>
+         <param name="test.jboss-5.1.tempdir" value="${target}/cargo-tmp/5_1"/>
       </antcall>
    </target>
 
    <target name="tests.jboss">
       <antcall target="tests.jboss-4.2"/>
-      <antcall target="tests.jboss-5.0"/>
+      <antcall target="tests.jboss-5.1"/>
    </target>
 
    <target name="tests.local">
@@ -1021,12 +1021,12 @@
          <fileset dir="${target}/test-classes/portlet-tck-war"/>
       </copy>
       <copy todir="${tck-jboss5}/portlet-tck-war">
-         <fileset dir="${target}/test-classes/jboss-5.0/portlet-tck-war"/>
+         <fileset dir="${target}/test-classes/jboss-5.1/portlet-tck-war"/>
       </copy>
 
       <copy todir="${tck-jboss5}/portlet-tck-war/WEB-INF/lib" flatten="true">
          <fileset dir="${test.temp.lib}" includes="portlet-test-lib.jar"/>
-         <path refid="jboss-5.0"/>
+         <path refid="jboss-5.1"/>
       </copy>
 
       <mkdir dir="${tck-jboss5}/tck-portal"/>
@@ -1038,7 +1038,7 @@
       </jar>
 
       <copy todir="${tck-jboss5}/tck-portal" flatten="true">
-         <path refid="jboss-5.0-shared"/>
+         <path refid="jboss-5.1-shared"/>
       </copy>
 
       <!--TOMCAT-->
