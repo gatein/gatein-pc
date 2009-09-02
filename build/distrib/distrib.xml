@@ -1,4 +1,4 @@
-project default="all" name="GateIn Portlet Container">
+<project default="all" name="GateIn Portlet Container">
 
    <property name="source.dir" value="../.."/>
    <property name="src.docs.dir" value="${source.dir}/docs"/>
