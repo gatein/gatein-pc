@@ -22,46 +22,46 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.state.producer;
 
-import org.gatein.common.invocation.InvocationException;
+import org.apache.log4j.Logger;
 import org.gatein.pc.api.InvalidPortletIdException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
-import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.api.StateEvent;
 import org.gatein.pc.api.PortletStateType;
-import org.gatein.pc.api.state.PropertyMap;
+import org.gatein.pc.api.StateEvent;
+import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.info.PreferenceInfo;
 import org.gatein.pc.api.info.PreferencesInfo;
 import org.gatein.pc.api.invocation.ActionInvocation;
 import org.gatein.pc.api.invocation.EventInvocation;
+import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.RenderInvocation;
 import org.gatein.pc.api.invocation.ResourceInvocation;
-import org.gatein.pc.portlet.PortletInvokerInterceptor;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.spi.InstanceContext;
-import org.gatein.pc.portlet.state.AbstractPropertyContext;
 import org.gatein.pc.api.state.AccessMode;
 import org.gatein.pc.api.state.DestroyCloneFailure;
-import org.gatein.pc.portlet.state.InvalidStateIdException;
-import org.gatein.pc.portlet.state.NoSuchStateException;
 import org.gatein.pc.api.state.PropertyChange;
 import org.gatein.pc.api.state.PropertyContext;
+import org.gatein.pc.api.state.PropertyMap;
+import org.gatein.pc.portlet.PortletInvokerInterceptor;
+import org.gatein.pc.portlet.state.AbstractPropertyContext;
+import org.gatein.pc.portlet.state.InvalidStateIdException;
+import org.gatein.pc.portlet.state.NoSuchStateException;
 import org.gatein.pc.portlet.state.SimplePropertyMap;
 import org.gatein.pc.portlet.state.StateConversionException;
 import org.gatein.pc.portlet.state.StateConverter;
 import org.gatein.pc.portlet.state.StateManagementPolicy;
-import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -237,7 +237,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
 
       //
       int status = prefs.getStatus();
-            
+
       // Producer state management if the invocation was succesful
       if ((invocation instanceof ActionInvocation || invocation instanceof ResourceInvocation || invocation instanceof EventInvocation) && status == AbstractPropertyContext.UPDATE_SUCCESSFUL)
       {
@@ -257,7 +257,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          }
 
          //
-         switch(access)
+         switch (access)
          {
             case CLONE_BEFORE_WRITE:
             {
@@ -647,7 +647,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
     * Retrieve the properties from the portlet meta data.
     *
     * @param portletContext the portlet context
-    * @param props the properties
+    * @param props          the properties
     * @throws PortletInvokerException any portlet invoker exception
     */
    private void getPropertiesFromMetaData(PortletContext portletContext, PropertyMap props) throws PortletInvokerException
@@ -732,9 +732,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       }
    }
 
-   /**
-    * An internal portlet context that describe how the portlet was obtained.
-    */
+   /** An internal portlet context that describe how the portlet was obtained. */
    private abstract static class InternalContext
    {
 
@@ -744,9 +742,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       /** . */
       private final PortletContext portletContext;
 
-      /**
-       * @return true if the context represent a cloned portlet
-       */
+      /** @return true if the context represent a cloned portlet */
       public abstract boolean isStateful();
 
       public InternalContext(String portletId)
@@ -759,9 +755,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          this.portletContext = PortletContext.createPortletContext(portletId);
       }
 
-      /**
-       * @return the portlet id in the context of the delegate
-       */
+      /** @return the portlet id in the context of the delegate */
       public String getPortletId()
       {
          return portletId;
@@ -773,9 +767,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       }
    }
 
-   /**
-    * Describe delegate portlets.
-    */
+   /** Describe delegate portlets. */
    private static class StatelessContext extends InternalContext
    {
       public StatelessContext(String portletId)
@@ -789,9 +781,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       }
    }
 
-   /**
-    * A cloned portlet that points to a delegate portlet.
-    */
+   /** A cloned portlet that points to a delegate portlet. */
    private abstract static class StatefulContext extends InternalContext
    {
 
@@ -810,9 +800,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          this.properties = properties;
       }
 
-      /**
-       * @return true if the portlet is local
-       */
+      /** @return true if the portlet is local */
       public abstract boolean isLocal();
 
       public PropertyMap getProperties()
@@ -871,10 +859,10 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
 
       public PortletStateType getStateType()
       {
-        return stateType;
+         return stateType;
       }
 
-     public boolean isLocal()
+      public boolean isLocal()
       {
          return false;
       }

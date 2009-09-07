@@ -22,21 +22,27 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.support.spi;
 
-import org.gatein.common.invocation.AbstractInvocationContext;
 import org.gatein.common.util.MarkupInfo;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.URLFormat;
 import org.gatein.pc.api.spi.PortletInvocationContext;
+import org.gatein.pc.portlet.impl.spi.AbstractPortletInvocationContext;
 
-import java.io.Writer;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 5064 $
  */
-public class PortletInvocationContextSupport extends AbstractInvocationContext implements PortletInvocationContext
+public class PortletInvocationContextSupport extends AbstractPortletInvocationContext implements PortletInvocationContext
 {
+   public PortletInvocationContextSupport(MarkupInfo markupInfo)
+   {
+      super(markupInfo);
+   }
 
    public MarkupInfo getMarkupInfo()
    {
@@ -54,6 +60,18 @@ public class PortletInvocationContextSupport extends AbstractInvocationContext i
    }
 
    public void renderURL(Writer writer, ContainerURL containerURL, URLFormat format) throws IOException
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   @Override
+   public HttpServletRequest getClientRequest() throws IllegalStateException
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   @Override
+   public HttpServletResponse getClientResponse() throws IllegalStateException
    {
       throw new UnsupportedOperationException();
    }

@@ -23,7 +23,7 @@
 
 package org.gatein.pc.portlet.state.producer;
 
-import org.gatein.common.invocation.InvocationException;
+import org.gatein.pc.api.invocation.InvocationException;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>

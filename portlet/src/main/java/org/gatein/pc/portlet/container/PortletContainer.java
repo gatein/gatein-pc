@@ -22,9 +22,9 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
-import org.gatein.common.invocation.InvocationException;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.info.PortletInfo;
+import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 
@@ -54,7 +54,8 @@ public interface PortletContainer
     *
     * @param invocation the portlet invocation
     * @return the portlet invocation response
-    * @throws org.gatein.pc.api.PortletInvokerException a portlet invoker exception
+    * @throws org.gatein.pc.api.PortletInvokerException
+    *                             a portlet invoker exception
     * @throws InvocationException an invocation exception
     */
    PortletInvocationResponse dispatch(PortletInvocation invocation) throws PortletInvokerException, InvocationException;

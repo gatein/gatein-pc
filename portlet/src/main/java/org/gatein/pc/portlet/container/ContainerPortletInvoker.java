@@ -22,23 +22,23 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
-import org.gatein.common.invocation.InvocationException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.info.PortletInfo;
+import org.gatein.pc.api.invocation.InvocationException;
+import org.gatein.pc.api.invocation.PortletInvocation;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.state.DestroyCloneFailure;
+import org.gatein.pc.api.state.PropertyChange;
 import org.gatein.pc.api.state.PropertyMap;
-import org.gatein.pc.portlet.impl.info.ContainerPreferencesInfo;
+import org.gatein.pc.portlet.PortletInvokerInterceptor;
 import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
 import org.gatein.pc.portlet.impl.info.ContainerPreferenceInfo;
-import org.gatein.pc.api.info.PortletInfo;
-import org.gatein.pc.api.invocation.PortletInvocation;
-import org.gatein.pc.portlet.PortletInvokerInterceptor;
-import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.state.PropertyChange;
+import org.gatein.pc.portlet.impl.info.ContainerPreferencesInfo;
 import org.gatein.pc.portlet.state.SimplePropertyMap;
-import org.gatein.pc.api.state.DestroyCloneFailure;
 
 import java.util.HashMap;
 import java.util.HashSet;

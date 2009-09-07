@@ -1,6 +1,6 @@
 /******************************************************************************
  * JBoss, a division of Red Hat                                               *
- * Copyright 2008, Red Hat Middleware, LLC, and individual                    *
+ * Copyright 2009, Red Hat Middleware, LLC, and individual                    *
  * contributors as indicated by the @authors tag. See the                     *
  * copyright.txt in the distribution for a full listing of                    *
  * individual contributors.                                                   *
@@ -20,37 +20,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.controller;
-
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+package org.gatein.pc.api.invocation;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
- * @version $Revision: 630 $
+ * @version $Revision: 5451 $
  */
-public class PortletInvocationContextSupport extends org.gatein.pc.portlet.support.spi.PortletInvocationContextSupport
+public class InvocationException extends RuntimeException
 {
 
-   /** . */
-   private final String windowId;
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 7607329736844391861L;
 
-   /** . */
-   private final PortletPageNavigationalState pageNavigationalState;
-
-   public PortletInvocationContextSupport(String windowId, PortletPageNavigationalState pageNavigationalState)
+   public InvocationException()
    {
-      super(null);
-      this.windowId = windowId;
-      this.pageNavigationalState = pageNavigationalState;
    }
 
-   public String getWindowId()
+   public InvocationException(String message)
    {
-      return windowId;
+      super(message);
    }
 
-   public PortletPageNavigationalState getPageNavigationalState()
+   public InvocationException(Throwable cause)
    {
-      return pageNavigationalState;
+      super(cause);
+   }
+
+   public InvocationException(String message, Throwable cause)
+   {
+      super(message, cause);
    }
 }

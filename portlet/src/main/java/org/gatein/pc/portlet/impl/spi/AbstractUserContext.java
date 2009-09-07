@@ -23,17 +23,17 @@
 package org.gatein.pc.portlet.impl.spi;
 
 import org.gatein.common.util.Tools;
-import org.gatein.common.invocation.resolver.PrincipalAttributeResolver;
-import org.gatein.common.invocation.resolver.MapAttributeResolver;
-import org.gatein.common.invocation.AttributeResolver;
+import org.gatein.pc.api.invocation.resolver.AttributeResolver;
+import org.gatein.pc.api.invocation.resolver.MapAttributeResolver;
+import org.gatein.pc.api.invocation.resolver.PrincipalAttributeResolver;
 import org.gatein.pc.api.spi.UserContext;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 import java.util.Collections;
-import java.util.Locale;
-import java.util.List;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -86,33 +86,25 @@ public class AbstractUserContext implements UserContext
       this.attributeResolver = new MapAttributeResolver();
    }
 
-   /**
-    * Returns the user id or null if none was provided.
-    */
+   /** Returns the user id or null if none was provided. */
    public String getId()
    {
       return id;
    }
 
-   /**
-    * Returns an immutable empty map.
-    */
+   /** Returns an immutable empty map. */
    public Map<String, String> getInformations()
    {
       return EMPTY_STRING_TO_STRING_MAP;
    }
 
-   /**
-    * Returns the client request locale or <code>Locale.ENGLISH</code> if no request was provided.
-    */
+   /** Returns the client request locale or <code>Locale.ENGLISH</code> if no request was provided. */
    public Locale getLocale()
    {
       return clientRequest != null ? clientRequest.getLocale() : Locale.ENGLISH;
    }
 
-   /**
-    * Returns the client request locales or an empty list if no request was provided.
-    */
+   /** Returns the client request locales or an empty list if no request was provided. */
    @SuppressWarnings("unchecked")
    public List<Locale> getLocales()
    {

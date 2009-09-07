@@ -33,8 +33,8 @@
       <version.jbossxb>2.0.1.GA</version.jbossxb>
       <version.jboss-remoting>2.5.0.GA</version.jboss-remoting>
       <version.jboss.serialization>1.0.3.GA</version.jboss.serialization>
-      <version.gatein.common>2.0.0-Beta01</version.gatein.common>
-      <version.gatein.wci>2.0.0-Beta01</version.gatein.wci>
+      <version.gatein.common>2.0.0-Beta02</version.gatein.common>
+      <version.gatein.wci>2.0.0-SNAPSHOT</version.gatein.wci>
       <version.jboss.unit>1.2.3</version.jboss.unit>
       <version.log4j>1.2.14</version.log4j>
       <version.apache.commons-logging>1.1.1</version.apache.commons-logging>
@@ -84,13 +84,13 @@
             <enabled>false</enabled>
          </snapshots>
       </repository>
-<!--      
-<repository>
-         <id>openqa-releases</id>
-         <name>OpenQA Selenium Repository</name>
-         <url>http://archiva.openqa.org/repository/releases/</url>
-      </repository>
--->
+      <!--
+      <repository>
+               <id>openqa-releases</id>
+               <name>OpenQA Selenium Repository</name>
+               <url>http://archiva.openqa.org/repository/releases/</url>
+            </repository>
+      -->
    </repositories>
 
 

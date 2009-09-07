@@ -22,15 +22,15 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
-import org.gatein.pc.portlet.container.object.PortletContainerObject;
-import org.gatein.pc.api.info.PortletInfo;
-import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.common.invocation.InvocationException;
+import org.gatein.pc.api.info.PortletInfo;
+import org.gatein.pc.api.invocation.InvocationException;
+import org.gatein.pc.api.invocation.PortletInvocation;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.portlet.container.object.PortletContainerObject;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>

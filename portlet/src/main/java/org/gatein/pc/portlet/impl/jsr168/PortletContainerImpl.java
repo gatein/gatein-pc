@@ -22,71 +22,71 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168;
 
+import org.apache.log4j.Logger;
 import org.gatein.common.concurrent.Valve;
 import org.gatein.common.i18n.ResourceBundleManager;
-import org.gatein.common.invocation.InvocationException;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.portlet.container.PortletApplication;
-import org.gatein.pc.portlet.container.PortletInitializationException;
-import org.gatein.pc.portlet.container.PortletContainerContext;
-import org.gatein.pc.portlet.container.object.PortletContainerObject;
-import org.gatein.pc.portlet.impl.jsr168.api.ActionRequestImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.ActionResponseImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.PortletConfigImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.RenderRequestImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.RenderResponseImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.EventRequestImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.EventResponseImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.ResourceRequestImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.ResourceResponseImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.FilterChainImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.PortletRequestImpl;
-import org.gatein.pc.portlet.impl.jsr168.api.PortletResponseImpl;
-import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
-import org.gatein.pc.portlet.impl.info.ContainerPreferencesInfo;
-import org.gatein.pc.portlet.aspects.ContextDispatcherInterceptor;
 import org.gatein.pc.api.invocation.ActionInvocation;
+import org.gatein.pc.api.invocation.EventInvocation;
+import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.RenderInvocation;
-import org.gatein.pc.api.invocation.EventInvocation;
 import org.gatein.pc.api.invocation.ResourceInvocation;
 import org.gatein.pc.api.invocation.response.ErrorResponse;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.invocation.response.SecurityErrorResponse;
 import org.gatein.pc.api.invocation.response.UnavailableResponse;
-import org.apache.log4j.Logger;
+import org.gatein.pc.portlet.aspects.ContextDispatcherInterceptor;
+import org.gatein.pc.portlet.container.PortletApplication;
+import org.gatein.pc.portlet.container.PortletContainerContext;
+import org.gatein.pc.portlet.container.PortletInitializationException;
+import org.gatein.pc.portlet.container.object.PortletContainerObject;
+import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
+import org.gatein.pc.portlet.impl.info.ContainerPreferencesInfo;
+import org.gatein.pc.portlet.impl.jsr168.api.ActionRequestImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.ActionResponseImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.EventRequestImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.EventResponseImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.FilterChainImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.PortletConfigImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.PortletRequestImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.PortletResponseImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.RenderRequestImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.RenderResponseImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.ResourceRequestImpl;
+import org.gatein.pc.portlet.impl.jsr168.api.ResourceResponseImpl;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.EventPortlet;
+import javax.portlet.EventRequest;
+import javax.portlet.EventResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletSecurityException;
 import javax.portlet.PreferencesValidator;
-import javax.portlet.UnavailableException;
-import javax.portlet.EventPortlet;
-import javax.portlet.ResourceServingPortlet;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.filter.PortletFilter;
+import javax.portlet.ResourceServingPortlet;
+import javax.portlet.UnavailableException;
 import javax.portlet.filter.ActionFilter;
 import javax.portlet.filter.EventFilter;
-import javax.portlet.filter.RenderFilter;
-import javax.portlet.filter.ResourceFilter;
 import javax.portlet.filter.FilterChain;
 import javax.portlet.filter.FilterConfig;
+import javax.portlet.filter.PortletFilter;
+import javax.portlet.filter.RenderFilter;
+import javax.portlet.filter.ResourceFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Set;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -489,7 +489,7 @@ public class PortletContainerImpl implements PortletContainerObject
       }
       else
       {
-        throw new InvocationException("Unexpected invocation " + invocation);
+         throw new InvocationException("Unexpected invocation " + invocation);
       }
 
       //

@@ -22,8 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.state;
 
-import org.gatein.pc.portlet.support.spi.PortletInvocationContextSupport;
 import org.gatein.pc.api.spi.PortletInvocationContext;
+import org.gatein.pc.portlet.support.spi.PortletInvocationContextSupport;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -33,5 +33,6 @@ public class ActionContextImpl extends PortletInvocationContextSupport implement
 {
    public ActionContextImpl()
    {
+      super(null);
    }
 }

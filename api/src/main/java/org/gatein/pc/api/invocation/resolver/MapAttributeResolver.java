@@ -1,6 +1,6 @@
 /******************************************************************************
  * JBoss, a division of Red Hat                                               *
- * Copyright 2008, Red Hat Middleware, LLC, and individual                    *
+ * Copyright 2009, Red Hat Middleware, LLC, and individual                    *
  * contributors as indicated by the @authors tag. See the                     *
  * copyright.txt in the distribution for a full listing of                    *
  * individual contributors.                                                   *
@@ -20,37 +20,65 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.controller;
+package org.gatein.pc.api.invocation.resolver;
 
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
- * @version $Revision: 630 $
+ * @version $Revision: 7228 $
  */
-public class PortletInvocationContextSupport extends org.gatein.pc.portlet.support.spi.PortletInvocationContextSupport
+@SuppressWarnings("unchecked")
+public class MapAttributeResolver implements AttributeResolver
 {
 
    /** . */
-   private final String windowId;
+   private final Map attributes;
 
-   /** . */
-   private final PortletPageNavigationalState pageNavigationalState;
-
-   public PortletInvocationContextSupport(String windowId, PortletPageNavigationalState pageNavigationalState)
+   public MapAttributeResolver(Map attributes)
    {
-      super(null);
-      this.windowId = windowId;
-      this.pageNavigationalState = pageNavigationalState;
+      if (attributes == null)
+      {
+         throw new IllegalArgumentException();
+      }
+      this.attributes = attributes;
    }
 
-   public String getWindowId()
+   public MapAttributeResolver()
    {
-      return windowId;
+      this(new HashMap());
    }
 
-   public PortletPageNavigationalState getPageNavigationalState()
+
+   public Set getKeys()
    {
-      return pageNavigationalState;
+      return attributes.keySet();
+   }
+
+   public Object getAttribute(Object attrKey) throws IllegalArgumentException
+   {
+      if (attrKey == null)
+      {
+         throw new IllegalArgumentException();
+      }
+      return attributes.get(attrKey);
+   }
+
+   public void setAttribute(Object attrKey, Object attrValue) throws IllegalArgumentException
+   {
+      if (attrKey == null)
+      {
+         throw new IllegalArgumentException();
+      }
+      if (attrValue != null)
+      {
+         attributes.put(attrKey, attrValue);
+      }
+      else
+      {
+         attributes.remove(attrKey);
+      }
    }
 }

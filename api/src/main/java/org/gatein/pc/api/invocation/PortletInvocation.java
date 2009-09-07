@@ -22,19 +22,20 @@
  ******************************************************************************/
 package org.gatein.pc.api.invocation;
 
-import org.gatein.common.invocation.AttributeResolver;
-import org.gatein.common.invocation.resolver.MapAttributeResolver;
-import org.gatein.pc.api.spi.InstanceContext;
-import org.gatein.pc.api.spi.PortalContext;
-import org.gatein.pc.api.spi.PortletInvocationContext;
-import org.gatein.pc.api.spi.ServerContext;
-import org.gatein.pc.api.spi.SecurityContext;
-import org.gatein.pc.api.spi.UserContext;
-import org.gatein.pc.api.spi.WindowContext;
-import org.gatein.pc.api.spi.ClientContext;
+import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.WindowState;
+import org.gatein.pc.api.invocation.resolver.AttributeResolver;
+import org.gatein.pc.api.invocation.resolver.MapAttributeResolver;
+import org.gatein.pc.api.spi.ClientContext;
+import org.gatein.pc.api.spi.InstanceContext;
+import org.gatein.pc.api.spi.PortalContext;
+import org.gatein.pc.api.spi.PortletInvocationContext;
+import org.gatein.pc.api.spi.SecurityContext;
+import org.gatein.pc.api.spi.ServerContext;
+import org.gatein.pc.api.spi.UserContext;
+import org.gatein.pc.api.spi.WindowContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +46,7 @@ import java.util.Map;
  * @version $Revision: 6765 $
  * @since 2.4
  */
+@SuppressWarnings("unchecked")
 public abstract class PortletInvocation
 {
 
@@ -58,7 +60,7 @@ public abstract class PortletInvocation
    protected Map<String, String[]> publicNavigationalState;
 
    /** . */
-   protected org.gatein.pc.api.Mode mode;
+   protected Mode mode;
 
    /** . */
    protected WindowState windowState;
@@ -192,12 +194,12 @@ public abstract class PortletInvocation
       this.publicNavigationalState = publicNavigationalState;
    }
 
-   public org.gatein.pc.api.Mode getMode()
+   public Mode getMode()
    {
       return mode;
    }
 
-   public void setMode(org.gatein.pc.api.Mode mode)
+   public void setMode(Mode mode)
    {
       this.mode = mode;
    }

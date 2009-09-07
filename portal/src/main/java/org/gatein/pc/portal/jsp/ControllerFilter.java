@@ -22,43 +22,43 @@
  ******************************************************************************/
 package org.gatein.pc.portal.jsp;
 
-import org.gatein.pc.controller.impl.PortletURLRenderer;
-import org.gatein.pc.controller.impl.URLParameterConstants;
-import org.gatein.pc.controller.impl.ControllerRequestFactory;
-import org.gatein.pc.api.PortletInvoker;
-import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.api.URLFormat;
-import org.gatein.pc.portal.Constants;
-import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.invocation.response.ErrorResponse;
-import org.gatein.pc.api.invocation.response.ContentResponse;
-import org.gatein.pc.api.invocation.response.UnavailableResponse;
-import org.gatein.pc.controller.PortletController;
-import org.gatein.pc.controller.request.PortletActionRequest;
-import org.gatein.pc.controller.impl.ControllerRequestParameterNames;
-import org.gatein.pc.controller.request.ControllerRequest;
-import org.gatein.pc.controller.response.ControllerResponse;
-import org.gatein.pc.controller.response.PageUpdateResponse;
-import org.gatein.pc.controller.response.ResourceResponse;
-import org.gatein.pc.controller.response.PortletResponse;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.PortletPageNavigationalStateSerialization;
 import org.gatein.common.io.IOTools;
 import org.gatein.common.io.SerializationFilter;
 import org.gatein.common.mc.bootstrap.WebBootstrap;
 import org.gatein.common.util.Base64;
+import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.URLFormat;
+import org.gatein.pc.api.invocation.response.ContentResponse;
+import org.gatein.pc.api.invocation.response.ErrorResponse;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.invocation.response.UnavailableResponse;
+import org.gatein.pc.controller.PortletController;
+import org.gatein.pc.controller.impl.ControllerRequestFactory;
+import org.gatein.pc.controller.impl.ControllerRequestParameterNames;
+import org.gatein.pc.controller.impl.PortletURLRenderer;
+import org.gatein.pc.controller.impl.URLParameterConstants;
+import org.gatein.pc.controller.request.ControllerRequest;
+import org.gatein.pc.controller.request.PortletActionRequest;
+import org.gatein.pc.controller.response.ControllerResponse;
+import org.gatein.pc.controller.response.PageUpdateResponse;
+import org.gatein.pc.controller.response.PortletResponse;
+import org.gatein.pc.controller.response.ResourceResponse;
+import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.state.PortletPageNavigationalStateSerialization;
+import org.gatein.pc.portal.Constants;
 import org.gatein.wci.util.RequestDecoder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -263,7 +263,7 @@ public class ControllerFilter implements Filter
          String blah = req.getParameter(ControllerRequestParameterNames.PAGE_NAVIGATIONAL_STATE);
          if (blah != null)
          {
-            byte[] bytes = Base64.decode(blah, true);
+            byte[] bytes = Base64.decode(blah, Base64.EncodingOption.USEURLSAFEENCODING);
             pageNavigationalState = IOTools.unserialize(serialization, SerializationFilter.COMPRESSOR, bytes);
          }
       }

@@ -22,23 +22,23 @@
  ******************************************************************************/
 package org.gatein.pc.federation.impl;
 
-import org.gatein.common.invocation.InvocationException;
-import org.gatein.pc.federation.FederatedPortletInvoker;
-import org.gatein.pc.federation.FederatingPortletInvoker;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
-import org.gatein.pc.api.StateEvent;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.PortletStateType;
-import org.gatein.pc.api.state.PropertyMap;
+import org.gatein.pc.api.StateEvent;
+import org.gatein.pc.api.StatefulPortletContext;
+import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.spi.InstanceContext;
 import org.gatein.pc.api.state.AccessMode;
 import org.gatein.pc.api.state.DestroyCloneFailure;
 import org.gatein.pc.api.state.PropertyChange;
+import org.gatein.pc.api.state.PropertyMap;
+import org.gatein.pc.federation.FederatedPortletInvoker;
+import org.gatein.pc.federation.FederatingPortletInvoker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -134,7 +134,8 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
          ctx.onStateEvent(new StateEvent(reference(event.getPortletContext()), event.getType()));
       }
 
-      public PortletStateType<?> getStateType() {
+      public PortletStateType<?> getStateType()
+      {
          return ctx.getStateType();
       }
    }

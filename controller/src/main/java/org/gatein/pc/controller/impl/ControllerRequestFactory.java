@@ -22,13 +22,13 @@
  ******************************************************************************/
 package org.gatein.pc.controller.impl;
 
-import org.gatein.pc.api.WindowState;
 import org.gatein.common.io.IOTools;
 import org.gatein.common.io.Serialization;
 import org.gatein.common.io.SerializationFilter;
 import org.gatein.common.util.Base64;
 import org.gatein.common.util.MapAdapters;
 import org.gatein.pc.api.StateString;
+import org.gatein.pc.api.WindowState;
 import org.gatein.pc.api.cache.CacheLevel;
 import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.controller.request.PortletActionRequest;
@@ -109,7 +109,7 @@ public class ControllerRequestFactory
       String context = queryParameters.get(ControllerRequestParameterNames.PAGE_NAVIGATIONAL_STATE);
       if (context != null)
       {
-         byte[] bytes = Base64.decode(context, true);
+         byte[] bytes = Base64.decode(context, Base64.EncodingOption.USEURLSAFEENCODING);
          pageNavigationalState = IOTools.unserialize(serialization, SerializationFilter.COMPRESSOR, bytes);
       }
 
@@ -192,7 +192,7 @@ public class ControllerRequestFactory
          }
          else
          {
-            byte[] bytes = Base64.decode(queryParameters.get(ControllerRequestParameterNames.PUBLIC_NAVIGATIONAL_STATE_CHANGES), true);
+            byte[] bytes = Base64.decode(queryParameters.get(ControllerRequestParameterNames.PUBLIC_NAVIGATIONAL_STATE_CHANGES), Base64.EncodingOption.USEURLSAFEENCODING);
             Map<String, String[]> publicNavigationalStateChanges = IOTools.unserialize(Serialization.PARAMETER_MAP, SerializationFilter.COMPRESSOR, bytes);
 
             //

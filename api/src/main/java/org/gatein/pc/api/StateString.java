@@ -23,8 +23,6 @@
 package org.gatein.pc.api;
 
 import org.gatein.common.util.Base64;
-import org.gatein.pc.api.ParametersStateString;
-import org.gatein.pc.api.OpaqueStateString;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -129,7 +127,7 @@ public abstract class StateString implements Serializable
       {
          try
          {
-            byte[] bytes = Base64.decode(opaqueValue, true);
+            byte[] bytes = Base64.decode(opaqueValue, Base64.EncodingOption.USEURLSAFEENCODING);
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
             ObjectInputStream ois = new ObjectInputStream(bais);
             Map<String, String[]> params = new HashMap<String, String[]>();
@@ -196,7 +194,7 @@ public abstract class StateString implements Serializable
             oos.writeUTF(EOF);
             oos.close();
             byte[] bytes = baos.toByteArray();
-            return JBPNS_PREFIX + Base64.encodeBytes(bytes, true);
+            return JBPNS_PREFIX + Base64.encodeBytes(bytes, Base64.EncodingOption.USEURLSAFEENCODING);
          }
          catch (IOException e)
          {

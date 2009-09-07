@@ -22,21 +22,21 @@
  ******************************************************************************/
 package org.gatein.pc.controller.impl;
 
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.api.ContainerURL;
+import org.gatein.common.io.IOTools;
+import org.gatein.common.io.Serialization;
+import org.gatein.common.io.SerializationFilter;
+import org.gatein.common.util.Base64;
 import org.gatein.pc.api.ActionURL;
-import org.gatein.pc.api.StateString;
+import org.gatein.pc.api.ContainerURL;
+import org.gatein.pc.api.PortletURL;
 import org.gatein.pc.api.RenderURL;
 import org.gatein.pc.api.ResourceURL;
-import org.gatein.pc.api.PortletURL;
+import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.cache.CacheLevel;
-import org.gatein.common.io.IOTools;
-import org.gatein.common.io.SerializationFilter;
-import org.gatein.common.io.Serialization;
-import org.gatein.common.util.Base64;
+import org.gatein.pc.controller.state.PortletPageNavigationalState;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -86,7 +86,7 @@ public class ControllerRequestParameterMapFactory
       if (pageNS != null)
       {
          byte[] bytes = IOTools.serialize(serialization, SerializationFilter.COMPRESSOR, pageNS);
-         pageNavigationalState = Base64.encodeBytes(bytes, true);
+         pageNavigationalState = Base64.encodeBytes(bytes, Base64.EncodingOption.USEURLSAFEENCODING);
       }
 
       //
@@ -133,7 +133,7 @@ public class ControllerRequestParameterMapFactory
             //
             Map<String, String[]> changes = renderURL.getPublicNavigationalStateChanges();
             byte[] bytes = IOTools.serialize(Serialization.PARAMETER_MAP, SerializationFilter.COMPRESSOR, changes);
-            String ns = Base64.encodeBytes(bytes, true);
+            String ns = Base64.encodeBytes(bytes, Base64.EncodingOption.USEURLSAFEENCODING);
             parameters.put(ControllerRequestParameterNames.PUBLIC_NAVIGATIONAL_STATE_CHANGES, ns);
 
             //

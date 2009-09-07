@@ -24,25 +24,24 @@
 package org.gatein.pc.controller.impl;
 
 import org.gatein.common.io.IOTools;
-import org.gatein.common.io.SerializationFilter;
 import org.gatein.common.io.Serialization;
+import org.gatein.common.io.SerializationFilter;
 import org.gatein.common.text.CharBuffer;
 import org.gatein.common.text.FastURLEncoder;
 import org.gatein.common.util.Base64;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.URLFormat;
+import static org.gatein.pc.controller.impl.URLParameterConstants.PORTLET_TYPE;
+import static org.gatein.pc.controller.impl.URLParameterConstants.TYPE;
 import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.impl.ControllerRequestParameterNames;
-import org.gatein.pc.controller.impl.ControllerRequestParameterMapFactory;
-import static org.gatein.pc.controller.impl.URLParameterConstants.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 import java.util.Collections;
+import java.util.Map;
 
 /**
- * A class that is able to create portlet URL 
+ * A class that is able to create portlet URL
  *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
@@ -118,7 +117,7 @@ public class PortletURLRenderer
       if (pageNS != null)
       {
          byte[] bytes = IOTools.serialize(serialization, SerializationFilter.COMPRESSOR, pageNS);
-         pageNavigationalState = Base64.encodeBytes(bytes, true);
+         pageNavigationalState = Base64.encodeBytes(bytes, Base64.EncodingOption.USEURLSAFEENCODING);
       }
 
       //
