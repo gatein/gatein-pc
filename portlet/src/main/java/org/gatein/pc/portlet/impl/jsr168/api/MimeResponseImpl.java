@@ -61,6 +61,9 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
    /** . */
    private ContentBuffer responseContent;
 
+   /** . */
+   private boolean canSetContentType;
+
 
    public MimeResponseImpl(PortletInvocation invocation, PortletRequestImpl preq)
    {
@@ -72,6 +75,7 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
       // 0 means no buffering - we say no buffering
       this.bufferSize = 0;
       this.contentTypeSet = false;
+      this.canSetContentType = true;
       this.responseContent = new ContentBuffer();
    }
 
@@ -125,7 +129,7 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
 
    public void setContentType(String contentType)
    {
-	  if (responseContent.getContentType() == null)
+	  if (canSetContentType)
 	  {
 		  responseContent.setContentType(contentType);
 		  contentTypeSet = true;
@@ -134,6 +138,7 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
 
    public PrintWriter getWriter() throws IOException
    {
+      canSetContentType = false;  
       if (responseContent.getContentType() == null)
       {
          responseContent.setContentType(preq.getResponseContentType());
@@ -145,6 +150,7 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
 
    public OutputStream getPortletOutputStream() throws IOException
    {
+      canSetContentType = false;  
       if (responseContent.getContentType() == null)
       {
          responseContent.setContentType(preq.getResponseContentType());
