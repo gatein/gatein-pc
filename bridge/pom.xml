@@ -2,9 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.gatein.pc</groupId>
-      <artifactId>module-parent</artifactId>
+      <artifactId>pc-parent</artifactId>
       <version>2.1.0-SNAPSHOT</version>
-      <relativePath>../build/pom.xml</relativePath>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-bridge</artifactId>
@@ -15,13 +14,11 @@
       <dependency>
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-portlet</artifactId>
-         <version>${project.version}</version>
       </dependency>
       <dependency>
          <groupId>org.apache.portals.bridges</groupId>
          <artifactId>portals-bridges-common</artifactId>
       </dependency>
    </dependencies>
-
 
 </project>
