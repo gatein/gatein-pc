@@ -104,6 +104,7 @@ public class PortletUtils
    {
       int length = windowId.length();
       StringBuffer tmp = new StringBuffer(length + 10);
+      tmp.append('G');
       for (int i = windowId.lastIndexOf(SLASH) + 1; i < length; i++)
       {
          char c = windowId.charAt(i);
