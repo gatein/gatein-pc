@@ -1,6 +1,6 @@
 <project default="all" name="GateIn Portlet Container">
 
-   <property name="source.dir" value="../.."/>
+   <property name="source.dir" value="../"/>
    <property name="src.docs.dir" value="${source.dir}/docs"/>
    <property name="pc.release.version" value="2.1.0-SNAPSHOT"/>
    <property name="demo.release.version" value="2.1.0-SNAPSHOT"/>
