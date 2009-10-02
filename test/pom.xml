@@ -21,6 +21,10 @@
          <groupId>org.gatein.wci</groupId>
          <artifactId>wci-wci</artifactId>
       </dependency>
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-tomcat</artifactId>
+      </dependency>
 
       <dependency>
          <groupId>org.gatein.pc</groupId>
@@ -254,7 +258,8 @@
                         <property name="dependency.portal-common-common.jar" value="${maven.dependency.org.gatein.common.common-common.jar.path}"/>
                         <property name="dependency.portal-common-mc.jar" value="${maven.dependency.org.gatein.common.common-mc.jar.path}"/>
 
-                        <property name="dependency.portal-web-web.jar" value="${maven.dependency.org.gatein.wci.wci-wci.jar.path}"/>
+                        <property name="dependency.portal-wci-wci.jar" value="${maven.dependency.org.gatein.wci.wci-wci.jar.path}"/>
+                        <property name="dependency.portal-wci-tomcat.jar" value="${maven.dependency.org.gatein.wci.wci-tomcat.jar.path}"/>
 
                         <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}"/>
                         <property name="dependency.portal-portlet-controller.jar" value="${maven.dependency.org.gatein.pc.pc-controller.jar.path}"/>

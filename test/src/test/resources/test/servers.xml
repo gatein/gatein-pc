@@ -116,7 +116,7 @@
       </node>
    </server>
    <server>
-      <server-name>RemoteJBoss_5_0</server-name>
+      <server-name>RemoteJBoss_5_1</server-name>
       <node>
          <node-id>default</node-id>
          <service>

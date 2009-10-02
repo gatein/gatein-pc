@@ -76,7 +76,7 @@
       </path>
 
       <path id="portal-web-shared">
-         <pathelement path="${dependency.portal-web-web.jar}"/>
+         <pathelement path="${dependency.portal-wci-wci.jar}"/>
       </path>
 
       <path id="portal-portlet">
@@ -117,6 +117,7 @@
          <path refid="portal-portlet-shared"/>
          <path refid="jboss-unit-shared"/>
          <path location="${dependency.ccpp.jar}"/>
+         <path location="${dependency.portal-wci-tomcat.jar}"/>
       </path>
 
       <path id="jboss-5.1">
@@ -133,6 +134,7 @@
          <path refid="portal-portlet-shared"/>
          <path refid="jboss-unit-shared"/>
          <path location="${dependency.ccpp.jar}"/>
+         <path location="${dependency.portal-wci-tomcat.jar}"/>
       </path>
 
       <path id="tomcat-6.0">
@@ -161,6 +163,7 @@
          <path location="${dependency.jaxb.jar}"/>
          <path location="${dependency.ccpp.jar}"/>
          <path location="${dependency.jboss-serialization.jar}"/>
+         <path location="${dependency.portal-wci-tomcat.jar}"/>
       </path>
 
       <path id="jetty-6.1">
@@ -796,7 +799,7 @@
       </antcall>
    </target>
 
-   <target name="tests.jboss-5.1" if="JBOSS_5_1_HOME">
+   <target name="tests.jboss-5.1" if="JBOSS_5_1_0_HOME">
       <antcall target="tests.jboss-5.1.container-servlet">
          <param name="test.id" value="JBoss-5_1-container-servlet"/>
          <param name="test.jboss-5.1.name" value="RemoteJBoss_5_1"/>

@@ -96,6 +96,11 @@
         <artifactId>wci-wci</artifactId>
         <version>${version.gatein.wci}</version>
       </dependency>
+      <dependency>
+        <groupId>org.gatein.wci</groupId>
+        <artifactId>wci-tomcat</artifactId>
+        <version>${version.gatein.wci}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   
