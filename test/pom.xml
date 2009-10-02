@@ -187,14 +187,13 @@
                      <execution>
                         <goals>
                            <goal>compile</goal>
-                           <goal>testCompile</goal>
                         </goals>
                      </execution>
                   </executions>
                   <configuration>
-                     <testExcludes>
+                     <excludes>
                         <exclude>org/gatein/pc/test/unit/reports/*</exclude>
-                     </testExcludes>
+                     </excludes>
                   </configuration>
                </plugin>
             </plugins>
