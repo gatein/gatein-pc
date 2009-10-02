@@ -28,12 +28,6 @@
 
       <dependency>
          <groupId>org.gatein.pc</groupId>
-         <artifactId>pc-portlet</artifactId>
-         <type>test-jar</type>
-         <classifier>tests</classifier>
-      </dependency>
-      <dependency>
-         <groupId>org.gatein.pc</groupId>
          <artifactId>pc-controller</artifactId>
       </dependency>
       <dependency>
@@ -264,7 +258,6 @@
                         <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}"/>
                         <property name="dependency.portal-portlet-controller.jar" value="${maven.dependency.org.gatein.pc.pc-controller.jar.path}"/>
                         <property name="dependency.portal-portlet-mc.jar" value="${maven.dependency.org.gatein.pc.pc-mc.jar.path}"/>
-                        <property name="dependency.portal-portlet-tests.test-jar" value="${maven.dependency.org.gatein.pc.pc-portlet.tests.jar.path}"/>
                         <property name="dependency.portal-portlet-api.jar" value="${maven.dependency.org.gatein.pc.pc-api.jar.path}"/>
 
                         <property name="dependency.jboss-unit.jar" value="${maven.dependency.org.jboss.unit.jboss-unit.jar.path}"/>

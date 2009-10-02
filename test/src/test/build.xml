@@ -45,7 +45,6 @@
 
       <mkdir dir="${test.temp.dir}"/>
       <mkdir dir="${test.temp.lib}"/>
-      <mkdir dir="${test.temp.portlet}"/>
       <mkdir dir="${target}/jboss-unit"/>
 
       <echo message="Preparing environment"/>
@@ -388,19 +387,19 @@
          <mkdir dir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/classes"/>
          <copy todir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/classes">
             <fileset
-               dir="${test.temp.portlet}"
+               dir="${target}/test-classes"
                includes="org/gatein/pc/test/portlet/@{testsuiteversion}/@{testsuitetype}/common/**"/>
             <fileset
-               dir="${test.temp.portlet}"
+               dir="${target}/test-classes"
                includes="org/gatein/pc/test/portlet/@{testsuiteversion}/common/**"/>
             <fileset
-               dir="${test.temp.portlet}"
+               dir="${target}/test-classes"
                includes="org/gatein/pc/test/portlet/common/**"/>
             <fileset
-               dir="${test.temp.portlet}"
+               dir="${target}/test-classes"
                includes="org/gatein/pc/test/portlet/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}/**"/>
             <fileset
-               dir="${test.temp.portlet}"
+               dir="${target}/classes"
                includes="org/gatein/pc/test/portlet/framework/**"/>
          </copy>
          <copy todir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/lib">
@@ -420,23 +419,11 @@
 
    <target name="package-tests">
 
-      <echo>------------------------</echo>
-      <echo>------------------------</echo>
-      <echo>------------------------</echo>
-      <echo>------------------------</echo>
-      <echo>------------------------</echo>
-      <echo>------------------------</echo>
-      <echo>------------------------</echo>
-      <echo>dependency.portal-portlet-tests.test-jar=${dependency.portal-portlet-tests.test-jar}</echo>
-      <echo>dependency.portal-portlet-mc.jar=${dependency.portal-portlet-mc.jar}</echo>
-      
-      <unjar src="${dependency.portal-portlet-tests.test-jar}" dest="${test.temp.portlet}"/>
-
       <!--Portlet test framework lib jar-->
       <jar jarfile="${test.temp.lib}/portal-portlet-test-framework-lib.jar">
 
          <!-- -->
-         <fileset dir="${test.temp.portlet}" includes="org/gatein/pc/test/unit/**"/>
+         <fileset dir="${target}/classes" includes="org/gatein/pc/test/unit/**"/>
 
          <!--  JSR 168 TLD -->
          <zipfileset
