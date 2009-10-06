@@ -24,10 +24,9 @@ package org.gatein.pc.api;
 
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.state.DestroyCloneFailure;
 import org.gatein.pc.api.state.PropertyChange;
 import org.gatein.pc.api.state.PropertyMap;
-import org.gatein.pc.api.state.DestroyCloneFailure;
-import org.gatein.pc.api.Portlet;
 
 import java.util.List;
 import java.util.Set;
@@ -38,6 +37,9 @@ import java.util.Set;
  */
 public interface PortletInvoker
 {
+   /** The identifier assigned to the local PortletInvoker. */
+   String LOCAL_PORTLET_INVOKER_ID = "local";
+
    /**
     * Return the set of portlet exposed.
     *
@@ -52,7 +54,7 @@ public interface PortletInvoker
     * @param portletContext the portlet context in the scope of this invoker
     * @return the <code>PortletInfo</code> for the specified portlet
     * @throws IllegalArgumentException if the portlet context is null
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException  a portlet invoker exception
     */
    Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
 
@@ -62,19 +64,19 @@ public interface PortletInvoker
     * @param invocation the portlet invocation
     * @return the invocation response
     * @throws IllegalArgumentException if the invocation is null
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException  a portlet invoker exception
     */
    PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException;
 
    /**
     * Clone a portlet.
     *
-    * @param stateType the portle state type desired
+    * @param stateType      the portle state type desired
     * @param portletContext the portlet context to clone  @return the clone id
     * @return the cloned portlet context
     * @throws IllegalArgumentException      if the portletId is null
     * @throws UnsupportedOperationException if the invoker does not support this operation
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException       a portlet invoker exception
     */
    PortletContext createClone(PortletStateType stateType, PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
 
@@ -82,11 +84,10 @@ public interface PortletInvoker
     * Destroy a cloned portlet.
     *
     * @param portletContexts a list of portlet contexts to destroy
-    * @return a list of {@link org.gatein.pc.api.state.DestroyCloneFailure}, one per clone that couldn't be
-    *         destroyed
+    * @return a list of {@link org.gatein.pc.api.state.DestroyCloneFailure}, one per clone that couldn't be destroyed
     * @throws IllegalArgumentException      if the portletContext is null
     * @throws UnsupportedOperationException if the invoker does not support this operation
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException       a portlet invoker exception
     */
    List<DestroyCloneFailure> destroyClones(List<PortletContext> portletContexts) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
 
@@ -98,7 +99,7 @@ public interface PortletInvoker
     * @return the properties
     * @throws IllegalArgumentException      if the portletContext or the keys arguments are null
     * @throws UnsupportedOperationException if the invoker does not support this operation
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException       a portlet invoker exception
     */
    PropertyMap getProperties(PortletContext portletContext, Set<String> keys) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
 
@@ -109,7 +110,7 @@ public interface PortletInvoker
     * @return the properties
     * @throws IllegalArgumentException      if the portletContext is null
     * @throws UnsupportedOperationException if the invoker does not support this operation
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException       a portlet invoker exception
     */
    PropertyMap getProperties(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
 
@@ -121,7 +122,7 @@ public interface PortletInvoker
     * @return the new portlet context
     * @throws IllegalArgumentException      if the portletContext or the properties is null
     * @throws UnsupportedOperationException if the invoker does not support this operation
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException       a portlet invoker exception
     */
    PortletContext setProperties(PortletContext portletContext, PropertyChange[] changes) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
 }

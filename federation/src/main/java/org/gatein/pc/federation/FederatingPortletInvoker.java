@@ -36,13 +36,10 @@ import java.util.Collection;
 public interface FederatingPortletInvoker extends PortletInvoker
 {
 
-   /** The identifier assigned to the local PortletInvoker. */
-   String LOCAL_PORTLET_INVOKER_ID = "local";
-
    /**
     * Registers an invoker.
     *
-    * @param federatedId the invoker id to register
+    * @param federatedId       the invoker id to register
     * @param registeredInvoker the invoker to register
     * @throws IllegalArgumentException if the invoker is null or already registered
     */
