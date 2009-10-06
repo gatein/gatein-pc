@@ -134,6 +134,18 @@
           <artifactId>jboss-unit-tooling-maven2</artifactId>
           <version>1.2.1</version>
         </plugin>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+      </plugin>
       </plugins>
     </pluginManagement>
   </build>
