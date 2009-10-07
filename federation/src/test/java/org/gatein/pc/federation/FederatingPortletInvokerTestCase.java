@@ -22,27 +22,24 @@
  ******************************************************************************/
 package org.gatein.pc.federation;
 
-import org.gatein.pc.federation.FederatedPortletInvoker;
-import org.gatein.pc.federation.FederatingPortletInvoker;
-import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
-import org.gatein.pc.portlet.support.PortletInvokerSupport;
-import org.gatein.pc.portlet.support.PortletSupport;
-import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.common.i18n.LocalizedString;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
-import org.gatein.pc.api.info.PortletInfo;
+import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.info.MetaInfo;
+import org.gatein.pc.api.info.PortletInfo;
+import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
+import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.info.PortletInfoSupport;
-import org.gatein.common.i18n.LocalizedString;
-
-import java.util.Collection;
-import java.util.Set;
-import java.util.Locale;
-
 import static org.jboss.unit.api.Assert.*;
 import org.jboss.unit.api.pojo.annotations.Create;
 import org.jboss.unit.api.pojo.annotations.Destroy;
 import org.jboss.unit.api.pojo.annotations.Test;
+
+import java.util.Collection;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -56,9 +53,7 @@ public class FederatingPortletInvokerTestCase
 
    /** . */
    private PortletInvokerSupport federatedInvoker;
-
-   /** . */
-   private PortletSupport federatedPortlet;
+   private PortletInvokerSupport localInvoker;
 
    /** . */
    private Portlet portlet;
@@ -70,34 +65,49 @@ public class FederatingPortletInvokerTestCase
    public void setUp() throws Exception
    {
       federatingInvoker = new FederatingPortletInvokerService();
-      federatedInvoker = new PortletInvokerSupport();
 
-      // Configure
+      // Invokers
+      federatedInvoker = new PortletInvokerSupport();
+      localInvoker = new PortletInvokerSupport();
+
+      // Add portlets to invokers
       PortletInfoSupport fooInfo = new PortletInfoSupport();
       fooInfo.getMeta().setDisplayName("FooPortlet");
-
-      // Wire
-      federatedPortlet = federatedInvoker.addPortlet("MyPortlet", fooInfo);
-      federatingInvoker.registerInvoker("foo", federatedInvoker);
-
-      // Basic setup
-      Set portlets = federatingInvoker.getPortlets();
-      assertNotNull(portlets);
-      assertEquals(1, portlets.size());
-      portlet = (Portlet)portlets.iterator().next();
-      assertNotNull(portlet);
+      portlet = federatedInvoker.addPortlet("MyPortlet", fooInfo);
       portletContext = portlet.getContext();
-      assertNotNull(portletContext);
+
+      PortletInfoSupport localInfo = new PortletInfoSupport();
+      fooInfo.getMeta().setDisplayName("LocalPortlet");
+      localInvoker.addPortlet("MyLocalPortlet", localInfo);
+
+      // Register invokers with federating service
+      federatingInvoker.registerInvoker("foo", federatedInvoker);
+      federatingInvoker.registerInvoker(PortletInvoker.LOCAL_PORTLET_INVOKER_ID, localInvoker);
    }
 
    @Destroy
    public void tearDown() throws Exception
    {
-      federatedPortlet = null;
       federatedInvoker = null;
+      localInvoker = null;
       federatingInvoker = null;
       portlet = null;
       portletContext = null;
+   }
+
+   @Test
+   public void testGetPortlets() throws PortletInvokerException
+   {
+      Set<Portlet> portlets = federatingInvoker.getPortlets();
+      assertNotNull(portlets);
+      assertEquals(2, portlets.size());
+
+      for (Portlet portlet : portlets)
+      {
+         PortletContext context = portlet.getContext();
+         String id = context.getId();
+         assertTrue("MyPortlet".equals(id) || "MyLocalPortlet".equals(id));
+      }
    }
 
    @Test
@@ -105,11 +115,17 @@ public class FederatingPortletInvokerTestCase
    {
       Collection federateds = federatingInvoker.getFederatedInvokers();
       assertNotNull(federateds);
-      assertEquals(1, federateds.size());
-      FederatedPortletInvoker federated = (FederatedPortletInvoker)federateds.iterator().next();
+      assertEquals(2, federateds.size());
+
+      FederatedPortletInvoker federated = federatingInvoker.getFederatedInvoker("foo");
       assertNotNull(federated);
       assertEquals("foo", federated.getId());
       assertEquals(federatedInvoker, federated.getPortletInvoker());
+
+      federated = federatingInvoker.getFederatedInvoker(PortletInvoker.LOCAL_PORTLET_INVOKER_ID);
+      assertNotNull(federated);
+      assertEquals(PortletInvoker.LOCAL_PORTLET_INVOKER_ID, federated.getId());
+      assertEquals(localInvoker, federated.getPortletInvoker());
    }
 
    @Test
@@ -131,6 +147,26 @@ public class FederatingPortletInvokerTestCase
       Portlet samePortlet = federatingInvoker.getPortlet(portletContext);
       assertNotNull(samePortlet);
       assertEquals(samePortlet.getContext(), portletContext);
+   }
+
+   @Test
+   public void testGetLocalPortlets() throws PortletInvokerException
+   {
+      Set<Portlet> localPortlets = federatingInvoker.getLocalPortlets();
+      assertEquals(1, localPortlets.size());
+      Portlet localPortlet = localPortlets.iterator().next();
+      assertNotNull(localPortlet);
+      assertEquals("MyLocalPortlet", localPortlet.getContext().getId());
+   }
+
+   @Test
+   public void testGetRemotePortlets() throws PortletInvokerException
+   {
+      Set<Portlet> portlets = federatingInvoker.getRemotePortlets();
+      assertEquals(1, portlets.size());
+      Portlet portlet = portlets.iterator().next();
+      assertNotNull(portlet);
+      assertEquals("MyPortlet", portlet.getContext().getId());
    }
 
    public void testInvoke() throws PortletInvokerException

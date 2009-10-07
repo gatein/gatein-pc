@@ -22,9 +22,12 @@
  ******************************************************************************/
 package org.gatein.pc.federation;
 
+import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletInvokerException;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * A portlet invoker that federates other invokers.
@@ -69,4 +72,18 @@ public interface FederatingPortletInvoker extends PortletInvoker
     * @since 2.6
     */
    void unregisterInvoker(String federatedId);
+
+   /**
+    * Return only the portlets from local federated invokers.
+    *
+    * @return a Set containing only the portlets from local federated invokers.
+    */
+   Set<Portlet> getLocalPortlets() throws PortletInvokerException;
+
+   /**
+    * Return only the portlets from remote federated invokers.
+    *
+    * @return a Set containing only the portlets from remote federated invokers.
+    */
+   Set<Portlet> getRemotePortlets() throws PortletInvokerException;
 }

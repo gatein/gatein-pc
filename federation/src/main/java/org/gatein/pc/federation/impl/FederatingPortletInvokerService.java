@@ -22,21 +22,21 @@
  ******************************************************************************/
 package org.gatein.pc.federation.impl;
 
+import org.apache.log4j.Logger;
 import org.gatein.pc.api.InvokerUnavailableException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
-import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.invocation.PortletInvocation;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.state.DestroyCloneFailure;
+import org.gatein.pc.api.state.PropertyChange;
 import org.gatein.pc.api.state.PropertyMap;
 import org.gatein.pc.federation.FederatedPortletInvoker;
 import org.gatein.pc.federation.FederatingPortletInvoker;
-import org.gatein.pc.api.invocation.PortletInvocation;
-import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.state.PropertyChange;
-import org.gatein.pc.api.state.DestroyCloneFailure;
-import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -118,9 +118,20 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 
    public Set<Portlet> getPortlets() throws PortletInvokerException
    {
+      return getPortlets(false);
+   }
+
+   private Set<Portlet> getPortlets(boolean remoteOnly) throws PortletInvokerException
+   {
       LinkedHashSet<Portlet> portlets = new LinkedHashSet<Portlet>();
       for (FederatedPortletInvoker federated : registry.values())
       {
+         // if we're only interested in remote portlets, skip the local invoker.
+         if (remoteOnly && LOCAL_PORTLET_INVOKER_ID.equals(federated.getId()))
+         {
+            continue;
+         }
+
          try
          {
             Set<Portlet> offeredPortlets = federated.getPortlets();
@@ -135,6 +146,18 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
          }
       }
       return portlets;
+   }
+
+   public Set<Portlet> getLocalPortlets() throws PortletInvokerException
+   {
+      PortletInvoker local = registry.get(PortletInvoker.LOCAL_PORTLET_INVOKER_ID);
+
+      return local.getPortlets();
+   }
+
+   public Set<Portlet> getRemotePortlets() throws PortletInvokerException
+   {
+      return getPortlets(true);
    }
 
    public Portlet getPortlet(PortletContext compoundPortletContext) throws IllegalArgumentException, PortletInvokerException
@@ -212,7 +235,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
     * @param compoundPortletContext the portlet context for which the invoker is to be retrieved
     * @return the portlet invoker associated with the specified compound portlet id
     * @throws IllegalArgumentException if the compound portlet id is not well formed or null
-    * @throws NoSuchPortletException if not such portlet exist 
+    * @throws NoSuchPortletException   if not such portlet exist
     */
    private FederatedPortletInvoker getFederatedPortletInvokerFor(PortletContext compoundPortletContext) throws IllegalArgumentException, NoSuchPortletException
    {
