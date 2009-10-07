@@ -37,11 +37,47 @@ public class PortletContext implements Serializable
 
    /** . */
    protected final String id;
+   private final String applicationName;
+   private final String portletName;
+   private static final String PREFIX = "/";
+   private static final char SEPARATOR = '.';
 
    PortletContext(String id) throws IllegalArgumentException
    {
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(id, "portlet id", "PortletContext");
-      this.id = id;
+
+      // components
+      String trimmedId = id.trim();
+      if (trimmedId.startsWith(PREFIX)) // only consider components if the id starts with '/'
+      {
+         String compound = trimmedId.substring(1); // exclude starting '/'
+
+         int separator = compound.indexOf(SEPARATOR); // find first separator, other separator are considered part of the portlet name
+         if (separator != -1)
+         {
+            portletName = compound.substring(separator + 1).trim();
+            applicationName = compound.substring(0, separator).trim();
+         }
+         else
+         {
+            portletName = null;
+            applicationName = null;
+         }
+      }
+      else
+      {
+         portletName = null;
+         applicationName = null;
+      }
+
+      if (portletName == null || applicationName == null)
+      {
+         this.id = trimmedId;
+      }
+      else
+      {
+         this.id = PREFIX + applicationName + SEPARATOR + portletName;
+      }
    }
 
 
@@ -112,5 +148,15 @@ public class PortletContext implements Serializable
    public static PortletContext createPortletContext(String portletId)
    {
       return createPortletContext(portletId, null);
+   }
+
+   public String getApplicationName()
+   {
+      return applicationName;
+   }
+
+   public String getPortletName()
+   {
+      return portletName;
    }
 }
