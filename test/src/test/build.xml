@@ -735,6 +735,7 @@
 
          </sharedClasspath>
          <configuration home="${test.jboss-5.1.tempdir}">
+         	<property name="cargo.timeout" value="240000"/>
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
             <property name="cargo.rmi.port" value="1099"/>
