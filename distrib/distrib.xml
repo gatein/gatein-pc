@@ -2,9 +2,9 @@
 
    <property name="source.dir" value="../"/>
    <property name="src.docs.dir" value="${source.dir}/docs"/>
-   <property name="pc.release.version" value="2.1.0-SNAPSHOT"/>
-   <property name="demo.release.version" value="2.1.0-SNAPSHOT"/>
-   <property name="maven.version" value="2.1.0-SNAPSHOT"/>
+   <property name="pc.release.version" value="2.1.0-Beta02"/>
+   <property name="demo.release.version" value="2.1.0-Beta02"/>
+   <property name="maven.version" value="2.1.0-Beta02"/>
 
    <!-- -->
    <property name="pc.release.name" value="gatein-portletcontainer-${pc.release.version}"/>
