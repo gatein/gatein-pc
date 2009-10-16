@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
-      <version>2.1.0-SNAPSHOT</version>
+      <version>2.1.0-Beta02</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-test</artifactId>
@@ -327,68 +326,68 @@
                   <configuration>
                      <tasks>
 
-                        <property name="compile_classpath" refid="maven.compile.classpath"/>
-                        <property name="runtime_classpath" refid="maven.runtime.classpath"/>
-                        <property name="test_classpath" refid="maven.test.classpath"/>
-                        <property name="plugin_classpath" refid="maven.plugin.classpath"/>
-                        <property name="project.version" value="${project.version}"/>
+                        <property name="compile_classpath" refid="maven.compile.classpath" />
+                        <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                        <property name="test_classpath" refid="maven.test.classpath" />
+                        <property name="plugin_classpath" refid="maven.plugin.classpath" />
+                        <property name="project.version" value="${project.version}" />
 
-                        <property name="dependency.log4j.jar" value="${maven.dependency.apache-log4j.log4j.jar.path}"/>
-                        <property name="dependency.commons-logging.jar" value="${maven.dependency.commons-logging.commons-logging.jar.path}"/>
-                        <property name="dependency.commons-httpclient.jar" value="${maven.dependency.commons-httpclient.commons-httpclient.jar.path}"/>
-                        <property name="dependency.activation.jar" value="${maven.dependency.javax.activation.activation.jar.path}"/>
-                        <property name="dependency.junit.jar" value="${maven.dependency.junit.junit.jar.path}"/>
-                        <property name="dependency.jsr168api.jar" value="${maven.dependency.javax.portlet.portlet-api.jar.path}"/>
-                        <property name="dependency.ccpp.jar" value="${maven.dependency.javax.ccpp.ccpp.jar.path}"/>
-                        <property name="dependency.jaxb.jar" value="${maven.dependency.sun-jaxb.jaxb-api.jar.path}"/>
+                        <property name="dependency.log4j.jar" value="${maven.dependency.apache-log4j.log4j.jar.path}" />
+                        <property name="dependency.commons-logging.jar" value="${maven.dependency.commons-logging.commons-logging.jar.path}" />
+                        <property name="dependency.commons-httpclient.jar" value="${maven.dependency.commons-httpclient.commons-httpclient.jar.path}" />
+                        <property name="dependency.activation.jar" value="${maven.dependency.javax.activation.activation.jar.path}" />
+                        <property name="dependency.junit.jar" value="${maven.dependency.junit.junit.jar.path}" />
+                        <property name="dependency.jsr168api.jar" value="${maven.dependency.javax.portlet.portlet-api.jar.path}" />
+                        <property name="dependency.ccpp.jar" value="${maven.dependency.javax.ccpp.ccpp.jar.path}" />
+                        <property name="dependency.jaxb.jar" value="${maven.dependency.sun-jaxb.jaxb-api.jar.path}" />
 
-                        <property name="dependency.portal-common-common.jar" value="${maven.dependency.org.gatein.common.common-common.jar.path}"/>
-                        <property name="dependency.portal-common-mc.jar" value="${maven.dependency.org.gatein.common.common-mc.jar.path}"/>
+                        <property name="dependency.portal-common-common.jar" value="${maven.dependency.org.gatein.common.common-common.jar.path}" />
+                        <property name="dependency.portal-common-mc.jar" value="${maven.dependency.org.gatein.common.common-mc.jar.path}" />
 
-                        <property name="dependency.portal-wci-wci.jar" value="${maven.dependency.org.gatein.wci.wci-wci.jar.path}"/>
-                        <property name="dependency.portal-wci-tomcat.jar" value="${maven.dependency.org.gatein.wci.wci-tomcat.jar.path}"/>
+                        <property name="dependency.portal-wci-wci.jar" value="${maven.dependency.org.gatein.wci.wci-wci.jar.path}" />
+                        <property name="dependency.portal-wci-tomcat.jar" value="${maven.dependency.org.gatein.wci.wci-tomcat.jar.path}" />
 
-                        <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}"/>
-                        <property name="dependency.portal-portlet-controller.jar" value="${maven.dependency.org.gatein.pc.pc-controller.jar.path}"/>
-                        <property name="dependency.portal-portlet-mc.jar" value="${maven.dependency.org.gatein.pc.pc-mc.jar.path}"/>
-                        <property name="dependency.portal-portlet-api.jar" value="${maven.dependency.org.gatein.pc.pc-api.jar.path}"/>
+                        <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}" />
+                        <property name="dependency.portal-portlet-controller.jar" value="${maven.dependency.org.gatein.pc.pc-controller.jar.path}" />
+                        <property name="dependency.portal-portlet-mc.jar" value="${maven.dependency.org.gatein.pc.pc-mc.jar.path}" />
+                        <property name="dependency.portal-portlet-api.jar" value="${maven.dependency.org.gatein.pc.pc-api.jar.path}" />
 
-                        <property name="dependency.jboss-unit.jar" value="${maven.dependency.org.jboss.unit.jboss-unit.jar.path}"/>
-                        <property name="dependency.jboss-unit-mc.jar" value="${maven.dependency.org.jboss.unit.jboss-unit-mc.jar.path}"/>
-                        <property name="dependency.jboss-unit-remote.jar" value="${maven.dependency.org.jboss.unit.jboss-unit-remote.jar.path}"/>
-                        <property name="dependency.portal-test.jar" value="${maven.dependency.org.jboss.unit.portal-test.jar.path}"/>
-                        <property name="dependency.portal-test-generic.jar" value="${maven.dependency.org.jboss.unit.portal-test-generic.jar.path}"/>
-                        <property name="dependency.jboss-remoting.jar" value="${maven.dependency.org.jboss.remoting.jboss-remoting.jar.path}"/>
+                        <property name="dependency.jboss-unit.jar" value="${maven.dependency.org.jboss.unit.jboss-unit.jar.path}" />
+                        <property name="dependency.jboss-unit-mc.jar" value="${maven.dependency.org.jboss.unit.jboss-unit-mc.jar.path}" />
+                        <property name="dependency.jboss-unit-remote.jar" value="${maven.dependency.org.jboss.unit.jboss-unit-remote.jar.path}" />
+                        <property name="dependency.portal-test.jar" value="${maven.dependency.org.jboss.unit.portal-test.jar.path}" />
+                        <property name="dependency.portal-test-generic.jar" value="${maven.dependency.org.jboss.unit.portal-test-generic.jar.path}" />
+                        <property name="dependency.jboss-remoting.jar" value="${maven.dependency.org.jboss.remoting.jboss-remoting.jar.path}" />
 
-                        <property name="dependency.concurrent.jar" value="${maven.dependency.concurrent.concurrent.jar.path}"/>
-                        <property name="dependency.trove.jar" value="${maven.dependency.trove.trove.jar.path}"/>
-                        <property name="dependency.jboss-logging-spi.jar" value="${maven.dependency.jboss.jboss-common-logging-spi.jar.path}"/>
-                        <property name="dependency.jboss-logging-jdk.jar" value="${maven.dependency.jboss.jboss-common-logging-jdk.jar.path}"/>
-                        <property name="dependency.jboss-logging-log4j.jar" value="${maven.dependency.jboss.jboss-common-logging-log4j.jar.path}"/>
-                        <property name="dependency.jboss-kernel.jar" value="${maven.dependency.org.jboss.microcontainer.jboss-kernel.jar.path}"/>
-                        <property name="dependency.jboss-dependency.jar" value="${maven.dependency.org.jboss.microcontainer.jboss-dependency.jar.path}"/>
-                        <property name="dependency.jboss-reflect.jar" value="${maven.dependency.org.jboss.jboss-reflect.jar.path}"/>
-                        <property name="dependency.jboss-common-core.jar" value="${maven.dependency.org.jboss.jboss-common-core.jar.path}"/>
-<!--                        <property name="dependency.jaxb.jar" value="${maven.dependency.javax.xml.bind.jaxb-api.jar.path}"/> -->
-                        <property name="dependency.jboss-mdr.jar" value="${maven.dependency.org.jboss.jboss-mdr.jar.path}"/>
-                        <property name="dependency.javassist.jar" value="${maven.dependency.org.jboss.javassist.jar.path}"/>
-                        <property name="dependency.resolver.jar" value="${maven.dependency.apache-xerces.resolver.jar.path}"/>
-                        <property name="dependency.xercesImpl.jar" value="${maven.dependency.apache-xerces.xercesImpl.jar.path}"/>
-                        <property name="dependency.xml-apis.jar" value="${maven.dependency.apache-xerces.xml-apis.jar.path}"/>
-                        <property name="dependency.jbossxb.jar" value="${maven.dependency.org.jboss.jbossxb.jar.path}"/>
-                        <property name="dependency.jboss-serialization.jar" value="${maven.dependency.jboss.jboss-serialization.jar.path}"/>
+                        <property name="dependency.concurrent.jar" value="${maven.dependency.concurrent.concurrent.jar.path}" />
+                        <property name="dependency.trove.jar" value="${maven.dependency.trove.trove.jar.path}" />
+                        <property name="dependency.jboss-logging-spi.jar" value="${maven.dependency.jboss.jboss-common-logging-spi.jar.path}" />
+                        <property name="dependency.jboss-logging-jdk.jar" value="${maven.dependency.jboss.jboss-common-logging-jdk.jar.path}" />
+                        <property name="dependency.jboss-logging-log4j.jar" value="${maven.dependency.jboss.jboss-common-logging-log4j.jar.path}" />
+                        <property name="dependency.jboss-kernel.jar" value="${maven.dependency.org.jboss.microcontainer.jboss-kernel.jar.path}" />
+                        <property name="dependency.jboss-dependency.jar" value="${maven.dependency.org.jboss.microcontainer.jboss-dependency.jar.path}" />
+                        <property name="dependency.jboss-reflect.jar" value="${maven.dependency.org.jboss.jboss-reflect.jar.path}" />
+                        <property name="dependency.jboss-common-core.jar" value="${maven.dependency.org.jboss.jboss-common-core.jar.path}" />
+<!--                        <property name="dependency.jaxb.jar" value="${maven.dependency.javax.xml.bind.jaxb-api.jar.path}" /> -->
+                        <property name="dependency.jboss-mdr.jar" value="${maven.dependency.org.jboss.jboss-mdr.jar.path}" />
+                        <property name="dependency.javassist.jar" value="${maven.dependency.org.jboss.javassist.jar.path}" />
+                        <property name="dependency.resolver.jar" value="${maven.dependency.apache-xerces.resolver.jar.path}" />
+                        <property name="dependency.xercesImpl.jar" value="${maven.dependency.apache-xerces.xercesImpl.jar.path}" />
+                        <property name="dependency.xml-apis.jar" value="${maven.dependency.apache-xerces.xml-apis.jar.path}" />
+                        <property name="dependency.jbossxb.jar" value="${maven.dependency.org.jboss.jbossxb.jar.path}" />
+                        <property name="dependency.jboss-serialization.jar" value="${maven.dependency.jboss.jboss-serialization.jar.path}" />
 
-                        <property name="dependency.cargo-core-uberjar.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-uberjar.jar.path}"/>
-                        <property name="dependency.cargo-ant.jar" value="${maven.dependency.org.codehaus.cargo.cargo-ant.jar.path}"/>
-                        <property name="dependency.cargo-manager.war" value="${maven.dependency.cargo.cargo-manager.war.path}"/>
+                        <property name="dependency.cargo-core-uberjar.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-uberjar.jar.path}" />
+                        <property name="dependency.cargo-ant.jar" value="${maven.dependency.org.codehaus.cargo.cargo-ant.jar.path}" />
+                        <property name="dependency.cargo-manager.war" value="${maven.dependency.cargo.cargo-manager.war.path}" />
 
-                        <property name="dependency.apache-jstl.jar" value="${maven.dependency.apache-taglibs.jstl.jar.path}"/>
-                        <property name="dependency.apache-standard.jar" value="${maven.dependency.apache-taglibs.standard.jar.path}"/>
-                        <property name="dependency.cargo.jetty-deployer" value="${maven.dependency.org.codehaus.cargo.cargo-jetty-deployer.war.path}"/>
+                        <property name="dependency.apache-jstl.jar" value="${maven.dependency.apache-taglibs.jstl.jar.path}" />
+                        <property name="dependency.apache-standard.jar" value="${maven.dependency.apache-taglibs.standard.jar.path}" />
+                        <property name="dependency.cargo.jetty-deployer" value="${maven.dependency.org.codehaus.cargo.cargo-jetty-deployer.war.path}" />
 
                         <ant antfile="${basedir}/src/test/build.xml">
-                           <target name="tests"/>
-                           <target name="package-tck-portal"/>
+                           <target name="tests" />
+                           <target name="package-tck-portal" />
                         </ant>
 
                      </tasks>
