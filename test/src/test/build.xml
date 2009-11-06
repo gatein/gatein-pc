@@ -727,7 +727,8 @@
          log="${cargo.log.dir}/cargo.${test.id}.shutdown.log"
          output="${cargo.log.dir}/cargo.${test.id}.server.log"
          action="start"
-         wait="${cargo.wait}">
+         wait="${cargo.wait}"
+      	 timeout="240000">
          <!--<sysproperty key="java.io.tmpdir" value="${target}/cargo-tmp"/>-->
          <sharedClasspath>
 
@@ -735,7 +736,6 @@
 
          </sharedClasspath>
          <configuration home="${test.jboss-5.1.tempdir}">
-            <property name="cargo.timeout" value="240000"/>
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
             <property name="cargo.rmi.port" value="1099"/>
