@@ -22,8 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.api.spi;
 
-import org.gatein.pc.api.WindowState;
 import org.gatein.common.util.Version;
+import org.gatein.pc.api.WindowState;
 
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +36,7 @@ import java.util.Set;
  */
 public interface PortalContext
 {
-   public static final Version VERSION = new Version("JBoss Portlet Container", 2, 0, 8, new Version.Qualifier(Version.Qualifier.Prefix.SNAPSHOT), "Community");
+   public static final Version VERSION = new Version("GateIn Portlet Container", 2, 1, 0, new Version.Qualifier(Version.Qualifier.Prefix.SNAPSHOT), "Community");
 
    /**
     * Return info about the portal.

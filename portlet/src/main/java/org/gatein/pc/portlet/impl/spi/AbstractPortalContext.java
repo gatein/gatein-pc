@@ -22,14 +22,14 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.spi;
 
-import org.gatein.pc.api.WindowState;
-import org.gatein.pc.api.Mode;
-import org.gatein.pc.api.spi.PortalContext;
 import org.gatein.common.util.Tools;
+import org.gatein.pc.api.Mode;
+import org.gatein.pc.api.WindowState;
+import org.gatein.pc.api.spi.PortalContext;
 
-import java.util.Set;
-import java.util.Map;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -87,7 +87,7 @@ public class AbstractPortalContext implements PortalContext
 
    public String getInfo()
    {
-      return "JBossPortal/1.0";
+      return VERSION.toString();
    }
 
    public Set<WindowState> getWindowStates()
