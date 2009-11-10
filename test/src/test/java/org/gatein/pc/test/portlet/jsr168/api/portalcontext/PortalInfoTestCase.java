@@ -22,19 +22,21 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr168.api.portalcontext;
 
+import org.gatein.pc.api.spi.PortalContext;
+import org.gatein.pc.test.portlet.framework.UTP1;
+import org.gatein.pc.test.unit.Assertion;
 import org.gatein.pc.test.unit.PortletTestCase;
 import org.gatein.pc.test.unit.PortletTestContext;
 import org.gatein.pc.test.unit.actions.PortletRenderTestAction;
-import org.gatein.pc.test.portlet.framework.UTP1;
 import org.gatein.pc.test.unit.annotations.TestCase;
-import org.gatein.pc.test.unit.Assertion;
 import org.jboss.unit.driver.DriverResponse;
 import org.jboss.unit.driver.response.EndTestResponse;
-import static org.jboss.unit.api.Assert.assertTrue;
 
 import javax.portlet.Portlet;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
+import static org.jboss.unit.api.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -52,7 +54,13 @@ public class PortalInfoTestCase
             String info = request.getPortalContext().getPortalInfo();
 
             assertTrue(info.length() > 0);
-            assertTrue(info.startsWith("JBossPortal"));
+
+            String[] components = info.split("/");
+            assertTrue(components.length == 2);
+            assertTrue(PortalContext.VERSION.getName().equals(components[0]));
+            String version = PortalContext.VERSION.getMajor() + "." + PortalContext.VERSION.getMinor() + "."
+               + PortalContext.VERSION.getPatch() + "-" + PortalContext.VERSION.getQualifier();
+            assertTrue(version.equals(components[1]));
 
             return new EndTestResponse();
          }

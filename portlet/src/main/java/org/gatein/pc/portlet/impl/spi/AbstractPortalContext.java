@@ -87,7 +87,7 @@ public class AbstractPortalContext implements PortalContext
 
    public String getInfo()
    {
-      return VERSION.toString();
+      return PortalContext.PORTLET_SPEC_FORMAT.toString(VERSION);
    }
 
    public Set<WindowState> getWindowStates()

@@ -36,10 +36,10 @@ import java.util.Set;
  */
 public interface PortalContext
 {
-   public static final Version VERSION = new Version("GateIn Portlet Container", 2, 1, 0, new Version.Qualifier(Version.Qualifier.Prefix.SNAPSHOT), "Community");
+   public static final Version VERSION = new Version("GateIn Portlet Container", 2, 1, 0, new Version.Qualifier(Version.Qualifier.Prefix.CR, Version.Qualifier.Suffix.SUFFIX_1), "Community");
 
    /**
-    * Return info about the portal.
+    * Return info about the portal. Must conform to javax.portlet.PortalContext.getPortalInfo().
     *
     * @return portal infos
     */
@@ -65,4 +65,18 @@ public interface PortalContext
     * @return the properties
     */
    Map<String, String> getProperties();
+
+   Version.Format PORTLET_SPEC_FORMAT = new Version.Format()
+   {
+      public String toString(Version version)
+      {
+         StringBuffer buffer = new StringBuffer(version.getName());
+         buffer.append("/")
+            .append(version.getMajor()).append('.')
+            .append(version.getMinor()).append('.')
+            .append(version.getPatch()).append('-')
+            .append(version.getQualifier());
+         return buffer.toString();
+      }
+   };
 }
