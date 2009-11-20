@@ -13,6 +13,9 @@
    <packaging>jdocbook</packaging>
    <name>GateIn - Portlet Container (User Guide ${translation})</name>
 
+   <properties>
+     <enforcer.skip>true</enforcer.skip>
+   </properties>
 
    <repositories>
       <repository>
