@@ -52,7 +52,7 @@ public class BridgeResponse extends HttpServletResponseWrapper
    /** . */
    protected ServletOutputStream sos;
 
-   public BridgeResponse(JBossServletContextProvider.BridgeInfo info)
+   public BridgeResponse(GateInServletContextProvider.BridgeInfo info)
    {
       super(info.getInvocation().getDispatchedResponse());
       invocation = info.getInvocation();

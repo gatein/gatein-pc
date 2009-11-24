@@ -38,12 +38,12 @@ public class BridgeInterceptor extends PortletInvokerInterceptor
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
    {
-      JBossServletContextProvider.BridgeInfo previousInfo = JBossServletContextProvider.get();
+      GateInServletContextProvider.BridgeInfo previousInfo = GateInServletContextProvider.get();
       try
       {
          // Set bridge
-         JBossServletContextProvider.BridgeInfo bridgeInfo = new JBossServletContextProvider.BridgeInfo(invocation);
-         JBossServletContextProvider.set(bridgeInfo);
+         GateInServletContextProvider.BridgeInfo bridgeInfo = new GateInServletContextProvider.BridgeInfo(invocation);
+         GateInServletContextProvider.set(bridgeInfo);
 
          // Proceed to invocation
          return super.invoke(invocation);
@@ -51,7 +51,7 @@ public class BridgeInterceptor extends PortletInvokerInterceptor
       finally
       {
          // Remove bridge
-         JBossServletContextProvider.set(previousInfo);
+         GateInServletContextProvider.set(previousInfo);
       }
    }
 }

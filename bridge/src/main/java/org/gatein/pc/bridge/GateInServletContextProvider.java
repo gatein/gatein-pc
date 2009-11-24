@@ -42,7 +42,7 @@ import org.gatein.pc.api.invocation.PortletInvocation;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 7226 $
  */
-public class JBossServletContextProvider implements ServletContextProvider
+public class GateInServletContextProvider implements ServletContextProvider
 {
 
    /** . */
@@ -72,7 +72,7 @@ public class JBossServletContextProvider implements ServletContextProvider
    /** @throws IllegalStateException if no bridge info is found */
    public HttpServletRequest getHttpServletRequest(GenericPortlet genericPortlet, PortletRequest portletRequest) throws IllegalStateException
    {
-      BridgeInfo info = (BridgeInfo)JBossServletContextProvider.local.get();
+      BridgeInfo info = (BridgeInfo)GateInServletContextProvider.local.get();
       if (info == null)
       {
          throw new IllegalStateException("No bridge set");
@@ -87,7 +87,7 @@ public class JBossServletContextProvider implements ServletContextProvider
    /** @throws IllegalStateException if no bridge info is found */
    public HttpServletResponse getHttpServletResponse(GenericPortlet genericPortlet, PortletResponse portletResponse) throws IllegalStateException
    {
-      BridgeInfo info = (BridgeInfo)JBossServletContextProvider.local.get();
+      BridgeInfo info = (BridgeInfo)GateInServletContextProvider.local.get();
       if (info == null)
       {
          throw new IllegalStateException("No bridge set");
