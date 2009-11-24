@@ -36,7 +36,7 @@ import java.util.Set;
  */
 public interface PortalContext
 {
-   public static final Version VERSION = new Version("GateIn Portlet Container", 2, 1, 0, new Version.Qualifier(Version.Qualifier.Prefix.CR, Version.Qualifier.Suffix.SUFFIX_1), "Community");
+   public static final Version VERSION = new Version("GateIn Portlet Container", 2, 1, 0, new Version.Qualifier(Version.Qualifier.Prefix.CR, Version.Qualifier.Suffix.SUFFIX_2), "Community");
 
    /**
     * Return info about the portal. Must conform to javax.portlet.PortalContext.getPortalInfo().
