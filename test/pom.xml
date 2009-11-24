@@ -16,6 +16,12 @@
          <artifactId>common-mc</artifactId>
       </dependency>
 
+
+      <dependency>
+               <groupId>org.gatein.common</groupId>
+                        <artifactId>common-logging</artifactId>
+                              </dependency>
+
       <dependency>
          <groupId>org.gatein.wci</groupId>
          <artifactId>wci-wci</artifactId>
@@ -87,6 +93,12 @@
       <dependency>
          <groupId>org.jboss.remoting</groupId>
          <artifactId>jboss-remoting</artifactId>
+      </dependency>
+
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
       </dependency>
 
       <dependency>
@@ -343,6 +355,9 @@
 
                         <property name="dependency.portal-common-common.jar" value="${maven.dependency.org.gatein.common.common-common.jar.path}" />
                         <property name="dependency.portal-common-mc.jar" value="${maven.dependency.org.gatein.common.common-mc.jar.path}" />
+                        <property name="dependency.portal-common-logging.jar" value="${maven.dependency.org.gatein.common.common-logging.jar.path}" />
+                        <property name="dependency.slf4j-simple.jar" value="${maven.dependency.org.slf4j.slf4j-simple.jar.path}" />
+                        <property name="dependency.slf4j-api.jar" value="${maven.dependency.org.slf4j.slf4j-api.jar.path}" />
 
                         <property name="dependency.portal-wci-wci.jar" value="${maven.dependency.org.gatein.wci.wci-wci.jar.path}" />
                         <property name="dependency.portal-wci-tomcat.jar" value="${maven.dependency.org.gatein.wci.wci-tomcat.jar.path}" />

@@ -35,6 +35,12 @@
       <!--TEST SCOPE-->
 
       <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
          <groupId>apache-xerces</groupId>
          <artifactId>resolver</artifactId>
       </dependency>
