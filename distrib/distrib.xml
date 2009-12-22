@@ -89,7 +89,7 @@
       <!-- Simple portal -->
       <copy todir="${pc.build.bin.as42}/server/default/deploy/simple-portal">
          <fileset
-            dir="${source.dir}/portal/target/simple-portal-jboss42.dir/simple-portal"/>
+            dir="${source.dir}/portal/target/simple-portal-jboss42/simple-portal"/>
       </copy>
 
       <!-- Taglib integration -->
@@ -127,7 +127,7 @@
       <!-- Simple portal -->
       <copy todir="${pc.build.bin.as51}/server/default/deploy/simple-portal.sar">
          <fileset
-            dir="${source.dir}/portal/target/simple-portal-jboss51.dir/simple-portal"/>
+            dir="${source.dir}/portal/target/simple-portal-jboss51/simple-portal"/>
       </copy>
 
       <!-- Taglib integration -->
@@ -169,12 +169,12 @@
       <!-- -->
       <copy todir="${pc.build.bin.tomcat6}/lib">
          <fileset
-            dir="${source.dir}/portal/target/simple-portal-tomcat60.dir/simple-portal/lib"
+            dir="${source.dir}/portal/target/simple-portal-tomcat60/simple-portal/lib"
             includes="**/*.jar"/>
       </copy>
       <jar file="${pc.build.bin.tomcat6}/webapps/simple-portal.war">
          <fileset
-            dir="${source.dir}/portal/target/simple-portal-tomcat60.dir/simple-portal/simple-portal.war"
+            dir="${source.dir}/portal/target/simple-portal-tomcat60/simple-portal/simple-portal.war"
             includes="**"/>
       </jar>
 
@@ -211,7 +211,7 @@
          <fileset dir="${source.dir}/samples/target" includes="*.war"/>
       </copy>
       <copy
-         file="${source.dir}/docs/user-guide/target/attach/user-guide-en-US-${maven.version}-html.war"
+         file="${source.dir}/docs/user-guide/target/classes/user-guide-en-US-${maven.version}.war"
          tofile="${samples.dir}/gateinpc-docs.war"/>
    </target>
 
@@ -228,9 +228,9 @@
          <mkdir dir="${todir}"/>
          <mkdir dir="${todir}/user-guide"/>
          <copy todir="${todir}/user-guide">
-            <fileset dir="${src.docs.dir}/user-guide/target/docbook" includes="html_single/**"/>
-            <fileset dir="${src.docs.dir}/user-guide/target/docbook" includes="html/**"/>
-            <fileset dir="${src.docs.dir}/user-guide/target/docbook/pdf" includes="*.pdf"/>
+            <fileset dir="${src.docs.dir}/user-guide/target/docbook/publish/en-US" includes="html_single/**"/>
+            <fileset dir="${src.docs.dir}/user-guide/target/docbook/publish/en-US" includes="html/**"/>
+            <fileset dir="${src.docs.dir}/user-guide/target/docbook/publish/en-US/pdf" includes="*.pdf"/>
          </copy>
       </sequential>
    </target>
