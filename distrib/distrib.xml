@@ -131,15 +131,13 @@
       </copy>
 
       <!-- Taglib integration -->
-      <!--
       <copy todir="${pc.build.bin.as51}" overwrite="true" filtering="true">
          <fileset dir="jboss-5.1"/>
          <filterset>
             <filter token="maven.version" value="${maven.version}"/>
          </filterset>
       </copy>
-      -->
-
+   	
       <!-- -->
       <antcall target="__zip">
          <param name="release.name" value="${demo.release.name.jboss51}"/>

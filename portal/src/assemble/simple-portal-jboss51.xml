@@ -21,15 +21,15 @@
             <include>org.gatein.wci:wci-wci</include>
             <include>org.gatein.wci:wci-tomcat</include>
 
+            <include>org.gatein.pc:pc-portlet</include>
+            <include>org.gatein.pc:pc-api</include>
+            <include>javax.ccpp:ccpp</include>
          </includes>
       </dependencySet>
       <dependencySet>
          <outputDirectory>simple-portal.war/WEB-INF/lib</outputDirectory>
          <includes>
 
-            <include>org.gatein.pc:pc-portlet</include>
-            <include>org.gatein.pc:pc-api</include>
-            <include>javax.ccpp:ccpp</include>
 
             <include>org.gatein.common:common-mc</include>
             <include>org.gatein.pc:pc-controller</include>

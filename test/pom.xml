@@ -18,9 +18,9 @@
 
 
       <dependency>
-               <groupId>org.gatein.common</groupId>
-                        <artifactId>common-logging</artifactId>
-                              </dependency>
+         <groupId>org.gatein.common</groupId>
+         <artifactId>common-logging</artifactId>
+      </dependency>
 
       <dependency>
          <groupId>org.gatein.wci</groupId>

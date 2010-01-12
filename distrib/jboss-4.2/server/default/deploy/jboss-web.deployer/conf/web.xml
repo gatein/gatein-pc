@@ -306,7 +306,7 @@
         <init-param>
            <description>Portlet standard tlds</description>
            <param-name>tagLibJar2</param-name>
-           <param-value>../simple-portal/lib/portlet-portlet-@maven.version@.jar</param-value>
+           <param-value>../simple-portal/lib/pc-portlet-@maven.version@.jar</param-value>
         </init-param>
 
         <load-on-startup>3</load-on-startup>
