@@ -34,7 +34,7 @@ import java.io.IOException;
  */
 public class JSPPortlet extends GenericPortlet
 {
-   private static final String JSP_PATH = "/WEB-INF/jsp";
+   private static final String JSP_PATH = "/jsp";
 
    protected void doView(RenderRequest rRequest, RenderResponse rResponse) throws PortletException, IOException, UnavailableException
    {

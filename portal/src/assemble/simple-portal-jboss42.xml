@@ -15,11 +15,11 @@
          <includes>
 
             <include>org.gatein.common:common-common</include>
+            <include>org.gatein.common:common-logging</include>
+            <include>org.slf4j:slf4j-api</include>
+            <include>org.slf4j:slf4j-log4j12</include>
             <include>org.gatein.wci:wci-wci</include>
-            <include>org.gatein.pc:pc-portlet</include>
-            <include>org.gatein.pc:pc-api</include>
-
-            <include>javax.ccpp:ccpp</include>
+            <include>org.gatein.wci:wci-tomcat</include>
             <include>javax.portlet:portlet-api</include>
 
          </includes>
@@ -27,6 +27,10 @@
       <dependencySet>
          <outputDirectory>simple-portal.war/WEB-INF/lib</outputDirectory>
          <includes>
+
+            <include>org.gatein.pc:pc-portlet</include>
+            <include>org.gatein.pc:pc-api</include>
+            <include>javax.ccpp:ccpp</include>
 
             <include>org.gatein.common:common-mc</include>
             <include>org.gatein.pc:pc-controller</include>

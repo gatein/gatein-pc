@@ -32,9 +32,11 @@
          <li>
             <a href="${pageContext.request.contextPath}/demo/demo4.jsp" class="${fn:substringAfter(pageContext.request.servletPath, 'demo/') == 'demo4.jsp' ? 'selected' : ''}">Demo4</a>
          </li>
+         <!-- 
          <li>
             <a href="${pageContext.request.contextPath}/demo/jsr-301.jsp" class="${fn:substringAfter(pageContext.request.servletPath, 'demo/') == 'jsr-301.jsp' ? 'selected' : ''}">JSR-301 Demo</a>
          </li>
+          -->
       </ul>
       <br class="clear"/>
    </div>
