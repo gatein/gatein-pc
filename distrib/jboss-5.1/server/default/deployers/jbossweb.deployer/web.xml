@@ -283,7 +283,7 @@
       <init-param>
          <description>Portlet standard tlds</description>
          <param-name>tagLibJar2</param-name>
-         <param-value>../simple-portal/lib/pc-portlet-@maven.version@.jar</param-value>
+         <param-value>../../deploy/simple-portal.sar/lib/pc-portlet-2.1.0-CR02.jar</param-value>
       </init-param>
 
       <load-on-startup>3</load-on-startup>
