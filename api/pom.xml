@@ -34,6 +34,11 @@
          <artifactId>jboss-unit-mc</artifactId>
          <scope>test</scope>
       </dependency>
+      <dependency>
+         <groupId>log4j</groupId>
+         <artifactId>log4j</artifactId>
+         <version>${version.apache.log4j}</version>
+      </dependency>
    </dependencies>
 
    <build>

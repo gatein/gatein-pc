@@ -26,6 +26,7 @@
     <version.gatein.wci>2.0.0-CR01</version.gatein.wci>
     <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
     <version.apache.taglibs>1.1.2</version.apache.taglibs>
+    <version.apache.log4j>1.2.14</version.apache.log4j>
 
     <!-- used in test module by maven-antrun-extended-plugin -->
     <version.jboss.unit>1.2.3</version.jboss.unit>

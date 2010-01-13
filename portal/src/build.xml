@@ -822,7 +822,7 @@
 
       <taskdef name="jboss-unit" classname="org.jboss.unit.tooling.ant.JBossUnitTask" classpath="${plugin_classpath}"/>
 
-      <jboss-unit jpda="false" jpdaPort="9000" jpdaSuspend="true" failOnError="false">
+      <jboss-unit jpda="false" jpdaPort="9000" jpdaSuspend="true" failOnError="true">
 
          <tests config="${target}/test-classes/test/remote-jboss-unit.xml">
             <property name="archivePath" value="${test.temp.lib}"/>
