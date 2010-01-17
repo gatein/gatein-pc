@@ -37,6 +37,7 @@ import org.gatein.pc.api.state.PropertyChange;
 import org.gatein.pc.api.state.PropertyMap;
 import org.gatein.pc.federation.FederatedPortletInvoker;
 import org.gatein.pc.federation.FederatingPortletInvoker;
+import org.gatein.pc.federation.NullInvokerHandler;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -63,6 +64,8 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 
    /** The registred FederatedPortletInvokers. */
    private volatile Map<String, FederatedPortletInvoker> registry = new HashMap<String, FederatedPortletInvoker>();
+
+   private NullInvokerHandler nullHandler = NullInvokerHandler.DEFAULT_HANDLER;
 
    public synchronized FederatedPortletInvoker registerInvoker(String federatedId, PortletInvoker federatedInvoker)
    {
@@ -162,20 +165,20 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 
    public Portlet getPortlet(PortletContext compoundPortletContext) throws IllegalArgumentException, PortletInvokerException
    {
-      FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.getPortlet(compoundPortletContext);
    }
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
    {
       PortletContext compoundPortletContext = invocation.getTarget();
-      FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.invoke(invocation);
    }
 
    public PortletContext createClone(PortletStateType stateType, PortletContext compoundPortletContext) throws PortletInvokerException
    {
-      FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.createClone(stateType, compoundPortletContext);
    }
 
@@ -191,10 +194,10 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       }
 
       // Get the invoker and check that we address only one invoker (for now)
-      FederatedPortletInvoker invoker = null;
+      PortletInvoker invoker = null;
       for (PortletContext compoundPortletContext : portletContexts)
       {
-         FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+         PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
          if (invoker == null)
          {
             invoker = federated;
@@ -211,20 +214,32 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 
    public PropertyMap getProperties(PortletContext compoundPortletContext, Set<String> keys) throws PortletInvokerException
    {
-      FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.getProperties(compoundPortletContext, keys);
    }
 
    public PropertyMap getProperties(PortletContext compoundPortletContext) throws PortletInvokerException
    {
-      FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.getProperties(compoundPortletContext);
    }
 
    public PortletContext setProperties(PortletContext compoundPortletContext, PropertyChange[] changes) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
-      FederatedPortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.setProperties(compoundPortletContext, changes);
+   }
+
+   public synchronized void setNullInvokerHandler(NullInvokerHandler nullHandler)
+   {
+      if (nullHandler == null)
+      {
+         this.nullHandler = NullInvokerHandler.DEFAULT_HANDLER;
+      }
+      else
+      {
+         this.nullHandler = nullHandler;
+      }
    }
 
    // Support methods **************************************************************************************************
@@ -259,7 +274,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       FederatedPortletInvoker federated = registry.get(invokerId);
       if (federated == null)
       {
-         throw new NoSuchPortletException(compoundPortletId);
+         return nullHandler.resolvePortletInvokerFor(compoundPortletId, invokerId);
       }
 
       //
