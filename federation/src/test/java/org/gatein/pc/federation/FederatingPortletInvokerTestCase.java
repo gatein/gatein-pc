@@ -222,6 +222,21 @@ public class FederatingPortletInvokerTestCase
          return "inexistent";
       }
 
+      @Override
+      public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+      {
+         // fake dereferencing of compound portlet id
+         String portletId = portletContext.getId();
+         if (portletId.startsWith(getId() + "."))
+         {
+            return super.getPortlet(PortletContext.createPortletContext(portletId.substring(portletId.indexOf('.') + 1)));
+         }
+         else
+         {
+            throw new NoSuchPortletException(portletId);
+         }
+      }
+
       public PortletInvoker getPortletInvoker()
       {
          return null;
