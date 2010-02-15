@@ -31,6 +31,8 @@
     <!-- used in test module by maven-antrun-extended-plugin -->
     <version.jboss.unit>1.2.3</version.jboss.unit>
     <version.cargo>1.0.1-alpha-1</version.cargo>
+  
+    <preparationGoals>clean install</preparationGoals>
   </properties>
   
   <dependencyManagement>
