@@ -34,6 +34,10 @@ import org.gatein.pc.api.NoSuchPortletException;
  */
 public interface NullInvokerHandler
 {
+   /**
+    * Default handling mechanism: if we haven't found an invoker for the portlet id in the first place, throw
+    * NoSuchPortletException.
+    */
    NullInvokerHandler DEFAULT_HANDLER = new NullInvokerHandler()
    {
       public FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId,
@@ -43,6 +47,18 @@ public interface NullInvokerHandler
       }
    };
 
+   /**
+    * Attempts to resolve a FederatedPortletInvoker for the specified compound portlet id in the context of the
+    * specified calling FederatingPortletInvoker.
+    *
+    * @param compoundPortletId the portlet identifier for which we're trying to resolve a FederatedPortletInvoker
+    * @param invokerId         the identifier of the FederatedPortletInvoker to be retrieved as parsed from the compound
+    *                          portlet id by the calling FederatingPortletInvoker
+    * @param callingInvoker    the calling FederatingPortletInvoker which failed to resolve a FederatedPortletInvoker
+    *                          for the specified portlet id
+    * @return
+    * @throws NoSuchPortletException
+    */
    FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId,
                                                     FederatingPortletInvoker callingInvoker) throws NoSuchPortletException;
 }
