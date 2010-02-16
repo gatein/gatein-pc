@@ -274,7 +274,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       FederatedPortletInvoker federated = registry.get(invokerId);
       if (federated == null)
       {
-         return nullHandler.resolvePortletInvokerFor(compoundPortletId, invokerId);
+         return nullHandler.resolvePortletInvokerFor(compoundPortletId, invokerId, this);
       }
 
       //

@@ -36,11 +36,13 @@ public interface NullInvokerHandler
 {
    NullInvokerHandler DEFAULT_HANDLER = new NullInvokerHandler()
    {
-      public FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId) throws NoSuchPortletException
+      public FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId,
+                                                              FederatingPortletInvoker callingInvoker) throws NoSuchPortletException
       {
          throw new NoSuchPortletException(compoundPortletId);
       }
    };
 
-   FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId) throws NoSuchPortletException;
+   FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId,
+                                                    FederatingPortletInvoker callingInvoker) throws NoSuchPortletException;
 }

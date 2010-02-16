@@ -205,8 +205,9 @@ public class FederatingPortletInvokerTestCase
 
       federatingInvoker.setNullInvokerHandler(new NullInvokerHandler()
       {
-         public FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId) throws NoSuchPortletException
+         public FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId, FederatingPortletInvoker callingInvoker) throws NoSuchPortletException
          {
+            assertEquals(federatingInvoker, callingInvoker);
             return remote;
          }
       });
