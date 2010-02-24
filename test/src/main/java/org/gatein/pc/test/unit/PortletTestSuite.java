@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.test.unit;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.jboss.unit.remote.driver.RemoteTestDriverServer;
 import org.gatein.common.net.URLNavigator;
 import org.gatein.common.net.URLVisitor;
@@ -58,7 +59,7 @@ public final class PortletTestSuite implements ServletContextListener, ServletCo
 {
 
    /** . */
-   private static final Logger log = Logger.getLogger(PortletTestSuite.class);
+   private static final Logger log = LoggerFactory.getLogger(PortletTestSuite.class);
 
    /** . */
    private PortletTestDriver driver;

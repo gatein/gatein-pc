@@ -333,13 +333,6 @@
       <antcall target="__evaluate_properties.tomcat"/>
    </target>
 
-   <macrodef name="package-misc-test">
-      <attribute name="test"/>
-      <sequential>
-         <package-testsuite testsuiteversion="jsr168" testsuitetype="misc" testsuitename="@{test}"/>
-      </sequential>
-   </macrodef>
-
    <macrodef name="package-ext-test">
       <attribute name="test"/>
       <sequential>
@@ -487,7 +480,6 @@
       <package-ext-test test="portletmode"/>
       <package-ext-test test="portletconfig"/>
       <package-ext-test test="taglib"/>
-      <package-misc-test test="log4j"/>
       <package-jsr286-tck-test test="dispatcher"/>
       <package-jsr286-tck-test test="portletconfig"/>
       <package-jsr286-tck-test test="portletconfignonamespace"/>
@@ -834,7 +826,7 @@
          <configuration>
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
-<!--            <property name="cargo.jvmargs" value="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9000"/> -->
+            <!--<property name="cargo.jvmargs" value="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9000"/> -->
             <deployable type="war" file="${test.temp.lib}/manager.war"/>
             <file file="${test.temp.lib}/manager" todir="webapps/manager"/>
             <deployable type="war" file="${test.temp.lib}/tomcat-6.0/portlet-test.war"/>

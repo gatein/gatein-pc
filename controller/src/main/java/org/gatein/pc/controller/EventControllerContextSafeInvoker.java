@@ -22,11 +22,12 @@
  ******************************************************************************/
 package org.gatein.pc.controller;
 
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.controller.event.EventControllerContext;
 import org.gatein.pc.controller.event.EventPhaseContext;
 import org.gatein.pc.controller.event.PortletWindowEvent;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 /**
  * An help class to catch and log exceptions thrown by an event controller context.
@@ -38,7 +39,7 @@ class EventControllerContextSafeInvoker
 {
 
    /** . */
-   private final Logger log = Logger.getLogger(EventControllerContextSafeInvoker.class);
+   private final Logger log = LoggerFactory.getLogger(EventControllerContextSafeInvoker.class);
 
    public boolean eventProduced(EventControllerContext controllerContext, EventPhaseContext phaseContext, PortletWindowEvent sourceEvent, PortletWindowEvent producedEvent)
    {

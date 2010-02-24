@@ -22,7 +22,8 @@
  */
 package org.gatein.pc.federation.impl;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.InvokerUnavailableException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
@@ -57,7 +58,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 {
 
    /** . */
-   private static final Logger log = Logger.getLogger(FederatingPortletInvokerService.class);
+   private static final Logger log = LoggerFactory.getLogger(FederatingPortletInvokerService.class);
 
    /** The separator used in the id to route to the correct invoker. */
    static final String SEPARATOR = ".";

@@ -22,8 +22,9 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168.api;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.NotYetImplemented;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.Tools;
 import org.gatein.pc.api.ParametersStateString;
 import org.gatein.pc.portlet.impl.info.ContainerEventInfo;
@@ -63,7 +64,7 @@ public abstract class StateAwareResponseImpl extends PortletResponseImpl impleme
 {
 
    /** . */
-   private static final Logger log = Logger.getLogger(ActionResponseImpl.class);
+   private static final Logger log = LoggerFactory.getLogger(ActionResponseImpl.class);
 
    /** . */
    protected WantUpdate wantUpdate;

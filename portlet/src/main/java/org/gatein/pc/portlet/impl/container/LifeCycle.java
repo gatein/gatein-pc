@@ -22,11 +22,12 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.container;
 
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectLifeCycleEvent;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -39,7 +40,7 @@ public abstract class LifeCycle implements ManagedObject
 {
 
    /** . */
-   private Logger log = Logger.getLogger(LifeCycle.class);
+   private Logger log = LoggerFactory.getLogger(LifeCycle.class);
 
    /** . */
    private LifeCycleStatus status = LifeCycleStatus.STOPPED;

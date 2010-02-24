@@ -31,8 +31,10 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import static org.jboss.unit.api.Assert.*;
+
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.Tools;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 /**
  * @author <a href="mailto:boleslaw.dawidowicz@jboss.org">Boleslaw Dawidowicz</a>
@@ -48,7 +50,7 @@ public abstract class TestAction
    {
       if (log == null)
       {
-         log = Logger.getLogger(getClass());
+         log = LoggerFactory.getLogger(getClass());
       }
       return log;
    }

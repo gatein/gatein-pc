@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168.api;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.Tools;
 import org.gatein.common.util.ParameterMap;
 import org.gatein.common.util.MultiValuedPropertyMap;
@@ -80,7 +81,7 @@ public abstract class PortletRequestImpl implements PortletRequest
 {
 
    /** . */
-   protected static final Logger log = Logger.getLogger(PortletRequestImpl.class);
+   protected static final Logger log = LoggerFactory.getLogger(PortletRequestImpl.class);
 
    /** . */
    protected PortletInvocation invocation;

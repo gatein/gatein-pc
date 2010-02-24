@@ -23,8 +23,9 @@
 
 package org.gatein.pc.mc.metadata.factory;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.i18n.LocalizedString;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.impl.metadata.adapter.LocalizedStringAdapter;
 import org.gatein.pc.portlet.impl.metadata.common.LocalizedDescriptionMetaData;
 
@@ -44,7 +45,7 @@ public class LocalizedStringBuilder
    private Map<Object, LocalizedMetaDataContainer> map = new LinkedHashMap<Object, LocalizedMetaDataContainer>();
 
    /** The logger. */
-   private static final Logger log = Logger.getLogger(LocalizedStringBuilder.class);
+   private static final Logger log = LoggerFactory.getLogger(LocalizedStringBuilder.class);
 
    public void put(Object object, LocalizedDescriptionMetaData description)
    {

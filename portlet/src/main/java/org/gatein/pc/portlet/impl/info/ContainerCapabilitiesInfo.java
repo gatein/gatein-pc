@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.info;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.WindowState;
 import org.gatein.common.net.media.MediaType;
@@ -44,7 +45,7 @@ import java.util.Set;
  */
 public class ContainerCapabilitiesInfo implements CapabilitiesInfo
 {
-   private final static Logger log = Logger.getLogger(ContainerCapabilitiesInfo.class);
+   private final static Logger log = LoggerFactory.getLogger(ContainerCapabilitiesInfo.class);
 
    /** . */
    private final MediaTypeMapImpl<ModeInfo> supportedModes;

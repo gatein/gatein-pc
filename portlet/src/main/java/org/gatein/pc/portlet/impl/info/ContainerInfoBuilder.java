@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.info;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.WindowState;
 import org.gatein.common.i18n.LocaleFormat;
@@ -175,7 +176,7 @@ public class ContainerInfoBuilder
    private final Map<org.gatein.pc.api.WindowState, ContainerWindowStateInfo> customWindowStates;
 
    /** . */
-   private final Logger log = Logger.getLogger(ContainerInfoBuilder.class);
+   private final Logger log = LoggerFactory.getLogger(ContainerInfoBuilder.class);
 
    public ContainerInfoBuilder(
       String portletApplicationId,

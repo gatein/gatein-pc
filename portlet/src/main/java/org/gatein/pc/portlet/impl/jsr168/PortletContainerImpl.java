@@ -22,9 +22,10 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.concurrent.Valve;
 import org.gatein.common.i18n.ResourceBundleManager;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.invocation.ActionInvocation;
 import org.gatein.pc.api.invocation.EventInvocation;
@@ -159,7 +160,7 @@ public class PortletContainerImpl implements PortletContainerObject
       //
       this.info = info;
       this.valve = new Valve();
-      this.log = Logger.getLogger("org.gatein.pc.container." + info.getClassName().replace('.', '_'));
+      this.log = LoggerFactory.getLogger("org.gatein.pc.container." + info.getClassName().replace('.', '_'));
       this.started = false;
       this.filters = new HashSet<PortletFilterImpl>();
    }

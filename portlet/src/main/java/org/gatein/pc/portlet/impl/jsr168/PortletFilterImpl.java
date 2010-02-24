@@ -22,12 +22,13 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168;
 
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.container.PortletApplication;
 import org.gatein.pc.portlet.container.PortletFilterContext;
 import org.gatein.pc.portlet.container.object.PortletFilterObject;
 import org.gatein.pc.portlet.impl.info.ContainerFilterInfo;
 import org.gatein.pc.api.LifeCyclePhase;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 import javax.portlet.PortletContext;
 import javax.portlet.filter.ActionFilter;
@@ -74,7 +75,7 @@ public class PortletFilterImpl implements PortletFilterObject
    public PortletFilterImpl(ContainerFilterInfo info)
    {
       this.info = info;
-      this.log = Logger.getLogger(PortletFilterImpl.class);
+      this.log = LoggerFactory.getLogger(PortletFilterImpl.class);
    }
 
    public <T> T instance(Class<T> type)

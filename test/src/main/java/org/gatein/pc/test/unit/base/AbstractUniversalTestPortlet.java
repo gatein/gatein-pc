@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.test.unit.base;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.test.unit.JoinPoint;
 import org.gatein.pc.test.unit.PortletTestCase;
 import org.gatein.pc.test.unit.actions.PortletActionTestAction;
@@ -448,7 +449,7 @@ public abstract class AbstractUniversalTestPortlet implements Portlet, EventPort
       {
          throw new IllegalStateException("The logger should not be re");
       }
-      return Logger.getLogger(getClass());
+      return LoggerFactory.getLogger(getClass());
    }
 
    /** Return the logger. */

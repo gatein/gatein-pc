@@ -24,7 +24,7 @@ package org.gatein.pc.controller;
 
 import org.gatein.pc.controller.event.EventPhaseContext;
 import org.gatein.pc.controller.event.PortletWindowEvent;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 import java.util.LinkedList;
 

@@ -23,7 +23,7 @@
 package org.gatein.pc.api.invocation.response;
 
 import org.gatein.common.util.Exceptions;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 /**
  * Application level error.

@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.portal;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
@@ -42,7 +43,7 @@ public class ErrorHandlingFilter implements Filter
 {
 
    /** . */
-   private final Logger log = Logger.getLogger(ErrorHandlingFilter.class);
+   private final Logger log = LoggerFactory.getLogger(ErrorHandlingFilter.class);
 
    public void init(FilterConfig config) throws ServletException
    {

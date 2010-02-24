@@ -23,7 +23,8 @@
 
 package org.gatein.pc.controller;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.controller.response.ControllerResponse;
@@ -36,7 +37,7 @@ import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 abstract class RequestHandler<T extends ControllerRequest>
 {
    /** . */
-   protected static final Logger log = Logger.getLogger(RequestHandler.class);
+   protected static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
    /** . */
    protected PortletController controller;

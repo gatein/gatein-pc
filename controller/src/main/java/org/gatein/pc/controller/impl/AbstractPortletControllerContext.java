@@ -23,6 +23,7 @@
 
 package org.gatein.pc.controller.impl;
 
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.MarkupInfo;
 import org.gatein.common.io.Serialization;
 import org.gatein.common.net.media.MediaType;
@@ -48,7 +49,7 @@ import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.spi.PortletInvocationContext;
 import org.gatein.pc.api.spi.PortalContext;
 import org.gatein.wci.IllegalRequestException;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +66,7 @@ public abstract class AbstractPortletControllerContext implements PortletControl
 {
 
    /** . */
-   private static Logger log = Logger.getLogger(AbstractPortletControllerContext.class);
+   private static Logger log = LoggerFactory.getLogger(AbstractPortletControllerContext.class);
 
    /** . */
    public static final PortalContext PORTAL_CONTEXT = new AbstractPortalContext(Collections.singletonMap("javax.portlet.markup.head.element.support", "true"));

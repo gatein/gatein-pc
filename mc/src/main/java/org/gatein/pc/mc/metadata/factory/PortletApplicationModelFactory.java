@@ -23,8 +23,9 @@
 
 package org.gatein.pc.mc.metadata.factory;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.i18n.LocalizedString;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.LifeCyclePhase;
 import org.gatein.pc.api.TransportGuarantee;
 import org.gatein.pc.portlet.impl.metadata.CustomPortletModeMetaData;
@@ -80,7 +81,7 @@ public class PortletApplicationModelFactory implements GenericObjectModelFactory
    private LocalizedStringBuilder displayNames = new LocalizedStringBuilder();
 
    /** Guess what? The logger. */
-   private static final Logger log = Logger.getLogger(PortletApplicationModelFactory.class);
+   private static final Logger log = LoggerFactory.getLogger(PortletApplicationModelFactory.class);
 
    public Object newRoot(Object root, UnmarshallingContext nav, String nsURI, String localName, Attributes attrs)
    {

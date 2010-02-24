@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.test.unit.base;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.test.unit.JoinPoint;
 import org.gatein.pc.test.unit.PortletTestCase;
 import org.gatein.pc.test.unit.actions.ServletServiceTestAction;
@@ -49,7 +50,7 @@ public abstract class AbstractUniversalTestServlet extends HttpServlet
 {
 
    /** The logger. */
-   private final Logger log = Logger.getLogger(getClass());
+   private final Logger log = LoggerFactory.getLogger(getClass());
 
    /** Jointpoint for service method. */
    private final JoinPoint serviceJoinPoint = JoinPoint.createJoinPoint(getClass(), JoinPointType.SERVLET_SERVICE);

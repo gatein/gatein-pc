@@ -22,8 +22,9 @@
  ******************************************************************************/
 package org.gatein.pc.mc;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.io.IOTools;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.container.PortletContainer;
@@ -91,7 +92,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
    }
 
    /** . */
-   private Logger log = Logger.getLogger(PortletApplicationDeployer.class);
+   private Logger log = LoggerFactory.getLogger(PortletApplicationDeployer.class);
 
    /** . */
    private PortletApplicationRegistry registry;

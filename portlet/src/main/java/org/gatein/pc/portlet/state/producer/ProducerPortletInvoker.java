@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.state.producer;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.InvalidPortletIdException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
@@ -86,7 +87,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
    private StateConverter stateConverter;
 
    /** . */
-   private Logger log = Logger.getLogger(ProducerPortletInvoker.class);
+   private Logger log = LoggerFactory.getLogger(ProducerPortletInvoker.class);
 
    public PortletStatePersistenceManager getPersistenceManager()
    {

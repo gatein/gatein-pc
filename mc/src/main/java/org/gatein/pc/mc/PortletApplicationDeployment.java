@@ -22,7 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.mc;
 
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.impl.info.ContainerInfoBuilder;
 import org.gatein.pc.portlet.impl.info.ContainerInfoBuilderContext;
 import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
@@ -71,7 +72,7 @@ public class PortletApplicationDeployment
       this.listener = listener;
       this.webApp = webApp;
       this.metaData = metaData;
-      this.log = Logger.getLogger(PortletApplicationDeployment.class + "." + webApp.getContextPath().replace('.', '_'));
+      this.log = LoggerFactory.getLogger(PortletApplicationDeployment.class + "." + webApp.getContextPath().replace('.', '_'));
    }
 
    public PortletApplicationLifeCycle getPortletApplicationLifeCycle()

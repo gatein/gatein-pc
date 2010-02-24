@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.aspects;
 
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.EventInvocation;
 import org.gatein.pc.portlet.PortletInvokerInterceptor;
@@ -37,7 +38,7 @@ import org.gatein.pc.api.info.EventInfo;
 import org.gatein.pc.portlet.impl.info.ContainerTypeInfo;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.common.io.IOTools;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 import javax.xml.namespace.QName;
 import java.io.Serializable;
@@ -55,7 +56,7 @@ public class EventPayloadInterceptor extends PortletInvokerInterceptor
 {
 
    /** . */
-   private final static Logger log = Logger.getLogger(EventPayloadInterceptor.class);
+   private final static Logger log = LoggerFactory.getLogger(EventPayloadInterceptor.class);
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
    {

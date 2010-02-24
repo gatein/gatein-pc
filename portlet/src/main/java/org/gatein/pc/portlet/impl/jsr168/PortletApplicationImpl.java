@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168;
 
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.impl.jsr168.api.PortletContextImpl;
 import org.gatein.pc.portlet.impl.jsr168.api.PortletURLGenerationListenerChain;
 import org.gatein.pc.portlet.impl.jsr168.api.FilterConfigImpl;
@@ -33,7 +34,7 @@ import org.gatein.pc.portlet.container.PortletApplicationContext;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.PortletInitializationException;
 import org.gatein.pc.portlet.container.object.PortletApplicationObject;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 import javax.portlet.PortletContext;
 import javax.portlet.PortletURLGenerationListener;
@@ -77,7 +78,7 @@ public class PortletApplicationImpl implements PortletApplicationObject
    {
       this.info = info;
       this.portlets = new LinkedHashMap<String, PortletContainer>();
-      this.log = Logger.getLogger(PortletApplication.class.getName() + "." + info.getId().replace('.', '_'));
+      this.log = LoggerFactory.getLogger(PortletApplication.class.getName() + "." + info.getId().replace('.', '_'));
    }
 
    public void setContext(PortletApplicationContext context)

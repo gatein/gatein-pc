@@ -23,7 +23,7 @@
 package org.gatein.pc.portlet.impl.jsr168;
 
 import org.gatein.pc.portlet.container.PortletInitializationException;
-import org.apache.log4j.Logger;
+import org.gatein.common.logging.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
