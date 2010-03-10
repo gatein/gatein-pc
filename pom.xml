@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.gatein</groupId>
     <artifactId>gatein-parent</artifactId>
-    <version>1.0.0-Beta04</version>
+    <version>1.0.0-GA</version>
   </parent>
   
   <scm>
@@ -22,8 +22,8 @@
   </scm>
   
   <properties>
-    <version.gatein.common>2.0.0-CR02</version.gatein.common>
-    <version.gatein.wci>2.0.0-CR01</version.gatein.wci>
+    <version.gatein.common>2.0.0-GA</version.gatein.common>
+    <version.gatein.wci>2.0.0-GA</version.gatein.wci>
     <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
     <version.apache.taglibs>1.1.2</version.apache.taglibs>
     <version.apache.log4j>1.2.14</version.apache.log4j>
@@ -41,7 +41,7 @@
       <dependency>
         <groupId>org.gatein</groupId>
         <artifactId>gatein-dep</artifactId>
-        <version>1.0.0-Beta03</version>
+        <version>1.0.0-GA</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
