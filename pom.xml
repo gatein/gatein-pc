@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.gatein</groupId>
     <artifactId>gatein-parent</artifactId>
-    <version>1.0.0-GA</version>
+    <version>1.0.1-GA</version>
   </parent>
   
   <scm>
@@ -22,10 +22,10 @@
   </scm>
   
   <properties>
-    <version.gatein.common>2.0.0-GA</version.gatein.common>
-    <version.gatein.wci>2.0.0-GA</version.gatein.wci>
+    <version.gatein.common>2.0.1-GA</version.gatein.common>
+    <version.gatein.wci>2.0.1-GA</version.gatein.wci>
     <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
-    <version.apache.taglibs>1.1.2</version.apache.taglibs>
+    <version.javax.jstl>1.1.2</version.javax.jstl>
     <version.apache.log4j>1.2.14</version.apache.log4j>
 
     <!-- used in test module by maven-antrun-extended-plugin -->
@@ -41,7 +41,7 @@
       <dependency>
         <groupId>org.gatein</groupId>
         <artifactId>gatein-dep</artifactId>
-        <version>1.0.0-GA</version>
+        <version>1.0.1-GA</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -112,14 +112,9 @@
       </dependency>
 
       <dependency>
-        <groupId>apache-taglibs</groupId>
+        <groupId>javax.servlet</groupId>
         <artifactId>jstl</artifactId>
-        <version>${version.apache.taglibs}</version>
-      </dependency>
-      <dependency>
-        <groupId>apache-taglibs</groupId>
-        <artifactId>standard</artifactId>
-        <version>${version.apache.taglibs}</version>
+        <version>${version.javax.jstl}</version>
       </dependency>
  
     </dependencies>
@@ -244,26 +239,37 @@
   
   <repositories>
     <repository>
-      <id>repository.jboss.org</id>
-      <name>JBoss Repository</name>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Maven Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
       <layout>default</layout>
-      <url>http://repository.jboss.org/maven2/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
       <snapshots>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
     <repository>
-      <id>snapshots.jboss.org</id>
-      <name>JBoss Snapshots Repository</name>
-      <layout>default</layout>
-      <url>http://snapshots.jboss.org/maven2/</url>
+      <id>codehaus snapshot repository</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
     </repository>
   </repositories>
   
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Repository for Maven</name>
+      <url>http://download.java.net/maven/2/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
 </project>

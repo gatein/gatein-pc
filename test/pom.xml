@@ -173,12 +173,8 @@
 
       <!-- JSTL for Tomcat -->
       <dependency>
-         <groupId>apache-taglibs</groupId>
+         <groupId>javax.servlet</groupId>
          <artifactId>jstl</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>apache-taglibs</groupId>
-         <artifactId>standard</artifactId>
       </dependency>
    </dependencies>
 
@@ -274,6 +270,8 @@
          </build>
       </profile>
    </profiles>
+
+   
 
    <build>
       <plugins>
