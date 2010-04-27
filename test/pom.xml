@@ -2,7 +2,7 @@
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
-      <version>2.1.1-GA-SNAPSHOT</version>
+      <version>2.1.1-GA</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-test</artifactId>
@@ -173,8 +173,12 @@
 
       <!-- JSTL for Tomcat -->
       <dependency>
-         <groupId>javax.servlet</groupId>
+         <groupId>apache-taglibs</groupId>
          <artifactId>jstl</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>apache-taglibs</groupId>
+         <artifactId>standard</artifactId>
       </dependency>
    </dependencies>
 
@@ -270,8 +274,6 @@
          </build>
       </profile>
    </profiles>
-
-   
 
    <build>
       <plugins>
@@ -384,6 +386,7 @@
 <!--                        <property name="dependency.jaxb.jar" value="${maven.dependency.javax.xml.bind.jaxb-api.jar.path}" /> -->
                         <property name="dependency.jboss-mdr.jar" value="${maven.dependency.org.jboss.jboss-mdr.jar.path}" />
                         <property name="dependency.javassist.jar" value="${maven.dependency.org.jboss.javassist.jar.path}" />
+                        <property name="dependency.resolver.jar" value="${maven.dependency.apache-xerces.resolver.jar.path}" />
                         <property name="dependency.xercesImpl.jar" value="${maven.dependency.apache-xerces.xercesImpl.jar.path}" />
                         <property name="dependency.xml-apis.jar" value="${maven.dependency.apache-xerces.xml-apis.jar.path}" />
                         <property name="dependency.jbossxb.jar" value="${maven.dependency.org.jboss.jbossxb.jar.path}" />
@@ -393,7 +396,8 @@
                         <property name="dependency.cargo-ant.jar" value="${maven.dependency.org.codehaus.cargo.cargo-ant.jar.path}" />
                         <property name="dependency.cargo-manager.war" value="${maven.dependency.cargo.cargo-manager.war.path}" />
 
-                        <property name="dependency.apache-jstl.jar" value="${maven.dependency.javax.servlet.jstl.jar.path}" />
+                        <property name="dependency.apache-jstl.jar" value="${maven.dependency.apache-taglibs.jstl.jar.path}" />
+                        <property name="dependency.apache-standard.jar" value="${maven.dependency.apache-taglibs.standard.jar.path}" />
                         <property name="dependency.cargo.jetty-deployer" value="${maven.dependency.org.codehaus.cargo.cargo-jetty-deployer.war.path}" />
 
                         <ant antfile="${basedir}/src/test/build.xml">

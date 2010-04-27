@@ -54,6 +54,7 @@
       </path>
       <path id="mc.xerces">
          <pathelement path="${dependency.xercesImpl.jar}"/>
+         <pathelement path="${dependency.resolver.jar}"/>
          <pathelement path="${dependency.xml-apis.jar}"/>
       </path>
       <path id="mc.javassist">
