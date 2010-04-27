@@ -2,44 +2,20 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.gatein.doc</groupId>
-        <artifactId>doc-parent</artifactId>
-        <version>1.0.0-CR2</version>
-    </parent>
+   <parent>
+      <groupId>org.gatein.pc</groupId>
+      <artifactId>pc-parent</artifactId>
+      <version>2.1.1-GA</version>
+   </parent>
    <groupId>org.gatein.pc</groupId>
    <artifactId>user-guide-${translation}</artifactId>
-   <version>2.1.1-GA</version>
    <packaging>jdocbook</packaging>
    <name>GateIn - Portlet Container (User Guide ${translation})</name>
 
    <properties>
      <enforcer.skip>true</enforcer.skip>
+     <translation>en-US</translation>
    </properties>
-
-   <repositories>
-      <repository>
-         <id>repository.jboss.org</id>
-         <name>JBoss Repository</name>
-         <layout>default</layout>
-         <url>http://repository.jboss.org/maven2/</url>
-         <snapshots>
-            <enabled>false</enabled>
-         </snapshots>
-      </repository>
-      <repository>
-         <id>snapshots.jboss.org</id>
-         <name>JBoss Snapshots Repository</name>
-         <layout>default</layout>
-         <url>http://snapshots.jboss.org/maven2/</url>
-         <snapshots>
-            <enabled>true</enabled>
-         </snapshots>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-      </repository>
-   </repositories>
 
    <pluginRepositories>
       <pluginRepository>
@@ -65,9 +41,70 @@
       </pluginRepository>
    </pluginRepositories>
 
-  <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/gatein/tools/maven/doc-parent/tags/2.1.1-GA</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/gatein/tools/maven/doc-parent/tags/2.1.1-GA</developerConnection>
-    <url>http://fisheye.jboss.org/browse/gatein/tools/maven/doc-parent/tags/2.1.1-GA</url>
-  </scm>
+   <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jboss.maven.plugins</groupId>
+                <artifactId>maven-jdocbook-plugin</artifactId>
+                <version>2.1.1</version>
+                <extensions>true</extensions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.gatein.doc</groupId>
+                        <artifactId>gatein-docbook-xslt</artifactId>
+                        <version>1.0.0-CR2</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.gatein.doc</groupId>
+                        <artifactId>gatein-jdocbook-style</artifactId>
+                        <version>1.0.0-CR2</version>
+                        <type>jdocbook-style</type>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <sourceDocumentName>master.xml</sourceDocumentName>
+                    <sourceDirectory>${pom.basedir}/en</sourceDirectory>
+                    <imageResource>
+                        <directory>${pom.basedir}/en</directory>
+                        <includes>
+                          <include>images/**/*</include>
+                        </includes>
+                    </imageResource>
+                    <!--<cssResource>
+                        <directory>src/main/css</directory>
+                    </cssResource>-->
+                    <formats>
+                        <format>
+                            <formatName>pdf</formatName>
+                            <stylesheetResource>classpath://xslt/org/gatein/pdf.xsl</stylesheetResource>
+                            <finalName>${pom.name}.pdf</finalName>
+                        </format>
+                        <format>
+                            <formatName>html</formatName>
+                            <stylesheetResource>classpath:/xslt/org/gatein/xhtml.xsl</stylesheetResource>
+                            <finalName>index.html</finalName>
+                        </format>
+                        <format>
+                            <formatName>html_single</formatName>
+                            <stylesheetResource>classpath:/xslt/org/gatein/xhtml-single.xsl</stylesheetResource>
+                            <finalName>index.html</finalName>
+                        </format>
+                        <format>
+                            <formatName>eclipse</formatName>
+                            <stylesheetResource>classpath:/xslt/org/gatein/eclipse.xsl</stylesheetResource>
+                            <finalName>index.html</finalName>
+                        </format>
+                    </formats>
+                    <options>
+                        <xincludeSupported>true</xincludeSupported>
+                        <xmlTransformerType>saxon</xmlTransformerType>
+                        <!-- needed for uri-resolvers; can be ommitted if using 'current' uri scheme -->
+                        <!--     could also locate the docbook dependency and inspect its version... -->
+                        <docbookVersion>1.74.0</docbookVersion>
+                    </options>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
