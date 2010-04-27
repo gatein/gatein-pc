@@ -31,11 +31,9 @@
             <include>sun-jaxb:jaxb-api</include>
 
             <include>apache-xerces:xercesImpl</include>
-            <include>apache-xerces:resolver</include>
             <include>apache-xerces:xml-apis</include>
 
-            <include>apache-taglibs:jstl</include>
-            <include>apache-taglibs:standard</include>
+            <include>javax.servlet:jstl</include>
 
          </includes>
       </dependencySet>

@@ -147,7 +147,6 @@
          <path refid="jboss-microcontainer"/>
          <pathelement path="${dependency.javassist.jar}"/>
          <pathelement path="${dependency.xercesImpl.jar}"/>
-         <pathelement path="${dependency.resolver.jar}"/>
          <pathelement path="${dependency.xml-apis.jar}"/>
          <pathelement path="${dependency.trove.jar}"/>
       </path>
@@ -176,7 +175,6 @@
          <path refid="jboss-microcontainer"/>
          <pathelement path="${dependency.javassist.jar}"/>
          <pathelement path="${dependency.xercesImpl.jar}"/>
-         <pathelement path="${dependency.resolver.jar}"/>
          <pathelement path="${dependency.xml-apis.jar}"/>
          <pathelement path="${dependency.trove.jar}"/>
       </path>

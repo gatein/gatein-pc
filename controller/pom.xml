@@ -42,10 +42,6 @@
 
       <dependency>
          <groupId>apache-xerces</groupId>
-         <artifactId>resolver</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>apache-xerces</groupId>
          <artifactId>xercesImpl</artifactId>
       </dependency>
       <dependency>
