@@ -1,37 +1,39 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2010, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.portlet.impl.info;
 
-import org.gatein.common.logging.Logger;
-import org.gatein.common.logging.LoggerFactory;
-import org.gatein.pc.api.Mode;
-import org.gatein.pc.api.WindowState;
 import org.gatein.common.i18n.LocaleFormat;
 import org.gatein.common.i18n.LocalizedString;
 import org.gatein.common.i18n.ResourceBundleManager;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.reflect.NoSuchClassException;
 import org.gatein.common.util.ConversionException;
 import org.gatein.pc.api.LifeCyclePhase;
+import org.gatein.pc.api.Mode;
+import org.gatein.pc.api.WindowState;
+import org.gatein.pc.api.info.MetaInfo;
+import org.gatein.pc.api.info.RuntimeOptionInfo;
 import org.gatein.pc.portlet.impl.metadata.CustomPortletModeMetaData;
 import org.gatein.pc.portlet.impl.metadata.CustomWindowStateMetaData;
 import org.gatein.pc.portlet.impl.metadata.ListenerMetaData;
@@ -55,8 +57,6 @@ import org.gatein.pc.portlet.impl.metadata.portlet.SupportedLocaleMetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.SupportsMetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.WindowStateMetaData;
 import org.gatein.pc.portlet.impl.metadata.security.SecurityConstraintMetaData;
-import org.gatein.pc.api.info.MetaInfo;
-import org.gatein.pc.api.info.RuntimeOptionInfo;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -602,7 +602,7 @@ public class ContainerInfoBuilder
          getDefaultStringFor(eventDefinitionMD.getDescription(), "Description of event " + name));
 
       //
-      return new ContainerEventInfo(name, type, displayName, description);
+      return new ContainerEventInfo(name, type, displayName, description, eventDefinitionMD.getAlias());
    }
 
    private ContainerPortletInfo build(PortletMetaData portletMD)
