@@ -1,48 +1,48 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2008, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2010, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.portlet.aspects;
 
+import org.gatein.common.io.IOTools;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.logging.LoggerFactory;
-import org.gatein.pc.api.invocation.PortletInvocation;
+import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.info.EventInfo;
+import org.gatein.pc.api.info.EventingInfo;
+import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.invocation.EventInvocation;
-import org.gatein.pc.portlet.PortletInvokerInterceptor;
+import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.ErrorResponse;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.portlet.container.PortletContainer;
+import org.gatein.pc.portlet.PortletInvokerInterceptor;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.container.PortletApplication;
 import org.gatein.pc.portlet.container.PortletApplicationContext;
-import org.gatein.pc.api.info.PortletInfo;
-import org.gatein.pc.api.info.EventingInfo;
-import org.gatein.pc.api.info.EventInfo;
+import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.impl.info.ContainerTypeInfo;
-import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.common.io.IOTools;
-import org.gatein.common.logging.Logger;
 
 import javax.xml.namespace.QName;
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -127,8 +127,8 @@ public class EventPayloadInterceptor extends PortletInvokerInterceptor
             {
                if (trace)
                {
-                  log.trace("No event meta data declared by portlet " + containerId + " for event " + eventName + " will attempty " +
-                     " to load same class name from the application " + applicationId + " classloader");
+                  log.trace("No event meta data declared by portlet " + containerId + " for event " + eventName
+                     + " will attempt to load same class name from the application " + applicationId + " classloader");
                }
 
                // We try to load the same class from the applicaton class loader
