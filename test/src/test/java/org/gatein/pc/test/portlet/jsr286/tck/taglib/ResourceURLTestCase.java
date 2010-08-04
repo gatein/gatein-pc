@@ -1,43 +1,44 @@
 /*
-* JBoss, a division of Red Hat
-* Copyright 2006, Red Hat Middleware, LLC, and individual contributors as indicated
-* by the @authors tag. See the copyright.txt in the distribution for a
-* full listing of individual contributors.
-*
-* This is free software; you can redistribute it and/or modify it
-* under the terms of the GNU Lesser General Public License as
-* published by the Free Software Foundation; either version 2.1 of
-* the License, or (at your option) any later version.
-*
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this software; if not, write to the Free
-* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
-* 02110-1301 USA, or see the FSF site: http://www.fsf.org.
-*/
+ * JBoss, a division of Red Hat
+ * Copyright 2010, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 
 package org.gatein.pc.test.portlet.jsr286.tck.taglib;
 
-import org.gatein.pc.test.unit.annotations.TestCase;
+import org.gatein.pc.test.portlet.framework.UTP1;
+import org.gatein.pc.test.unit.Assertion;
 import org.gatein.pc.test.unit.PortletTestCase;
 import org.gatein.pc.test.unit.PortletTestContext;
-import org.gatein.pc.test.unit.Assertion;
-import org.gatein.pc.test.unit.base.AbstractUniversalTestPortlet;
 import org.gatein.pc.test.unit.actions.PortletRenderTestAction;
-import org.gatein.pc.test.portlet.framework.UTP1;
+import org.gatein.pc.test.unit.annotations.TestCase;
+import org.gatein.pc.test.unit.base.AbstractUniversalTestPortlet;
 import org.jboss.unit.driver.DriverResponse;
 import org.jboss.unit.driver.response.EndTestResponse;
 import org.jboss.unit.remote.driver.handler.http.response.InvokeGetResponse;
 
 import javax.portlet.Portlet;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import javax.portlet.ResourceURL;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -63,7 +64,7 @@ public class ResourceURLTestCase extends TaglibTestCase
             ResourceURL pu1 = response.createResourceURL();
 
             pu1.setSecure(true);
-            pu1.setCacheability("FULL");
+            pu1.setCacheability(ResourceURL.FULL);
 
             ResourceURL pu2 = response.createResourceURL();
 
@@ -74,7 +75,7 @@ public class ResourceURLTestCase extends TaglibTestCase
             ResourceURL pu3 = response.createResourceURL();
             pu3.setSecure(false);
 
-            pu3.setParameter("testParam", new String[] {"testParamValue", "testParamValue2"});
+            pu3.setParameter("testParam", new String[]{"testParamValue", "testParamValue2"});
             pu3.setParameter("secondParam", "testParamValue");
             pu3.setProperty("testProperty", "testPropValue");
             pu3.setProperty("testProperty", "testPropValue2");
@@ -103,7 +104,7 @@ public class ResourceURLTestCase extends TaglibTestCase
             String url3 = response.encodeURL(sw.toString());
 
 
-            expectedResults = new String[]{ url1, url2, url3};
+            expectedResults = new String[]{url1, url2, url3};
 
             include(dispatcher, request, response);
 
