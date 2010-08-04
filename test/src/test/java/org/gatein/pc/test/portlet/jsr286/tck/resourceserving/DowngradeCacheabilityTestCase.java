@@ -1,65 +1,60 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2010, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.test.portlet.jsr286.tck.resourceserving;
 
+import org.gatein.pc.test.portlet.framework.UTP1;
+import org.gatein.pc.test.unit.Assertion;
 import org.gatein.pc.test.unit.PortletTestCase;
 import org.gatein.pc.test.unit.PortletTestContext;
-import org.gatein.pc.test.unit.Assertion;
-import org.gatein.pc.test.unit.annotations.TestCase;
 import org.gatein.pc.test.unit.actions.PortletRenderTestAction;
 import org.gatein.pc.test.unit.actions.PortletResourceTestAction;
-import org.gatein.pc.test.portlet.framework.UTP1;
+import org.gatein.pc.test.unit.annotations.TestCase;
 import org.jboss.unit.driver.DriverResponse;
 import org.jboss.unit.driver.response.EndTestResponse;
 import org.jboss.unit.remote.driver.handler.http.response.InvokeGetResponse;
 
-import static org.jboss.unit.api.Assert.*;
-
 import javax.portlet.Portlet;
+import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import javax.portlet.PortletException;
-import javax.portlet.ResourceURL;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.portlet.ResourceURL;
 import java.io.IOException;
 
+import static org.jboss.unit.api.Assert.assertEquals;
+import static org.jboss.unit.api.Assert.fail;
+
 /**
- * cxxx:
- * Only URLs with a cache level FULL are allowed in the response of the
- * serveResource call triggered via a ResourceURL with a cache level FULL. The
- * same restriction is true for all downstream URLs that result from this
- * serveResource call. Setting a cachability different from  must result in an
- * IllegalStateException.
- *
- * cxxxi:
- * Attempts to create URLs that are not of type FULL
- * or are not resource URLs in the current or a downstream response must result in
- * an IllegalStateException25
- *
- * cxxxii:
- * Creating other URLs, e.g. resource URLs of type  or
- * action or render URLs, must result in an IllegalStateException
+ * cxxx: Only URLs with a cache level FULL are allowed in the response of the serveResource call triggered via a
+ * ResourceURL with a cache level FULL. The same restriction is true for all downstream URLs that result from this
+ * serveResource call. Setting a cachability different from  must result in an IllegalStateException.
+ * <p/>
+ * cxxxi: Attempts to create URLs that are not of type FULL or are not resource URLs in the current or a downstream
+ * response must result in an IllegalStateException25
+ * <p/>
+ * cxxxii: Creating other URLs, e.g. resource URLs of type  or action or render URLs, must result in an
+ * IllegalStateException
  *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -68,7 +63,7 @@ import java.io.IOException;
    Assertion.JSR286_130,
    Assertion.JSR286_131,
    Assertion.JSR286_132
-   })
+})
 public class DowngradeCacheabilityTestCase
 {
    public DowngradeCacheabilityTestCase(PortletTestCase seq)
@@ -79,6 +74,22 @@ public class DowngradeCacheabilityTestCase
          {
             ResourceURL resourceURL = response.createResourceURL();
             assertEquals(ResourceURL.PAGE, resourceURL.getCacheability());
+            try
+            {
+               resourceURL.setCacheability(null);
+               fail();
+            }
+            catch (IllegalArgumentException ignore)
+            {
+            }
+            try
+            {
+               resourceURL.setCacheability("inexistent");
+               fail();
+            }
+            catch (IllegalArgumentException ignore)
+            {
+            }
             resourceURL.setCacheability(ResourceURL.PORTLET);
             assertEquals(ResourceURL.PORTLET, resourceURL.getCacheability());
             return new InvokeGetResponse(resourceURL.toString());
