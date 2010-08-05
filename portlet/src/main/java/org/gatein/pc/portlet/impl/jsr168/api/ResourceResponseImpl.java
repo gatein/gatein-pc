@@ -33,6 +33,7 @@ import org.gatein.pc.api.invocation.response.ResponseProperties;
 
 import javax.portlet.PortletURL;
 import javax.portlet.ResourceResponse;
+import javax.portlet.ResourceURL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -109,26 +110,23 @@ public class ResourceResponseImpl extends MimeResponseImpl implements ResourceRe
 
    public PortletURL createActionURL()
    {
-      if (cacheability != CacheLevel.PAGE)
-      {
-         throw new IllegalStateException("Cannot create action URL because the current cache level " + cacheability +
-            " is not " + CacheLevel.PAGE);
-      }
-
-      //
+      checkCacheLevel();
       return super.createActionURL();
    }
 
    public PortletURL createRenderURL()
    {
+      checkCacheLevel();
+      return super.createRenderURL();
+   }
+
+   private void checkCacheLevel()
+   {
       if (cacheability != CacheLevel.PAGE)
       {
-         throw new IllegalStateException("Cannot create render URL because the current cache level " + cacheability +
-            " is not " + CacheLevel.PAGE);
+         throw new IllegalStateException("A resource cannot create URLs if the cache level hasn't been set to "
+            + ResourceURL.PAGE + " as mandated by JSR-286 PLT.13.7. Cache level was: " + cacheability);
       }
-
-      //
-      return super.createRenderURL();
    }
 
    protected ContentResponse createMarkupResponse(ResponseProperties properties, Map<String, Object> attributeMap, String contentType, byte[] bytes, String chars, CacheControl cacheControl)
