@@ -65,7 +65,7 @@ public class ResourceResponseImpl extends MimeResponseImpl implements ResourceRe
       {
          throw new IllegalArgumentException("Locale cannot be null");
       }
-      if (locale.getCountry().isEmpty())
+      if (locale.getCountry().length() == 0)
       {
          addProperty("Content-Language", locale.getLanguage());
       }
