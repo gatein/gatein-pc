@@ -54,7 +54,12 @@ public class ResourceResponseImpl extends MimeResponseImpl implements ResourceRe
       super(invocation, preq);
 
       //
-      this.cacheability = invocation.getCacheLevel();
+      CacheLevel cacheLevel = invocation.getCacheLevel();
+      if (cacheLevel == null)
+      {
+         cacheLevel = CacheLevel.PAGE;
+      }
+      this.cacheability = cacheLevel;
    }
 
    public void setLocale(Locale locale)
