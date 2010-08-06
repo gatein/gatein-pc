@@ -98,6 +98,7 @@ public class RemoteControllerPortlet extends GenericPortlet
       writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\"><img\n" +
          "                        src=\"" + resourceRequest.getContextPath() + "/images/icon-normal.gif\" alt=\"\"/> make parent portlet normal</a></li></ul>");
       writer.print("<br/><ul><li>");
+      url = resourceResponse.createRenderURL();
       writer.print("Set value of <b>'zipcode'</b> public render parameter to:</li>");
       url.setParameter(ZIPCODE, "80201");
       writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\">Denver, CO</a>");
