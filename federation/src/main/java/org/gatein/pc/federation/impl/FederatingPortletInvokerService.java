@@ -231,6 +231,20 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       return federated.setProperties(compoundPortletContext, changes);
    }
 
+   public PortletContext exportPortlet(PortletStateType stateType, PortletContext compoundPortletContext)
+         throws PortletInvokerException
+   {
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      return federated.exportPortlet(stateType, compoundPortletContext);
+   }
+
+   public PortletContext importPortlet(PortletStateType stateType, PortletContext compoundPortletContext)
+   throws PortletInvokerException
+   {
+      PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
+      return federated.importPortlet(stateType, compoundPortletContext);
+   }
+   
    public synchronized void setNullInvokerHandler(NullInvokerHandler nullHandler)
    {
       if (nullHandler == null)

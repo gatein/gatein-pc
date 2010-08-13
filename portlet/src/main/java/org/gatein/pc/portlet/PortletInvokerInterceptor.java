@@ -32,7 +32,9 @@ import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.portlet.state.StateConversionException;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -130,5 +132,17 @@ public class PortletInvokerInterceptor implements PortletInvoker
 
       //
       return next;
+   }
+
+   public PortletContext exportPortlet(PortletStateType stateType, PortletContext originalPortletContext)
+         throws PortletInvokerException, IllegalArgumentException
+   {
+      return safeGetNext().exportPortlet(stateType, originalPortletContext);
+   }
+   
+   public PortletContext importPortlet(PortletStateType stateType, PortletContext originalPortletContext)
+         throws PortletInvokerException, IllegalArgumentException
+   {
+      return safeGetNext().importPortlet(stateType, originalPortletContext);
    }
 }

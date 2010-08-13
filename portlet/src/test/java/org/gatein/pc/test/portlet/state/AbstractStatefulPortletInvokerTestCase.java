@@ -29,8 +29,10 @@ import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.state.PropertyMap;
+import org.gatein.pc.portlet.impl.state.StateConverterV0;
 import org.gatein.pc.portlet.support.info.PortletInfoSupport;
 import org.gatein.pc.portlet.support.PortletSupport;
 import org.gatein.pc.api.info.MetaInfo;
@@ -38,11 +40,13 @@ import org.gatein.pc.api.invocation.ActionInvocation;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.portlet.state.AbstractPropertyContext;
+import org.gatein.pc.portlet.state.StateConverter;
 import org.gatein.pc.api.state.AccessMode;
 import org.gatein.pc.api.state.DestroyCloneFailure;
 import org.gatein.pc.api.state.PropertyChange;
 import org.gatein.pc.api.state.PropertyContext;
 import org.gatein.pc.portlet.state.SimplePropertyMap;
+import org.gatein.pc.portlet.state.producer.PortletState;
 
 import static org.jboss.unit.api.Assert.*;
 import org.jboss.unit.api.pojo.annotations.Test;
@@ -168,6 +172,17 @@ public abstract class AbstractStatefulPortletInvokerTestCase
     *
     */
    protected abstract void addPreference(PortletContext popRef, String key, List<String> defaultValue, Boolean readOnly);
+   
+   /**
+    * 
+    */
+   protected abstract PortletContext exportPortletContext(PortletContext contextToImport) throws PortletInvokerException;
+   
+   /**
+    *
+    */
+   protected abstract PortletContext importPortletContext(PortletContext contextToImport) throws PortletInvokerException;
+   
 
    /**
     *
@@ -958,4 +973,240 @@ public abstract class AbstractStatefulPortletInvokerTestCase
          }
       }
    }
+   
+   @Test
+   public void testExportNullPortletContext() throws Exception
+   {
+      try
+      {
+         exportPortletContext(null);
+         fail("Was expecting an illegal arguement exception.");
+      }
+      catch (IllegalArgumentException e)
+      {
+         //expected
+      }
+      assertNoExistingState();
+   }
+   
+   @Test
+   public void testExportsNonExisitngPOP() throws Exception
+   {
+      PortletContext  popCTX = createNonExistingPOPRef();
+      try
+      {
+         exportPortletContext(popCTX);
+         fail("Was expecting a NoSuchPortletException.");
+      }
+      catch (NoSuchPortletException e)
+      {
+         //expected
+      }
+      assertNoExistingState();
+   }
+   
+   @Test
+   public void testExportNonExisitngCCP() throws Exception
+   {
+      PortletContext  ccpCTX = createNonExistingLocalCCPRef();
+      try
+      {
+         exportPortletContext(ccpCTX);
+         fail("Was expecting a NoSuchPortletException.");
+      }
+      catch (NoSuchPortletException e)
+      {
+         //expected
+      }
+      assertNoExistingState();
+   }
+   
+   @Test
+   public void testExportInvalidPOP() throws Exception
+   {
+      PortletContext popCtx = createInvalidPOPRef();
+      try
+      {
+         exportPortletContext(popCtx);
+         fail("was expecting an InvalidPortletIdException");
+      }
+      catch (InvalidPortletIdException expected)
+      {
+      }
+      assertNoExistingState();
+   }
+   
+   @Test
+   public void testExportPortlet() throws Exception
+   {
+      PropertyMap expectedProperties = new SimplePropertyMap();
+      expectedProperties.setProperty("abc", Arrays.asList("def"));
+      
+      PortletInfoSupport info = new PortletInfoSupport();
+      info.getMeta().setDisplayName("MyPortlet");
+      PortletContext popCtx = createPOPRef(info);
+      
+      PortletContext export0Ctx = exportPortletContext(popCtx);
+
+      //Make sure we get back the ID for the original portlet
+      assertEquals("PortletId", export0Ctx.getId());
+      //check by doing an import
+      checkWithImportPortlet(export0Ctx, popCtx, new SimplePropertyMap());
+      
+      
+      //add a preference to the portlet to make it store a state
+      addPreference(popCtx, "abc", Arrays.asList("def"));
+      PortletContext export1Ctx = exportPortletContext(popCtx);
+
+      //Make sure we get back the ID for the original portlet
+      assertEquals("PortletId", export1Ctx.getId());
+      //check by doing an import
+      checkWithImportPortlet(export1Ctx, popCtx, expectedProperties);
+      
+      PortletContext ccp1Ctx = createClone(popCtx);
+      PortletContext export2Ctx = exportPortletContext(ccp1Ctx);
+      
+      //Make sure we get back the ID for the original portlet
+      assertEquals("PortletId", export2Ctx.getId());
+      //Check by doing an import
+      checkWithImportPortlet(export2Ctx, ccp1Ctx, expectedProperties);
+      
+      PortletContext ccp2Ctx = createClone(ccp1Ctx);
+      //make sure that adding a property to the already cloned ccp1Ctx doesn't interfere with exports
+      PropertyChange[] propertyChanges = new PropertyChange[1];
+      propertyChanges[0] = PropertyChange.newUpdate("123", Arrays.asList("456"));
+      ccp1Ctx = setProperties(ccp1Ctx, propertyChanges);
+      assertTrue(getProperties(ccp1Ctx).containsKey("123"));
+      assertFalse(getProperties(export2Ctx).containsKey("123"));
+      
+      PortletContext export3Ctx = exportPortletContext(ccp2Ctx);
+
+      //Make sure we get back the ID for the original portlet
+      assertEquals("PortletId", export3Ctx.getId());
+      //Check by doing an import
+      checkWithImportPortlet(export3Ctx, ccp2Ctx, expectedProperties);
+   }
+
+   protected void checkWithImportPortlet(PortletContext exportedPortletContext, PortletContext originalPortletContext, PropertyMap expectedProperties) throws Exception
+   {
+      PortletContext importedPortletContext = importPortletContext(exportedPortletContext);
+      
+      Portlet importedPortlet = getPortlet(importedPortletContext);
+      
+      PortletContext portletContext = importedPortlet.getContext();
+      
+      //make sure the expected portlet context and the one we get back from the import are the same
+      assertEquals(originalPortletContext.getApplicationName(), portletContext.getApplicationName());
+      assertEquals(originalPortletContext.getPortletName(), portletContext.getPortletName());
+      
+      if (originalPortletContext instanceof StatefulPortletContext)
+      {
+         StatefulPortletContext statefulExpected = (StatefulPortletContext)originalPortletContext;
+         
+         assertTrue(portletContext instanceof StatefulPortletContext);
+         StatefulPortletContext statefulPortletContext = (StatefulPortletContext)portletContext;
+         
+         //Check that the states are the same
+         StateConverter sc = new StateConverterV0();
+         PortletState state = sc.unmarshall(PortletStateType.OPAQUE, (byte[])statefulPortletContext.getState());
+         PortletState expectedState = sc.unmarshall(PortletStateType.OPAQUE, (byte[])statefulExpected.getState());
+         
+         assertEquals(expectedState.getPortletId(), state.getPortletId());
+         assertEquals(expectedState.getProperties(), state.getProperties());
+         assertEquals(expectedState.getTerminationTime(), state.getTerminationTime());
+         assertEquals(expectedState.getClass(), state.getClass());
+      }
+
+      PropertyMap properties = getProperties(portletContext);
+      assertEquals(expectedProperties, properties);
+      assertEquals(getProperties(originalPortletContext), properties);
+      
+   }
+   
+   @Test
+   public void testImportNullPortletContext() throws Exception
+   {
+      try
+      {
+         importPortletContext(null);
+         fail("Was expecting an illegal arguement exception.");
+      }
+      catch (IllegalArgumentException e)
+      {
+         //expected
+      }
+      assertNoExistingState();
+   }
+   
+   @Test
+   public void testImportsNonExisitngPOP() throws Exception
+   {
+      PortletContext  popCTX = createNonExistingPOPRef();
+      try
+      {
+         importPortletContext(popCTX);
+         fail("Was expecting a NoSuchPortletException.");
+      }
+      catch (NoSuchPortletException e)
+      {
+         //expected
+      }
+      assertNoExistingState();
+   }
+   
+   @Test
+   public void testImportNonExisitngCCP() throws Exception
+   {
+      PortletContext  ccpCTX = createNonExistingLocalCCPRef();
+      try
+      {
+         importPortletContext(ccpCTX);
+         fail("Was expecting a NoSuchPortletException.");
+      }
+      catch (NoSuchPortletException e)
+      {
+         //expected
+      }
+      assertNoExistingState();
+   }
+   
+   @Test
+   public void testImportInvalidPOP() throws Exception
+   {
+      PortletContext popCtx = createInvalidPOPRef();
+      try
+      {
+         importPortletContext(popCtx);
+         fail("was expecting an InvalidPortletIdException");
+      }
+      catch (InvalidPortletIdException expected)
+      {
+      }
+      assertNoExistingState();
+   }
+
+   @Test
+   public void testImport() throws Exception
+   {
+      //This will create the portlet into the container and check that it doesn't have any properties set
+      PortletContext popCtx = createPOPRef(new PortletInfoSupport());
+      assertTrue(getProperties(popCtx).isEmpty());
+      
+      //Create the state bytes manually and create the portletcontext.
+      //Tests what happens if a stateful portlet is export on one machine and imported into another
+      StateConverter sc = new StateConverterV0();
+      PropertyMap propertyMap = new SimplePropertyMap();
+      propertyMap.setProperty("test", Arrays.asList("123"));
+      PortletState portletState = new PortletState("PortletId", propertyMap);
+      byte[] stateBytes = sc.marshall(PortletStateType.OPAQUE, portletState);
+      
+      StatefulPortletContext portletContext = StatefulPortletContext.create("PortletId", PortletStateType.OPAQUE, stateBytes);
+      
+      //import portlet
+      PortletContext importedPortletContext = importPortletContext(portletContext);
+      
+      //Make sure that this new portlet has the properties we want
+      assertEquals(propertyMap, getProperties(importedPortletContext));
+   }
+   
 }

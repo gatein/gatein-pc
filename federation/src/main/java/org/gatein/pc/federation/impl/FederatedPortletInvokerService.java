@@ -219,6 +219,21 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
    }
 
 
+   public PortletContext exportPortlet(PortletStateType stateType, PortletContext compoundPortletContext)
+         throws PortletInvokerException
+   {
+      PortletContext portletContext = dereference(compoundPortletContext);
+      portletContext = portletInvoker.exportPortlet(stateType, portletContext);
+      return reference(portletContext);
+   }
+   
+   public PortletContext importPortlet(PortletStateType stateType, PortletContext compoundPortletContext) throws PortletInvokerException
+   {
+      PortletContext portletContext = dereference(compoundPortletContext);
+      portletContext = portletInvoker.exportPortlet(stateType, portletContext);
+      return reference(portletContext);
+   }
+
    private PortletContext dereference(PortletContext compoundPortletContext)
    {
       String portletId = compoundPortletContext.getId().substring(id.length() + 1);

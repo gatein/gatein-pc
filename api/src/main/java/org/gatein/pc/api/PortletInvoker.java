@@ -71,7 +71,7 @@ public interface PortletInvoker
    /**
     * Clone a portlet.
     *
-    * @param stateType      the portle state type desired
+    * @param stateType      the portlet state type desired
     * @param portletContext the portlet context to clone  @return the clone id
     * @return the cloned portlet context
     * @throws IllegalArgumentException      if the portletId is null
@@ -125,4 +125,26 @@ public interface PortletInvoker
     * @throws PortletInvokerException       a portlet invoker exception
     */
    PortletContext setProperties(PortletContext portletContext, PropertyChange[] changes) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
+   
+   /**
+    * Exports a portlet from the invoker which can be used to recreate this portlet during an import portlet operation
+    * The returned portlet Id will be the portlet Id of the base portlet, not a cloned portlet Id
+    * If the portlet contains state, it will be returned regardless if the portlet invoker is set to persist state locally.
+    * 
+    * @param stateType the portlet state type desired
+    * @param originalPortletContext the context of the porlet to be exported
+    * @return A new portlet context which can be used to import a portlet
+    * @throws PortletInvokerException
+    */
+   PortletContext exportPortlet(PortletStateType stateType, PortletContext originalPortletContext) throws PortletInvokerException;
+   
+   /**
+    * Imports a portlet into the invoker.
+    * 
+    * @param stateType the portlet state type desired
+    * @param contextToImport the context to be imported
+    * @return The portletcontext for the imported portlet
+    * @throws PortletInvokerException
+    */
+   PortletContext importPortlet(PortletStateType stateType, PortletContext contextToImport) throws PortletInvokerException;
 }

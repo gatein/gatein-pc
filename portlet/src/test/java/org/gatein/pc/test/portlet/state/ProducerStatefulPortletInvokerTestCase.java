@@ -237,4 +237,14 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
       assertEquals(1, portlets.size());
       return (Portlet)portlets.iterator().next();
    }
+   
+   protected PortletContext importPortletContext(PortletContext contextToImport) throws PortletInvokerException
+   {
+      return producer.importPortlet(PortletStateType.OPAQUE, contextToImport);
+   }
+   
+   protected PortletContext exportPortletContext(PortletContext originalPortletContext) throws PortletInvokerException
+   {
+      return producer.exportPortlet(PortletStateType.OPAQUE, originalPortletContext);
+   }
 }

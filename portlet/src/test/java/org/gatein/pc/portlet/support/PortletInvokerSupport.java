@@ -212,4 +212,16 @@ public class PortletInvokerSupport implements PortletInvoker
    {
       throw new UnsupportedOperationException();
    }
+
+   public PortletContext exportPortlet(PortletStateType stateType,
+         PortletContext originalPortletContext) throws PortletInvokerException, IllegalArgumentException
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   public PortletContext importPortlet(PortletStateType stateType,
+         PortletContext originalPortletContext) throws PortletInvokerException, IllegalArgumentException
+   {
+      throw new UnsupportedOperationException();
+   }
 }

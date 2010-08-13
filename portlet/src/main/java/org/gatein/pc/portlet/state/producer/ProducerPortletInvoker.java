@@ -630,6 +630,104 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       }
    }
 
+   public PortletContext exportPortlet(PortletStateType stateType, PortletContext originalPortletContext) throws PortletInvokerException, IllegalArgumentException
+   {
+      if (originalPortletContext == null)
+      {
+         throw new IllegalArgumentException("No null portlet context accepted");
+      }
+
+      //
+      InternalContext context = getStateContext(originalPortletContext);
+      String portletId = context.getPortletId();
+
+      //
+      boolean persistLocally = stateManagementPolicy.persistLocally();
+
+      //
+      if (context.isStateful())
+      {
+         StatefulContext statefulContext = (StatefulContext)context;
+         try
+         {               
+            PortletState sstate = new PortletState(portletId, statefulContext.getProperties());
+            Serializable marshalledState = stateConverter.marshall(stateType, sstate);
+            return StatefulPortletContext.create(portletId, stateType, marshalledState);  
+         }
+         catch (StateConversionException e)
+         {
+            throw new PortletInvokerException(e);
+         }
+      }
+      else
+      {
+         if (persistLocally)
+         {
+            PropertyMap newState = new SimplePropertyMap();
+            getPropertiesFromMetaData(originalPortletContext, newState);
+            try
+            {
+               PortletState sstate = new PortletState(portletId, newState);
+               Serializable marshalledState = stateConverter.marshall(stateType, sstate);
+               return StatefulPortletContext.create(portletId, stateType, marshalledState);
+            }
+            catch (StateConversionException e)
+            {
+               throw new PortletInvokerException(e);
+            }
+         }
+         else
+         {
+            // if we don't have a state associated with this portlet context and we don't persistLocally then there is nothing to
+            // store here and we need to just return the value we were given.
+            //return context.getPortletContext();
+            return getPortlet(originalPortletContext).getContext();//originalPortletContext;
+         }
+      }
+   }
+   
+   public PortletContext importPortlet(PortletStateType stateType, PortletContext contextToImport) throws PortletInvokerException
+   {
+      if (contextToImport == null)
+      {
+         throw new IllegalArgumentException("No null portlet id accepted");
+      }
+      
+      try
+      {
+         if (contextToImport instanceof StatefulPortletContext)
+         {
+            StatefulPortletContext statefulPortletContext = (StatefulPortletContext) contextToImport;
+            Boolean persistLocally = stateManagementPolicy.persistLocally();
+
+            PortletState portletState = getStateConverter().unmarshall(stateType, statefulPortletContext.getState());
+            //
+            if (persistLocally)
+            {
+               // Create the new state
+
+               String cloneStateId = persistenceManager.createState(statefulPortletContext.getId(), portletState.getProperties());
+
+               // Return the clone context
+               String cloneId = PRODUCER_CLONE_ID_PREFIX + cloneStateId;
+               return PortletContext.createPortletContext(cloneId);
+            }
+            else
+            {
+               return marshall(statefulPortletContext.getType(), statefulPortletContext.getId(), portletState.getProperties());
+            }
+         }
+         else
+         {
+            return getPortlet(contextToImport).getContext();
+         }
+      }
+      catch (StateConversionException e)
+      {
+         throw new PortletInvokerException(e);
+      }
+   }
+   
    private <S extends Serializable> PortletContext marshall(PortletStateType<S> stateType, String portletId, PropertyMap props) throws PortletInvokerException
    {
       try

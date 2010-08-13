@@ -252,4 +252,14 @@ public class ConsumerStatefulPortletInvokerTestCase extends AbstractStatefulPort
       assertEquals(1, portlets.size());
       return (Portlet)portlets.iterator().next();
    }
+   
+   protected PortletContext importPortletContext(PortletContext contextToImport) throws PortletInvokerException
+   {
+      return consumer.importPortlet(PortletStateType.OPAQUE, contextToImport);
+   }
+   
+   protected PortletContext exportPortletContext(PortletContext originalPortletContext) throws PortletInvokerException
+   {
+      return consumer.exportPortlet(PortletStateType.OPAQUE, originalPortletContext);
+   }
 }

@@ -225,6 +225,36 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       }
    }
 
+   public PortletContext importPortlet(PortletStateType stateType,
+         PortletContext portletContext) throws PortletInvokerException, IllegalArgumentException
+   {
+      ConsumerContext consumerContext = getConsumerContext(portletContext);
+      
+      PortletContext importContext = super.importPortlet(stateType, consumerContext.producerPortletContext);
+      
+      if (importContext instanceof StatefulPortletContext)
+      {
+         StatefulPortletContext statefulimportContext = (StatefulPortletContext)importContext;
+         ConsumerState consumerState = new ConsumerState<Serializable>(importContext.getId(), statefulimportContext.getType(), statefulimportContext.getState());
+         String id = persistenceManager.createState(consumerState);
+         return PortletContext.createPortletContext(CLONE_ID_PREFIX + id);
+      }
+      else
+      {
+         return importContext;
+      }
+      
+   }
+   
+   public PortletContext exportPortlet(PortletStateType stateType,
+         PortletContext portletContext) throws PortletInvokerException, IllegalArgumentException
+   {
+      ConsumerContext consumerContext = getConsumerContext(portletContext);
+      
+      //
+      return super.exportPortlet(stateType, consumerContext.producerPortletContext);
+   }
+   
    public List<DestroyCloneFailure> destroyClones(List<PortletContext> portletContexts) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
       if (portletContexts == null)
