@@ -1,284 +1,308 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
-  <modelVersion>4.0.0</modelVersion>
-  
-  <name>GateIn - Portlet Container</name>
-  
-  <groupId>org.gatein.pc</groupId>
-  <artifactId>pc-parent</artifactId>
-  <version>2.2.0-Beta01-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  
-  <parent>
-    <groupId>org.gatein</groupId>
-    <artifactId>gatein-parent</artifactId>
-    <version>1.0.1-GA</version>
-  </parent>
-  
-  <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/gatein/components/pc/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/gatein/components/pc/trunk/</developerConnection>
-    <url>http://fisheye.jboss.org/browse/gatein/components/pc/trunk/</url>
-  </scm>
-  
-  <properties>
-    <version.gatein.common>2.0.2-GA</version.gatein.common>
-    <version.gatein.wci>2.0.1-GA</version.gatein.wci>
-    <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
-    <version.apache.taglibs>1.1.2</version.apache.taglibs>
-    <version.apache.log4j>1.2.14</version.apache.log4j>
+<!--
+  ~ JBoss, a division of Red Hat
+  ~ Copyright 2010, Red Hat Middleware, LLC, and individual
+  ~ contributors as indicated by the @authors tag. See the
+  ~ copyright.txt in the distribution for a full listing of
+  ~ individual contributors.
+  ~
+  ~ This is free software; you can redistribute it and/or modify it
+  ~ under the terms of the GNU Lesser General Public License as
+  ~ published by the Free Software Foundation; either version 2.1 of
+  ~ the License, or (at your option) any later version.
+  ~
+  ~ This software is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public
+  ~ License along with this software; if not, write to the Free
+  ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+  -->
 
-    <!-- used in test module by maven-antrun-extended-plugin -->
-    <version.jboss.unit>1.2.3</version.jboss.unit>
-    <version.cargo>1.0.1-alpha-1</version.cargo>
-  
-    <preparationGoals>clean install</preparationGoals>
-  </properties>
-  
-  <dependencyManagement>
-    <dependencies>
-      <!-- Import dependency management configuration -->
-      <dependency>
-        <groupId>org.gatein</groupId>
-        <artifactId>gatein-dep</artifactId>
-        <version>1.0.2-GA</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-   
-      <!-- Internal dependencies -->
-      <dependency>
-        <groupId>org.gatein.common</groupId>
-        <artifactId>common-common</artifactId>
-        <version>${version.gatein.common}</version>
-      </dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-      <dependency>
-        <groupId>org.gatein.common</groupId>
-        <artifactId>common-logging</artifactId>
-        <version>${version.gatein.common}</version>
-      </dependency>
-    
-      <dependency>
-        <groupId>org.gatein.common</groupId>
-        <artifactId>common-mc</artifactId>
-        <version>${version.gatein.common}</version>
-      </dependency>
+   <modelVersion>4.0.0</modelVersion>
 
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-portlet</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-portlet</artifactId>
-        <type>test-jar</type>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-portlet</artifactId>
-        <type>test-jar</type>
-        <classifier>tests</classifier>
-        <version>${project.version}</version>
-      </dependency>
+   <name>GateIn - Portlet Container</name>
 
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-controller</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-mc</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      
-      <dependency>
-        <groupId>org.gatein.wci</groupId>
-        <artifactId>wci-wci</artifactId>
-        <version>${version.gatein.wci}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.gatein.wci</groupId>
-        <artifactId>wci-tomcat</artifactId>
-        <version>${version.gatein.wci}</version>
-      </dependency>
+   <groupId>org.gatein.pc</groupId>
+   <artifactId>pc-parent</artifactId>
+   <version>2.2.0-Beta01-SNAPSHOT</version>
+   <packaging>pom</packaging>
 
-      <dependency>
-        <groupId>apache-taglibs</groupId>
-        <artifactId>jstl</artifactId>
-        <version>${version.apache.taglibs}</version>
-      </dependency>
-      <dependency>
-        <groupId>apache-taglibs</groupId>
-        <artifactId>standard</artifactId>
-        <version>${version.apache.taglibs}</version>
-      </dependency>
- 
-    </dependencies>
-  </dependencyManagement>
-  
-  <dependencies>
-     <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <!--<version>${org.slf4j.version}</version>-->
-        <scope>test</scope>
-     </dependency>
-  </dependencies>
+   <parent>
+      <groupId>org.gatein</groupId>
+      <artifactId>gatein-parent</artifactId>
+      <version>1.0.1-GA</version>
+   </parent>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.1</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>false</addClasspath>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-    <pluginManagement>
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/gatein/components/pc/trunk/</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/gatein/components/pc/trunk/</developerConnection>
+      <url>http://fisheye.jboss.org/browse/gatein/components/pc/trunk/</url>
+   </scm>
+
+   <properties>
+      <version.gatein.common>2.0.3-GA</version.gatein.common>
+      <version.gatein.wci>2.0.1-GA</version.gatein.wci>
+      <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
+      <version.apache.taglibs>1.1.2</version.apache.taglibs>
+      <version.apache.log4j>1.2.14</version.apache.log4j>
+
+      <!-- used in test module by maven-antrun-extended-plugin -->
+      <version.jboss.unit>1.2.3</version.jboss.unit>
+      <version.cargo>1.0.1-alpha-1</version.cargo>
+
+      <preparationGoals>clean install</preparationGoals>
+   </properties>
+
+   <dependencyManagement>
+      <dependencies>
+         <!-- Import dependency management configuration -->
+         <dependency>
+            <groupId>org.gatein</groupId>
+            <artifactId>gatein-dep</artifactId>
+            <version>1.0.2-GA</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+
+         <!-- Internal dependencies -->
+         <dependency>
+            <groupId>org.gatein.common</groupId>
+            <artifactId>common-common</artifactId>
+            <version>${version.gatein.common}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.gatein.common</groupId>
+            <artifactId>common-logging</artifactId>
+            <version>${version.gatein.common}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.gatein.common</groupId>
+            <artifactId>common-mc</artifactId>
+            <version>${version.gatein.common}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-portlet</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-portlet</artifactId>
+            <type>test-jar</type>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-portlet</artifactId>
+            <type>test-jar</type>
+            <classifier>tests</classifier>
+            <version>${project.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-controller</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-mc</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.gatein.wci</groupId>
+            <artifactId>wci-wci</artifactId>
+            <version>${version.gatein.wci}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.wci</groupId>
+            <artifactId>wci-tomcat</artifactId>
+            <version>${version.gatein.wci}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>apache-taglibs</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${version.apache.taglibs}</version>
+         </dependency>
+         <dependency>
+            <groupId>apache-taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>${version.apache.taglibs}</version>
+         </dependency>
+
+      </dependencies>
+   </dependencyManagement>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
+         <!--<version>${org.slf4j.version}</version>-->
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+
+   <build>
       <plugins>
-        <plugin>
-          <groupId>org.jboss.unit</groupId>
-          <artifactId>jboss-unit-tooling-maven2</artifactId>
-          <version>1.2.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>make-assembly</id>
-              <phase>package</phase>
-              <goals>
-                <goal>single</goal>
-              </goals>
-            </execution>
-          </executions>
-      </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.3.1</version>
+            <configuration>
+               <skip>true</skip>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.1</version>
+            <configuration>
+               <archive>
+                  <manifest>
+                     <addClasspath>false</addClasspath>
+                  </manifest>
+               </archive>
+            </configuration>
+         </plugin>
       </plugins>
-    </pluginManagement>
-  </build>
-  
-  <profiles>
-    <profile>
-      <id>default</id>
-      <modules>
-        <module>api</module>
-        <module>jsr168api</module>
-        <module>portlet</module>
-        <module>controller</module>
-        <module>bridge</module>
-        <module>federation</module>
-        <module>management</module>
-        <module>mc</module>
-        <module>test</module>
-        <module>portal</module>
-        <module>samples</module>
-        <module>docs</module>
-      </modules>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-    <profile>
-      <id>docs</id>
-      <modules>
-        <module>docs</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>test</id>
-      <modules>
-        <module>api</module>
-        <module>portlet</module>
-        <module>controller</module>
-        <module>mc</module>
-        <module>test</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>portal</id>
-      <modules>
-        <module>api</module>
-        <module>portlet</module>
-        <module>controller</module>
-        <module>mc</module>
-        <module>portal</module>
-        <module>samples</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>release</id>
-      <modules>
-        <module>api</module>
-        <module>portlet</module>
-        <module>controller</module>
-        <module>mc</module>
-        <module>portal</module>
-        <module>samples</module>
-        <module>docs</module>
-      </modules>
-    </profile>
-  </profiles>
-  
-  <repositories>
+      <pluginManagement>
+         <plugins>
+            <plugin>
+               <groupId>org.jboss.unit</groupId>
+               <artifactId>jboss-unit-tooling-maven2</artifactId>
+               <version>1.2.1</version>
+            </plugin>
+            <plugin>
+               <artifactId>maven-assembly-plugin</artifactId>
+               <executions>
+                  <execution>
+                     <id>make-assembly</id>
+                     <phase>package</phase>
+                     <goals>
+                        <goal>single</goal>
+                     </goals>
+                  </execution>
+               </executions>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+   </build>
 
-    <repository>
-      <id>jboss-public-repository-group</id>
-      <name>JBoss Public Maven Repository Group</name>
-      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-      <layout>default</layout>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>repository.jboss.org</id>
-      <name>JBoss Repository</name>
-      <layout>default</layout>
-      <url>http://repository.jboss.org/maven2/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>snapshots.jboss.org</id>
-      <name>JBoss Snapshots Repository</name>
-      <layout>default</layout>
-      <url>http://snapshots.jboss.org/maven2/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-  
+   <profiles>
+      <profile>
+         <id>default</id>
+         <modules>
+            <module>api</module>
+            <module>jsr168api</module>
+            <module>portlet</module>
+            <module>controller</module>
+            <module>bridge</module>
+            <module>federation</module>
+            <module>management</module>
+            <module>mc</module>
+            <module>test</module>
+            <module>portal</module>
+            <module>samples</module>
+            <module>docs</module>
+         </modules>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+         </activation>
+      </profile>
+      <profile>
+         <id>docs</id>
+         <modules>
+            <module>docs</module>
+         </modules>
+      </profile>
+      <profile>
+         <id>test</id>
+         <modules>
+            <module>api</module>
+            <module>portlet</module>
+            <module>controller</module>
+            <module>mc</module>
+            <module>test</module>
+         </modules>
+      </profile>
+      <profile>
+         <id>portal</id>
+         <modules>
+            <module>api</module>
+            <module>portlet</module>
+            <module>controller</module>
+            <module>mc</module>
+            <module>portal</module>
+            <module>samples</module>
+         </modules>
+      </profile>
+      <profile>
+         <id>release</id>
+         <modules>
+            <module>api</module>
+            <module>portlet</module>
+            <module>controller</module>
+            <module>mc</module>
+            <module>portal</module>
+            <module>samples</module>
+            <module>docs</module>
+         </modules>
+      </profile>
+   </profiles>
+
+   <repositories>
+
+      <repository>
+         <id>jboss-public-repository-group</id>
+         <name>JBoss Public Maven Repository Group</name>
+         <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+         <layout>default</layout>
+         <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </snapshots>
+      </repository>
+      <repository>
+         <id>repository.jboss.org</id>
+         <name>JBoss Repository</name>
+         <layout>default</layout>
+         <url>http://repository.jboss.org/maven2/</url>
+         <snapshots>
+            <enabled>false</enabled>
+         </snapshots>
+      </repository>
+      <repository>
+         <id>snapshots.jboss.org</id>
+         <name>JBoss Snapshots Repository</name>
+         <layout>default</layout>
+         <url>http://snapshots.jboss.org/maven2/</url>
+         <snapshots>
+            <enabled>true</enabled>
+         </snapshots>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+      </repository>
+   </repositories>
+
 </project>
