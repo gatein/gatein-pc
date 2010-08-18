@@ -82,31 +82,39 @@ public class RemoteControllerPortlet extends GenericPortlet
    @Override
    public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) throws PortletException, IOException
    {
-      resourceResponse.setContentType("text/html");
-      PrintWriter writer = resourceResponse.getWriter();
-      String namespace = "n_" + resourceResponse.getNamespace();
-      writer.print("<html><head><script type='text/javascript'>function openLinkInParent(url){window.open(url,'"
-         + namespace + "_parent');}</script>\n<link rel=\"stylesheet\" href='" + resourceRequest.getContextPath() + "/css/master.css' type=\"text/css\"/></head><body>");
-      PortletURL url = resourceResponse.createRenderURL();
-      url.setWindowState(WindowState.MINIMIZED);
-      writer.print("<div class=\"remote-container\"><ul><li><a href='#' onclick=\"" + createParentURL(url) + "\"><img\n" +
-         "                        src=\"" + resourceRequest.getContextPath() + "/images/icon-minimize.gif\" alt=\"\"/> minimize parent portlet</a></li>");
-      url.setWindowState(WindowState.MAXIMIZED);
-      writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\"><img\n" +
-         "                        src=\"" + resourceRequest.getContextPath() + "/images/icon-maximize.gif\" alt=\"\"/> maximize parent portlet</a></li>");
-      url.setWindowState(WindowState.NORMAL);
-      writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\"><img\n" +
-         "                        src=\"" + resourceRequest.getContextPath() + "/images/icon-normal.gif\" alt=\"\"/> make parent portlet normal</a></li></ul>");
-      writer.print("<br/><ul><li>");
-      url = resourceResponse.createRenderURL();
-      writer.print("Set value of <b>'zipcode'</b> public render parameter to:</li>");
-      url.setParameter(ZIPCODE, "80201");
-      writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\">Denver, CO</a>");
-      url.setParameter(ZIPCODE, "94102");
-      writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\">San Francisco, CA</a>");
-      url.setParameter(ZIPCODE, "20001");
-      writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\">Washington, DC</a>");
-      writer.print("</ul></div></body></html>");
+      String id = resourceRequest.getResourceID();
+      if (id == null)
+      {
+         resourceResponse.setContentType("text/html");
+         PrintWriter writer = resourceResponse.getWriter();
+         String namespace = "n_" + resourceResponse.getNamespace();
+         writer.print("<html><head><script type='text/javascript'>function openLinkInParent(url){window.open(url,'"
+            + namespace + "_parent');}</script>\n<link rel=\"stylesheet\" href='" + resourceRequest.getContextPath() + "/css/master.css' type=\"text/css\"/></head><body>");
+         PortletURL url = resourceResponse.createRenderURL();
+         url.setWindowState(WindowState.MINIMIZED);
+         writer.print("<div class=\"remote-container\"><ul><li><a href='#' onclick=\"" + createParentURL(url) + "\"><img\n" +
+            "                        src=\"" + resourceRequest.getContextPath() + "/images/icon-minimize.gif\" alt=\"\"/> minimize parent portlet</a></li>");
+         url.setWindowState(WindowState.MAXIMIZED);
+         writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\"><img\n" +
+            "                        src=\"" + resourceRequest.getContextPath() + "/images/icon-maximize.gif\" alt=\"\"/> maximize parent portlet</a></li>");
+         url.setWindowState(WindowState.NORMAL);
+         writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\"><img\n" +
+            "                        src=\"" + resourceRequest.getContextPath() + "/images/icon-normal.gif\" alt=\"\"/> make parent portlet normal</a></li></ul>");
+         writer.print("<br/><ul><li>");
+         url = resourceResponse.createRenderURL();
+         writer.print("Set value of <b>'zipcode'</b> public render parameter to:</li>");
+         url.setParameter(ZIPCODE, "80201");
+         writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\">Denver, CO</a>");
+         url.setParameter(ZIPCODE, "94102");
+         writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\">San Francisco, CA</a>");
+         url.setParameter(ZIPCODE, "20001");
+         writer.print("<li><a href='#' onclick=\"" + createParentURL(url) + "\">Washington, DC</a>");
+         writer.print("</ul></div></body></html>");
+      }
+      else
+      {
+         throw new IllegalArgumentException("Don't know how to handle resource: " + id);
+      }
    }
 
    private String createParentURL(PortletURL url)
