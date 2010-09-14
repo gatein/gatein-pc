@@ -28,7 +28,6 @@ import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.StateEvent;
-import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -191,7 +190,7 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
       {
          DestroyCloneFailure failure = failures.get(i);
          String cloneId = failure.getPortletId();
-         failure = new DestroyCloneFailure(reference(cloneId));
+         failure = new DestroyCloneFailure(FederatingPortletInvokerService.reference(cloneId, id));
          failures.set(i, failure);
       }
 
@@ -220,13 +219,13 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
 
 
    public PortletContext exportPortlet(PortletStateType stateType, PortletContext compoundPortletContext)
-         throws PortletInvokerException
+      throws PortletInvokerException
    {
       PortletContext portletContext = dereference(compoundPortletContext);
       portletContext = portletInvoker.exportPortlet(stateType, portletContext);
       return reference(portletContext);
    }
-   
+
    public PortletContext importPortlet(PortletStateType stateType, PortletContext compoundPortletContext) throws PortletInvokerException
    {
       PortletContext portletContext = dereference(compoundPortletContext);
@@ -236,35 +235,13 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
 
    private PortletContext dereference(PortletContext compoundPortletContext)
    {
-      String portletId = compoundPortletContext.getId().substring(id.length() + 1);
-      if (compoundPortletContext instanceof StatefulPortletContext)
-      {
-         StatefulPortletContext<?> compoundStatefulPortletContext = (StatefulPortletContext<?>)compoundPortletContext;
-         return StatefulPortletContext.create(portletId, compoundStatefulPortletContext);
-      }
-      else
-      {
-         return PortletContext.createPortletContext(portletId);
-      }
+      return FederatingPortletInvokerService.dereference(compoundPortletContext, id);
    }
 
    private PortletContext reference(PortletContext portletContext)
    {
-      String compoundPortletId = reference(portletContext.getId());
-      if (portletContext instanceof StatefulPortletContext)
-      {
-         StatefulPortletContext<?> statefulPortletContext = (StatefulPortletContext<?>)portletContext;
-         return StatefulPortletContext.create(compoundPortletId, statefulPortletContext);
-      }
-      else
-      {
-         return PortletContext.createPortletContext(compoundPortletId);
-      }
+      return FederatingPortletInvokerService.reference(portletContext, id);
    }
 
-   private String reference(String portletId)
-   {
-      return id + FederatingPortletInvokerService.SEPARATOR + portletId;
-   }
 }
                         

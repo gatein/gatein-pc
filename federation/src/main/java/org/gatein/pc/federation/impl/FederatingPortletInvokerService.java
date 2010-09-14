@@ -31,6 +31,7 @@ import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.state.DestroyCloneFailure;
@@ -67,6 +68,39 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    private volatile Map<String, FederatedPortletInvoker> registry = new HashMap<String, FederatedPortletInvoker>();
 
    private NullInvokerHandler nullHandler = NullInvokerHandler.DEFAULT_HANDLER;
+
+   public static PortletContext dereference(PortletContext compoundPortletContext, String invokerId)
+   {
+      String portletId = compoundPortletContext.getId().substring(invokerId.length() + 1);
+      if (compoundPortletContext instanceof StatefulPortletContext)
+      {
+         StatefulPortletContext<?> compoundStatefulPortletContext = (StatefulPortletContext<?>)compoundPortletContext;
+         return StatefulPortletContext.create(portletId, compoundStatefulPortletContext);
+      }
+      else
+      {
+         return PortletContext.createPortletContext(portletId);
+      }
+   }
+
+   public static PortletContext reference(PortletContext portletContext, String invokerId)
+   {
+      String compoundPortletId = reference(portletContext.getId(), invokerId);
+      if (portletContext instanceof StatefulPortletContext)
+      {
+         StatefulPortletContext<?> statefulPortletContext = (StatefulPortletContext<?>)portletContext;
+         return StatefulPortletContext.create(compoundPortletId, statefulPortletContext);
+      }
+      else
+      {
+         return PortletContext.createPortletContext(compoundPortletId);
+      }
+   }
+
+   static String reference(String portletId, String invokerId)
+   {
+      return invokerId + SEPARATOR + portletId;
+   }
 
    public synchronized FederatedPortletInvoker registerInvoker(String federatedId, PortletInvoker federatedInvoker)
    {
@@ -232,19 +266,19 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    }
 
    public PortletContext exportPortlet(PortletStateType stateType, PortletContext compoundPortletContext)
-         throws PortletInvokerException
+      throws PortletInvokerException
    {
       PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.exportPortlet(stateType, compoundPortletContext);
    }
 
    public PortletContext importPortlet(PortletStateType stateType, PortletContext compoundPortletContext)
-   throws PortletInvokerException
+      throws PortletInvokerException
    {
       PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.importPortlet(stateType, compoundPortletContext);
    }
-   
+
    public synchronized void setNullInvokerHandler(NullInvokerHandler nullHandler)
    {
       if (nullHandler == null)
