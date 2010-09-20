@@ -31,6 +31,8 @@ import org.gatein.pc.api.ContainerURL;
 import javax.portlet.BaseURL;
 import javax.portlet.PortletSecurityException;
 import javax.portlet.PortletURLGenerationListener;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.io.Writer;
 import java.io.IOException;
@@ -126,25 +128,21 @@ public abstract class BaseURLImpl implements BaseURL
       return url.getParameters();
    }
 
-   public void addProperty(String s, String s1)
+   public void addProperty(String key, String value)
    {
-      if (s == null)
-      {
-         throw new IllegalArgumentException("property name cannot be null");
-      }
-
-      //TODO:
-
+      // We only support mono valued properties
+      setProperty(key, value);
    }
 
-   public void setProperty(String s, String s1)
+   public void setProperty(String key, String value)
    {
-      if (s == null)
+      if (key == null)
       {
          throw new IllegalArgumentException("property name cannot be null");
       }
 
-      //TODO:
+      //
+      getContainerURL().setProperty(key, value);
    }
 
    private InternalContainerURL blah()
@@ -211,6 +209,46 @@ public abstract class BaseURLImpl implements BaseURL
 
    protected static abstract class InternalContainerURL implements ContainerURL
    {
+
+      /** . */
+      static final Map<String, String> EMPTY_MAP = Collections.emptyMap();
+
+      /** . */
+      private Map<String, String> properties;
+
+      protected InternalContainerURL()
+      {
+         this.properties = EMPTY_MAP;
+      }
+
+      protected InternalContainerURL(InternalContainerURL that)
+      {
+         this.properties = that.properties.isEmpty() ? EMPTY_MAP : new HashMap<String, String>(this.properties);
+      }
+
+      public final Map<String, String> getProperties()
+      {
+         return properties;
+      }
+
+      private void setProperty(String key, String value)
+      {
+         if (value == null)
+         {
+            if (properties.size() > 0)
+            {
+               properties.remove(key);
+            }
+         }
+         else
+         {
+            if (properties == EMPTY_MAP)
+            {
+               properties = new HashMap<String, String>();
+            }
+            properties.put(key, value);
+         }
+      }
 
       protected abstract void setParameter(String name, String value);
 

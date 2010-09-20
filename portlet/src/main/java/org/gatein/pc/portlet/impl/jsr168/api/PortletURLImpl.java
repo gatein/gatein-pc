@@ -164,6 +164,9 @@ public class PortletURLImpl extends BaseURLImpl implements PortletURL
 
       protected InternalPortletURL(InternalPortletURL original)
       {
+         super(original);
+
+         //
          this.windowState = original.windowState;
          this.portletMode = original.portletMode;
       }

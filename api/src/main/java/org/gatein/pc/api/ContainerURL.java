@@ -22,6 +22,8 @@
  */
 package org.gatein.pc.api;
 
+import java.util.Map;
+
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -48,4 +50,12 @@ public interface ContainerURL
     * @return the navigational state
     */
    StateString getNavigationalState();
+
+   /**
+    * Returns a set of properties associated with this URL. The returned map cannot be modified.
+    *
+    * @return the property map
+    */
+   Map<String, String> getProperties();
+
 }

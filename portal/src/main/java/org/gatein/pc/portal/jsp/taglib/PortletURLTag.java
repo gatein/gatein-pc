@@ -33,6 +33,7 @@ import org.gatein.pc.api.URLFormat;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
+import java.util.Collections;
 import java.util.Map;
 import java.io.IOException;
 
@@ -123,6 +124,11 @@ public class PortletURLTag extends AbstractURLTag
          public org.gatein.pc.api.WindowState getWindowState()
          {
             return ws;
+         }
+
+         public Map<String, String> getProperties()
+         {
+            return Collections.emptyMap();
          }
       };
 
