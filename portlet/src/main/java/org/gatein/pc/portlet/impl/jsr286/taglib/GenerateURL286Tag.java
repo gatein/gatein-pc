@@ -75,7 +75,8 @@ public abstract class GenerateURL286Tag extends GenerateURLTag
       {
          // Parameters values specified in tag need to be pre-pended  
 
-         Map<String, String[]> parameters = portletURL.getParameterMap();
+         // Clone the map
+         Map<String, String[]> parameters = new HashMap<String, String[]>(portletURL.getParameterMap());
 
          Map<String, String[]> privateParams = getPortletRequest().getPrivateParameterMap();
 
@@ -112,7 +113,7 @@ public abstract class GenerateURL286Tag extends GenerateURLTag
    {
       // Introduced in jsr 286 - the empty param tag value removes the parameter
 
-      Map<String, String[]> parameters = portletURL.getParameterMap();
+      Map<String, String[]> parameters = new HashMap<String, String[]>(portletURL.getParameterMap());
 
       Map<String, String[]> tagParams = getURLParameters();
 

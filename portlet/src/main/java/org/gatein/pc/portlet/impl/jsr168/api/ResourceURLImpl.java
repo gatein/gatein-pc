@@ -232,7 +232,7 @@ public class ResourceURLImpl extends BaseURLImpl implements ResourceURL
 
       protected Map<String, String[]> getParameters()
       {
-         return ParameterMap.clone(parameters.getParameters());
+         return parameters.getParameters();
       }
 
       public StateString getResourceState()

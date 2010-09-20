@@ -298,7 +298,7 @@ public class PortletURLImpl extends BaseURLImpl implements PortletURL
 
       protected Map<String, String[]> getParameters()
       {
-         return ParameterMap.clone(parameters.getMap());
+         return parameters.getMap();
       }
    }
 }
