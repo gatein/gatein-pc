@@ -242,7 +242,7 @@ public class PortletURLImpl extends BaseURLImpl implements PortletURL
 
       protected Map<String, String[]> getParameters()
       {
-         return ParameterMap.clone(interactionState.getParameters());
+         return interactionState.getParameters();
       }
 
       public StateString getNavigationalState()

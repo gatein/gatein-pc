@@ -23,12 +23,15 @@ import org.gatein.pc.test.portlet.framework.UTP1;
 import org.gatein.pc.test.unit.Assertion;
 import org.gatein.pc.test.unit.PortletTestCase;
 import org.gatein.pc.test.unit.PortletTestContext;
+import org.gatein.pc.test.unit.actions.PortletActionTestAction;
 import org.gatein.pc.test.unit.actions.PortletRenderTestAction;
 import org.gatein.pc.test.unit.annotations.TestCase;
 import org.jboss.unit.driver.DriverResponse;
 import org.jboss.unit.driver.response.EndTestResponse;
 import org.jboss.unit.remote.driver.handler.http.response.InvokeGetResponse;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.PortletURL;
@@ -49,8 +52,44 @@ public class ParameterMapTestCase
 {
    public ParameterMapTestCase(PortletTestCase seq)
    {
-
       seq.bindAction(0, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      {
+         protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws PortletException, IOException
+         {
+            PortletURL url = response.createActionURL();
+
+            // Set parameter
+            url.setParameter("foo", "bar");
+
+            // Clear parameters
+            Map<String, String[]> map = url.getParameterMap();
+
+            // Check expected entry
+            String[] bar1 = map.get("foo");
+            assertEquals(1, bar1.length);
+            assertEquals("bar", bar1[0]);
+
+            // Check that the entry we had a copy of the value
+            url.setParameter("foo", "juu");
+            assertEquals("bar", bar1[0]);
+
+            //
+            map.clear();
+
+            // Invoker with the no parameter URL
+            return new InvokeGetResponse(url.toString());
+         }
+      });
+      seq.bindAction(1, UTP1.ACTION_JOIN_POINT, new PortletActionTestAction()
+      {
+         @Override
+         protected void run(Portlet portlet, ActionRequest request, ActionResponse response, PortletTestContext context) throws PortletException, IOException
+         {
+            // It should be empty
+            assertEquals(Collections.<Object, Object>emptyMap(), request.getParameterMap());
+         }
+      });
+      seq.bindAction(1, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
       {
          protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws PortletException, IOException
          {
@@ -78,7 +117,7 @@ public class ParameterMapTestCase
             return new InvokeGetResponse(url.toString());
          }
       });
-      seq.bindAction(1, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      seq.bindAction(2, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
       {
          protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws PortletException, IOException
          {
