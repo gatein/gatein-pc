@@ -66,5 +66,10 @@
       <qname xmlns:jbp='urn:jboss:portal:samples:event'>jbp:CartEvent</qname>
       <value-type>org.gatein.pc.samples.shoppingcart.CartEvent</value-type>
    </event-definition>
+
+   <container-runtime-option>
+      <name>org.gatein.pc.remotable</name>
+      <value>true</value>
+   </container-runtime-option>
 </portlet-app>
 

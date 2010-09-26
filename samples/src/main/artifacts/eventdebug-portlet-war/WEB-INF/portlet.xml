@@ -51,46 +51,46 @@
    </portlet>
 
    <portlet>
-         <description>Event Portlet B</description>
-         <portlet-name>portletB</portlet-name>
-         <display-name>Debug Portlet B</display-name>
-         <portlet-class>org.gatein.pc.samples.eventdebug.EventPortletB</portlet-class>
-         <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>VIEW</portlet-mode>
-         </supports>
-         <portlet-info>
-            <title>Debug Event B</title>
-            <keywords>sample,event</keywords>
-         </portlet-info>
-         <supported-publishing-event>
-            <qname xmlns:jbp='urn:jboss:portal:samples:eventa'>jbp:EventA</qname>
-         </supported-publishing-event>
-         <supported-processing-event>
-            <qname xmlns:jbp='urn:jboss:portal:samples:eventb'>jbp:EventB</qname>
-         </supported-processing-event>
-      </portlet>
+      <description>Event Portlet B</description>
+      <portlet-name>portletB</portlet-name>
+      <display-name>Debug Portlet B</display-name>
+      <portlet-class>org.gatein.pc.samples.eventdebug.EventPortletB</portlet-class>
+      <supports>
+         <mime-type>text/html</mime-type>
+         <portlet-mode>VIEW</portlet-mode>
+      </supports>
+      <portlet-info>
+         <title>Debug Event B</title>
+         <keywords>sample,event</keywords>
+      </portlet-info>
+      <supported-publishing-event>
+         <qname xmlns:jbp='urn:jboss:portal:samples:eventa'>jbp:EventA</qname>
+      </supported-publishing-event>
+      <supported-processing-event>
+         <qname xmlns:jbp='urn:jboss:portal:samples:eventb'>jbp:EventB</qname>
+      </supported-processing-event>
+   </portlet>
 
    <portlet>
-         <description>Event Portlet C</description>
-         <portlet-name>portletC</portlet-name>
-         <display-name>Debug Portlet C</display-name>
-         <portlet-class>org.gatein.pc.samples.eventdebug.EventPortletC</portlet-class>
-         <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>VIEW</portlet-mode>
-         </supports>
-         <portlet-info>
-            <title>Debug Event C</title>
-            <keywords>sample,event</keywords>
-         </portlet-info>
-         <supported-publishing-event>
-            <qname xmlns:jbp='urn:jboss:portal:samples:eventb'>jbp:EventB</qname>
-         </supported-publishing-event>
-         <supported-processing-event>
-            <qname xmlns:jbp='urn:jboss:portal:samples:eventb'>jbp:EventB</qname>
-         </supported-processing-event>
-      </portlet>
+      <description>Event Portlet C</description>
+      <portlet-name>portletC</portlet-name>
+      <display-name>Debug Portlet C</display-name>
+      <portlet-class>org.gatein.pc.samples.eventdebug.EventPortletC</portlet-class>
+      <supports>
+         <mime-type>text/html</mime-type>
+         <portlet-mode>VIEW</portlet-mode>
+      </supports>
+      <portlet-info>
+         <title>Debug Event C</title>
+         <keywords>sample,event</keywords>
+      </portlet-info>
+      <supported-publishing-event>
+         <qname xmlns:jbp='urn:jboss:portal:samples:eventb'>jbp:EventB</qname>
+      </supported-publishing-event>
+      <supported-processing-event>
+         <qname xmlns:jbp='urn:jboss:portal:samples:eventb'>jbp:EventB</qname>
+      </supported-processing-event>
+   </portlet>
 
    <event-definition>
       <qname xmlns:jbp='urn:jboss:portal:samples:eventa'>jbp:EventA</qname>
@@ -104,5 +104,10 @@
       <qname xmlns:jbp='urn:jboss:portal:samples:eventc'>jbp:EventC</qname>
       <value-type>org.gatein.pc.samples.eventdebug.EventC</value-type>
    </event-definition>
+
+   <container-runtime-option>
+      <name>org.gatein.pc.remotable</name>
+      <value>true</value>
+   </container-runtime-option>
 </portlet-app>
 
