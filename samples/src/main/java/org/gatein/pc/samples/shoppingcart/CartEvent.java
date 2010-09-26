@@ -38,6 +38,10 @@ public class CartEvent implements Serializable
 
    public static final QName QNAME = new QName("urn:jboss:portal:samples:event", "CartEvent");
 
+   public CartEvent()
+   {
+   }
+
    public CartEvent(String id)
    {
       this.id = id;
@@ -46,5 +50,10 @@ public class CartEvent implements Serializable
    public String getId()
    {
       return id;
+   }
+
+   public void setId(String id)
+   {
+      this.id = id;
    }
 }
