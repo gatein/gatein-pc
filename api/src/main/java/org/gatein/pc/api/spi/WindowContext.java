@@ -34,4 +34,12 @@ public interface WindowContext
     * @return the window id
     */
    String getId();
+
+   /**
+    * Return a String that can be used for the Portlet prefixing of tokens that need to be unique within the markup of
+    * the aggregated page (e.g. JavaScript variables, HTML id attributes, etc.)
+    *
+    * @return a String that can be used as namespace in aggregated markup
+    */
+   String getNamespace();
 }

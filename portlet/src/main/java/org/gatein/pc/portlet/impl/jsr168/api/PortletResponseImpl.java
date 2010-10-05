@@ -25,10 +25,9 @@ package org.gatein.pc.portlet.impl.jsr168.api;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.invocation.response.ResponseProperties;
-import org.gatein.pc.portlet.impl.jsr168.PortletUtils;
-import org.w3c.dom.Element;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.portlet.PortletResponse;
 import javax.servlet.http.Cookie;
@@ -48,9 +47,6 @@ public abstract class PortletResponseImpl implements PortletResponse
 
    /** . */
    protected final PortletRequestImpl preq;
-
-   /** The namespace. */
-   private String namespace;
 
    /** . */
    private Document doc;
@@ -138,12 +134,7 @@ public abstract class PortletResponseImpl implements PortletResponse
 
    public String getNamespace()
    {
-      if (namespace == null)
-      {
-         String windowId = invocation.getWindowContext().getId();
-         namespace = PortletUtils.generateNamespaceFrom(windowId);
-      }
-      return namespace;
+      return invocation.getWindowContext().getNamespace();
    }
 
    public final HttpServletResponseWrapper getRealResponse()

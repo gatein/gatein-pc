@@ -23,6 +23,7 @@
 package org.gatein.pc.portlet.impl.spi;
 
 import org.gatein.pc.api.spi.WindowContext;
+import org.gatein.pc.portlet.impl.jsr168.PortletUtils;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -33,6 +34,7 @@ public class AbstractWindowContext implements WindowContext
 
    /** . */
    private final String id;
+   private final String namespace;
 
    public AbstractWindowContext(String id)
    {
@@ -41,10 +43,17 @@ public class AbstractWindowContext implements WindowContext
          throw new IllegalArgumentException("No window id provided");
       }
       this.id = id;
+
+      namespace = PortletUtils.generateNamespaceFrom(id);
    }
 
    public String getId()
    {
       return id;
+   }
+
+   public String getNamespace()
+   {
+      return namespace;
    }
 }
