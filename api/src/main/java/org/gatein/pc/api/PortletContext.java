@@ -132,7 +132,7 @@ public class PortletContext implements Serializable
 
    /**
     * Create a PortletContext based on given id and required state: this method will fail if state is not valid. Use
-    * this method instead of {@link #createPortletContext(String,byte[])} for cases when a state is expected and the
+    * this method instead of {@link #createPortletContext(String, byte[])} for cases when a state is expected and the
     * creation of the PortletContext should fail if no state was given.
     *
     * @param id    the portlet id
@@ -147,7 +147,7 @@ public class PortletContext implements Serializable
 
    public static PortletContext createPortletContext(String portletId)
    {
-      return createPortletContext(portletId, null);
+      return createPortletContext(portletId, (byte[])null);
    }
 
    public String getApplicationName()
@@ -158,5 +158,10 @@ public class PortletContext implements Serializable
    public String getPortletName()
    {
       return portletName;
+   }
+
+   public static PortletContext createPortletContext(String portletApplicationId, String containerId)
+   {
+      return PortletContext.createPortletContext(portletApplicationId + SEPARATOR + containerId);
    }
 }
