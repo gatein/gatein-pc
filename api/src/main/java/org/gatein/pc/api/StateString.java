@@ -118,7 +118,7 @@ public abstract class StateString implements Serializable
       if (!opaqueValue.startsWith(JBPNS_PREFIX))
       {
          throw new IllegalArgumentException("Bad format: [" + opaqueValue
-            + "] was not encoded by JBoss Portal and thus cannot be decoded.");
+            + "] was not encoded by the JBoss portlet container and thus cannot be decoded.");
       }
 
       //

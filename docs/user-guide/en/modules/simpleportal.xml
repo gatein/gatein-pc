@@ -58,7 +58,7 @@
       <sect2>
          <title>Portlet deployment</title>
          <para>Simple Portal integrates with a few web containers in order to provide handling of portlet deployment and
-            runtime. This feature leverages JBoss Portal's Web Service Provider Interface (SPI). In particular, JBoss
+            runtime. This feature leverages GateIn's Web Service Provider Interface (SPI). In particular, JBoss
             Portlet Container uses the Web SPI in order to transparently react to the life cycle of WAR files that
             contains portlet components as they are deployed or undeployed on the target servlet container. The SPI
             defines two levels of integrations.
@@ -96,7 +96,7 @@
             </listitem>
          </itemizedlist>
          <page>If you need more advanced page creation capabilities, you should consider using a more advanced portal
-            product such as JBoss Portal.
+            product such as GateIn.
          </page>
          <sect3>
             <title>Page creation</title>
@@ -480,8 +480,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             examine an extension provided to allow the display of portlets pretty much as they are rendered in classic
             portals, that is with decorations. This extension is built on top of Simple Portal's tag library and uses
             the JSP 2.0 tag library extension feature. A pretty good overview of this feature can be found at<ulink
-            url="http://www.onjava.com/pub/a/onjava/2004/05/12/jsp2part4.html">
-            http://www.onjava.com/pub/a/onjava/2004/05/12/jsp2part4.html</ulink>.
+               url="http://www.onjava.com/pub/a/onjava/2004/05/12/jsp2part4.html">
+               http://www.onjava.com/pub/a/onjava/2004/05/12/jsp2part4.html</ulink>.
          </para>
          <sect3>
             <title>The extended portlet tag</title>
@@ -511,10 +511,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <title>Portlet debugging</title>
       <para>The Portlet 2.0 specification provides a new eventing feature for coordinating several portlets.
          This long awaited feature is very powerful but can sometime lead to complex scenarios when multiple
-         events are consumed and fired by multiple portlets on the same page.</para>
+         events are consumed and fired by multiple portlets on the same page.
+      </para>
       <para>The simple portal provides a visual debugger that can be used to understand what happens during the
-      event phase orchestrated by the portal. It comes as a portlet that you can place on any page and it shows
-      a tree of events that were produced and consumed during the event phase.</para>
+         event phase orchestrated by the portal. It comes as a portlet that you can place on any page and it shows
+         a tree of events that were produced and consumed during the event phase.
+      </para>
       <mediaobject>
          <imageobject>
             <imagedata align="center" fileref="images/debugger1.png" format="PNG"
@@ -528,7 +530,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
          tree don't represent events, they rather represent event routings from a source portlet to
          a destination portlet. By default it shows the name of the portlet that published the event,
          the event name and the destination of the event that was chosen by the simple portal during
-         the event distribution phase. Hovering the mouse on a node shows more information.</para>
+         the event distribution phase. Hovering the mouse on a node shows more information.
+      </para>
       <mediaobject>
          <imageobject>
             <imagedata align="center" fileref="images/debugger2.png" format="PNG"
@@ -539,9 +542,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
          </caption>
       </mediaobject>
       <para>When hovering the mouse on a node you can see the optional event payload represented by
-      the string returned when invoked its <code>toString()</code> method and the state of the portlet
-      after the event phase. The state of the portlet consist in its portlet mode, its window state and the
-      set of its render parameters. Adding the event debugger to a page is easy.</para>
+         the string returned when invoked its
+         <code>toString()</code>
+         method and the state of the portlet
+         after the event phase. The state of the portlet consist in its portlet mode, its window state and the
+         set of its render parameters. Adding the event debugger to a page is easy.
+      </para>
       <example>
          <title>Adding the event debugger to a portal page</title>
          <programlisting><![CDATA[
@@ -553,12 +559,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       <sect2>
          <title>Admin portlet</title>
          <para>The admin portlet shows the list of portlet applications deployed in the simple portal. For each
-         portlet application it is possible to unfold the appliation to display the portlet contained in the
-         unfolded application as well as the portlet filters.</para>
+            portlet application it is possible to unfold the appliation to display the portlet contained in the
+            unfolded application as well as the portlet filters.
+         </para>
          <sect3>
             <title>Portlet application administration</title>
             <para>By default the admin portlet displays the list of portlet applications. It shows the status
-            of each application and provides the capability to stop or start an application.</para>
+               of each application and provides the capability to stop or start an application.
+            </para>
             <mediaobject>
                <imageobject>
                   <imagedata align="center" fileref="images/admin1.png" format="PNG"
@@ -569,14 +577,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                </caption>
             </mediaobject>
             <para>On the example we can see that all the applications are in started mode except the
-            <emphasis>samples-basic-portlet</emphasis> application. It is possible to manage the
-            life cycle of each application by clicking on the <emphasis>start</emphasis> link when it
-            is stopped or clicking on the <emphasis>stop</emphasis> link when it is started.</para>
+               <emphasis>samples-basic-portlet</emphasis>
+               application. It is possible to manage the
+               life cycle of each application by clicking on the
+               <emphasis>start</emphasis>
+               link when it
+               is stopped or clicking on the
+               <emphasis>stop</emphasis>
+               link when it is started.
+            </para>
          </sect3>
          <sect3>
             <title>Portlet container and filter administration</title>
             <para>Selecting a particular portlet application unfolds it and shows the list of portlet containers
-            that the application contains as well as the filters it contains.</para>
+               that the application contains as well as the filters it contains.
+            </para>
             <mediaobject>
                <imageobject>
                   <imagedata align="center" fileref="images/admin2.png" format="PNG"
@@ -587,7 +602,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                </caption>
             </mediaobject>
             <para>Again here it displays the name of the container and filters, the status of the life cycle and
-            a link to start or stop the corresponding item.</para>
+               a link to start or stop the corresponding item.
+            </para>
          </sect3>
       </sect2>
       <sect2>

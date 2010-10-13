@@ -107,6 +107,9 @@
             <read-only>false</read-only>
          </preference>
       </portlet-preferences>
+      <supported-publishing-event>
+         <qname xmlns:jbp='urn:jboss:portal:samples:event'>jbp:ZipEvent</qname>
+      </supported-publishing-event>
       <supported-public-render-parameter>zipcode</supported-public-render-parameter>
    </portlet>
 

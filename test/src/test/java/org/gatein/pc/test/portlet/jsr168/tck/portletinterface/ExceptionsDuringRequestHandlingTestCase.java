@@ -22,22 +22,18 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr168.tck.portletinterface;
 
+import org.gatein.pc.test.unit.Assertion;
 import org.gatein.pc.test.unit.PortletTestCase;
 import org.gatein.pc.test.unit.annotations.TestCase;
-import org.gatein.pc.test.unit.Assertion;
 
 /**
- * This case is based on:
- * - ExceptionsDuringRequestHandlingControllerPortlet
- * - PortletExceptionDuringRequestHandlingPortlet
- * - RuntimeExceptionDuringRequestHandlingPortlet
- * - UnavailableExceptionDuringProcessActionPortlet
- * - UnavailableExceptionDuringRenderPortlet
- *
- * This test is disabled. Specification doesn't defined strictly portal behaviour when
- * one of the portlets throws PortletException. Currently in JBoss Portal if one portlet
- * throws an PortletException than the rest of portlet of the page is not rendered - code 500
- * is returned. Tests are based on different behaviour where rest of portlets are rendered.
+ * This case is based on: - ExceptionsDuringRequestHandlingControllerPortlet - PortletExceptionDuringRequestHandlingPortlet
+ * - RuntimeExceptionDuringRequestHandlingPortlet - UnavailableExceptionDuringProcessActionPortlet -
+ * UnavailableExceptionDuringRenderPortlet
+ * <p/>
+ * This test is disabled. Specification doesn't defined strictly portal behaviour when one of the portlets throws
+ * PortletException. Currently in GateIn if one portlet throws an PortletException than the rest of portlet of the page
+ * is not rendered - code 500 is returned. Tests are based on different behaviour where rest of portlets are rendered.
  *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $

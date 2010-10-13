@@ -6,7 +6,7 @@
          <img src="${pageContext.request.contextPath}/images/pc20-picture.gif" alt="" align="right"/>
          <a href="http://labs.jboss.com/portletcontainer" target="jboss">
             JBoss Portlet Container</a> is the next generation
-         portlet container on which future versions of JBoss Portal will be based. It provides a standard-compliant
+         portlet container on which future versions of GateIn will be based. It provides a standard-compliant
          implementation of the JSR-286 Portlet 2.0 specification. It has been developed with reusability in mind so that
          advanced users, who don't require a full-fledged portal, can leverage the portlet management services it
          provides in
@@ -29,7 +29,8 @@
       <div class="box-content">
          <p>JBoss (a division of Red Hat Inc.) offers various support services tailored to fit your needs.
             <a target="jboss" href="http://jboss.com/services/index">Explore</a> support and service options for
-            <a href="http://jboss.com/products/platforms/portals" target="jboss">JBoss Portal</a>.</p>
+            <a href="http://jboss.com/products/platforms/portals" target="jboss">JBoss Enterprise Portal Platform</a>.
+         </p>
       </div>
    </div>
 
@@ -56,8 +57,9 @@
       </div>
       <div class="box-content">
          <p>Learn more about <a href="http://labs.jboss.com/portletcontainer" target="jboss">JBoss Portlet Container</a>
-            community project, <a href="http://labs.jboss.com/jbossportal" target="jboss">JBoss Portal</a>,
-            <a href="http://jboss.com/products/platforms/portals" target="jboss">JBoss Portal platform</a></p>
+            community project, <a href="http://gatein.org" target="jboss">GateIn</a>,
+            <a href="http://jboss.com/products/platforms/portals" target="jboss">JBoss Enterprise Portal platform</a>
+         </p>
       </div>
    </div>
    <br/>
@@ -68,7 +70,7 @@
          enjoy developing it!</p>
 
       <p>Baci e abbracci,<br/>
-         The JBoss Portal Team.</p>
+         The GateIn Team.</p>
    </div>
 
 </div>
