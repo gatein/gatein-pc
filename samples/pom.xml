@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
@@ -33,6 +34,7 @@
                <descriptors>
                   <descriptor>src/assemble/samples-basic-portlet.xml</descriptor>
                   <descriptor>src/assemble/samples-shoppingcart-portlet.xml</descriptor>
+                  <descriptor>src/assemble/samples-shoppingcart-event-jar.xml</descriptor>
                   <descriptor>src/assemble/samples-google-portlet.xml</descriptor>
                   <descriptor>src/assemble/samples-remotecontroller-portlet.xml</descriptor>
                   <descriptor>src/assemble/samples-jsp-portlet.xml</descriptor>
