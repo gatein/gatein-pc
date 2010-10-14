@@ -53,7 +53,7 @@ public final class Mode implements Serializable
    /** . */
    private String name;
 
-   public Mode(String name)
+   private Mode(String name)
    {
       this(name, false);
    }
@@ -99,21 +99,11 @@ public final class Mode implements Serializable
 
    private Object readResolve()
    {
-      if (VIEW.name.equals(name))
+      Mode standardMode = isStandardMode(name);
+
+      if (standardMode != null)
       {
-         return VIEW;
-      }
-      else if (EDIT.name.equals(name))
-      {
-         return EDIT;
-      }
-      else if (HELP.name.equals(name))
-      {
-         return HELP;
-      }
-      else if (EDIT_DEFAULTS.name.equals(name))
-      {
-         return EDIT_DEFAULTS;
+         return standardMode;
       }
       else
       {
@@ -133,6 +123,19 @@ public final class Mode implements Serializable
     * @since 2.4.2
     */
    public static Mode create(String name, boolean preserveCase)
+   {
+      Mode standardMode = isStandardMode(name);
+      if (standardMode != null)
+      {
+         return standardMode;
+      }
+      else
+      {
+         return new Mode(name, preserveCase);
+      }
+   }
+
+   private static Mode isStandardMode(String name)
    {
       if (Mode.VIEW.name.equals(name))
       {
@@ -156,7 +159,7 @@ public final class Mode implements Serializable
       }
       else
       {
-         return new Mode(name, preserveCase);
+         return null;
       }
    }
 }

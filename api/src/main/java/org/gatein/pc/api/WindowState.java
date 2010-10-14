@@ -47,7 +47,7 @@ public final class WindowState implements Serializable
    /** . */
    private String name;
 
-   public WindowState(String name)
+   private WindowState(String name)
    {
       this(name, false);
    }
@@ -93,6 +93,19 @@ public final class WindowState implements Serializable
 
    private Object readResolve()
    {
+      WindowState standardWindowState = isStandardWindowState(name);
+      if (standardWindowState != null)
+      {
+         return standardWindowState;
+      }
+      else
+      {
+         return this;
+      }
+   }
+
+   private static WindowState isStandardWindowState(String name)
+   {
       if (NORMAL.name.equals(name))
       {
          return NORMAL;
@@ -107,7 +120,7 @@ public final class WindowState implements Serializable
       }
       else
       {
-         return this;
+         return null;
       }
    }
 
@@ -124,17 +137,10 @@ public final class WindowState implements Serializable
     */
    public static WindowState create(String name, boolean preserveCase)
    {
-      if (WindowState.NORMAL.name.equals(name))
+      WindowState standardWindowState = isStandardWindowState(name);
+      if (standardWindowState != null)
       {
-         return WindowState.NORMAL;
-      }
-      else if (WindowState.MINIMIZED.name.equals(name))
-      {
-         return WindowState.MINIMIZED;
-      }
-      else if (WindowState.MAXIMIZED.name.equals(name))
-      {
-         return WindowState.MAXIMIZED;
+         return standardWindowState;
       }
       else
       {

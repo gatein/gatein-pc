@@ -22,20 +22,20 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168.api;
 
-import org.gatein.common.logging.Logger;
 import org.gatein.common.NotYetImplemented;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.Tools;
 import org.gatein.pc.api.ParametersStateString;
+import org.gatein.pc.api.invocation.PortletInvocation;
+import org.gatein.pc.api.invocation.response.HTTPRedirectionResponse;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.invocation.response.UpdateNavigationalStateResponse;
 import org.gatein.pc.portlet.impl.info.ContainerEventInfo;
 import org.gatein.pc.portlet.impl.info.ContainerPortletApplicationInfo;
 import org.gatein.pc.portlet.impl.info.ContainerTypeInfo;
 import org.gatein.pc.portlet.impl.jsr168.PortletApplicationImpl;
 import org.gatein.pc.portlet.impl.jsr168.PortletParameterMap;
-import org.gatein.pc.api.invocation.PortletInvocation;
-import org.gatein.pc.api.invocation.response.HTTPRedirectionResponse;
-import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.invocation.response.UpdateNavigationalStateResponse;
 
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
@@ -362,10 +362,10 @@ public abstract class StateAwareResponseImpl extends PortletResponseImpl impleme
       protected PortletParameterMap navigationalState = new PortletParameterMap(preq.navigationInfo);
 
       /** The new window state requested. */
-      protected org.gatein.pc.api.WindowState windowState = new org.gatein.pc.api.WindowState(preq.getWindowState().toString());
+      protected org.gatein.pc.api.WindowState windowState = org.gatein.pc.api.WindowState.create(preq.getWindowState().toString());
 
       /** The new mode requested. */
-      protected org.gatein.pc.api.Mode mode = new org.gatein.pc.api.Mode(preq.getPortletMode().toString());
+      protected org.gatein.pc.api.Mode mode = org.gatein.pc.api.Mode.create(preq.getPortletMode().toString());
 
       protected PortletInvocationResponse getResponse()
       {
