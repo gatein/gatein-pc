@@ -124,21 +124,16 @@ public class ResourceURLImpl extends BaseURLImpl implements ResourceURL
          }
          else
          {
-            switch (url.parentCacheLevel)
+            if (CacheLevel.FULL == url.parentCacheLevel && cacheLevel != CacheLevel.FULL)
             {
-               case FULL:
-                  if (cacheLevel != CacheLevel.FULL)
-                  {
-                     throw new IllegalStateException();
-                  }
-                  break;
-               case PORTLET:
-                  if (cacheLevel == CacheLevel.PAGE)
-                  {
-                     throw new IllegalStateException();
-                  }
-                  break;
+               throw new IllegalStateException();
             }
+
+            if (CacheLevel.PORTLET == url.parentCacheLevel && cacheLevel == CacheLevel.PAGE)
+            {
+               throw new IllegalStateException();
+            }
+
             url.cacheLevel = cacheLevel;
          }
       }

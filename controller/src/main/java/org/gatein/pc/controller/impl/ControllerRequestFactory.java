@@ -149,23 +149,25 @@ public class ControllerRequestFactory
          String resourceId = queryParameters.get(ControllerRequestParameterNames.RESOURCE_ID);
 
          //
-         CacheLevel resourceCacheLevel = CacheLevel.valueOf(queryParameters.get(ControllerRequestParameterNames.RESOURCE_CACHEABILITY));
+         CacheLevel resourceCacheLevel = CacheLevel.create(queryParameters.get(ControllerRequestParameterNames.RESOURCE_CACHEABILITY));
 
          //
          PortletResourceRequest.Scope scope;
-         switch (resourceCacheLevel)
+         if (CacheLevel.FULL.equals(resourceCacheLevel))
          {
-            case FULL:
-               scope = new PortletResourceRequest.FullScope();
-               break;
-            case PORTLET:
-               scope = new PortletResourceRequest.PortletScope(windowNavigationalState);
-               break;
-            case PAGE:
-               scope = new PortletResourceRequest.PageScope(windowNavigationalState, pageNavigationalState);
-               break;
-            default:
-               throw new AssertionError();
+            scope = new PortletResourceRequest.FullScope();
+         }
+         else if (CacheLevel.PORTLET.equals(resourceCacheLevel))
+         {
+            scope = new PortletResourceRequest.PortletScope(windowNavigationalState);
+         }
+         else if (CacheLevel.PAGE.equals(resourceCacheLevel))
+         {
+            scope = new PortletResourceRequest.PageScope(windowNavigationalState, pageNavigationalState);
+         }
+         else
+         {
+            throw new AssertionError();
          }
 
          //
