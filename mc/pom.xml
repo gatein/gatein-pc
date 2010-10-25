@@ -46,6 +46,7 @@
                </execution>
             </executions>
             <configuration>
+               <failOnError>true</failOnError>
                <testsuites>
                   <testsuite>
                      <config>local-jboss-unit.xml</config>

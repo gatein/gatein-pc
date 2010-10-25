@@ -187,7 +187,7 @@
                <!--<jpda>false</jpda>-->
                <!--<jpdaPort>9000</jpdaPort>-->
                <!--<jpdaSuspend>true</jpdaSuspend>-->
-               <!--<failOnError>false</failOnError>-->
+               <failOnError>true</failOnError>
                <!--<assertions>true</assertions>-->
                <testsuites>
                   <testsuite>
