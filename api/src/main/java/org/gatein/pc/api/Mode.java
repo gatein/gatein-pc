@@ -53,7 +53,12 @@ public final class Mode implements Serializable
    /** . */
    private String name;
 
-   private Mode(String name)
+   /**
+    * This NEEDS to be public for JAXB unmarshalling done by SupportsMetaData.
+    *
+    * @param name
+    */
+   public Mode(String name)
    {
       this(name, false);
    }

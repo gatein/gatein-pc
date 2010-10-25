@@ -47,7 +47,12 @@ public final class WindowState implements Serializable
    /** . */
    private String name;
 
-   private WindowState(String name)
+   /**
+    * This NEEDS to be public for JAXB unmarshalling done by SupportsMetaData.
+    *
+    * @param name
+    */
+   public WindowState(String name)
    {
       this(name, false);
    }
