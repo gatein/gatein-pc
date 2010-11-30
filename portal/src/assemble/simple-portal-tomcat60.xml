@@ -17,7 +17,7 @@
             <include>org.gatein.common:common-common</include>
             <include>org.gatein.common:common-logging</include>
             <include>org.gatein.wci:wci-wci</include>
-            <include>org.gatein.wci:wci-tomcat</include>
+            <include>org.gatein.wci:wci-tomcat6</include>
             <include>org.gatein.pc:pc-portlet</include>
             <include>org.gatein.pc:pc-api</include>
 

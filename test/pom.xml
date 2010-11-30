@@ -28,7 +28,7 @@
       </dependency>
       <dependency>
          <groupId>org.gatein.wci</groupId>
-         <artifactId>wci-tomcat</artifactId>
+         <artifactId>wci-tomcat6</artifactId>
       </dependency>
 
       <dependency>
@@ -329,6 +329,21 @@
                   <artifactId>cargo-core-uberjar</artifactId>
                   <version>${version.cargo}</version>
                </dependency>
+               <dependency>
+                 <groupId>org.jdom</groupId>
+                 <artifactId>jdom</artifactId>
+                 <version>1.1</version>
+               </dependency>
+               <dependency>
+                 <groupId>dom4j</groupId>
+                 <artifactId>dom4j</artifactId>
+                 <version>1.6.1</version>
+               </dependency>
+               <dependency>
+                 <groupId>jaxen</groupId>
+                 <artifactId>jaxen</artifactId>
+                 <version>1.1.1</version>
+               </dependency>
 
             </dependencies>
             <executions>
@@ -360,7 +375,7 @@
                         <property name="dependency.slf4j-api.jar" value="${maven.dependency.org.slf4j.slf4j-api.jar.path}" />
 
                         <property name="dependency.portal-wci-wci.jar" value="${maven.dependency.org.gatein.wci.wci-wci.jar.path}" />
-                        <property name="dependency.portal-wci-tomcat.jar" value="${maven.dependency.org.gatein.wci.wci-tomcat.jar.path}" />
+                        <property name="dependency.portal-wci-tomcat.jar" value="${maven.dependency.org.gatein.wci.wci-tomcat6.jar.path}" />
 
                         <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}" />
                         <property name="dependency.portal-portlet-controller.jar" value="${maven.dependency.org.gatein.pc.pc-controller.jar.path}" />

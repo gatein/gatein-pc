@@ -27,7 +27,7 @@
       <antcall target="__evaluate_properties.all"/>
       <antcall target="tests.jboss"/>
       <antcall target="tests.tomcat"/>
-<!--      <antcall target="tests.jetty"/> -->
+      <!--<antcall target="tests.jetty"/>-->
    </target>
 
    <target name="tests.call.single" if="tests">
@@ -612,6 +612,7 @@
             <property name="cargo.logging" value="high"/>
             <property name="cargo.rmi.port" value="1099"/>
             <!--<property name="cargo.jvmargs" value="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"/>-->
+            <property name="cargo.jvmargs" value="-Duser.language=en"/>
             <deployable type="war" file="${test.temp.lib}/jboss-4.2/portlet-test.war"/>
          </configuration>
       </cargo>
@@ -734,7 +735,8 @@
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
             <property name="cargo.rmi.port" value="1099"/>
-            <property name="cargo.jvmargs" value="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n"/>
+            <!--<property name="cargo.jvmargs" value="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"/>-->
+            <property name="cargo.jvmargs" value="-Duser.language=en"/>
             <deployable type="war" file="${test.temp.lib}/jboss-5.1/portlet-test.war"/>
             <file file="${target}/test-classes/jboss-5.1/config/context.xml" tofile="deploy/jbossweb.sar/context.xml" overwrite="true"/>
          </configuration>
@@ -827,6 +829,7 @@
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
             <!--<property name="cargo.jvmargs" value="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9000"/> -->
+            <property name="cargo.jvmargs" value="-Duser.language=en"/>
             <deployable type="war" file="${test.temp.lib}/manager.war"/>
             <file file="${test.temp.lib}/manager" todir="webapps/manager"/>
             <deployable type="war" file="${test.temp.lib}/tomcat-6.0/portlet-test.war"/>

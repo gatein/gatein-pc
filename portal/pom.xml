@@ -28,7 +28,7 @@
 
       <dependency>
          <groupId>org.gatein.wci</groupId>
-         <artifactId>wci-tomcat</artifactId>
+         <artifactId>wci-tomcat6</artifactId>
       </dependency>
 
       <dependency>
