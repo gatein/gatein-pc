@@ -22,6 +22,28 @@
       </node>
    </server>
    <server>
+      <server-name>RemoteTomcat_7_0</server-name>
+      <node>
+         <node-id>default</node-id>
+         <service>
+            <service-name>TestDriverServer</service-name>
+            <interface>org.jboss.unit.remote.driver.RemoteTestDriver</interface>
+            <uri>socket://localhost:5400</uri>
+         </service>
+         <deployer>
+            <remote>
+               <name>tomcat7x</name>
+               <host>localhost</host>
+               <port>8080</port>
+            </remote>
+            <authentication>
+               <username>admin</username>
+               <password>admin</password>
+            </authentication>
+         </deployer>
+      </node>
+   </server>
+   <server>
       <server-name>RemoteJetty_6_1</server-name>
       <node>
          <node-id>default</node-id>

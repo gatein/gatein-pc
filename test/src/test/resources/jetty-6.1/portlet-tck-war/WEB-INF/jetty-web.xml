@@ -4,7 +4,7 @@
 
   <Get id="serverObject" name="server"/>
 
-  <New id="jettySetup" class="org.gatein.wci.impl.jetty.Jetty6Handler">
+  <New id="jettySetup" class="org.gatein.wci.jetty.Jetty6Handler">
      <Arg><Ref id="serverObject"/></Arg>
   </New>
 

@@ -32,6 +32,16 @@
       </dependency>
 
       <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-tomcat7</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-jetty</artifactId>
+      </dependency>
+
+      <dependency>
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-portlet</artifactId>
       </dependency>
@@ -118,6 +128,7 @@
                <descriptors>
                   <descriptor>src/assemble/simple-portal-jboss42.xml</descriptor>
                   <descriptor>src/assemble/simple-portal-tomcat60.xml</descriptor>
+                  <descriptor>src/assemble/simple-portal-tomcat70.xml</descriptor>
                   <descriptor>src/assemble/simple-portal-jboss51.xml</descriptor>
                </descriptors>
             </configuration>
