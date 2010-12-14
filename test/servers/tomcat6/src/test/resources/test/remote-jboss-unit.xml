@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-unit
+   xmlns="urn:jboss:jboss-unit:1.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="urn:jboss:jboss-unit:1.0 jboss-unit_1_0.xsd">
+
+   <!--Spec TCK Assertions tests-->
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-dispatcher.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portletconfig.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portletcontext.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portletinterface.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portletmode.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portletrequests.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portletresponses.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portletsession.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-portleturl.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-preferences.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-tck-windowstates.war"/>
+   </generic>
+
+   <!--API Tests-->
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-actionrequest.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-actionresponse.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portalcontext.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portletconfig.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portletcontext.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portletmode.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portletpreferences.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portletsession.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portletsessionutil.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-portleturl.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-renderrequest.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-renderresponse.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-api-windowstate.war"/>
+   </generic>
+
+   <!--Ext Tests-->
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-portletconfig.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-portletmode.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-portletrequests.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-portletresponses.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-preferences.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-session.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-expiringcache.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-neverexpiringcache.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-nocache.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-ext-taglib.war"/>
+   </generic>
+
+   <!--Spec TCK Assertions tests-->
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-dispatcher.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-portletconfig.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-portletconfignonamespace.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-event.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-eventnonamespace.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-stateawareresponse.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-portletrequests.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-resourceserving.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-portleturl.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-portletfilter.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-taglib.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-tck-userinformation.war"/>
+   </generic>
+
+   <!--Spec API Assertions tests-->
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-api-event.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-api-portleturl.war"/>
+   </generic>
+
+   <!--Ext Assertions tests-->
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-portletrequests.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-portletresponses.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-dispatcher.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-portletfilter.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-portletcontext.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-portletinterface.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-event.war"/>
+   </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-portletmode.war"/>
+   </generic>
+
+   <!--Misc Tests-->
+<!--
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr168-misc-log4j.war"/>
+   </generic>
+-->
+
+</jboss-unit>
