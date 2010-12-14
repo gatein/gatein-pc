@@ -138,6 +138,11 @@
          <path refid="jboss-unit-shared"/>
          <path location="${dependency.ccpp.jar}"/>
          <path location="${dependency.portal-wci-tomcat.jar}"/>
+         
+         <!-- paths needed for remote jboss deployment -->
+         <path path="${dependency.cargo-jboss-deployer.jar}"/>
+         <path path="${dependency.jboss-profile-service.jar}"/>
+         <path path="${dependency.cargo-core-container-jboss.jar}"/>
       </path>
 
       <path id="Tomcat-6.0">
@@ -547,7 +552,6 @@
 
       <copy todir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war">
          <fileset dir="${target}/test-classes/portlet-test-war"/>
-         <fileset dir="${target}/test-classes/${test.server.name}-${test.server.version}/portlet-test-war"/>
       </copy>
       <copy todir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war/WEB-INF/lib" flatten="true">
          <fileset dir="${test.temp.lib}" includes="portlet-test-lib.jar"/>

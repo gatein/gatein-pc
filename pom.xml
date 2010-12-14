@@ -53,7 +53,7 @@
 
       <!-- used in test module by maven-antrun-extended-plugin -->
       <version.jboss.unit>1.2.3</version.jboss.unit>
-      <version.cargo>1.0.3</version.cargo>
+      <version.cargo>1.0.2</version.cargo>
       <version.cargo.jetty.deployer>1.0.1</version.cargo.jetty.deployer>
 
       <preparationGoals>clean install</preparationGoals>

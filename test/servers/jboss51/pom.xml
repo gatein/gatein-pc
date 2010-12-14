@@ -178,6 +178,14 @@
          <groupId>org.gatein.wci</groupId>
          <artifactId>wci-tomcat6</artifactId>
       </dependency>
+
+      <!-- JBoss Deployer -->
+      <dependency>
+        <groupId>org.jboss.integration</groupId>
+        <artifactId>jboss-profileservice-spi</artifactId>
+        <version>5.1.0.SP1</version>
+        <scope>test</scope>
+      </dependency>
    </dependencies>
 
    <profiles>
@@ -520,6 +528,10 @@
                         <property name="dependency.jbossxb.jar" value="${maven.dependency.org.jboss.jbossxb.jar.path}"/>
                         <property name="dependency.jboss-serialization.jar"
                                   value="${maven.dependency.jboss.jboss-serialization.jar.path}"/>
+
+                        <property name="dependency.cargo-jboss-deployer.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-tools-jboss-deployer-5.1-and-onwards.jar.path}" />
+                        <property name="dependency.jboss-profile-service.jar" value="${maven.dependency.org.jboss.integration.jboss-profileservice-spi.jar.path}" />
+                        <property name="dependency.cargo-core-container-jboss.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-container-jboss.jar.path}" />
 
                         <property name="dependency.cargo-core-uberjar.jar"
                                   value="${maven.dependency.org.codehaus.cargo.cargo-core-uberjar.jar.path}"/>
