@@ -439,6 +439,14 @@
                         <condition property="test.jsr286-api.enable">
                            <istrue value="${test.jsr286-api}" />
                         </condition>
+                        <condition property="cargo.debug" value="${test.cargo.debug}">
+                           <isset property="test.cargo.debug"/>
+                        </condition>
+                        <condition property="cargo.debug" value="">
+                           <not>
+                              <isset property="test.cargo.debug"/>
+                           </not>
+                        </condition>
 
                         <property name="dependency.log4j.jar" value="${maven.dependency.apache-log4j.log4j.jar.path}"/>
                         <property name="dependency.commons-logging.jar"
