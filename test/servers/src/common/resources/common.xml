@@ -17,30 +17,16 @@
 
       <antcall target="package-tests"/>
 
-      <!--<antcall target="tests.call.single"/>-->
       <!--<antcall target="__evaluate_properties.all"/>-->
       <antcall target="test.container-servlet"/>
-      <!--<antcall target="tests.call.all"/>-->
 
-   </target>
-
-   <target name="tests.call.all" unless="tests">
-      <antcall target="__evaluate_properties.all"/>
-      <!--<antcall target="tests.jboss"/>-->
-      <antcall target="tests.tomcat"/>
-      <!--<antcall target="tests.jetty"/>-->
-   </target>
-
-   <target name="tests.call.single" if="tests">
-      <antcall target="__evaluate_properties.${tests}"/>
-      <antcall target="tests.${tests}"/>
    </target>
 
    <target name="prepare_env">
 
       <!--Relative path to target dir-->
       <property name="target" value="${basedir}/target"/>
-      <property name="test.temp.dir" value="${target}/test/tmp"/>
+      <property name="test.temp.dir" value="${target}/integration-tests/test-apps"/>
       <property name="test.temp.portlet" value="${test.temp.dir}/portlet-test"/>
       <property name="test.temp.lib" value="${test.temp.dir}/lib"/>
 
@@ -140,9 +126,9 @@
          <path location="${dependency.portal-wci-tomcat.jar}"/>
          
          <!-- paths needed for remote jboss deployment -->
-         <path path="${dependency.cargo-jboss-deployer.jar}"/>
-         <path path="${dependency.jboss-profile-service.jar}"/>
-         <path path="${dependency.cargo-core-container-jboss.jar}"/>
+         <path location="${dependency.cargo-jboss-deployer.jar}"/>
+         <path location="${dependency.jboss-profile-service.jar}"/>
+         <path location="${dependency.cargo-core-container-jboss.jar}"/>
       </path>
 
       <path id="Tomcat-6.0">
@@ -240,43 +226,19 @@
       <property environment="env"/>
 
       <!--If properties are not in command line check if they are set in env-->
-      <condition property="JBOSS_4_2_1_HOME" value="${env.JBOSS_4_2_1_HOME}">
+      <condition property="JBOSS_4_2_HOME" value="${env.JBOSS_4_2_HOME}">
          <and>
-            <isset property="env.JBOSS_4_2_1_HOME"/>
+            <isset property="env.JBOSS_4_2_HOME"/>
             <not>
-               <isset property="JBOSS_4_2_1_HOME"/>
+               <isset property="JBOSS_4_2_HOME"/>
             </not>
          </and>
       </condition>
-      <condition property="JBOSS_4_2_2_HOME" value="${env.JBOSS_4_2_2_HOME}">
+      <condition property="JBOSS_5_1_HOME" value="${env.JBOSS_5_1_HOME}">
          <and>
-            <isset property="env.JBOSS_4_2_2_HOME"/>
+            <isset property="env.JBOSS_5_1_HOME"/>
             <not>
-               <isset property="JBOSS_4_2_2_HOME"/>
-            </not>
-         </and>
-      </condition>
-      <condition property="JBOSS_4_2_0_HOME" value="${env.JBOSS_4_2_0_HOME}">
-         <and>
-            <isset property="env.JBOSS_4_2_0_HOME"/>
-            <not>
-               <isset property="JBOSS_4_2_0_HOME"/>
-            </not>
-         </and>
-      </condition>
-      <condition property="JBOSS_4_2_3_HOME" value="${env.JBOSS_4_2_3_HOME}">
-         <and>
-            <isset property="env.JBOSS_4_2_3_HOME"/>
-            <not>
-               <isset property="JBOSS_4_2_3_HOME"/>
-            </not>
-         </and>
-      </condition>
-      <condition property="JBOSS_5_1_0_HOME" value="${env.JBOSS_5_1_0_HOME}">
-         <and>
-            <isset property="env.JBOSS_5_1_0_HOME"/>
-            <not>
-               <isset property="JBOSS_5_1_0_HOME"/>
+               <isset property="JBOSS_5_1_HOME"/>
             </not>
          </and>
       </condition>
@@ -305,11 +267,8 @@
          </and>
       </condition>
 
-      <echo message="JBOSS_4_2_0_HOME: ${JBOSS_4_2_0_HOME}"/>
-      <echo message="JBOSS_4_2_1_HOME: ${JBOSS_4_2_1_HOME}"/>
-      <echo message="JBOSS_4_2_2_HOME: ${JBOSS_4_2_2_HOME}"/>
-      <echo message="JBOSS_4_2_3_HOME: ${JBOSS_4_2_3_HOME}"/>
-      <echo message="JBOSS_5_1_0_HOME: ${JBOSS_5_1_0_HOME}"/>
+      <echo message="JBOSS_4_2_HOME: ${JBOSS_4_2_HOME}"/>
+      <echo message="JBOSS_5_1_HOME: ${JBOSS_5_1_HOME}"/>
       <echo message="TOMCAT_6_0_HOME: ${TOMCAT_6_0_HOME}"/>
       <echo message="TOMCAT_7_0_HOME: ${TOMCAT_7_0_HOME}"/>
       <echo message="JETTY_6_1_HOME: ${JETTY_6_1_HOME}"/>
@@ -340,29 +299,20 @@
    </target>
 
    <target name="__evaluate_properties.jboss">
-      <fail message="Please set the environment variables JBOSS_4_2_0_HOME, JBOSS_4_2_1_HOME, JBOSS_4_2_2_HOME and JBOSS_4_2_3_HOME">
+      <fail message="Please set the environment variables JBOSS_4_2_HOME">
          <condition>
             <and>
                <not>
-                  <isset property="JBOSS_4_2_0_HOME"/>
-               </not>
-               <not>
-                  <isset property="JBOSS_4_2_1_HOME"/>
-               </not>
-               <not>
-                  <isset property="JBOSS_4_2_2_HOME"/>
-               </not>
-               <not>
-                  <isset property="JBOSS_4_2_3_HOME"/>
+                  <isset property="JBOSS_4_2_HOME"/>
                </not>
             </and>
          </condition>
       </fail>
-      <fail message="Please set the environment variable JBOSS_5_1_0_HOME">
+      <fail message="Please set the environment variable JBOSS_5_1_HOME">
          <condition>
             <and>
                <not>
-                  <isset property="JBOSS_5_1_0_HOME"/>
+                  <isset property="JBOSS_5_1_HOME"/>
                </not>
             </and>
          </condition>
@@ -570,7 +520,7 @@
    </target>
 
    <target name="__cargo.setup">
-      <property name="cargo.log.dir" value="${target}/test/cargo"/>
+      <property name="cargo.log.dir" value="${target}/integration-tests/cargo-logs"/>
       <mkdir dir="${cargo.log.dir}"/>
       <taskdef resource="cargo.tasks">
          <classpath>

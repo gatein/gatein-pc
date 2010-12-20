@@ -5,7 +5,7 @@
 
    <!-- SYSTEM PROPERTIES -->
    <property environment="env"/>
-   <property name="test.cargo.home" value="${env.JBOSS_5_1_0_HOME}"/>
+   <property name="test.cargo.home" value="${env.JBOSS_5_1_HOME}"/>
 
 
    <!-- properties unique per app server -->

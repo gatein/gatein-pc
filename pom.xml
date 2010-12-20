@@ -47,13 +47,13 @@
    <properties>
       <version.gatein.common>2.0.3-GA</version.gatein.common>
       <version.gatein.wci>2.1.0-Alpha01-SNAPSHOT</version.gatein.wci>
-      <version.apache.portals.bridges>1.0.3</version.apache.portals.bridges>
+      <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
 
       <!-- used in test module by maven-antrun-extended-plugin -->
       <version.jboss.unit>1.2.3</version.jboss.unit>
-      <version.cargo>1.0.3</version.cargo>
+      <version.cargo>1.0.4</version.cargo>
       <version.cargo.jetty.deployer>1.0.1</version.cargo.jetty.deployer>
 
       <preparationGoals>clean install</preparationGoals>

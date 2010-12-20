@@ -5,13 +5,13 @@
 
    <!-- SYSTEM PROPERTIES -->
    <property environment="env"/>
-   <property name="test.cargo.home" value="${env.JBOSS_4_2_0_HOME}"/>
+   <property name="test.cargo.home" value="${env.JBOSS_4_2_HOME}"/>
 
 
    <!-- properties unique per app server -->
    <property name="test.server.name" value="JBoss"/>
    <property name="test.server.version" value="4.2"/>
-   <property name="test.remote.server.name" value="RemoteJBoss_4_2_0"/>
+   <property name="test.remote.server.name" value="RemoteJBoss_4_2"/>
    <property name="cargo.container.id" value="jboss42x"/>
 
    <target name="tests" unless="maven.test.skip">

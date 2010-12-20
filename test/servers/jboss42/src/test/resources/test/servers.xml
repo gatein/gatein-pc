@@ -1,6 +1,6 @@
 <servers>
    <server>
-      <server-name>RemoteJBoss_4_2_0</server-name>
+      <server-name>RemoteJBoss_4_2</server-name>
       <node>
          <node-id>default</node-id>
          <service>
