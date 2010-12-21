@@ -132,22 +132,6 @@
          <groupId>commons-httpclient</groupId>
          <artifactId>commons-httpclient</artifactId>
       </dependency>
-      <dependency>
-         <groupId>cargo</groupId>
-         <artifactId>cargo-manager</artifactId>
-         <type>war</type>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.codehaus.cargo</groupId>
-         <artifactId>cargo-core-uberjar</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.codehaus.cargo</groupId>
-         <artifactId>cargo-ant</artifactId>
-         <scope>test</scope>
-      </dependency>
 
       <dependency>
          <groupId>javax.ccpp</groupId>
@@ -183,6 +167,18 @@
       <dependency>
         <groupId>org.jboss.integration</groupId>
         <artifactId>jboss-profileservice-spi</artifactId>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>commons-discovery</groupId>
+         <artifactId>commons-discovery</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-core-uberjar</artifactId>
+        <version>${version.cargo}</version>
         <scope>test</scope>
       </dependency>
    </dependencies>
@@ -486,10 +482,6 @@
                         <property name="dependency.jboss-profile-service.jar" value="${maven.dependency.org.jboss.integration.jboss-profileservice-spi.jar.path}" />
                         <property name="dependency.cargo-core-container-jboss.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-container-jboss.jar.path}" />
 
-                        <property name="dependency.cargo-core-uberjar.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-uberjar.jar.path}"/>
-                        <property name="dependency.cargo-ant.jar" value="${maven.dependency.org.codehaus.cargo.cargo-ant.jar.path}"/>
-                        <property name="dependency.cargo-manager.war" value="${maven.dependency.cargo.cargo-manager.war.path}"/>
-
                         <property name="dependency.apache-jstl.jar" value="${maven.dependency.apache-taglibs.jstl.jar.path}"/>
                         <property name="dependency.apache-standard.jar" value="${maven.dependency.apache-taglibs.standard.jar.path}"/>
 
@@ -509,6 +501,9 @@
             </executions>
          </plugin>
       </plugins>
-
    </build>
+   <properties>
+      <!-- Fix 1.0.3 deployment problems with jboss51 deployer-->
+      <version.cargo>1.0.2</version.cargo>
+   </properties>
 </project>

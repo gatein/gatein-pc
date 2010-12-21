@@ -145,22 +145,6 @@
          <groupId>commons-httpclient</groupId>
          <artifactId>commons-httpclient</artifactId>
       </dependency>
-      <dependency>
-         <groupId>cargo</groupId>
-         <artifactId>cargo-manager</artifactId>
-         <type>war</type>
-         <scope>test</scope>
-      </dependency>
-      <!--<dependency>
-         <groupId>org.codehaus.cargo</groupId>
-         <artifactId>cargo-core-uberjar</artifactId>
-         <scope>test</scope>
-      </dependency>-->
-      <!--<dependency>
-         <groupId>org.codehaus.cargo</groupId>
-         <artifactId>cargo-ant</artifactId>
-         <scope>test</scope>
-      </dependency>-->
 
       <dependency>
          <groupId>javax.ccpp</groupId>
@@ -500,10 +484,6 @@
                         <property name="dependency.xml-apis.jar" value="${maven.dependency.apache-xerces.xml-apis.jar.path}"/>
                         <property name="dependency.jbossxb.jar" value="${maven.dependency.org.jboss.jbossxb.jar.path}"/>
                         <property name="dependency.jboss-serialization.jar" value="${maven.dependency.jboss.jboss-serialization.jar.path}"/>
-
-                        <property name="dependency.cargo-core-uberjar.jar" value="${maven.dependency.org.codehaus.cargo.cargo-core-uberjar.jar.path}"/>
-                        <property name="dependency.cargo-ant.jar" value="${maven.dependency.org.codehaus.cargo.cargo-ant.jar.path}"/>
-                        <property name="dependency.cargo-manager.war" value="${maven.dependency.cargo.cargo-manager.war.path}"/>
 
                         <property name="dependency.apache-jstl.jar" value="${maven.dependency.apache-taglibs.jstl.jar.path}"/>
                         <property name="dependency.apache-standard.jar" value="${maven.dependency.apache-taglibs.standard.jar.path}"/>

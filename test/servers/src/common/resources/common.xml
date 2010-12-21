@@ -511,11 +511,6 @@
          <fileset dir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war"/>
       </jar>
 
-      <!-- Strip cargo manager war filename-->
-      <copy file="${dependency.cargo-manager.war}" tofile="${test.temp.lib}/manager.war"/>
-      <!-- unjar the war -->
-      <unzip src="${test.temp.lib}/manager.war" dest="${test.temp.lib}/manager"/>
-
    </target>
 
    <target name="__cargo.setup">
