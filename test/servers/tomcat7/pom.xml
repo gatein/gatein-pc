@@ -47,41 +47,54 @@
          <artifactId>log4j</artifactId>
       </dependency>
 
+      <!-- JBOSS UNIT DEPENDENCIES -->
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit</artifactId>
-         <exclusions>
-            <exclusion>
-               <groupId>cargo</groupId>
-               <artifactId>core</artifactId>
-            </exclusion>
-         </exclusions>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-remote</artifactId>
+         <scope>test</scope>
          <exclusions>
             <exclusion>
-               <groupId>cargo</groupId>
-               <artifactId>core</artifactId>
+               <groupId>org.codehaus.cargo</groupId>
+               <artifactId>cargo-core-uberjar</artifactId>
             </exclusion>
          </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-mc</artifactId>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-tooling-ant</artifactId>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>portal-test</artifactId>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>org.codehaus.cargo</groupId>
+               <artifactId>cargo-core-uberjar</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>portal-test-generic</artifactId>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>org.codehaus.cargo</groupId>
+               <artifactId>cargo-core-uberjar</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
 
       <dependency>
@@ -138,16 +151,16 @@
          <type>war</type>
          <scope>test</scope>
       </dependency>
-      <dependency>
+      <!--<dependency>
          <groupId>org.codehaus.cargo</groupId>
          <artifactId>cargo-core-uberjar</artifactId>
          <scope>test</scope>
-      </dependency>
-      <dependency>
+      </dependency>-->
+      <!--<dependency>
          <groupId>org.codehaus.cargo</groupId>
          <artifactId>cargo-ant</artifactId>
          <scope>test</scope>
-      </dependency>
+      </dependency>-->
 
       <dependency>
          <groupId>javax.ccpp</groupId>
@@ -178,6 +191,18 @@
       <dependency>
          <groupId>org.gatein.wci</groupId>
          <artifactId>wci-tomcat7</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>commons-discovery</groupId>
+         <artifactId>commons-discovery</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-core-uberjar</artifactId>
+        <version>${version.cargo}</version>
+        <scope>test</scope>
       </dependency>
    </dependencies>
 
@@ -332,30 +357,6 @@
 
    <build>
       <plugins>
-         <!--<plugin>
-            <groupId>org.jboss.unit</groupId>
-            <artifactId>jboss-unit-tooling-maven2</artifactId>
-            <executions>
-               <execution>
-                  <phase>test</phase>
-                  <goals>
-                     <goal>execute</goal>
-                  </goals>
-               </execution>
-            </executions>
-            <configuration>
-               <failOnError>true</failOnError>
-               <testsuites>
-                  <testsuite>
-                     <config>test/local-jboss-unit.xml</config>
-                  </testsuite>
-               </testsuites>
-               <reports>
-                  <xml>target/tests/reports/xml/local</xml>
-                  <html>target/tests/reports/html/local</html>
-               </reports>
-            </configuration>
-         </plugin>-->
          <plugin>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
@@ -380,31 +381,37 @@
                   <artifactId>jboss-unit-tooling-ant</artifactId>
                   <version>${version.jboss.unit}</version>
                </dependency>
+               <dependency>
+                  <groupId>org.jboss.unit</groupId>
+                  <artifactId>jboss-unit</artifactId>
+                  <version>${version.jboss.unit}</version>
+               </dependency>
 
                <dependency>
                   <groupId>org.codehaus.cargo</groupId>
                   <artifactId>cargo-ant</artifactId>
                   <version>${version.cargo}</version>
+                  <exclusions>
+                     <exclusion>
+                        <groupId>ant</groupId>
+                        <artifactId>ant</artifactId>
+                     </exclusion>
+                  </exclusions>
                </dependency>
                <dependency>
-                  <groupId>org.codehaus.cargo</groupId>
-                  <artifactId>cargo-core-uberjar</artifactId>
-                  <version>${version.cargo}</version>
+                 <groupId>org.jdom</groupId>
+                 <artifactId>jdom</artifactId>
+                 <version>1.1</version>
                </dependency>
                <dependency>
-                  <groupId>org.jdom</groupId>
-                  <artifactId>jdom</artifactId>
-                  <version>1.1</version>
+                 <groupId>dom4j</groupId>
+                 <artifactId>dom4j</artifactId>
+                 <version>1.6.1</version>
                </dependency>
                <dependency>
-                  <groupId>dom4j</groupId>
-                  <artifactId>dom4j</artifactId>
-                  <version>1.6.1</version>
-               </dependency>
-               <dependency>
-                  <groupId>jaxen</groupId>
-                  <artifactId>jaxen</artifactId>
-                  <version>1.1.1</version>
+                 <groupId>jaxen</groupId>
+                 <artifactId>jaxen</artifactId>
+                 <version>1.1.1</version>
                </dependency>
             </dependencies>
             <executions>

@@ -50,11 +50,13 @@
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
+      <version.discovery>0.4</version.discovery>
 
       <!-- used in test module by maven-antrun-extended-plugin -->
       <version.jboss.unit>1.2.3</version.jboss.unit>
-      <version.cargo>1.0.4</version.cargo>
+      <version.cargo>1.0.3</version.cargo>
       <version.cargo.jetty.deployer>1.0.1</version.cargo.jetty.deployer>
+      <version.cargo.jboss5.deployer>5.1.0.SP1</version.cargo.jboss5.deployer>
 
       <preparationGoals>clean install</preparationGoals>
    </properties>
@@ -161,6 +163,17 @@
            <artifactId>cargo-jetty-deployer</artifactId>
            <type>war</type>
            <version>${version.cargo.jetty.deployer}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.integration</groupId>
+            <artifactId>jboss-profileservice-spi</artifactId>
+            <version>${version.cargo.jboss5.deployer}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>${version.discovery}</version>
          </dependency>
 
       </dependencies>

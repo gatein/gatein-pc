@@ -183,7 +183,6 @@
       <dependency>
         <groupId>org.jboss.integration</groupId>
         <artifactId>jboss-profileservice-spi</artifactId>
-        <version>5.1.0.SP1</version>
         <scope>test</scope>
       </dependency>
    </dependencies>

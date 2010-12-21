@@ -40,8 +40,9 @@
             <property name="cargo.servlet.port" value="8080"/>
             <property name="cargo.logging" value="high"/>
             <property name="cargo.jvmargs" value="-Duser.language=en ${cargo.debug}"/>
-            <deployable type="war" file="${test.temp.lib}/manager.war"/>
-            <file file="${test.temp.lib}/manager" todir="webapps/manager"/>
+            <!--<deployable type="war" file="${test.temp.lib}/manager.war"/>-->
+            <!--<file file="${test.temp.lib}/manager" todir="webapps/manager"/>-->
+            <file file="${target}/test-classes/config/tomcat-users.xml" tofile="conf/tomcat-users.xml" overwrite="true"/>
             <deployable type="war" file="${test.temp.lib}/Tomcat-7.0/portlet-test.war"/>
          </configuration>
       </cargo>
@@ -53,7 +54,7 @@
               home="${test.cargo.home}"
               log="${cargo.log.dir}/cargo.${test.server.name}-${test.server.version}.shutdown.log"
               action="stop">
-         <configuration/>
+         <configuration home="${test.cargo.dir}"/>
       </cargo>
    </target>
 </project>

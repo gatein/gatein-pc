@@ -12,8 +12,7 @@
       <echo message="test classpath:    ${test_classpath}"/>
       <echo message="plugin classpath:  ${plugin_classpath}"/>
 
-      <echo message="You can run small subset of tests using -Dtests=local, -Dtests=jboss, or -Dtests=tomcat"/>
-      <echo message="-Dtests=local will only run the tests on your locally installed servlet containers"/>
+      <echo message="You can run small subset of tests using -Pjboss42, -Pjboss51, -Ptomcat6, -Ptomcat7"/>
 
       <antcall target="package-tests"/>
 
