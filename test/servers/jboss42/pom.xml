@@ -158,7 +158,6 @@
          <artifactId>standard</artifactId>
       </dependency>
 
-
       <dependency>
          <groupId>org.gatein.wci</groupId>
          <artifactId>wci-tomcat6</artifactId>
@@ -493,4 +492,8 @@
       </plugins>
 
    </build>
+   <properties>
+      <!-- Fix 1.0.3 deployment problems with jboss42 -->
+      <version.cargo>1.0.2</version.cargo>
+   </properties>
 </project>
