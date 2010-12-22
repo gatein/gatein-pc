@@ -18,7 +18,7 @@
       <antcall target="tests.common"/>
    </target>
 
-   <target name="cargo.start" depends="__cargo.setup">
+   <target name="cargo.start" depends="cargo.setup">
 
       <taskdef resource="cargo.tasks">
          <classpath>
@@ -46,7 +46,7 @@
       </cargo>
    </target>
 
-   <target name="cargo.stop" depends="__cargo.setup">
+   <target name="cargo.stop" depends="cargo.setup">
       <cargo
               containerId="jboss42x"
               home="${test.cargo.home}"

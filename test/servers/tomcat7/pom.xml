@@ -282,56 +282,6 @@
          </build>
       </profile>
       <profile>
-         <id>all</id>
-         <activation>
-            <activeByDefault>true</activeByDefault>
-         </activation>
-         <properties>
-            <test.ext>true</test.ext>
-            <test.tck>true</test.tck>
-            <test.api>true</test.api>
-            <test.jsr286-ext>true</test.jsr286-ext>
-            <test.jsr286-tck>true</test.jsr286-tck>
-            <test.jsr286-api>true</test.jsr286-api>
-         </properties>
-      </profile>
-      <profile>
-         <id>ext</id>
-         <properties>
-            <test.ext>ext</test.ext>
-         </properties>
-      </profile>
-      <profile>
-         <id>tck</id>
-         <properties>
-            <test.tck>tck</test.tck>
-         </properties>
-      </profile>
-      <profile>
-         <id>api</id>
-         <properties>
-            <test.api>api</test.api>
-         </properties>
-      </profile>
-      <profile>
-         <id>jsr286-ext</id>
-         <properties>
-            <test.jsr286-ext>jsr286-ext</test.jsr286-ext>
-         </properties>
-      </profile>
-      <profile>
-         <id>jsr286-tck</id>
-         <properties>
-            <test.jsr286-tck>jsr286-tck</test.jsr286-tck>
-         </properties>
-      </profile>
-      <profile>
-         <id>jsr286-api</id>
-         <properties>
-            <test.jsr286-api>jsr286-api</test.jsr286-api>
-         </properties>
-      </profile>
-      <profile>
          <id>cargo.debug</id>
          <properties>
             <test.cargo.debug>-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000</test.cargo.debug>
@@ -411,24 +361,6 @@
                         <property name="project.version" value="${project.version}"/>
                         <property name="basedir" value="${basedir}"/>
 
-                        <condition property="test.ext.enable">
-                           <istrue value="${test.ext}" />
-                        </condition>
-                        <condition property="test.tck.enable">
-                           <istrue value="${test.tck}" />
-                        </condition>
-                        <condition property="test.api.enable">
-                           <istrue value="${test.api}" />
-                        </condition>
-                        <condition property="test.jsr286-ext.enable">
-                           <istrue value="${test.jsr286-ext}" />
-                        </condition>
-                        <condition property="test.jsr286-tck.enable">
-                           <istrue value="${test.jsr286-tck}" />
-                        </condition>
-                        <condition property="test.jsr286-api.enable">
-                           <istrue value="${test.jsr286-api}" />
-                        </condition>
                         <condition property="cargo.debug" value="${test.cargo.debug}">
                            <isset property="test.cargo.debug"/>
                         </condition>
