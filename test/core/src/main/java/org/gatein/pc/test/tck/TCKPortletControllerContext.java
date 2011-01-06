@@ -36,7 +36,6 @@ import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.io.Serialization;
-import org.gatein.common.mc.bootstrap.WebBootstrap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,7 +70,7 @@ public class TCKPortletControllerContext extends AbstractPortletControllerContex
       super(req, resp);
 
       //
-      this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
+      this.portletInvoker = (PortletInvoker)servletContext.getAttribute("ConsumerPortletInvoker");
       this.stateControllerContext = new TCKStateControllerContext(new StateControllerContextImpl(this));
       this.eventControllerContext = new EventControllerContextImpl(portletInvoker);
       this.serialization = new TCKPageNavigationalStateSerialization(stateControllerContext);

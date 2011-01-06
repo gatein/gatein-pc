@@ -38,7 +38,6 @@ import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.io.Serialization;
-import org.gatein.common.mc.bootstrap.WebBootstrap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +70,7 @@ import java.util.Collection;
       super(req, resp);
 
       //
-      this.portletInvoker = (PortletInvoker)servletContext.getAttribute(WebBootstrap.BEAN_PREFIX + "ConsumerPortletInvoker");
+      this.portletInvoker = (PortletInvoker)servletContext.getAttribute("ConsumerPortletInvoker");
       this.eventControllerContext = new EventControllerContextImpl(portletInvoker);
       this.stateControllerContext = new StateControllerContextImpl(this);
       this.serialization = new PortletPageNavigationalStateSerialization(stateControllerContext);
