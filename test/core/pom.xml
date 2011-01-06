@@ -71,10 +71,6 @@
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
-         <artifactId>jboss-unit-mc</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-tooling-ant</artifactId>
       </dependency>
       <dependency>

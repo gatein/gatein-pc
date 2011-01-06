@@ -66,11 +66,6 @@
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
-         <artifactId>jboss-unit-mc</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-tooling-ant</artifactId>
          <scope>test</scope>
       </dependency>
@@ -394,7 +389,6 @@
                         <property name="dependency.portal-portlet-api.jar" value="${maven.dependency.org.gatein.pc.pc-api.jar.path}"/>
 
                         <property name="dependency.jboss-unit.jar" value="${maven.dependency.org.jboss.unit.jboss-unit.jar.path}"/>
-                        <property name="dependency.jboss-unit-mc.jar" value="${maven.dependency.org.jboss.unit.jboss-unit-mc.jar.path}"/>
                         <property name="dependency.jboss-unit-remote.jar" value="${maven.dependency.org.jboss.unit.jboss-unit-remote.jar.path}"/>
                         <property name="dependency.portal-test.jar" value="${maven.dependency.org.jboss.unit.portal-test.jar.path}"/>
                         <property name="dependency.portal-test-generic.jar" value="${maven.dependency.org.jboss.unit.portal-test-generic.jar.path}"/>
