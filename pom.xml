@@ -29,7 +29,7 @@
 
    <groupId>org.gatein.pc</groupId>
    <artifactId>pc-parent</artifactId>
-   <version>2.2.1-GA-SNAPSHOT</version>
+   <version>2.2.0-GA</version>
    <packaging>pom</packaging>
 
    <parent>
@@ -39,21 +39,24 @@
    </parent>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/gatein/components/pc/trunk</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/gatein/components/pc/trunk</developerConnection>
-      <url>http://fisheye.jboss.org/browse/gatein/components/pc/trunk</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/gatein/components/pc/tags/2.2.0-GA</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/gatein/components/pc/tags/2.2.0-GA</developerConnection>
+      <url>http://fisheye.jboss.org/browse/gatein/components/pc/tags/2.2.0-GA</url>
    </scm>
 
    <properties>
       <version.gatein.common>2.0.3-GA</version.gatein.common>
-      <version.gatein.wci>2.0.2-GA</version.gatein.wci>
+      <version.gatein.wci>2.1.0-Alpha02</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
+      <version.discovery>0.4</version.discovery>
 
       <!-- used in test module by maven-antrun-extended-plugin -->
       <version.jboss.unit>1.2.3</version.jboss.unit>
-      <version.cargo>1.0.1-alpha-1</version.cargo>
+      <version.cargo>1.0.3</version.cargo>
+      <version.cargo.jetty.deployer>1.0.1</version.cargo.jetty.deployer>
+      <version.cargo.jboss5.deployer>5.1.0.SP1</version.cargo.jboss5.deployer>
 
       <preparationGoals>clean install</preparationGoals>
    </properties>
@@ -130,7 +133,17 @@
          </dependency>
          <dependency>
             <groupId>org.gatein.wci</groupId>
-            <artifactId>wci-tomcat</artifactId>
+            <artifactId>wci-tomcat6</artifactId>
+            <version>${version.gatein.wci}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.wci</groupId>
+            <artifactId>wci-tomcat7</artifactId>
+            <version>${version.gatein.wci}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.wci</groupId>
+            <artifactId>wci-jetty</artifactId>
             <version>${version.gatein.wci}</version>
          </dependency>
 
@@ -143,6 +156,24 @@
             <groupId>apache-taglibs</groupId>
             <artifactId>standard</artifactId>
             <version>${version.apache.taglibs}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.codehaus.cargo</groupId>
+           <artifactId>cargo-jetty-deployer</artifactId>
+           <type>war</type>
+           <version>${version.cargo.jetty.deployer}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.integration</groupId>
+            <artifactId>jboss-profileservice-spi</artifactId>
+            <version>${version.cargo.jboss5.deployer}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>${version.discovery}</version>
          </dependency>
 
       </dependencies>

@@ -13,12 +13,14 @@
    <property name="demo.release.name.jboss42" value="${demo.release.name}-jbossas42"/>
    <property name="demo.release.name.jboss51" value="${demo.release.name}-jbossas51"/>
    <property name="demo.release.name.tomcat60" value="${demo.release.name}-tomcat6"/>
+   <property name="demo.release.name.tomcat70" value="${demo.release.name}-tomcat7"/>
 
    <!-- -->
    <property name="pc.build.src" value="output/${pc.release.name.src}"/>
    <property name="pc.build.bin.as42" value="output/${demo.release.name.jboss42}"/>
    <property name="pc.build.bin.as51" value="output/${demo.release.name.jboss51}"/>
    <property name="pc.build.bin.tomcat6" value="output/${demo.release.name.tomcat60}"/>
+   <property name="pc.build.bin.tomcat7" value="output/${demo.release.name.tomcat70}"/>
 
    <!-- Clean -->
    <target name="clean">
@@ -50,6 +52,7 @@
       <antcall target="package-jboss42"/>
       <antcall target="package-jboss51"/>
       <antcall target="package-tomcat60"/>
+      <antcall target="package-tomcat70"/>
    </target>
 
    <!--
@@ -179,6 +182,42 @@
       <!-- -->
       <antcall target="__zip">
          <param name="release.name" value="${demo.release.name.tomcat60}"/>
+      </antcall>
+   </target>
+
+   <!--
+      | JBoss Portlet Container binary distribution for Tomcat 7.x
+   -->
+   <target name="package-tomcat70" description="package Tomcat binary" if="TOMCAT_7_0_PATH" unless="no-tomcat">
+
+      <!-- -->
+      <unzip src="${TOMCAT_7_0_PATH}" dest="${pc.build.bin.tomcat7}">
+         <mapper type="regexp" from="^[^\/]*\/(.*)$$" to="\1"/>
+      </unzip>
+      <chmod dir="${pc.build.bin.tomcat6}/bin" perm="ugo+rx" includes="**/*.sh"/>
+
+      <!-- -->
+      <antcall target="__package-binary">
+         <param name="bin.dir" value="${pc.build.bin.tomcat7}"/>
+         <param name="deploy.dir" value="${pc.build.bin.tomcat7}/webapps"/>
+         <param name="samples.dir" value="${pc.build.bin.tomcat7}/webapps"/>
+      </antcall>
+
+      <!-- -->
+      <copy todir="${pc.build.bin.tomcat7}/lib">
+         <fileset
+            dir="${source.dir}/portal/target/simple-portal-tomcat60/simple-portal/lib"
+            includes="**/*.jar"/>
+      </copy>
+      <jar file="${pc.build.bin.tomcat7}/webapps/simple-portal.war">
+         <fileset
+            dir="${source.dir}/portal/target/simple-portal-tomcat70/simple-portal/simple-portal.war"
+            includes="**"/>
+      </jar>
+
+      <!-- -->
+      <antcall target="__zip">
+         <param name="release.name" value="${demo.release.name.tomcat70}"/>
       </antcall>
    </target>
 

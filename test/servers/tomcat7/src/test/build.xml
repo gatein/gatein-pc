@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project name="tomcat-integration-test" default="tests">
+
+   <import file="${common.xml.file}"/>
+
+   <!-- SYSTEM PROPERTIES -->
+   <property environment="env"/>
+   <property name="test.cargo.home" value="${env.TOMCAT_7_0_HOME}"/>
+
+
+   <!-- properties unique per app server -->
+   <property name="test.server.name" value="Tomcat"/>
+   <property name="test.server.version" value="7.0"/>
+   <property name="test.remote.server.name" value="RemoteTomcat_7_0"/>
+   <property name="cargo.container.id" value="tomcat7x"/>
+
+   <target name="tests" unless="maven.test.skip">
+      <antcall target="tests.common"/>
+   </target>
+
+   <target name="cargo.start" depends="cargo.setup">
+
+      <taskdef resource="cargo.tasks">
+         <classpath>
+            <pathelement path="${plugin_classpath}"/>
+         </classpath>
+      </taskdef>
+
+      <cargo
+              containerId="tomcat7x"
+              home="${test.cargo.home}"
+              output="${cargo.log.dir}/cargo.${test.server.name}-${test.server.version}.server.log"
+              log="${cargo.log.dir}/cargo.${test.server.name}-${test.server.version}.start.log"
+              action="start"
+              wait="${cargo.wait}">
+         <sharedClasspath>
+            <path refid="Tomcat-7.0-shared"/>
+         </sharedClasspath>
+         <configuration home="${test.cargo.dir}">
+            <property name="cargo.servlet.port" value="8080"/>
+            <property name="cargo.logging" value="high"/>
+            <property name="cargo.jvmargs" value="-Duser.language=en ${cargo.debug}"/>
+            <file file="${target}/test-classes/config/tomcat-users.xml" tofile="conf/tomcat-users.xml" overwrite="true"/>
+            <deployable type="war" file="${test.temp.lib}/Tomcat-7.0/portlet-test.war"/>
+         </configuration>
+      </cargo>
+   </target>
+
+   <target name="cargo.stop" depends="cargo.setup">
+      <cargo
+              containerId="tomcat7x"
+              home="${test.cargo.home}"
+              log="${cargo.log.dir}/cargo.${test.server.name}-${test.server.version}.shutdown.log"
+              action="stop">
+         <configuration home="${test.cargo.dir}"/>
+      </cargo>
+   </target>
+</project>
