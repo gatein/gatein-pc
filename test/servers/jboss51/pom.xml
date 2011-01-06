@@ -96,16 +96,6 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>org.jboss.microcontainer</groupId>
-         <artifactId>jboss-kernel</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss</groupId>
-         <artifactId>jboss-reflect</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
          <groupId>jboss</groupId>
          <artifactId>jboss-serialization</artifactId>
          <scope>test</scope>
