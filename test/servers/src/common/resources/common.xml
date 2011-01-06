@@ -43,10 +43,6 @@
       </path>
 
       <path id="jboss-microcontainer">
-         <pathelement path="${dependency.jboss-kernel.jar}"/>
-         <pathelement path="${dependency.jboss-dependency.jar}"/>
-         <pathelement path="${dependency.jboss-reflect.jar}"/>
-         <pathelement path="${dependency.jboss-mdr.jar}"/>
          <pathelement path="${dependency.jbossxb.jar}"/>
       </path>
 
@@ -136,7 +132,6 @@
          <path refid="portal-portlet"/>
          <path refid="jboss-unit"/>
          <path refid="jboss-microcontainer"/>
-         <pathelement path="${dependency.javassist.jar}"/>
          <pathelement path="${dependency.xercesImpl.jar}"/>
          <pathelement path="${dependency.resolver.jar}"/>
          <pathelement path="${dependency.xml-apis.jar}"/>
@@ -165,7 +160,6 @@
          <path refid="portal-portlet"/>
          <path refid="jboss-unit"/>
          <path refid="jboss-microcontainer"/>
-         <pathelement path="${dependency.javassist.jar}"/>
          <pathelement path="${dependency.xercesImpl.jar}"/>
          <pathelement path="${dependency.resolver.jar}"/>
          <pathelement path="${dependency.xml-apis.jar}"/>
@@ -194,7 +188,6 @@
          <path refid="portal-portlet"/>
          <path refid="jboss-unit"/>
          <path refid="jboss-microcontainer"/>
-         <pathelement path="${dependency.javassist.jar}"/>
          <pathelement path="${dependency.xercesImpl.jar}"/>
          <pathelement path="${dependency.resolver.jar}"/>
          <pathelement path="${dependency.xml-apis.jar}"/>

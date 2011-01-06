@@ -107,16 +107,7 @@
          <artifactId>concurrent</artifactId>
          <scope>test</scope>
       </dependency>
-      <dependency>
-         <groupId>org.jboss.microcontainer</groupId>
-         <artifactId>jboss-kernel</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss</groupId>
-         <artifactId>jboss-reflect</artifactId>
-         <scope>test</scope>
-      </dependency>
+
       <dependency>
          <groupId>jboss</groupId>
          <artifactId>jboss-serialization</artifactId>
@@ -399,12 +390,7 @@
                         <property name="dependency.jboss-logging-spi.jar" value="${maven.dependency.jboss.jboss-common-logging-spi.jar.path}"/>
                         <property name="dependency.jboss-logging-jdk.jar" value="${maven.dependency.jboss.jboss-common-logging-jdk.jar.path}"/>
                         <property name="dependency.jboss-logging-log4j.jar" value="${maven.dependency.jboss.jboss-common-logging-log4j.jar.path}"/>
-                        <property name="dependency.jboss-kernel.jar" value="${maven.dependency.org.jboss.microcontainer.jboss-kernel.jar.path}"/>
-                        <property name="dependency.jboss-dependency.jar" value="${maven.dependency.org.jboss.microcontainer.jboss-dependency.jar.path}"/>
-                        <property name="dependency.jboss-reflect.jar" value="${maven.dependency.org.jboss.jboss-reflect.jar.path}"/>
                         <property name="dependency.jboss-common-core.jar" value="${maven.dependency.org.jboss.jboss-common-core.jar.path}"/>
-                        <property name="dependency.jboss-mdr.jar" value="${maven.dependency.org.jboss.jboss-mdr.jar.path}"/>
-                        <property name="dependency.javassist.jar" value="${maven.dependency.org.jboss.javassist.jar.path}"/>
                         <property name="dependency.resolver.jar" value="${maven.dependency.apache-xerces.resolver.jar.path}"/>
                         <property name="dependency.xercesImpl.jar" value="${maven.dependency.apache-xerces.xercesImpl.jar.path}"/>
                         <property name="dependency.xml-apis.jar" value="${maven.dependency.apache-xerces.xml-apis.jar.path}"/>
