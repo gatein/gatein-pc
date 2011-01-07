@@ -356,8 +356,8 @@
                         </condition>
 
                         <!-- location of common.xml shared between the different server's build.xml -->
-                        <!--<property name="common.xml.file" value="${test.common.xml}"/>-->
-                        <property name="common.xml.file" value="${basedir}/src/test/common.xml"/>
+                        <!-- for now hardcode like that, it should be probably moved to the test-core package -->
+                        <property name="common.xml.file" value="${project.basedir}/../src/common/resources/common2.xml"/>
 
                         <ant antfile="${basedir}/src/test/build.xml" inheritRefs="true">
                            <target name="tests"/>
