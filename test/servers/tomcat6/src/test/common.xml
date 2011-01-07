@@ -387,13 +387,6 @@
 
    <target name="package-tests">
 
-     <copy todir="${target}/classes">
-        <fileset dir="${basedir}/../../core/target/classes" includes="**/*"/>
-     </copy>
-     <copy todir="${target}/test-classes">
-        <fileset dir="${basedir}/../../core/target/test-classes" includes="**/*"/>
-     </copy>
-
       <package-tck-test test="portletinterface"/>
       <package-tck-test test="dispatcher"/>
       <package-tck-test test="portletrequests"/>
@@ -453,18 +446,17 @@
       <package-jsr286-ext-test test="portletmode"/>
 
      <!-- -->
-     <jar jarfile="${test.temp.lib}/portlet-test-lib.jar">
-        <fileset dir="${target}/test-classes"/>
-        <fileset dir="${target}/classes"/>
-     </jar>
-
      <copy todir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war">
         <fileset dir="${target}/test-classes/portlet-test-war"/>
      </copy>
      <copy todir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war/WEB-INF/lib" flatten="true">
-        <fileset dir="${test.temp.lib}" includes="portlet-test-lib.jar"/>
         <path refid="${test.server.name}-${test.server.version}"/>
+        <path>
+          <pathelement location="${org.gatein.pc:pc-test-core:jar}"/>
+          <pathelement location="${org.gatein.pc:pc-test-core:test-jar:tests}"/>
+        </path>
      </copy>
+
      <mkdir dir="${test.temp.lib}/${test.server.name}-${test.server.version}"/>
      <jar jarfile="${test.temp.lib}/${test.server.name}-${test.server.version}/portlet-test.war">
         <fileset dir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war"/>
@@ -510,9 +502,7 @@
          </reports>
 
          <classpath>
-            <pathelement location="${target}/classes"/>
             <pathelement location="${test.temp.lib}"/>
-            <pathelement location="${target}/classes/test"/>
             <pathelement location="${target}/test-classes/test"/>
             <pathelement path="${test_classpath}"/>
          </classpath>
@@ -521,6 +511,7 @@
 
    </target>
 
+<!--
    <target name="package-tck-portal" depends="prepare_env">
 
       <property name="tck" value="${target}/tck"/>
@@ -558,5 +549,6 @@
       <delete file="${target}/portlet-test-lib.jar"/>
 
    </target>
+-->
 
 </project>

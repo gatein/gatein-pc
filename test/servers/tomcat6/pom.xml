@@ -135,6 +135,14 @@
          <scope>test</scope>
       </dependency>
 
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-test-core</artifactId>
+         <version>2.3.0-Alpha01-SNAPSHOT</version>
+         <type>test-jar</type>
+         <scope>test</scope>
+      </dependency>
+
       <!-- JSTL for Tomcat -->
       <dependency>
          <groupId>apache-taglibs</groupId>
