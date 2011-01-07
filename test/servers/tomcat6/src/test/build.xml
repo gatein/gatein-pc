@@ -14,32 +14,32 @@
    <property name="test.remote.server.name" value="RemoteTomcat_6_0"/>
    <property name="cargo.container.id" value="tomcat6x"/>
 
-  <path id="Tomcat-6.0">
-     <path refid="portal-common"/>
-     <path refid="portal-web"/>
-     <path refid="portal-portlet"/>
-     <path refid="jboss-unit"/>
-     <path refid="jboss-microcontainer"/>
-     <pathelement path="${dependency.xercesImpl.jar}"/>
-     <pathelement path="${dependency.resolver.jar}"/>
-     <pathelement path="${dependency.xml-apis.jar}"/>
-  </path>
+   <path id="Tomcat-6.0">
+      <path refid="portal-common"/>
+      <path refid="portal-web"/>
+      <path refid="portal-portlet"/>
+      <path refid="jboss-unit"/>
+      <path refid="jboss-microcontainer"/>
+      <pathelement path="${dependency.xercesImpl.jar}"/>
+      <pathelement path="${dependency.resolver.jar}"/>
+      <pathelement path="${dependency.xml-apis.jar}"/>
+   </path>
 
-  <path id="Tomcat-6.0-shared">
-     <path refid="portal-common-shared"/>
-     <path refid="portal-web-shared"/>
-     <path refid="portal-portlet-shared"/>
-     <path refid="jboss-unit-shared"/>
-     <path refid="jboss-logging"/>
-     <path location="${dependency.jboss-common-core.jar}"/>
-     <path location="${dependency.log4j.jar}"/>
-     <path location="${dependency.concurrent.jar}"/>
-     <path location="${dependency.activation.jar}"/>
-     <path location="${dependency.jaxb.jar}"/>
-     <path location="${dependency.ccpp.jar}"/>
-     <path location="${dependency.jboss-serialization.jar}"/>
-     <path location="${dependency.portal-wci-tomcat.jar}"/>
-  </path>
+   <path id="Tomcat-6.0-shared">
+      <path refid="portal-common-shared"/>
+      <path refid="portal-web-shared"/>
+      <path refid="portal-portlet-shared"/>
+      <path refid="jboss-unit-shared"/>
+      <path refid="jboss-logging"/>
+      <path location="${dependency.jboss-common-core.jar}"/>
+      <path location="${dependency.log4j.jar}"/>
+      <path location="${dependency.concurrent.jar}"/>
+      <path location="${dependency.activation.jar}"/>
+      <path location="${dependency.jaxb.jar}"/>
+      <path location="${dependency.ccpp.jar}"/>
+      <path location="${dependency.jboss-serialization.jar}"/>
+      <path location="${dependency.portal-wci-tomcat.jar}"/>
+   </path>
 
    <target name="tests" unless="maven.test.skip">
 
