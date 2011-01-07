@@ -41,53 +41,53 @@
       <echo message="Preparing environment"/>
 
       <path id="jboss-logging">
-         <pathelement path="${dependency.jboss-logging-spi.jar}"/>
-         <pathelement path="${dependency.jboss-logging-jdk.jar}"/>
-         <pathelement path="${dependency.jboss-logging-log4j.jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-spi:jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-jdk:jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-log4j:jar}"/>
       </path>
 
       <path id="jboss-microcontainer">
-         <pathelement path="${dependency.jbossxb.jar}"/>
+         <pathelement location="${org.jboss:jbossxb:jar}"/>
       </path>
 
       <path id="portal-common">
-         <pathelement path="${dependency.portal-common-mc.jar}"/>
+         <pathelement location="${org.gatein.common:common-mc:jar}"/>
       </path>
 
       <path id="portal-common-shared">
-         <pathelement path="${dependency.portal-common-common.jar}"/>
-         <pathelement path="${dependency.portal-common-logging.jar}"/>
-         <pathelement path="${dependency.slf4j-simple.jar}"/>
-         <pathelement path="${dependency.slf4j-api.jar}"/>
+        <pathelement location="${org.gatein.common:common-common:jar}"/>
+        <pathelement location="${org.gatein.common:common-logging:jar}"/>
+         <pathelement location="${org.slf4j:slf4j-simple:jar}"/>
+         <pathelement location="${org.slf4j:slf4j-api:jar}"/>
       </path>
 
       <path id="portal-web">
       </path>
 
       <path id="portal-web-shared">
-         <pathelement path="${dependency.portal-wci-wci.jar}"/>
+         <pathelement location="${org.gatein.wci:wci-wci:jar}"/>
       </path>
 
       <path id="portal-portlet">
-         <pathelement path="${dependency.portal-portlet-controller.jar}"/>
-         <pathelement path="${dependency.portal-portlet-mc.jar}"/>
+         <pathelement location="${org.gatein.pc:pc-controller:jar}"/>
+         <pathelement location="${org.gatein.pc:pc-mc:jar}"/>
       </path>
 
       <path id="portal-portlet-shared">
-         <path location="${dependency.portal-portlet-portlet.jar}"/>
-         <path location="${dependency.portal-portlet-api.jar}"/>
-         <path location="${dependency.jsr168api.jar}"/>
+         <pathelement location="${org.gatein.pc:pc-portlet:jar}"/>
+         <pathelement location="${org.gatein.pc:pc-api:jar}"/>
+         <pathelement location="${javax.portlet:portlet-api:jar}"/>
       </path>
 
       <path id="jboss-unit">
       </path>
 
       <path id="jboss-unit-shared">
-         <pathelement path="${dependency.jboss-unit.jar}"/>
-         <pathelement path="${dependency.jboss-unit-remote.jar}"/>
-         <pathelement path="${dependency.portal-test-generic.jar}"/>
-         <pathelement path="${dependency.portal-test.jar}"/>
-         <pathelement path="${dependency.jboss-remoting.jar}"/>
+         <pathelement location="${org.jboss.unit:jboss-unit:jar}"/>
+         <pathelement location="${org.jboss.unit:jboss-unit-remote:jar}"/>
+         <pathelement location="${org.jboss.unit:portal-test-generic:jar}"/>
+         <pathelement location="${org.jboss.unit:portal-test:jar}"/>
+         <pathelement location="${org.jboss.remoting:jboss-remoting:jar}"/>
       </path>
 
    </target>

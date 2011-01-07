@@ -20,9 +20,9 @@
       <path refid="portal-portlet"/>
       <path refid="jboss-unit"/>
       <path refid="jboss-microcontainer"/>
-      <pathelement path="${dependency.xercesImpl.jar}"/>
-      <pathelement path="${dependency.resolver.jar}"/>
-      <pathelement path="${dependency.xml-apis.jar}"/>
+      <pathelement location="${apache-xerces:xerces:jar}"/>
+      <pathelement location="${apache-xerces:xml-apis:jar}"/>
+      <pathelement location="${apache-xerces:resolver:jar}"/>
    </path>
 
    <path id="Tomcat-6.0-shared">
@@ -31,14 +31,14 @@
       <path refid="portal-portlet-shared"/>
       <path refid="jboss-unit-shared"/>
       <path refid="jboss-logging"/>
-      <path location="${dependency.jboss-common-core.jar}"/>
-      <path location="${dependency.log4j.jar}"/>
-      <path location="${dependency.concurrent.jar}"/>
-      <path location="${dependency.activation.jar}"/>
-      <path location="${dependency.jaxb.jar}"/>
-      <path location="${dependency.ccpp.jar}"/>
-      <path location="${dependency.jboss-serialization.jar}"/>
-      <path location="${dependency.portal-wci-tomcat.jar}"/>
+      <pathelement location="${org.jboss:jboss-common-core:jar}"/>
+      <pathelement location="${apache-log4j:log4j:jar}"/>
+      <pathelement location="${concurrent:concurrent:jar}"/>
+      <pathelement location="${javax.activation:activation:jar}"/>
+      <pathelement location="${sun-jaxb:jaxb-api:jar}"/>
+      <pathelement location="${javax.ccpp:ccpp:jar}"/>
+      <pathelement location="${jboss:jboss-serialization:jar}"/>
+      <pathelement location="${org.gatein.wci:wci-tomcat6:jar}"/>
    </path>
 
    <target name="tests" unless="maven.test.skip">
