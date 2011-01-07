@@ -10,7 +10,7 @@
    <property name="test.dir" value="${target.dir}/integration-tests"/>
    <property name="test.cargo.dir" value="${test.dir}/cargo/"/>
 
-   <target name="tests.common" depends="prepare_env, evaluate_properties.init" >
+   <target name="tests.common" depends="prepare_env" >
 
       <echo message="compile classpath: ${compile_classpath}"/>
       <echo message="runtime classpath: ${runtime_classpath}"/>
@@ -22,7 +22,6 @@
 
       <antcall target="package-tests"/>
 
-      <antcall target="evaluate_properties.all"/>
       <antcall target="test.container-servlet"/>
 
    </target>
@@ -91,67 +90,6 @@
          <pathelement path="${dependency.jboss-remoting.jar}"/>
       </path>
 
-      <path id="Tomcat-6.0">
-         <path refid="portal-common"/>
-         <path refid="portal-web"/>
-         <path refid="portal-portlet"/>
-         <path refid="jboss-unit"/>
-         <path refid="jboss-microcontainer"/>
-         <pathelement path="${dependency.xercesImpl.jar}"/>
-         <pathelement path="${dependency.resolver.jar}"/>
-         <pathelement path="${dependency.xml-apis.jar}"/>
-      </path>
-
-      <path id="Tomcat-6.0-shared">
-         <path refid="portal-common-shared"/>
-         <path refid="portal-web-shared"/>
-         <path refid="portal-portlet-shared"/>
-         <path refid="jboss-unit-shared"/>
-         <path refid="jboss-logging"/>
-         <path location="${dependency.jboss-common-core.jar}"/>
-         <path location="${dependency.log4j.jar}"/>
-         <path location="${dependency.concurrent.jar}"/>
-         <path location="${dependency.activation.jar}"/>
-         <path location="${dependency.jaxb.jar}"/>
-         <path location="${dependency.ccpp.jar}"/>
-         <path location="${dependency.jboss-serialization.jar}"/>
-         <path location="${dependency.portal-wci-tomcat.jar}"/>
-      </path>
-
-   </target>
-
-   <!-- Check which servlet containers are known -->
-   <target name="evaluate_properties.init">
-
-      <property environment="env"/>
-
-      <!--If properties are not in command line check if they are set in env-->
-      <condition property="TOMCAT_6_0_HOME" value="${env.TOMCAT_6_0_HOME}">
-         <and>
-            <isset property="env.TOMCAT_6_0_HOME"/>
-            <not>
-               <isset property="TOMCAT_6_0_HOME"/>
-            </not>
-         </and>
-      </condition>
-
-      <echo message="TOMCAT_6_0_HOME: ${TOMCAT_6_0_HOME}"/>
-   </target>
-
-   <target name="evaluate_properties.tomcat">
-      <fail message="Please set the environment variable TOMCAT_6_0_HOME">
-         <condition>
-            <and>
-               <not>
-                  <isset property="TOMCAT_6_0_HOME"/>
-               </not>
-            </and>
-         </condition>
-      </fail>
-   </target>
-
-   <target name="evaluate_properties.all">
-      <antcall target="evaluate_properties.tomcat"/>
    </target>
 
    <macrodef name="package-ext-test">
