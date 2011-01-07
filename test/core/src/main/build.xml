@@ -6,6 +6,42 @@
            uri="antlib:org.apache.maven.artifact.ant"
            classpathref="maven-ant-tasks.classpath" />
 
+  <macrodef name="install">
+    <attribute name="pomId"/>
+    <attribute name="artifactId"/>
+    <attribute name="packaging"/>
+    <attribute name="file"/>
+    <sequential>
+
+      <!-- Create dir if not exist -->
+      <mkdir dir="${target}/poms"/>
+
+      <!-- Generate pom -->
+      <artifact:pom
+        id="@{pomId}"
+        groupId="${groupId}"
+        artifactId="@{artifactId}"
+        version="${version}"
+        name="Generated @{pomId}"
+        packaging="@{packaging}"/>
+
+      <!-- Write the physical pom -->
+      <artifact:writepom
+          pomRefId="@{pomId}"
+          file="${target}/poms/@{pomId}.xml"/>
+
+      <!-- Now we create the same pom but from the physical one -->
+      <artifact:pom
+        id="@{pomId}_"
+        file="${target}/poms/@{pomId}.xml"/>
+
+      <!-- Install the file -->
+      <artifact:install file="@{file}">
+        <pom refid="@{pomId}_"/>
+      </artifact:install>
+    </sequential>
+  </macrodef>
+
   <macrodef name="package-ext-test">
      <attribute name="test"/>
      <sequential>
@@ -55,10 +91,10 @@
      <sequential>
 
        <!-- Make directory -->
-       <mkdir dir="${target}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"/>
+       <mkdir dir="${target}/wars"/>
 
        <!-- Generate artifact -->
-       <jar jarfile="${target}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}/artifact.war">
+       <jar jarfile="${target}/wars/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}.war">
          <zipfileset dir="${target}/test-classes" prefix="WEB-INF/classes">
            <include name="org/gatein/pc/test/portlet/@{testsuiteversion}/@{testsuitetype}/common/**"/>
            <include name="org/gatein/pc/test/portlet/@{testsuiteversion}/common/**"/>
@@ -74,29 +110,11 @@
          <fileset dir="${basedir}/src/main/packaging/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war"/>
        </jar>
 
-       <!-- Generate pom -->
-       <artifact:pom
-         id="@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
-         groupId="${groupId}"
-         artifactId="${artifactId}-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
-         version="${version}"
-         name="Test @{testsuiteversion} @{testsuitetype} @{testsuitename}"
-         packaging="war"/>
-
-       <!-- Write the physical pom -->
-       <artifact:writepom
-           pomRefId="@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
-           file="${target}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}/pom.xml"/>
-
-       <!-- Now we create the same pom but from the physical one -->
-       <artifact:pom
-         id="@{testsuiteversion}-@{testsuitetype}-@{testsuitename}_"
-         file="${target}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}/pom.xml"/>
-
-       <!-- Install the file -->
-       <artifact:install file="${target}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}/artifact.war">
-         <pom refid="@{testsuiteversion}-@{testsuitetype}-@{testsuitename}_"/>
-       </artifact:install>
+       <install
+           pomId="@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
+           artifactId="${artifactId}-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
+           packaging="war"
+           file="${target}/wars/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}.war"/>
 
      </sequential>
   </macrodef>
