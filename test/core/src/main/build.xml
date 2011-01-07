@@ -105,7 +105,7 @@
            <include name="org/gatein/pc/test/portlet/framework/**"/>
          </zipfileset>
          <zipfileset dir="${target}" prefix="WEB-INF/lib">
-           <include name="portal-portlet-test-framework-lib.jar"/>
+           <include name="${artifactId}-${version}-framework.jar"/>
          </zipfileset>
          <fileset dir="${basedir}/src/main/packaging/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war"/>
        </jar>
@@ -120,25 +120,6 @@
   </macrodef>
 
   <target name="package-tests">
-
-    <!--Portlet test framework lib jar-->
-    <jar jarfile="${target}/portal-portlet-test-framework-lib.jar">
-
-       <!-- -->
-       <fileset dir="${target}/classes" includes="org/gatein/pc/test/unit/**"/>
-
-       <!--  JSR 168 TLD -->
-       <zipfileset
-          src="${dependency.portal-portlet-portlet.jar}"
-          includes="META-INF/portlet.tld"
-          fullpath="META-INF/portlet.tld"/>
-
-       <!--  JSR 286 TLD -->
-       <zipfileset
-          src="${dependency.portal-portlet-portlet.jar}"
-          includes="META-INF/portlet_2_0.tld"
-          fullpath="META-INF/portlet_2_0.tld"/>
-    </jar>
 
     <package-tck-test test="portletinterface"/>
     <package-tck-test test="dispatcher"/>

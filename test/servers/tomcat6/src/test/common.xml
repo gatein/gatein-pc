@@ -394,23 +394,6 @@
         <fileset dir="${basedir}/../../core/target/test-classes" includes="**/*"/>
      </copy>
 
-     <!--Portlet test framework lib jar-->
-     <jar jarfile="${test.temp.lib}/portal-portlet-test-framework-lib.jar">
-
-        <!-- -->
-        <fileset dir="${target}/classes" includes="org/gatein/pc/test/unit/**"/>
-
-        <!--  JSR 168 TLD -->
-        <zipfileset
-           src="${dependency.portal-portlet-portlet.jar}"
-           includes="META-INF/portlet.tld"
-           fullpath="META-INF/portlet.tld"/>
-        <zipfileset
-           src="${dependency.portal-portlet-portlet.jar}"
-           includes="META-INF/portlet_2_0.tld"
-           fullpath="META-INF/portlet_2_0.tld"/>
-     </jar>
-
       <package-tck-test test="portletinterface"/>
       <package-tck-test test="dispatcher"/>
       <package-tck-test test="portletrequests"/>
