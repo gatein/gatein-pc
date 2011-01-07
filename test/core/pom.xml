@@ -130,6 +130,50 @@
          <groupId>javax.portlet</groupId>
          <artifactId>portlet-api</artifactId>
       </dependency>
+
+     <dependency>
+       <groupId>org.apache.maven</groupId>
+       <artifactId>maven-ant-tasks</artifactId>
+       <version>2.1.1</version>
+     </dependency>
+
    </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.6</version>
+        <dependencies>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>test</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+
+                <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}"/>
+
+                <property name="target" value="${basedir}/target"/>
+                <property name="test.temp.dir" value="${basedir}/target/temp"/>
+                <property name="groupId" value="${project.groupId}"/>
+                <property name="artifactId" value="${project.artifactId}"/>
+                <property name="version" value="${project.version}"/>
+
+                <ant antfile="${basedir}/src/main/build.xml" inheritRefs="true">
+                   <target name="package-tests"/>
+                </ant>
+
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
