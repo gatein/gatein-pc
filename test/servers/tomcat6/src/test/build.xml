@@ -19,7 +19,7 @@
       <path refid="portal-web"/>
       <path refid="portal-portlet"/>
       <path refid="jboss-unit"/>
-      <path refid="jboss-microcontainer"/>
+      <path refid="jboss-xb"/>
       <pathelement location="${apache-xerces:xerces:jar}"/>
       <pathelement location="${apache-xerces:xml-apis:jar}"/>
       <pathelement location="${apache-xerces:resolver:jar}"/>

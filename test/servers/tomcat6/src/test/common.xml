@@ -46,12 +46,11 @@
          <pathelement location="${jboss:jboss-common-logging-log4j:jar}"/>
       </path>
 
-      <path id="jboss-microcontainer">
+      <path id="jboss-xb">
          <pathelement location="${org.jboss:jbossxb:jar}"/>
       </path>
 
       <path id="portal-common">
-         <pathelement location="${org.gatein.common:common-mc:jar}"/>
       </path>
 
       <path id="portal-common-shared">
