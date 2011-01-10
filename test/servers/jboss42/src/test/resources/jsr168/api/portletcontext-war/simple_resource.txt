@@ -1,1 +1,0 @@
-Simple resource for testing purposes

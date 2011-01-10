@@ -14,7 +14,47 @@
    <property name="test.remote.server.name" value="RemoteJBoss_4_2"/>
    <property name="cargo.container.id" value="jboss42x"/>
 
+   <path id="JBoss-4.2">
+      <path refid="portal-common"/>
+      <path refid="portal-web"/>
+      <path refid="portal-portlet"/>
+      <path refid="jboss-xb"/>
+      <path location="${org.jboss:jboss-common-core:jar}"/>
+   </path>
+
+   <path id="JBoss-4.2-shared">
+      <path refid="portal-common-shared"/>
+      <path refid="portal-web-shared"/>
+      <path refid="portal-portlet-shared"/>
+      <path refid="jboss-unit-shared"/>
+      <path location="${javax.ccpp:ccpp:jar}"/>
+      <path location="${org.gatein.wci:wci-tomcat6:jar}"/>
+   </path>
+
    <target name="tests" unless="maven.test.skip">
+
+      <property environment="env"/>
+
+      <!--If properties are not in command line check if they are set in env-->
+      <condition property="JBOSS_4_2_HOME" value="${env.JBOSS_4_2_HOME}">
+         <and>
+            <isset property="env.JBOSS_4_2_HOME"/>
+            <not>
+               <isset property="JBOSS_4_2_HOME"/>
+            </not>
+         </and>
+      </condition>
+      <echo message="JBOSS_4_2_HOME: ${JBOSS_4_2_HOME}"/>
+      <fail message="Please set the environment variable JBOSS_4_2_HOME">
+         <condition>
+            <and>
+               <not>
+                  <isset property="JBOSS_4_2_HOME"/>
+               </not>
+            </and>
+         </condition>
+      </fail>
+
       <antcall target="tests.common"/>
    </target>
 

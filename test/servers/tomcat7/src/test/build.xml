@@ -14,7 +14,58 @@
    <property name="test.remote.server.name" value="RemoteTomcat_7_0"/>
    <property name="cargo.container.id" value="tomcat7x"/>
 
+   <path id="Tomcat-7.0">
+      <path refid="portal-common"/>
+      <path refid="portal-web"/>
+      <path refid="portal-portlet"/>
+      <path refid="jboss-unit"/>
+      <path refid="jboss-xb"/>
+      <pathelement path="${apache-xerces:xercesImpl:jar}"/>
+      <pathelement path="${apache-xerces:resolver:jar}"/>
+      <pathelement path="${apache-xerces.xml-apis:jar}"/>
+      <pathelement path="${trove:trove:jar}"/>
+   </path>
+
+   <path id="Tomcat-7.0-shared">
+      <path refid="portal-common-shared"/>
+      <path refid="portal-web-shared"/>
+      <path refid="portal-portlet-shared"/>
+      <path refid="jboss-unit-shared"/>
+      <path refid="jboss-logging"/>
+      <path location="${org.jboss:jboss-common-core:jar}"/>
+      <path location="${apache-log4j:log4j:jar}"/>
+      <path location="${concurrent:concurrent:jar}"/>
+      <path location="${javax.activation:activation:jar}"/>
+      <path location="${sun-jaxb:jaxb-api:jar}"/>
+      <path location="${javax.ccpp:ccpp:jar}"/>
+      <path location="${jboss:jboss-serialization:jar}"/>
+      <path location="${org.gatein.wci:wci-tomcat7:jar}"/>
+   </path>
+
    <target name="tests" unless="maven.test.skip">
+
+      <property environment="env"/>
+
+      <!--If properties are not in command line check if they are set in env-->
+      <condition property="TOMCAT_7_0_HOME" value="${env.TOMCAT_7_0_HOME}">
+         <and>
+            <isset property="env.TOMCAT_7_0_HOME"/>
+            <not>
+               <isset property="TOMCAT_7_0_HOME"/>
+            </not>
+         </and>
+      </condition>
+      <echo message="TOMCAT_7_0_HOME: ${TOMCAT_7_0_HOME}"/>
+      <fail message="Please set the environment variable TOMCAT_7_0_HOME">
+         <condition>
+            <and>
+               <not>
+                  <isset property="TOMCAT_7_0_HOME"/>
+               </not>
+            </and>
+         </condition>
+      </fail>
+
       <antcall target="tests.common"/>
    </target>
 

@@ -1,11 +1,16 @@
 <?xml version="1.0"?>
-<project name="portlet-integration-test">
+<project name="portlet-integration-test" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+  <path id="maven-ant-tasks.classpath" path="${maven.dependency.org.apache.maven.maven-ant-tasks.jar.path}"/>
+  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+           uri="antlib:org.apache.maven.artifact.ant"
+           classpathref="maven-ant-tasks.classpath" />
 
    <property name="target.dir" value="${basedir}/target"/>
    <property name="test.dir" value="${target.dir}/integration-tests"/>
    <property name="test.cargo.dir" value="${test.dir}/cargo/"/>
 
-   <target name="tests.common" depends="prepare_env, evaluate_properties.init" >
+   <target name="tests.common" depends="prepare_env" >
 
       <echo message="compile classpath: ${compile_classpath}"/>
       <echo message="runtime classpath: ${runtime_classpath}"/>
@@ -17,7 +22,6 @@
 
       <antcall target="package-tests"/>
 
-      <antcall target="evaluate_properties.all"/>
       <antcall target="test.container-servlet"/>
 
    </target>
@@ -37,284 +41,54 @@
       <echo message="Preparing environment"/>
 
       <path id="jboss-logging">
-         <pathelement path="${dependency.jboss-logging-spi.jar}"/>
-         <pathelement path="${dependency.jboss-logging-jdk.jar}"/>
-         <pathelement path="${dependency.jboss-logging-log4j.jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-spi:jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-jdk:jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-log4j:jar}"/>
       </path>
 
-      <path id="jboss-microcontainer">
-         <pathelement path="${dependency.jbossxb.jar}"/>
+      <path id="jboss-xb">
+         <pathelement location="${org.jboss:jbossxb:jar}"/>
       </path>
 
       <path id="portal-common">
-         <pathelement path="${dependency.portal-common-mc.jar}"/>
       </path>
 
       <path id="portal-common-shared">
-         <pathelement path="${dependency.portal-common-common.jar}"/>
-         <pathelement path="${dependency.portal-common-logging.jar}"/>
-         <pathelement path="${dependency.slf4j-simple.jar}"/>
-         <pathelement path="${dependency.slf4j-api.jar}"/>
+        <pathelement location="${org.gatein.common:common-common:jar}"/>
+        <pathelement location="${org.gatein.common:common-logging:jar}"/>
+         <pathelement location="${org.slf4j:slf4j-simple:jar}"/>
+         <pathelement location="${org.slf4j:slf4j-api:jar}"/>
       </path>
 
       <path id="portal-web">
       </path>
 
       <path id="portal-web-shared">
-         <pathelement path="${dependency.portal-wci-wci.jar}"/>
+         <pathelement location="${org.gatein.wci:wci-wci:jar}"/>
       </path>
 
       <path id="portal-portlet">
-         <pathelement path="${dependency.portal-portlet-controller.jar}"/>
-         <pathelement path="${dependency.portal-portlet-mc.jar}"/>
-         <pathelement path="${dependency.portal-portlet-tests.jar}"/>
+         <pathelement location="${org.gatein.pc:pc-controller:jar}"/>
+         <pathelement location="${org.gatein.pc:pc-mc:jar}"/>
       </path>
 
       <path id="portal-portlet-shared">
-         <path location="${dependency.portal-portlet-portlet.jar}"/>
-         <path location="${dependency.portal-portlet-api.jar}"/>
-         <path location="${dependency.jsr168api.jar}"/>
+         <pathelement location="${org.gatein.pc:pc-portlet:jar}"/>
+         <pathelement location="${org.gatein.pc:pc-api:jar}"/>
+         <pathelement location="${javax.portlet:portlet-api:jar}"/>
       </path>
 
       <path id="jboss-unit">
       </path>
 
       <path id="jboss-unit-shared">
-         <pathelement path="${dependency.jboss-unit.jar}"/>
-         <pathelement path="${dependency.jboss-unit-remote.jar}"/>
-         <pathelement path="${dependency.portal-test-generic.jar}"/>
-         <pathelement path="${dependency.portal-test.jar}"/>
-         <pathelement path="${dependency.jboss-remoting.jar}"/>
+         <pathelement location="${org.jboss.unit:jboss-unit:jar}"/>
+         <pathelement location="${org.jboss.unit:jboss-unit-remote:jar}"/>
+         <pathelement location="${org.jboss.unit:portal-test-generic:jar}"/>
+         <pathelement location="${org.jboss.unit:portal-test:jar}"/>
+         <pathelement location="${org.jboss.remoting:jboss-remoting:jar}"/>
       </path>
 
-      <path id="JBoss-4.2">
-         <path refid="portal-common"/>
-         <path refid="portal-web"/>
-         <path refid="portal-portlet"/>
-         <path refid="jboss-microcontainer"/>
-         <path location="${dependency.jboss-common-core.jar}"/>
-      </path>
-
-      <path id="JBoss-4.2-shared">
-         <path refid="portal-common-shared"/>
-         <path refid="portal-web-shared"/>
-         <path refid="portal-portlet-shared"/>
-         <path refid="jboss-unit-shared"/>
-         <path location="${dependency.ccpp.jar}"/>
-         <path location="${dependency.portal-wci-tomcat.jar}"/>
-      </path>
-
-      <path id="JBoss-5.1">
-         <path refid="portal-common"/>
-         <path refid="portal-web"/>
-         <path refid="portal-portlet"/>
-         <path refid="jboss-microcontainer"/>
-         <path location="${dependency.jboss-common-core.jar}"/>
-      </path>
-
-      <path id="JBoss-5.1-shared">
-         <path refid="portal-common-shared"/>
-         <path refid="portal-web-shared"/>
-         <path refid="portal-portlet-shared"/>
-         <path refid="jboss-unit-shared"/>
-         <path location="${dependency.ccpp.jar}"/>
-         <path location="${dependency.portal-wci-tomcat.jar}"/>
-         
-         <!-- paths needed for remote jboss deployment -->
-         <path location="${dependency.cargo-jboss-deployer.jar}"/>
-         <path location="${dependency.jboss-profile-service.jar}"/>
-         <path location="${dependency.cargo-core-container-jboss.jar}"/>
-      </path>
-
-      <path id="Tomcat-6.0">
-         <path refid="portal-common"/>
-         <path refid="portal-web"/>
-         <path refid="portal-portlet"/>
-         <path refid="jboss-unit"/>
-         <path refid="jboss-microcontainer"/>
-         <pathelement path="${dependency.xercesImpl.jar}"/>
-         <pathelement path="${dependency.resolver.jar}"/>
-         <pathelement path="${dependency.xml-apis.jar}"/>
-         <pathelement path="${dependency.trove.jar}"/>
-      </path>
-
-      <path id="Tomcat-6.0-shared">
-         <path refid="portal-common-shared"/>
-         <path refid="portal-web-shared"/>
-         <path refid="portal-portlet-shared"/>
-         <path refid="jboss-unit-shared"/>
-         <path refid="jboss-logging"/>
-         <path location="${dependency.jboss-common-core.jar}"/>
-         <path location="${dependency.log4j.jar}"/>
-         <path location="${dependency.concurrent.jar}"/>
-         <path location="${dependency.activation.jar}"/>
-         <path location="${dependency.jaxb.jar}"/>
-         <path location="${dependency.ccpp.jar}"/>
-         <path location="${dependency.jboss-serialization.jar}"/>
-         <path location="${dependency.portal-wci-tomcat.jar}"/>
-      </path>
-
-      <path id="Tomcat-7.0">
-         <path refid="portal-common"/>
-         <path refid="portal-web"/>
-         <path refid="portal-portlet"/>
-         <path refid="jboss-unit"/>
-         <path refid="jboss-microcontainer"/>
-         <pathelement path="${dependency.xercesImpl.jar}"/>
-         <pathelement path="${dependency.resolver.jar}"/>
-         <pathelement path="${dependency.xml-apis.jar}"/>
-         <pathelement path="${dependency.trove.jar}"/>
-      </path>
-
-      <path id="Tomcat-7.0-shared">
-         <path refid="portal-common-shared"/>
-         <path refid="portal-web-shared"/>
-         <path refid="portal-portlet-shared"/>
-         <path refid="jboss-unit-shared"/>
-         <path refid="jboss-logging"/>
-         <path location="${dependency.jboss-common-core.jar}"/>
-         <path location="${dependency.log4j.jar}"/>
-         <path location="${dependency.concurrent.jar}"/>
-         <path location="${dependency.activation.jar}"/>
-         <path location="${dependency.jaxb.jar}"/>
-         <path location="${dependency.ccpp.jar}"/>
-         <path location="${dependency.jboss-serialization.jar}"/>
-         <path location="${dependency.portal-wci-tomcat.jar}"/>
-      </path>
-
-      <path id="Jetty-6.1">
-         <path refid="portal-common"/>
-         <path refid="portal-web"/>
-         <path refid="portal-portlet"/>
-         <path refid="jboss-unit"/>
-         <path refid="jboss-microcontainer"/>
-         <pathelement path="${dependency.xercesImpl.jar}"/>
-         <pathelement path="${dependency.resolver.jar}"/>
-         <pathelement path="${dependency.xml-apis.jar}"/>
-         <pathelement path="${dependency.trove.jar}"/>
-      </path>
-
-      <path id="Jetty-6.1-shared">
-         <path refid="portal-common-shared"/>
-         <path refid="portal-web-shared"/>
-         <path refid="portal-portlet-shared"/>
-         <path refid="jboss-unit-shared"/>
-         <path refid="jboss-logging"/>
-         <path location="${dependency.jboss-common-core.jar}"/>
-         <path location="${dependency.log4j.jar}"/>
-         <path location="${dependency.concurrent.jar}"/>
-         <path location="${dependency.activation.jar}"/>
-         <path location="${dependency.jaxb.jar}"/>
-         <path location="${dependency.ccpp.jar}"/>
-         <path location="${dependency.jboss-serialization.jar}"/>
-         <path location="${dependency.portal-wci-jetty.jar}"/>
-      </path>
-
-   </target>
-
-   <!-- Check which servlet containers are known -->
-   <target name="evaluate_properties.init">
-
-      <property environment="env"/>
-
-      <!--If properties are not in command line check if they are set in env-->
-      <condition property="JBOSS_4_2_HOME" value="${env.JBOSS_4_2_HOME}">
-         <and>
-            <isset property="env.JBOSS_4_2_HOME"/>
-            <not>
-               <isset property="JBOSS_4_2_HOME"/>
-            </not>
-         </and>
-      </condition>
-      <condition property="JBOSS_5_1_HOME" value="${env.JBOSS_5_1_HOME}">
-         <and>
-            <isset property="env.JBOSS_5_1_HOME"/>
-            <not>
-               <isset property="JBOSS_5_1_HOME"/>
-            </not>
-         </and>
-      </condition>
-      <condition property="TOMCAT_6_0_HOME" value="${env.TOMCAT_6_0_HOME}">
-         <and>
-            <isset property="env.TOMCAT_6_0_HOME"/>
-            <not>
-               <isset property="TOMCAT_6_0_HOME"/>
-            </not>
-         </and>
-      </condition>
-      <condition property="TOMCAT_7_0_HOME" value="${env.TOMCAT_7_0_HOME}">
-         <and>
-            <isset property="env.TOMCAT_7_0_HOME"/>
-            <not>
-               <isset property="TOMCAT_7_0_HOME"/>
-            </not>
-         </and>
-      </condition>
-      <condition property="JETTY_6_1_HOME" value="${env.JETTY_6_1_HOME}">
-         <and>
-            <isset property="env.JETTY_6_1_HOME"/>
-            <not>
-               <isset property="JETTY_6_1_HOME"/>
-            </not>
-         </and>
-      </condition>
-
-      <echo message="JBOSS_4_2_HOME: ${JBOSS_4_2_HOME}"/>
-      <echo message="JBOSS_5_1_HOME: ${JBOSS_5_1_HOME}"/>
-      <echo message="TOMCAT_6_0_HOME: ${TOMCAT_6_0_HOME}"/>
-      <echo message="TOMCAT_7_0_HOME: ${TOMCAT_7_0_HOME}"/>
-      <echo message="JETTY_6_1_HOME: ${JETTY_6_1_HOME}"/>
-   </target>
-
-   <target name="evaluate_properties.tomcat">
-      <fail message="Please set the environment variable TOMCAT_6_0_HOME">
-         <condition>
-            <and>
-               <not>
-                  <isset property="TOMCAT_6_0_HOME"/>
-               </not>
-            </and>
-         </condition>
-      </fail>
-   </target>
-
-   <target name="evaluate_properties.jetty">
-      <fail message="Please set the environment variable JETTY_6_1_HOME">
-         <condition>
-            <and>
-               <not>
-                  <isset property="JETTY_6_1_HOME"/>
-               </not>
-            </and>
-         </condition>
-      </fail>
-   </target>
-
-   <target name="evaluate_properties.jboss">
-      <fail message="Please set the environment variables JBOSS_4_2_HOME">
-         <condition>
-            <and>
-               <not>
-                  <isset property="JBOSS_4_2_HOME"/>
-               </not>
-            </and>
-         </condition>
-      </fail>
-      <fail message="Please set the environment variable JBOSS_5_1_HOME">
-         <condition>
-            <and>
-               <not>
-                  <isset property="JBOSS_5_1_HOME"/>
-               </not>
-            </and>
-         </condition>
-      </fail>
-   </target>
-
-   <target name="evaluate_properties.all">
-      <antcall target="evaluate_properties.jboss"/>
-      <antcall target="evaluate_properties.jetty"/>
-      <antcall target="evaluate_properties.tomcat"/>
    </target>
 
    <macrodef name="package-ext-test">
@@ -364,65 +138,23 @@
       <attribute name="testsuitetype"/>
       <attribute name="testsuitename"/>
       <sequential>
-         
-         <mkdir dir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/classes"/>
-         <copy todir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/classes">
-            <fileset
-               dir="${target}/test-classes"
-               includes="org/gatein/pc/test/portlet/@{testsuiteversion}/@{testsuitetype}/common/**"/>
-            <fileset
-               dir="${target}/test-classes"
-               includes="org/gatein/pc/test/portlet/@{testsuiteversion}/common/**"/>
-            <fileset
-               dir="${target}/test-classes"
-               includes="org/gatein/pc/test/portlet/common/**"/>
-            <fileset
-               dir="${target}/test-classes"
-               includes="org/gatein/pc/test/portlet/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}/**"/>
-            <fileset
-               dir="${target}/classes"
-               includes="org/gatein/pc/test/portlet/framework/**"/>
-         </copy>
-         <copy todir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war/WEB-INF/lib">
-            <fileset
-               dir="${test.temp.lib}"
-               includes="portal-portlet-test-framework-lib.jar"/>
-         </copy>
-         <copy todir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war">
-            <fileset
-               dir="${target}/test-classes/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war"/>
-         </copy>
-         <jar jarfile="${test.temp.lib}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}.war">
-            <fileset dir="${test.temp.dir}/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war"/>
-         </jar>
+
+        <artifact:dependencies pathId="dependency.classpath">
+          <dependency
+              groupId="org.gatein.pc"
+              artifactId="pc-test-core-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
+              version="${project.version}"
+              type="war"/>
+        </artifact:dependencies>
+
+        <copy tofile="${test.temp.lib}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}.war">
+          <path refid="dependency.classpath"/>
+        </copy>
+
       </sequential>
    </macrodef>
 
-   <target name="package-tests">
-      
-      <copy todir="${target}/classes">
-         <fileset dir="${basedir}/../../core/target/classes" includes="**/*"/>
-      </copy>
-      <copy todir="${target}/test-classes">
-         <fileset dir="${basedir}/../../core/target/test-classes" includes="**/*"/>
-      </copy>
-      
-      <!--Portlet test framework lib jar-->
-      <jar jarfile="${test.temp.lib}/portal-portlet-test-framework-lib.jar">
-
-         <!-- -->
-         <fileset dir="${target}/classes" includes="org/gatein/pc/test/unit/**"/>
-
-         <!--  JSR 168 TLD -->
-         <zipfileset
-            src="${dependency.portal-portlet-portlet.jar}"
-            includes="META-INF/portlet.tld"
-            fullpath="META-INF/portlet.tld"/>
-         <zipfileset
-            src="${dependency.portal-portlet-portlet.jar}"
-            includes="META-INF/portlet_2_0.tld"
-            fullpath="META-INF/portlet_2_0.tld"/>
-      </jar>
+   <target name="package-tests" depends="prepare_env">
 
       <package-tck-test test="portletinterface"/>
       <package-tck-test test="dispatcher"/>
@@ -482,23 +214,20 @@
       <package-jsr286-ext-test test="eventsupport"/>
       <package-jsr286-ext-test test="portletmode"/>
 
-      <!-- -->
-      <jar jarfile="${test.temp.lib}/portlet-test-lib.jar">
-         <fileset dir="${target}/test-classes"/>
-         <fileset dir="${target}/classes"/>
-      </jar>
-
-      <copy todir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war">
-         <fileset dir="${target}/test-classes/portlet-test-war"/>
-      </copy>
-      <copy todir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war/WEB-INF/lib" flatten="true">
-         <fileset dir="${test.temp.lib}" includes="portlet-test-lib.jar"/>
-         <path refid="${test.server.name}-${test.server.version}"/>
-      </copy>
-      <mkdir dir="${test.temp.lib}/${test.server.name}-${test.server.version}"/>
-      <jar jarfile="${test.temp.lib}/${test.server.name}-${test.server.version}/portlet-test.war">
-         <fileset dir="${test.temp.dir}/${test.server.name}-${test.server.version}/portlet-test-war"/>
-      </jar>
+     <!-- -->
+     <copy todir="${target}/test-classes/portlet-test-war/WEB-INF/lib" flatten="true">
+        <path refid="${test.server.name}-${test.server.version}"/>
+        <path>
+          <pathelement location="${org.gatein.pc:pc-test-core:jar}"/>
+          <pathelement location="${org.gatein.pc:pc-test-core:test-jar:tests}"/>
+        </path>
+     </copy>
+     <mkdir dir="${test.temp.lib}/${test.server.name}-${test.server.version}"/>
+     <war
+       destfile="${test.temp.lib}/${test.server.name}-${test.server.version}/portlet-test.war"
+       needxmlfile="false">
+       <fileset dir="${target}/test-classes/portlet-test-war"/>
+     </war>
 
    </target>
 
@@ -540,52 +269,12 @@
          </reports>
 
          <classpath>
-            <pathelement location="${target}/classes"/>
             <pathelement location="${test.temp.lib}"/>
-            <pathelement location="${target}/classes/test"/>
             <pathelement location="${target}/test-classes/test"/>
             <pathelement path="${test_classpath}"/>
          </classpath>
 
       </jboss-unit>
-
-   </target>
-
-   <target name="package-tck-portal" depends="prepare_env">
-
-      <property name="tck" value="${target}/tck"/>
-      <property name="tck-server" value="${tck}/${test.server.name}-${test.server.version}"/>
-
-      <mkdir dir="${tck}"/>
-      <mkdir dir="${tck-server}"/>
-
-      <jar jarfile="${target}/portlet-test-lib.jar">
-         <fileset dir="${target}/classes" excludes="org/gatein/pc/portal/samples/**"/>
-      </jar>
-
-      <copy todir="${tck-server}/portlet-tck-war">
-         <fileset dir="${target}/classes/portlet-tck-war"/>
-      </copy>
-      <copy todir="${tck-server}/portlet-tck-war">
-         <fileset dir="${target}/classes/${test.server.name}-${test.server.version}/portlet-tck-war"/>
-      </copy>
-
-      <copy todir="${tck-server}/portlet-tck-war/WEB-INF/lib" flatten="true">
-         <fileset dir="${target}" includes="portlet-test-lib.jar"/>
-         <path refid="${test.server.name}-${test.server.version}"/>
-      </copy>
-
-      <mkdir dir="${tck-server}/tck-portal"/>
-
-      <jar jarfile="${tck-server}/tck-portal/portlet-tck.war">
-         <fileset dir="${tck-server}/portlet-tck-war"/>
-      </jar>
-
-      <copy todir="${tck-server}/tck-portal" flatten="true">
-         <path refid="${test.server.name}-${test.server.version}-shared"/>
-      </copy>
-
-      <delete file="${target}/portlet-test-lib.jar"/>
 
    </target>
 

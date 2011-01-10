@@ -14,7 +14,58 @@
    <property name="test.remote.server.name" value="RemoteJetty_6_1"/>
    <property name="cargo.container.id" value="jetty6x"/>
 
+   <path id="Jetty-6.1">
+      <path refid="portal-common"/>
+      <path refid="portal-web"/>
+      <path refid="portal-portlet"/>
+      <path refid="jboss-unit"/>
+      <path refid="jboss-xb"/>
+      <pathelement path="${apache-xerces:xercesImpl:jar}"/>
+      <pathelement path="${apache-xerces:resolver:jar}"/>
+      <pathelement path="${apache-xerces.xml-apis:jar}"/>
+      <pathelement path="${trove:trove:jar}"/>
+   </path>
+
+   <path id="Jetty-6.1-shared">
+      <path refid="portal-common-shared"/>
+      <path refid="portal-web-shared"/>
+      <path refid="portal-portlet-shared"/>
+      <path refid="jboss-unit-shared"/>
+      <path refid="jboss-logging"/>
+      <path location="${org.jboss:jboss-common-core:jar}"/>
+      <path location="${apache-log4j:log4j:jar}"/>
+      <path location="${concurrent:concurrent:jar}"/>
+      <path location="${javax.activation:activation:jar}"/>
+      <path location="${sun-jaxb:jaxb-api:jar}"/>
+      <path location="${javax.ccpp:ccpp:jar}"/>
+      <path location="${jboss:jboss-serialization:jar}"/>
+      <path location="${org.gatein.wci:wci-jetty:jar}"/>
+   </path>
+
    <target name="tests" unless="maven.test.skip">
+
+      <property environment="env"/>
+
+      <!--If properties are not in command line check if they are set in env-->
+      <condition property="JETTY_6_1_HOME" value="${env.JETTY_6_1_HOME}">
+         <and>
+            <isset property="env.JETTY_6_1_HOME"/>
+            <not>
+               <isset property="JETTY_6_1_HOME"/>
+            </not>
+         </and>
+      </condition>
+      <echo message="JETTY_6_1_HOME: ${JETTY_6_1_HOME}"/>
+      <fail message="Please set the environment variable JETTY_6_1_HOME">
+         <condition>
+            <and>
+               <not>
+                  <isset property="JETTY_6_1_HOME"/>
+               </not>
+            </and>
+         </condition>
+      </fail>
+
       <antcall target="tests.common"/>
    </target>
 
@@ -42,7 +93,7 @@
             <property name="cargo.jvmargs" value="-Duser.language=en ${cargo.debug}"/>
             <configfile file="${basedir}/src/test/resources/config/jetty/jetty.xml" todir="etc"/>
             <configfile file="${basedir}/src/test/resources/config/jetty/realm.properties" todir="etc"/>
-            <deployable type="war" file="${dependency.cargo.jetty-deployer}">
+            <deployable type="war" file="${org.codehaus.cargo:cargo-jetty-deployer:war}">
               <property name="context" value="cargo-jetty-deployer"/>
             </deployable>
             <deployable type="war" file="${test.temp.lib}/Jetty-6.1/portlet-test.war"/>
