@@ -154,7 +154,7 @@
       </sequential>
    </macrodef>
 
-   <target name="package-tests">
+   <target name="package-tests" depends="prepare_env">
 
       <package-tck-test test="portletinterface"/>
       <package-tck-test test="dispatcher"/>
