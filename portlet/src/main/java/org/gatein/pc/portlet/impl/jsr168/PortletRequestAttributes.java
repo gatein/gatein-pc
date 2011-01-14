@@ -148,7 +148,7 @@ public class PortletRequestAttributes
          {
             value = attributes.get(name);
          }
-         if (value == null && wreq != null)
+         if (value == null)
          {
             value = wreq.getAttribute(name);
          }

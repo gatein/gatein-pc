@@ -44,9 +44,6 @@ import java.util.Collections;
 public class RIRIContainerAttributesTestCase extends DispatchedContainerAttributesTestCase
 {
 
-   /** . */
-   public static final Map<String, String> EXPECTED_ATTRIBUTES_SET = buildAttributes();
-
    private static Map<String, String> buildAttributes()
    {
       Map<String, String> map = new HashMap<String, String>();
