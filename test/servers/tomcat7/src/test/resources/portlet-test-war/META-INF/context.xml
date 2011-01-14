@@ -1,2 +1,2 @@
-<Context privileged="true">
+<Context privileged="true" sessionCookiePath="/">
 </Context>

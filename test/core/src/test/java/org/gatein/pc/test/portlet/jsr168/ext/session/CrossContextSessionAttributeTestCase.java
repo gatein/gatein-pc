@@ -45,13 +45,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
- * The goal is to test that cross context session attributes are set in container and are accessible from the direct
- * servlet.
- * <p/>
- * 1/ portlet put key=value in the http session 2/ portlet ask the client to perform get on /servlet 3/ servlet check
- * that key=value
+ * <p>The goal is to test that cross context session attributes are set in container and are accessible from the direct
+ * servlet.<p/>
+ *
+ * 1/ portlet put key=value in the http session
+ * 2/ portlet ask the client to perform get on /servlet
+ * 3/ servlet check that key=value
  * 
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
