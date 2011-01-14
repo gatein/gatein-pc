@@ -204,6 +204,18 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       return federated.getPortlet(compoundPortletContext);
    }
 
+   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      PortletInvoker federated = getFederatedPortletInvokerFor(portletContext);
+      return federated.isExposed(portletContext);
+   }
+
+   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      PortletInvoker federated = getFederatedPortletInvokerFor(portletContext);
+      return federated.isKnown(portletContext);
+   }
+
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
    {
       PortletContext compoundPortletContext = invocation.getTarget();

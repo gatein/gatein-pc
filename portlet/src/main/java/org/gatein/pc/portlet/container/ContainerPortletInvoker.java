@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
+import org.gatein.common.util.ParameterValidation;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
@@ -84,6 +85,19 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
    public Set<Portlet> getPortlets()
    {
       return new HashSet<Portlet>(portlets.values());
+   }
+
+   @Override
+   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      ParameterValidation.throwIllegalArgExceptionIfNull(portletContext, "PortletContext");
+      return portlets.containsKey(portletContext.getId());
+   }
+
+   @Override
+   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      return isExposed(portletContext);
    }
 
    public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException

@@ -27,25 +27,25 @@ import org.gatein.pc.api.InvalidPortletIdException;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
-import org.gatein.pc.api.StateEvent;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.PortletStateType;
-import org.gatein.pc.api.state.PropertyMap;
-import org.gatein.pc.portlet.PortletInvokerInterceptor;
+import org.gatein.pc.api.StateEvent;
+import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.spi.InstanceContext;
 import org.gatein.pc.api.state.AccessMode;
+import org.gatein.pc.api.state.DestroyCloneFailure;
+import org.gatein.pc.api.state.PropertyChange;
+import org.gatein.pc.api.state.PropertyMap;
+import org.gatein.pc.portlet.PortletInvokerInterceptor;
 import org.gatein.pc.portlet.state.InvalidStateIdException;
 import org.gatein.pc.portlet.state.NoSuchStateException;
-import org.gatein.pc.api.state.PropertyChange;
-import org.gatein.pc.api.state.DestroyCloneFailure;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.io.Serializable;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -119,6 +119,19 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
    public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
       return getConsumerContext(portletContext).getPortlet();
+   }
+
+   @Override
+   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      try
+      {
+         return getPortlet(portletContext) != null;
+      }
+      catch (NoSuchPortletException e)
+      {
+         return false;
+      }
    }
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
@@ -226,12 +239,12 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
    }
 
    public PortletContext importPortlet(PortletStateType stateType,
-         PortletContext portletContext) throws PortletInvokerException, IllegalArgumentException
+                                       PortletContext portletContext) throws PortletInvokerException, IllegalArgumentException
    {
       ConsumerContext consumerContext = getConsumerContext(portletContext);
-      
+
       PortletContext importContext = super.importPortlet(stateType, consumerContext.producerPortletContext);
-      
+
       if (importContext instanceof StatefulPortletContext)
       {
          StatefulPortletContext statefulimportContext = (StatefulPortletContext)importContext;
@@ -243,18 +256,18 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       {
          return importContext;
       }
-      
+
    }
-   
+
    public PortletContext exportPortlet(PortletStateType stateType,
-         PortletContext portletContext) throws PortletInvokerException, IllegalArgumentException
+                                       PortletContext portletContext) throws PortletInvokerException, IllegalArgumentException
    {
       ConsumerContext consumerContext = getConsumerContext(portletContext);
-      
+
       //
       return super.exportPortlet(stateType, consumerContext.producerPortletContext);
    }
-   
+
    public List<DestroyCloneFailure> destroyClones(List<PortletContext> portletContexts) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
       if (portletContexts == null)
@@ -396,7 +409,8 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
          }
       }
 
-      public PortletStateType<?> getStateType() {
+      public PortletStateType<?> getStateType()
+      {
          return persistenceManager.getStateType();
       }
    }
@@ -419,9 +433,9 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
          {
             ConsumerStateContext stateCtx = persistenceManager.loadState(stateId);
             StatefulPortletContext<Serializable> blah = StatefulPortletContext.create(
-              stateCtx.getPortletId(),
-              stateCtx.getStateType(),
-              stateCtx.getState());
+               stateCtx.getPortletId(),
+               stateCtx.getStateType(),
+               stateCtx.getState());
             return new ConsumerContext(portletContext, blah, stateId);
          }
          catch (NoSuchStateException e)
@@ -439,9 +453,7 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       }
    }
 
-   /**
-    * A context which defines how the consumer see the producer portlet.
-    */
+   /** A context which defines how the consumer see the producer portlet. */
    private class ConsumerContext
    {
 

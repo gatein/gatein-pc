@@ -107,6 +107,18 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
       return new FederatedPortlet(this, compoundPortletContext, portlet);
    }
 
+   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      PortletContext context = dereference(portletContext);
+      return portletInvoker.isExposed(context);
+   }
+
+   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      PortletContext context = dereference(portletContext);
+      return portletInvoker.isKnown(context);
+   }
+
    private class FederatedInstanceContext implements InstanceContext
    {
 

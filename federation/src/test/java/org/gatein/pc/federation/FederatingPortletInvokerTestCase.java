@@ -116,6 +116,26 @@ public class FederatingPortletInvokerTestCase
    }
 
    @Test
+   public void testIsExposed() throws PortletInvokerException
+   {
+      assertTrue(federatingInvoker.isExposed(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertTrue(federatingInvoker.isExposed(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
+
+      assertTrue(federatedInvoker.isExposed(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertTrue(localInvoker.isExposed(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
+   }
+
+   @Test
+   public void testIsKnown() throws PortletInvokerException
+   {
+      assertTrue(federatingInvoker.isKnown(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertTrue(federatingInvoker.isKnown(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
+
+      assertTrue(federatedInvoker.isKnown(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertTrue(localInvoker.isKnown(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
+   }
+
+   @Test
    public void testFederation() throws PortletInvokerException
    {
       Collection federateds = federatingInvoker.getFederatedInvokers();

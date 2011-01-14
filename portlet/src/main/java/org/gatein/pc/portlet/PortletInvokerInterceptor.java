@@ -22,29 +22,27 @@
  ******************************************************************************/
 package org.gatein.pc.portlet;
 
-import org.gatein.pc.api.state.DestroyCloneFailure;
-import org.gatein.pc.api.state.PropertyMap;
-import org.gatein.pc.api.state.PropertyChange;
-import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
-import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
-import org.gatein.pc.portlet.state.StateConversionException;
+import org.gatein.pc.api.invocation.PortletInvocation;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.state.DestroyCloneFailure;
+import org.gatein.pc.api.state.PropertyChange;
+import org.gatein.pc.api.state.PropertyMap;
 
-import java.io.Serializable;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A base class for  {@link org.gatein.pc.api.PortletInvoker} interface interceptors. The subclasses
- * extends it and override the intercepted methods. The next interceptor in the chain is wired in the field
- * {@link #next} of the interceptor. When the interceptor wants to give control to the next interceptor, it must
- * invoke the same method on the super class. If no next interceptor is configured the invocation of the parent
- * method will throw an {@link IllegalStateException}. 
+ * A base class for  {@link org.gatein.pc.api.PortletInvoker} interface interceptors. The subclasses extends it and
+ * override the intercepted methods. The next interceptor in the chain is wired in the field {@link #next} of the
+ * interceptor. When the interceptor wants to give control to the next interceptor, it must invoke the same method on
+ * the super class. If no next interceptor is configured the invocation of the parent method will throw an {@link
+ * IllegalStateException}.
  *
  * @author <a href="mailto:julien@jboss-portal.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -84,6 +82,16 @@ public class PortletInvokerInterceptor implements PortletInvoker
       return safeGetNext().getPortlet(portletContext);
    }
 
+   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      return safeGetNext().isExposed(portletContext);
+   }
+
+   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      return safeGetNext().isKnown(portletContext);
+   }
+
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
    {
       return safeGetNext().invoke(invocation);
@@ -115,8 +123,8 @@ public class PortletInvokerInterceptor implements PortletInvoker
    }
 
    /**
-    * Attempt to get the next invoker, the method never returns a null value and rather throws an {@link IllegalStateException}
-    * if the next invoker cannot be obtained.
+    * Attempt to get the next invoker, the method never returns a null value and rather throws an {@link
+    * IllegalStateException} if the next invoker cannot be obtained.
     *
     * @return the non null next invoker
     */
@@ -135,13 +143,13 @@ public class PortletInvokerInterceptor implements PortletInvoker
    }
 
    public PortletContext exportPortlet(PortletStateType stateType, PortletContext originalPortletContext)
-         throws PortletInvokerException, IllegalArgumentException
+      throws PortletInvokerException, IllegalArgumentException
    {
       return safeGetNext().exportPortlet(stateType, originalPortletContext);
    }
-   
+
    public PortletContext importPortlet(PortletStateType stateType, PortletContext originalPortletContext)
-         throws PortletInvokerException, IllegalArgumentException
+      throws PortletInvokerException, IllegalArgumentException
    {
       return safeGetNext().importPortlet(stateType, originalPortletContext);
    }

@@ -124,6 +124,19 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       return _getPortlet(portletContext);
    }
 
+   @Override
+   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      try
+      {
+         return getPortlet(portletContext) != null;
+      }
+      catch (NoSuchPortletException e)
+      {
+         return false;
+      }
+   }
+
    private <S extends Serializable> Portlet _getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
 
@@ -649,10 +662,10 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       {
          StatefulContext statefulContext = (StatefulContext)context;
          try
-         {               
+         {
             PortletState sstate = new PortletState(portletId, statefulContext.getProperties());
             Serializable marshalledState = stateConverter.marshall(stateType, sstate);
-            return StatefulPortletContext.create(portletId, stateType, marshalledState);  
+            return StatefulPortletContext.create(portletId, stateType, marshalledState);
          }
          catch (StateConversionException e)
          {
@@ -685,19 +698,19 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          }
       }
    }
-   
+
    public PortletContext importPortlet(PortletStateType stateType, PortletContext contextToImport) throws PortletInvokerException
    {
       if (contextToImport == null)
       {
          throw new IllegalArgumentException("No null portlet id accepted");
       }
-      
+
       try
       {
          if (contextToImport instanceof StatefulPortletContext)
          {
-            StatefulPortletContext statefulPortletContext = (StatefulPortletContext) contextToImport;
+            StatefulPortletContext statefulPortletContext = (StatefulPortletContext)contextToImport;
             Boolean persistLocally = stateManagementPolicy.persistLocally();
 
             PortletState portletState = getStateConverter().unmarshall(stateType, statefulPortletContext.getState());
@@ -727,7 +740,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          throw new PortletInvokerException(e);
       }
    }
-   
+
    private <S extends Serializable> PortletContext marshall(PortletStateType<S> stateType, String portletId, PropertyMap props) throws PortletInvokerException
    {
       try
