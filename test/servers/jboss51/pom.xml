@@ -341,7 +341,7 @@
             <executions>
                <execution>
                   <id>test</id>
-                  <phase>integration-test</phase>
+                  <phase>test</phase>
                   <configuration>
                      <tasks>
 
