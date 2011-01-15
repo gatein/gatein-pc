@@ -66,8 +66,8 @@
          <modules>
             <module>tomcat6</module>
             <module>tomcat7</module>
-            <module>jboss42</module>
             <module>jboss51</module>
+            <module>jetty6</module>
          </modules>
       </profile>
       <profile>
