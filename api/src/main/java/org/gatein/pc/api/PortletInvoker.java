@@ -57,7 +57,7 @@ public interface PortletInvoker
     * @param portletContext the portlet context in the scope of this invoker
     * @return the <code>PortletInfo</code> for the specified portlet
     * @throws IllegalArgumentException if the portlet context is null
-    * @throws PortletInvokerException  a portlet invoker exception
+    * @throws PortletInvokerException a portlet invoker exception
     */
    Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
 
@@ -66,9 +66,9 @@ public interface PortletInvoker
     * a relationship with this portlet invoker.
     *
     * @param portletContext the portlet context 
-    * @return
-    * @throws IllegalArgumentException
-    * @throws PortletInvokerException
+    * @return the portlet status
+    * @throws IllegalArgumentException if the portlet context is null
+    * @throws PortletInvokerException a portlet invoker exception
     */
    PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
 
