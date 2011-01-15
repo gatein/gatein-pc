@@ -93,6 +93,7 @@
             <property name="cargo.jvmargs" value="-Duser.language=en ${cargo.debug}"/>
             <configfile file="${basedir}/src/test/resources/config/jetty/jetty.xml" todir="etc"/>
             <configfile file="${basedir}/src/test/resources/config/jetty/realm.properties" todir="etc"/>
+            <configfile file="${basedir}/src/test/resources/config/jetty/webdefault.xml" todir="etc"/>
             <deployable type="war" file="${org.codehaus.cargo:cargo-jetty-deployer:war}">
               <property name="context" value="cargo-jetty-deployer"/>
             </deployable>
