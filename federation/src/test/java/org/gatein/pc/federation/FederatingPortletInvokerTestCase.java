@@ -28,6 +28,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.info.MetaInfo;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
@@ -116,23 +117,13 @@ public class FederatingPortletInvokerTestCase
    }
 
    @Test
-   public void testIsExposed() throws PortletInvokerException
+   public void testGetStatus() throws PortletInvokerException
    {
-      assertTrue(federatingInvoker.isExposed(PortletContext.createPortletContext("foo.MyPortlet")));
-      assertTrue(federatingInvoker.isExposed(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
+      assertEquals(PortletStatus.OFFERED, federatingInvoker.getStatus(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertEquals(PortletStatus.OFFERED, federatingInvoker.getStatus(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
 
-      assertTrue(federatedInvoker.isExposed(PortletContext.createPortletContext("foo.MyPortlet")));
-      assertTrue(localInvoker.isExposed(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
-   }
-
-   @Test
-   public void testIsKnown() throws PortletInvokerException
-   {
-      assertTrue(federatingInvoker.isKnown(PortletContext.createPortletContext("foo.MyPortlet")));
-      assertTrue(federatingInvoker.isKnown(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
-
-      assertTrue(federatedInvoker.isKnown(PortletContext.createPortletContext("foo.MyPortlet")));
-      assertTrue(localInvoker.isKnown(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
+      assertEquals(PortletStatus.OFFERED, federatedInvoker.getStatus(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertEquals(PortletStatus.OFFERED, localInvoker.getStatus(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
    }
 
    @Test

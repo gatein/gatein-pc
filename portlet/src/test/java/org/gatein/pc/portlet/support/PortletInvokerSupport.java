@@ -29,6 +29,7 @@ import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.state.DestroyCloneFailure;
@@ -132,14 +133,19 @@ public class PortletInvokerSupport implements PortletInvoker
       return internalGetPortlet(portletContext);
    }
 
+   public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      return portlets.containsKey(portletContext.getId()) ? PortletStatus.OFFERED : null;
+   }
+
    public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
-      return portlets.containsKey(portletContext.getId());
+      return getStatus(portletContext) == PortletStatus.OFFERED;
    }
 
    public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
-      return isExposed(portletContext);
+      return getStatus(portletContext) != null;
    }
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException

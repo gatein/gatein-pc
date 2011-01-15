@@ -31,6 +31,7 @@ import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -204,16 +205,20 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       return federated.getPortlet(compoundPortletContext);
    }
 
-   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
       PortletInvoker federated = getFederatedPortletInvokerFor(portletContext);
-      return federated.isExposed(portletContext);
+      return federated.getStatus(portletContext);
+   }
+
+   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      return getStatus(portletContext) == PortletStatus.OFFERED;
    }
 
    public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
-      PortletInvoker federated = getFederatedPortletInvokerFor(portletContext);
-      return federated.isKnown(portletContext);
+      return getStatus(portletContext) != null;
    }
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException

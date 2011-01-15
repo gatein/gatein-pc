@@ -62,6 +62,17 @@ public interface PortletInvoker
    Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
 
    /**
+    * Returns the status of a specified {@code #PortletContext} or null if the portlet context does not have
+    * a relationship with this portlet invoker.
+    *
+    * @param portletContext the portlet context 
+    * @return
+    * @throws IllegalArgumentException
+    * @throws PortletInvokerException
+    */
+   PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
+
+   /**
     * Determines whether the specified PortletContext is part of the set of exposed Portlets as returned by {@link
     * #getPortlets()}.
     *

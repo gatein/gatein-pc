@@ -28,6 +28,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.invocation.PortletInvocation;
@@ -87,17 +88,27 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
       return new HashSet<Portlet>(portlets.values());
    }
 
-   @Override
-   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
-      ParameterValidation.throwIllegalArgExceptionIfNull(portletContext, "PortletContext");
-      return portlets.containsKey(portletContext.getId());
+      if (portletContext == null)
+      {
+         throw new IllegalArgumentException("The portlet context cannot be null");
+      }
+      if (portlets.containsKey(portletContext.getId()))
+      {
+         return PortletStatus.OFFERED;
+      }
+      return null;
    }
 
-   @Override
+   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      return getStatus(portletContext) == PortletStatus.OFFERED;
+   }
+
    public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
-      return isExposed(portletContext);
+      return getStatus(portletContext) != null;
    }
 
    public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException

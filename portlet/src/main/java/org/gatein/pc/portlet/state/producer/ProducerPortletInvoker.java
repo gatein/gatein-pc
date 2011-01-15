@@ -30,6 +30,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.StateEvent;
 import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.info.PortletInfo;
@@ -125,16 +126,23 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
    }
 
    @Override
-   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
       try
       {
-         return getPortlet(portletContext) != null;
+         getPortlet(portletContext);
+         return PortletStatus.MANAGED;
       }
       catch (NoSuchPortletException e)
       {
-         return false;
+         return null;
       }
+   }
+
+   @Override
+   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      return getStatus(portletContext) != null;
    }
 
    private <S extends Serializable> Portlet _getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
