@@ -114,16 +114,6 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
       return portletInvoker.getStatus(context);
    }
 
-   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return getStatus(portletContext) == PortletStatus.OFFERED;
-   }
-
-   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return getStatus(portletContext) != null;
-   }
-
    private class FederatedInstanceContext implements InstanceContext
    {
 

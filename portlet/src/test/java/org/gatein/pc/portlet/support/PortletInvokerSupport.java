@@ -138,16 +138,6 @@ public class PortletInvokerSupport implements PortletInvoker
       return portlets.containsKey(portletContext.getId()) ? PortletStatus.OFFERED : null;
    }
 
-   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return getStatus(portletContext) == PortletStatus.OFFERED;
-   }
-
-   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return getStatus(portletContext) != null;
-   }
-
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
    {
       PortletContext portletContext = invocation.getTarget();

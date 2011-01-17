@@ -88,16 +88,6 @@ public class PortletInvokerInterceptor implements PortletInvoker
       return safeGetNext().getStatus(portletContext);
    }
 
-   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return safeGetNext().isExposed(portletContext);
-   }
-
-   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return safeGetNext().isKnown(portletContext);
-   }
-
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
    {
       return safeGetNext().invoke(invocation);

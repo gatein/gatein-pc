@@ -22,7 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
-import org.gatein.common.util.ParameterValidation;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
@@ -99,16 +98,6 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
          return PortletStatus.OFFERED;
       }
       return null;
-   }
-
-   public boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return getStatus(portletContext) == PortletStatus.OFFERED;
-   }
-
-   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return getStatus(portletContext) != null;
    }
 
    public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException

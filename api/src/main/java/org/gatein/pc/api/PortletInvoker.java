@@ -57,44 +57,20 @@ public interface PortletInvoker
     * @param portletContext the portlet context in the scope of this invoker
     * @return the <code>PortletInfo</code> for the specified portlet
     * @throws IllegalArgumentException if the portlet context is null
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException  a portlet invoker exception
     */
    Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
 
    /**
-    * Returns the status of a specified {@code #PortletContext} or null if the portlet context does not have
-    * a relationship with this portlet invoker.
+    * Returns the status of a specified {@code #PortletContext} or null if the portlet context does not have a
+    * relationship with this portlet invoker.
     *
-    * @param portletContext the portlet context 
+    * @param portletContext the portlet context
     * @return the portlet status
     * @throws IllegalArgumentException if the portlet context is null
-    * @throws PortletInvokerException a portlet invoker exception
+    * @throws PortletInvokerException  a portlet invoker exception
     */
    PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
-
-   /**
-    * Determines whether the specified PortletContext is part of the set of exposed Portlets as returned by {@link
-    * #getPortlets()}.
-    *
-    * @param portletContext the PortletContext which exposed status we want to determine
-    * @return <code>true</code> if the Portlet associated with the specified PortletContext is exposed by this
-    *         PortletInvoker, <code>false</code> otherwise
-    * @throws IllegalArgumentException if the specified PortletContext is null
-    * @throws PortletInvokerException  if some other error occurs
-    */
-   boolean isExposed(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
-
-   /**
-    * Determines whether the Portlet associated with the specified PortletContext (if it exists) is known to this
-    * PortletInvoker whether it is exposed or not. In particular, if this method returns <code>true</code> then {@link
-    * #getPortlet(PortletContext)} will return a valid Portlet.
-    *
-    * @param portletContext the PortletContext to check
-    * @return <code>true</code>
-    * @throws IllegalArgumentException
-    * @throws PortletInvokerException
-    */
-   boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
 
    /**
     * Invoke an operation on a specific portlet.

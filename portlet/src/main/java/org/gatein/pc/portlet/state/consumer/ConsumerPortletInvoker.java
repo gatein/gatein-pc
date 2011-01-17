@@ -121,19 +121,6 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       return getConsumerContext(portletContext).getPortlet();
    }
 
-   @Override
-   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      try
-      {
-         return getPortlet(portletContext) != null;
-      }
-      catch (NoSuchPortletException e)
-      {
-         return false;
-      }
-   }
-
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
    {
       PortletContext portletContext = invocation.getTarget();

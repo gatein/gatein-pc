@@ -128,21 +128,24 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
    @Override
    public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
-      try
-      {
-         getPortlet(portletContext);
-         return PortletStatus.MANAGED;
-      }
-      catch (NoSuchPortletException e)
-      {
-         return null;
-      }
-   }
+      PortletStatus status = super.getStatus(portletContext);
 
-   @Override
-   public boolean isKnown(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
-   {
-      return getStatus(portletContext) != null;
+      if (status != null)
+      {
+         return status;
+      }
+      else
+      {
+         try
+         {
+            Portlet portlet = getPortlet(portletContext);
+            return portlet != null ? PortletStatus.MANAGED : null;
+         }
+         catch (NoSuchPortletException e)
+         {
+            return null;
+         }
+      }
    }
 
    private <S extends Serializable> Portlet _getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
