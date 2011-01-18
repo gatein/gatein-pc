@@ -26,28 +26,30 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
-import org.gatein.pc.api.state.PropertyMap;
-import org.gatein.pc.portlet.impl.state.StateManagementPolicyService;
-import org.gatein.pc.portlet.impl.state.StateConverterV0;
-import org.gatein.pc.portlet.impl.state.producer.PortletStatePersistenceManagerService;
-import org.gatein.pc.portlet.impl.spi.AbstractInstanceContext;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.invocation.ActionInvocation;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.state.AccessMode;
 import org.gatein.pc.api.state.PropertyChange;
+import org.gatein.pc.api.state.PropertyMap;
+import org.gatein.pc.portlet.impl.spi.AbstractInstanceContext;
+import org.gatein.pc.portlet.impl.state.StateConverterV0;
+import org.gatein.pc.portlet.impl.state.StateManagementPolicyService;
+import org.gatein.pc.portlet.impl.state.producer.PortletStatePersistenceManagerService;
 import org.gatein.pc.portlet.state.StateConverter;
-import org.gatein.pc.portlet.state.producer.ProducerPortletInvoker;
 import org.gatein.pc.portlet.state.producer.ProducerPortlet;
-import org.gatein.pc.portlet.support.info.PortletInfoSupport;
+import org.gatein.pc.portlet.state.producer.ProducerPortletInvoker;
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.PortletSupport;
-
-import static org.jboss.unit.api.Assert.*;
+import org.gatein.pc.portlet.support.info.PortletInfoSupport;
 import org.jboss.unit.api.pojo.annotations.Create;
+import org.jboss.unit.api.pojo.annotations.Test;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -210,12 +212,14 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
    protected ActionInvocation createAction(PortletContext portletRef, AccessMode accessMode)
    {
       ActionContextImpl actionCtx = new ActionContextImpl();
-      AbstractInstanceContext instanceCtx = new AbstractInstanceContext("blah", accessMode) {
+      AbstractInstanceContext instanceCtx = new AbstractInstanceContext("blah", accessMode)
+      {
          @Override
-         public PortletStateType<?> getStateType() {
+         public PortletStateType<?> getStateType()
+         {
             return persistLocally ? null : PortletStateType.OPAQUE;
          }
-     };
+      };
 
       //
       ActionInvocation action = new ActionInvocation(actionCtx);
@@ -237,14 +241,36 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
       assertEquals(1, portlets.size());
       return (Portlet)portlets.iterator().next();
    }
-   
+
    protected PortletContext importPortletContext(PortletContext contextToImport) throws PortletInvokerException
    {
       return producer.importPortlet(PortletStateType.OPAQUE, contextToImport);
    }
-   
+
    protected PortletContext exportPortletContext(PortletContext originalPortletContext) throws PortletInvokerException
    {
       return producer.exportPortlet(PortletStateType.OPAQUE, originalPortletContext);
+   }
+
+   @Test
+   public void testGetStatus() throws Exception
+   {
+      PortletInfoSupport info = new PortletInfoSupport();
+      info.getMeta().setDisplayName("MyPortlet");
+      PortletContext popCtx = createPOPRef(info);
+
+      // POP
+      assertEquals(PortletStatus.OFFERED, producer.getStatus(popCtx));
+
+      // clone a POP
+      PortletContext ccp1Ctx = createClone(popCtx);
+      assertEquals(PortletStatus.MANAGED, producer.getStatus(ccp1Ctx));
+
+      // Clone a CCP
+      PortletContext ccp2Ctx = createClone(ccp1Ctx);
+      assertEquals(PortletStatus.MANAGED, producer.getStatus(ccp2Ctx));
+
+      // inexistent portlet
+      assertNull(producer.getStatus(PortletContext.createPortletContext("foo")));
    }
 }

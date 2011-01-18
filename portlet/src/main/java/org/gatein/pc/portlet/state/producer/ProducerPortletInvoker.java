@@ -30,6 +30,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.StateEvent;
 import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.info.PortletInfo;
@@ -122,6 +123,29 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
    public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
    {
       return _getPortlet(portletContext);
+   }
+
+   @Override
+   public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      PortletStatus status = super.getStatus(portletContext);
+
+      if (status != null)
+      {
+         return status;
+      }
+      else
+      {
+         try
+         {
+            Portlet portlet = getPortlet(portletContext);
+            return portlet != null ? PortletStatus.MANAGED : null;
+         }
+         catch (NoSuchPortletException e)
+         {
+            return null;
+         }
+      }
    }
 
    private <S extends Serializable> Portlet _getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
@@ -649,10 +673,10 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       {
          StatefulContext statefulContext = (StatefulContext)context;
          try
-         {               
+         {
             PortletState sstate = new PortletState(portletId, statefulContext.getProperties());
             Serializable marshalledState = stateConverter.marshall(stateType, sstate);
-            return StatefulPortletContext.create(portletId, stateType, marshalledState);  
+            return StatefulPortletContext.create(portletId, stateType, marshalledState);
          }
          catch (StateConversionException e)
          {
@@ -685,19 +709,19 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          }
       }
    }
-   
+
    public PortletContext importPortlet(PortletStateType stateType, PortletContext contextToImport) throws PortletInvokerException
    {
       if (contextToImport == null)
       {
          throw new IllegalArgumentException("No null portlet id accepted");
       }
-      
+
       try
       {
          if (contextToImport instanceof StatefulPortletContext)
          {
-            StatefulPortletContext statefulPortletContext = (StatefulPortletContext) contextToImport;
+            StatefulPortletContext statefulPortletContext = (StatefulPortletContext)contextToImport;
             Boolean persistLocally = stateManagementPolicy.persistLocally();
 
             PortletState portletState = getStateConverter().unmarshall(stateType, statefulPortletContext.getState());
@@ -727,7 +751,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          throw new PortletInvokerException(e);
       }
    }
-   
+
    private <S extends Serializable> PortletContext marshall(PortletStateType<S> stateType, String portletId, PropertyMap props) throws PortletInvokerException
    {
       try

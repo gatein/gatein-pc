@@ -44,6 +44,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.PortletConfig;
 import java.security.Principal;
 import java.util.Enumeration;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.LinkedList;
@@ -246,49 +247,40 @@ public abstract class DispatchedHttpServletRequest extends HttpServletRequestWra
 
    public final String getPathInfo()
    {
-      if (infos != null)
-      {
-         return infos[PATH_INFO];
-      }
-      else
-      {
-         return (String)preq.getAttribute(INCLUDE_KEYS[PATH_INFO]);
-      }
+      return getSpecAttribute(PATH_INFO);
    }
 
    public final String getQueryString()
    {
-      if (infos != null)
-      {
-         return infos[QUERY_STRING];
-      }
-      else
-      {
-         return (String)preq.getAttribute(INCLUDE_KEYS[QUERY_STRING]);
-      }
+      return getSpecAttribute(QUERY_STRING);
    }
 
    public final String getRequestURI()
    {
-      if (infos != null)
-      {
-         return infos[REQUEST_URI];
-      }
-      else
-      {
-         return (String)preq.getAttribute(INCLUDE_KEYS[REQUEST_URI]);
-      }
+      return getSpecAttribute(REQUEST_URI);
    }
 
    public final String getServletPath()
    {
-      if (infos != null)
+      return getSpecAttribute(SERVLET_PATH);
+   }
+
+   private String getSpecAttribute(int index)
+   {
+      if (dispatches.getFirst().getPath() == null)
       {
-         return infos[SERVLET_PATH];
+         return null;
       }
       else
       {
-         return (String)preq.getAttribute(INCLUDE_KEYS[SERVLET_PATH]);
+         if (infos != null)
+         {
+            return infos[index];
+         }
+         else
+         {
+            return (String)preq.getAttribute(INCLUDE_KEYS[index]);
+         }
       }
    }
 
@@ -313,51 +305,49 @@ public abstract class DispatchedHttpServletRequest extends HttpServletRequestWra
    {
       if (s != null)
       {
-//         Map<String, String> containerAttributes = containerAttributesStack.getLast();
-
-         //
-//         if (containerAttributes.containsKey(s))
-//         {
-//            return containerAttributes.get(s);
-//         }
-
-         if (dispatches.getLast().getType() == DispatchType.INCLUDE)
+         if (ALL_CONTAINER_ATTRIBUTES.contains(s))
          {
-            for (String key : INCLUDE_KEYS)
+            Dispatch dispatch = dispatches.getLast();
+            if (dispatch.getType() == DispatchType.INCLUDE)
             {
-               if (key.equals(s))
+               if (dispatch.getPath() == null)
                {
-                  return preq.getAttribute(key);
+                  return null;
                }
-            }
-         }
-         else
-         {
-            for (int i = 0;i < FORWARD_KEYS.length;i++)
-            {
-               if (FORWARD_KEYS[i].equals(s))
+               else
                {
-                  if (infos != null)
+                  for (String key : INCLUDE_KEYS)
                   {
-                     return infos[i];
-                  }
-                  else
-                  {
-                     return preq.getAttribute(INCLUDE_KEYS[i]);
+                     if (key.equals(s))
+                     {
+                        return preq.getAttribute(key);
+                     }
                   }
                }
             }
-         }
-
-         //
-         String[] containerKeys = dispatches.getLast().getType() == DispatchType.FORWARD ? FORWARD_KEYS : INCLUDE_KEYS;
-
-         //
-         for (int i = 0;i < containerKeys.length;i++)
-         {
-            if (containerKeys[i].equals(s))
+            else
             {
-               return preq.getAttribute(INCLUDE_KEYS[i]);
+               for (ListIterator<Dispatch> it = dispatches.listIterator(dispatches.size());it.hasPrevious();)
+               {
+                  if (it.previous().getPath() == null)
+                  {
+                     return null;
+                  }
+               }
+               for (int i = 0;i < FORWARD_KEYS.length;i++)
+               {
+                  if (FORWARD_KEYS[i].equals(s))
+                  {
+                     if (infos != null)
+                     {
+                        return infos[i];
+                     }
+                     else
+                     {
+                        return preq.getAttribute(INCLUDE_KEYS[i]);
+                     }
+                  }
+               }
             }
          }
 
@@ -628,138 +618,7 @@ public abstract class DispatchedHttpServletRequest extends HttpServletRequestWra
          }
          this.infos = infos;
       }
-
-
-//      String path = dispatch.getPath();
-//
-//      //
-//      String[] infos;
-//      if (path != null)
-//      {
-//         infos = build(path);
-//
-//         //
-//         if (dispatch.getType() == DispatchType.INCLUDE)
-//         {
-//            Map<String, String> containerAttributes = new HashMap<String, String>();
-//            for (int i = 0;i < infos.length;i++)
-//            {
-//               String value = infos[i];
-//               if (value != null)
-//               {
-//                  containerAttributes.put(INCLUDE_KEYS[i], value);
-//               }
-//            }
-//            containerAttributesStack.addLast(containerAttributes);
-//         }
-//         else
-//         {
-//            if (containerAttributesStack.size() == 0)
-//            {
-//               Map<String, String> containerAttributes = new HashMap<String, String>();
-//               for (int i = 0;i < infos.length;i++)
-//               {
-//                  String value = infos[i];
-//                  if (value != null)
-//                  {
-//                     containerAttributes.put(FORWARD_KEYS[i], value);
-//                  }
-//               }
-//               containerAttributesStack.addLast(containerAttributes);
-//            }
-//            else
-//            {
-//               Map<String, String> containerAttributes = new HashMap<String, String>();
-//               for (int i = 0;i < this.infos.length;i++)
-//               {
-//                  String value = this.infos[i];
-//                  if (value != null)
-//                  {
-//                     containerAttributes.put(FORWARD_KEYS[i], value);
-//                  }
-//               }
-//               containerAttributesStack.addLast(containerAttributes);
-//            }
-//         }
-//      }
-//      else
-//      {
-//         infos = new String[5];
-//
-//         //
-//         Map<String, String> containerAttributes = Collections.emptyMap();
-//         containerAttributesStack.addLast(containerAttributes);
-//      }
-//
-//      //
-//      return infos;
    }
-
-//   private String[] build(String path)
-//   {
-//      if (path == null)
-//      {
-//         throw new IllegalArgumentException();
-//      }
-//
-//      //
-//      String servletPath;
-//      String pathInfo;
-//      String queryString;
-//      int endOfServletPath = path.indexOf('/', 1);
-//      if (endOfServletPath == -1)
-//      {
-//         endOfServletPath = path.indexOf('?', 1);
-//         if (endOfServletPath == -1)
-//         {
-//            servletPath = path;
-//            pathInfo = "";
-//            queryString = "";
-//         }
-//         else
-//         {
-//            servletPath = path.substring(0, endOfServletPath);
-//            pathInfo = null;
-//            queryString = path.substring(endOfServletPath + 1);
-//         }
-//      }
-//      else
-//      {
-//         servletPath = path.substring(0, endOfServletPath);
-//         int endOfPathInfo = path.indexOf('?', endOfServletPath + 1);
-//         if (endOfPathInfo == -1)
-//         {
-//            pathInfo = path.substring(endOfServletPath);
-//            queryString = "";
-//         }
-//         else
-//         {
-//            pathInfo = path.substring(endOfServletPath, endOfPathInfo);
-//            queryString = path.substring(endOfPathInfo + 1);
-//         }
-//      }
-//
-//      //
-//      String[] infos = new String[5];
-//
-//      //
-//      StringBuffer requestURI = new StringBuffer(preq.getContextPath());
-//      requestURI.append(servletPath);
-//      if (pathInfo != null)
-//      {
-//         requestURI.append(pathInfo);
-//         infos[PATH_INFO] = pathInfo;
-//      }
-//
-//      //
-//      infos[SERVLET_PATH] = servletPath;
-//      infos[QUERY_STRING] = queryString;
-//      infos[REQUEST_URI] = requestURI.toString();
-//      infos[CONTEXT_PATH] = preq.getContextPath();
-//
-//      //
-//      return infos;
-//   }
 
    void popDispatch()
    {

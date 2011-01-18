@@ -1,0 +1,21 @@
+<servers>
+   <server>
+      <server-name>RemoteJBoss_5_1</server-name>
+      <node>
+         <node-id>default</node-id>
+         <service>
+            <service-name>TestDriverServer</service-name>
+            <interface>org.jboss.unit.remote.driver.RemoteTestDriver</interface>
+            <uri>socket://localhost:5400</uri>
+         </service>
+         <deployer>
+            <remote>
+               <name>jboss51x</name>
+               <host>localhost</host>
+               <port>8080</port>
+            </remote>
+         </deployer>
+      </node>
+   </server>
+
+</servers>

@@ -28,6 +28,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.info.MetaInfo;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
@@ -113,6 +114,16 @@ public class FederatingPortletInvokerTestCase
          String id = context.getId();
          assertTrue("foo.MyPortlet".equals(id) || (PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet").equals(id));
       }
+   }
+
+   @Test
+   public void testGetStatus() throws PortletInvokerException
+   {
+      assertEquals(PortletStatus.OFFERED, federatingInvoker.getStatus(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertEquals(PortletStatus.OFFERED, federatingInvoker.getStatus(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
+
+      assertEquals(PortletStatus.OFFERED, federatedInvoker.getStatus(PortletContext.createPortletContext("foo.MyPortlet")));
+      assertEquals(PortletStatus.OFFERED, localInvoker.getStatus(PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + ".MyLocalPortlet")));
    }
 
    @Test

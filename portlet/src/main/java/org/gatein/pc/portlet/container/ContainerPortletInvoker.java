@@ -27,6 +27,7 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.invocation.InvocationException;
 import org.gatein.pc.api.invocation.PortletInvocation;
@@ -84,6 +85,19 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
    public Set<Portlet> getPortlets()
    {
       return new HashSet<Portlet>(portlets.values());
+   }
+
+   public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      if (portletContext == null)
+      {
+         throw new IllegalArgumentException("The portlet context cannot be null");
+      }
+      if (portlets.containsKey(portletContext.getId()))
+      {
+         return PortletStatus.OFFERED;
+      }
+      return null;
    }
 
    public Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException

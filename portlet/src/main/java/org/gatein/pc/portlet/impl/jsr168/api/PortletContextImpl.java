@@ -125,7 +125,9 @@ public class PortletContextImpl implements PortletContext
 
    public Set<String> getResourcePaths(String s)
    {
-      return (Set<String>)servletContext.getResourcePaths(s);
+      Set<String> paths = (Set<String>)servletContext.getResourcePaths(s);
+      // Some container (jetty) may return an empty set instead of null
+      return (paths == null || paths.isEmpty()) ? null : paths;
    }
 
    public URL getResource(String s) throws MalformedURLException
@@ -186,6 +188,10 @@ public class PortletContextImpl implements PortletContext
 
    public void setAttribute(String s, Object o)
    {
+      if (s == null)
+      {
+         throw new IllegalArgumentException("attribute name must not be null");
+      }
       servletContext.setAttribute(s, o);
    }
 

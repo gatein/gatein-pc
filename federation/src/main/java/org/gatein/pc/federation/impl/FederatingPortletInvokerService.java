@@ -31,6 +31,7 @@ import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
+import org.gatein.pc.api.PortletStatus;
 import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -202,6 +203,12 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    {
       PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.getPortlet(compoundPortletContext);
+   }
+
+   public PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException
+   {
+      PortletInvoker federated = getFederatedPortletInvokerFor(portletContext);
+      return federated.getStatus(portletContext);
    }
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException

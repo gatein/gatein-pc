@@ -41,7 +41,7 @@ public interface PortletInvoker
    String LOCAL_PORTLET_INVOKER_ID = "local";
 
    /**
-    * Return the set of portlet exposed.
+    * Return the set of portlet exposed. Usually, this means only non-customized portlets.
     *
     * @return the set of exposed portlets
     * @throws PortletInvokerException a portlet invoker exception
@@ -49,7 +49,10 @@ public interface PortletInvoker
    Set<Portlet> getPortlets() throws PortletInvokerException;
 
    /**
-    * Get information about a specific portlet.
+    * Get information about a specific portlet. Note that this PortletInvoker can know about more portlets than returned
+    * by {@link #getPortlets()}. In particular, cloned portlets wouldn't necessarily be exposed to getPortlets and still
+    * be known by this PortletInvoker i.e. there exists PortletContexts <code>pc</code> as follows: <p> <code> assert
+    * getPortlet(pc) != null && !getPortlets().contains(portlet);<br/> </code> </p>
     *
     * @param portletContext the portlet context in the scope of this invoker
     * @return the <code>PortletInfo</code> for the specified portlet
@@ -57,6 +60,17 @@ public interface PortletInvoker
     * @throws PortletInvokerException  a portlet invoker exception
     */
    Portlet getPortlet(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
+
+   /**
+    * Returns the status of a specified {@code #PortletContext} or null if the portlet context does not have a
+    * relationship with this portlet invoker.
+    *
+    * @param portletContext the portlet context
+    * @return the portlet status
+    * @throws IllegalArgumentException if the portlet context is null
+    * @throws PortletInvokerException  a portlet invoker exception
+    */
+   PortletStatus getStatus(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException;
 
    /**
     * Invoke an operation on a specific portlet.
@@ -125,23 +139,23 @@ public interface PortletInvoker
     * @throws PortletInvokerException       a portlet invoker exception
     */
    PortletContext setProperties(PortletContext portletContext, PropertyChange[] changes) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException;
-   
+
    /**
     * Exports a portlet from the invoker which can be used to recreate this portlet during an import portlet operation
-    * The returned portlet Id will be the portlet Id of the base portlet, not a cloned portlet Id
-    * If the portlet contains state, it will be returned regardless if the portlet invoker is set to persist state locally.
-    * 
-    * @param stateType the portlet state type desired
+    * The returned portlet Id will be the portlet Id of the base portlet, not a cloned portlet Id If the portlet
+    * contains state, it will be returned regardless if the portlet invoker is set to persist state locally.
+    *
+    * @param stateType              the portlet state type desired
     * @param originalPortletContext the context of the porlet to be exported
     * @return A new portlet context which can be used to import a portlet
     * @throws PortletInvokerException
     */
    PortletContext exportPortlet(PortletStateType stateType, PortletContext originalPortletContext) throws PortletInvokerException;
-   
+
    /**
     * Imports a portlet into the invoker.
-    * 
-    * @param stateType the portlet state type desired
+    *
+    * @param stateType       the portlet state type desired
     * @param contextToImport the context to be imported
     * @return The portletcontext for the imported portlet
     * @throws PortletInvokerException

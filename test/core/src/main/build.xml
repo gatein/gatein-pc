@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<project name="portlet-integration-test" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+  <path id="maven-ant-tasks.classpath" path="${maven.dependency.org.apache.maven.maven-ant-tasks.jar.path}"/>
+  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+           uri="antlib:org.apache.maven.artifact.ant"
+           classpathref="maven-ant-tasks.classpath" />
+
+  <macrodef name="install">
+    <attribute name="pomId"/>
+    <attribute name="artifactId"/>
+    <attribute name="packaging"/>
+    <attribute name="file"/>
+    <sequential>
+
+      <!-- Create dir if not exist -->
+      <mkdir dir="${target}/poms"/>
+
+      <!-- Generate pom -->
+      <artifact:pom
+        id="@{pomId}"
+        groupId="${groupId}"
+        artifactId="@{artifactId}"
+        version="${version}"
+        name="Generated @{pomId}"
+        packaging="@{packaging}"/>
+
+      <!-- Write the physical pom -->
+      <artifact:writepom
+          pomRefId="@{pomId}"
+          file="${target}/poms/@{pomId}.xml"/>
+
+      <!-- Now we create the same pom but from the physical one -->
+      <artifact:pom
+        id="@{pomId}_"
+        file="${target}/poms/@{pomId}.xml"/>
+
+      <!-- Install the file -->
+      <artifact:install file="@{file}">
+        <pom refid="@{pomId}_"/>
+      </artifact:install>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="package-ext-test">
+     <attribute name="test"/>
+     <sequential>
+        <package-testsuite testsuiteversion="jsr168" testsuitetype="ext" testsuitename="@{test}"/>
+     </sequential>
+  </macrodef>
+
+  <macrodef name="package-tck-test">
+     <attribute name="test"/>
+     <sequential>
+        <package-testsuite testsuiteversion="jsr168" testsuitetype="tck" testsuitename="@{test}"/>
+     </sequential>
+  </macrodef>
+
+  <macrodef name="package-api-test">
+     <attribute name="test"/>
+     <sequential>
+        <package-testsuite testsuiteversion="jsr168" testsuitetype="api" testsuitename="@{test}"/>
+     </sequential>
+  </macrodef>
+
+  <macrodef name="package-jsr286-tck-test">
+     <attribute name="test"/>
+     <sequential>
+        <package-testsuite testsuiteversion="jsr286" testsuitetype="tck" testsuitename="@{test}"/>
+     </sequential>
+  </macrodef>
+
+  <macrodef name="package-jsr286-api-test">
+     <attribute name="test"/>
+     <sequential>
+        <package-testsuite testsuiteversion="jsr286" testsuitetype="api" testsuitename="@{test}"/>
+     </sequential>
+  </macrodef>
+
+  <macrodef name="package-jsr286-ext-test">
+     <attribute name="test"/>
+     <sequential>
+        <package-testsuite testsuiteversion="jsr286" testsuitetype="ext" testsuitename="@{test}"/>
+     </sequential>
+  </macrodef>
+
+  <macrodef name="package-testsuite">
+     <attribute name="testsuiteversion"/>
+     <attribute name="testsuitetype"/>
+     <attribute name="testsuitename"/>
+     <sequential>
+
+       <!-- Make directory -->
+       <mkdir dir="${target}/wars"/>
+
+       <!-- Generate artifact -->
+       <jar jarfile="${target}/wars/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}.war">
+         <zipfileset dir="${target}/test-classes" prefix="WEB-INF/classes">
+           <include name="org/gatein/pc/test/portlet/@{testsuiteversion}/@{testsuitetype}/common/**"/>
+           <include name="org/gatein/pc/test/portlet/@{testsuiteversion}/common/**"/>
+           <include name="org/gatein/pc/test/portlet/common/**"/>
+           <include name="org/gatein/pc/test/portlet/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}/**"/>
+         </zipfileset>
+         <zipfileset dir="${target}/classes" prefix="WEB-INF/classes">
+           <include name="org/gatein/pc/test/portlet/framework/**"/>
+         </zipfileset>
+         <zipfileset dir="${target}" prefix="WEB-INF/lib">
+           <include name="${artifactId}-${version}-framework.jar"/>
+         </zipfileset>
+         <fileset dir="${basedir}/src/main/packaging/@{testsuiteversion}/@{testsuitetype}/@{testsuitename}-war"/>
+       </jar>
+
+       <install
+           pomId="@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
+           artifactId="${artifactId}-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
+           packaging="war"
+           file="${target}/wars/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}.war"/>
+
+     </sequential>
+  </macrodef>
+
+  <target name="package-tests">
+
+    <package-tck-test test="portletinterface"/>
+    <package-tck-test test="dispatcher"/>
+    <package-tck-test test="portletrequests"/>
+    <package-tck-test test="portletmode"/>
+    <package-tck-test test="portletconfig"/>
+    <package-tck-test test="portletresponses"/>
+    <package-tck-test test="preferences"/>
+    <package-tck-test test="portletsession"/>
+    <package-tck-test test="portleturl"/>
+    <package-tck-test test="windowstates"/>
+    <package-tck-test test="portletcontext"/>
+    <package-api-test test="portletconfig"/>
+    <package-api-test test="portletmode"/>
+    <package-api-test test="windowstate"/>
+    <package-api-test test="portletsessionutil"/>
+    <package-api-test test="portalcontext"/>
+    <package-api-test test="portletcontext"/>
+    <package-api-test test="portleturl"/>
+    <package-api-test test="portletpreferences"/>
+    <package-api-test test="portletsession"/>
+    <package-api-test test="actionrequest"/>
+    <package-api-test test="renderrequest"/>
+    <package-api-test test="actionresponse"/>
+    <package-api-test test="renderresponse"/>
+    <package-ext-test test="nocache"/>
+    <package-ext-test test="expiringcache"/>
+    <package-ext-test test="neverexpiringcache"/>
+    <package-ext-test test="preferences"/>
+    <package-ext-test test="session"/>
+    <package-ext-test test="portletresponses"/>
+    <package-ext-test test="portletrequests"/>
+    <package-ext-test test="portletmode"/>
+    <package-ext-test test="portletconfig"/>
+    <package-ext-test test="taglib"/>
+    <package-jsr286-tck-test test="dispatcher"/>
+    <package-jsr286-tck-test test="portletconfig"/>
+    <package-jsr286-tck-test test="portletconfignonamespace"/>
+    <package-jsr286-tck-test test="event"/>
+    <package-jsr286-tck-test test="eventnonamespace"/>
+    <package-jsr286-tck-test test="stateawareresponse"/>
+    <package-jsr286-tck-test test="portletrequests"/>
+    <package-jsr286-tck-test test="resourceserving"/>
+    <package-jsr286-tck-test test="portleturl"/>
+    <package-jsr286-tck-test test="portletfilter"/>
+    <package-jsr286-tck-test test="taglib"/>
+    <package-jsr286-tck-test test="userinformation"/>
+    <package-jsr286-api-test test="event"/>
+    <package-jsr286-api-test test="portleturl"/>
+    <package-jsr286-ext-test test="portletrequests"/>
+    <package-jsr286-ext-test test="portletfilter"/>
+    <package-jsr286-ext-test test="portletresponses"/>
+    <package-jsr286-ext-test test="dispatcher"/>
+    <package-jsr286-ext-test test="portletcontext"/>
+    <package-jsr286-ext-test test="portletinterface"/>
+    <package-jsr286-ext-test test="event"/>
+    <package-jsr286-ext-test test="eventsupport"/>
+    <package-jsr286-ext-test test="portletmode"/>
+
+  </target>
+
+</project>
