@@ -2,7 +2,7 @@
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-test</artifactId>
-      <version>2.3.0-Alpha01-SNAPSHOT</version>
+      <version>2.3.0-Alpha01</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-test-core</artifactId>
@@ -204,16 +204,16 @@
             <configuration>
               <tasks>
 
-                <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}"/>
+                <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}" />
 
-                <property name="target" value="${basedir}/target"/>
-                <property name="test.temp.dir" value="${basedir}/target/temp"/>
-                <property name="groupId" value="${project.groupId}"/>
-                <property name="artifactId" value="${project.artifactId}"/>
-                <property name="version" value="${project.version}"/>
+                <property name="target" value="${basedir}/target" />
+                <property name="test.temp.dir" value="${basedir}/target/temp" />
+                <property name="groupId" value="${project.groupId}" />
+                <property name="artifactId" value="${project.artifactId}" />
+                <property name="version" value="${project.version}" />
 
                 <ant antfile="${basedir}/src/main/build.xml" inheritRefs="true">
-                   <target name="package-tests"/>
+                   <target name="package-tests" />
                 </ant>
 
               </tasks>

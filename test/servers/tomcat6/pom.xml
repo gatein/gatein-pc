@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-test-servers</artifactId>
-      <version>2.3.0-Alpha01-SNAPSHOT</version>
+      <version>2.3.0-Alpha01</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-test-tomcat6</artifactId>
@@ -134,7 +133,7 @@
       <dependency>
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-test-core</artifactId>
-         <version>2.3.0-Alpha01-SNAPSHOT</version>
+         <version>2.3.0-Alpha01</version>
          <type>test-jar</type>
          <scope>test</scope>
       </dependency>
@@ -339,28 +338,28 @@
                   <configuration>
                      <tasks>
 
-                        <property name="compile_classpath" refid="maven.compile.classpath"/>
-                        <property name="runtime_classpath" refid="maven.runtime.classpath"/>
-                        <property name="test_classpath" refid="maven.test.classpath"/>
-                        <property name="plugin_classpath" refid="maven.plugin.classpath"/>
-                        <property name="project.version" value="${project.version}"/>
-                        <property name="basedir" value="${basedir}"/>
+                        <property name="compile_classpath" refid="maven.compile.classpath" />
+                        <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                        <property name="test_classpath" refid="maven.test.classpath" />
+                        <property name="plugin_classpath" refid="maven.plugin.classpath" />
+                        <property name="project.version" value="${project.version}" />
+                        <property name="basedir" value="${basedir}" />
 
                         <condition property="cargo.debug" value="${test.cargo.debug}">
-                           <isset property="test.cargo.debug"/>
+                           <isset property="test.cargo.debug" />
                         </condition>
                         <condition property="cargo.debug" value="">
                           <not>
-                            <isset property="test.cargo.debug"/>
+                            <isset property="test.cargo.debug" />
                           </not>
                         </condition>
 
                         <!-- location of common.xml shared between the different server's build.xml -->
                         <!-- for now hardcode like that, it should be probably moved to the test-core package -->
-                        <property name="common.xml.file" value="${project.basedir}/../src/common/resources/common.xml"/>
+                        <property name="common.xml.file" value="${project.basedir}/../src/common/resources/common.xml" />
 
                         <ant antfile="${basedir}/src/test/build.xml" inheritRefs="true">
-                           <target name="tests"/>
+                           <target name="tests" />
                         </ant>
 
                      </tasks>
