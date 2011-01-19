@@ -46,7 +46,7 @@
 
    <properties>
       <version.gatein.common>2.0.3-GA</version.gatein.common>
-      <version.gatein.wci>2.1.0-Alpha02</version.gatein.wci>
+      <version.gatein.wci>2.1.0-Alpha03</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
@@ -139,6 +139,11 @@
          <dependency>
             <groupId>org.gatein.wci</groupId>
             <artifactId>wci-tomcat7</artifactId>
+            <version>${version.gatein.wci}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.gatein.wci</groupId>
+            <artifactId>wci-jboss6</artifactId>
             <version>${version.gatein.wci}</version>
          </dependency>
          <dependency>
