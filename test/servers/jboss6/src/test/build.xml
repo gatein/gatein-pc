@@ -5,7 +5,7 @@
 
    <!-- SYSTEM PROPERTIES -->
    <property environment="env"/>
-   <property name="test.cargo.home" value="${env.JBOSS_6_HOME}"/>
+   <property name="test.cargo.home" value="${env.JBOSS_6_0_HOME}"/>
 
 
    <!-- properties unique per app server -->
@@ -41,20 +41,20 @@
       <property environment="env"/>
 
       <!--If properties are not in command line check if they are set in env-->
-      <condition property="JBOSS_6_HOME" value="${env.JBOSS_6_HOME}">
+      <condition property="JBOSS_6_0_HOME" value="${env.JBOSS_6_0_HOME}">
          <and>
-            <isset property="env.JBOSS_6_HOME"/>
+            <isset property="env.JBOSS_6_0_HOME"/>
             <not>
-               <isset property="JBOSS_6_HOME"/>
+               <isset property="JBOSS_6_0_HOME"/>
             </not>
          </and>
       </condition>
-      <echo message="JBOSS_6_HOME: ${JBOSS_6_HOME}"/>
-      <fail message="Please set the environment variable JBOSS_6_HOME">
+      <echo message="JBOSS_6_0_HOME: ${JBOSS_6_0_HOME}"/>
+      <fail message="Please set the environment variable JBOSS_6_0_HOME">
          <condition>
             <and>
                <not>
-                  <isset property="JBOSS_6_HOME"/>
+                  <isset property="JBOSS_6_0_HOME"/>
                </not>
             </and>
          </condition>
