@@ -78,6 +78,22 @@ public class ContentResponse extends PortletInvocationResponse
       this.cacheControl = cacheControl;
    }
 
+   public ContentResponse(
+      ContentResponse that,
+      CacheControl cacheControl)
+   {
+      if (that == null)
+      {
+         throw new IllegalArgumentException("No null content response can be provided for copy");
+      }
+      this.properties = that.properties;
+      this.attributes = that.attributes;
+      this.contentType = that.contentType;
+      this.bytes = that.bytes;
+      this.chars = that.chars;
+      this.cacheControl = cacheControl;
+   }
+
    public ResponseProperties getProperties()
    {
       return properties;

@@ -239,6 +239,10 @@
       <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
       <property name="archiveId" value="test-jsr286-ext-portletmode.war"/>
    </generic>
+   <generic>
+      <class name="org.jboss.unit.remote.driver.RemoteTestDriverClient"/>
+      <property name="archiveId" value="test-jsr286-ext-cache.war"/>
+   </generic>
 
    <!--Misc Tests-->
 <!--

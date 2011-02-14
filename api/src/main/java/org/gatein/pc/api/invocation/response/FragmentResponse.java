@@ -60,6 +60,15 @@ public class FragmentResponse extends ContentResponse
       this.nextModes = nextModes;
    }
 
+   public FragmentResponse(FragmentResponse that, CacheControl cacheControl)
+   {
+      super(that, cacheControl);
+
+      //
+      this.title = that.title;
+      this.nextModes = that.nextModes;
+   }
+
    /**
     * Return the fragment title.
     *

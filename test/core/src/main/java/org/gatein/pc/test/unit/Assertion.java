@@ -1858,7 +1858,8 @@ public enum Assertion
    EXT_NEVER_EXPIRING_CACHE_5(new EXT("Never expiring cache"), "Calling portlet with different window state invalidates the cache"),
 
    EXT_NO_CACHE_1(new EXT("No Cache"), "Caching behaviour with explicit no cache setting in portlet.xml"),
-   EXT_NO_CACHE_2(new EXT("No Cache"), "Caching behaviour with implicit no cache setting in portlet.xml"),
+
+   EXT_CACHE_VALIDATION(new EXT("Cache revalidation"), "Cache revalidation"),
 
    EXT_PORTLET_CONFIG_1(new EXT("PortletConfig"), "Obtain resource bundle during portlet init()"),
    EXT_PORTLET_CONFIG_2(new EXT("PortletConfig"), "Portlet with no resource bundle and empty <title></title> tag"),

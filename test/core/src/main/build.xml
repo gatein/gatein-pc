@@ -178,6 +178,7 @@
     <package-jsr286-ext-test test="event"/>
     <package-jsr286-ext-test test="eventsupport"/>
     <package-jsr286-ext-test test="portletmode"/>
+    <package-jsr286-ext-test test="cache"/>
 
   </target>
 

@@ -24,6 +24,7 @@ package org.gatein.pc.portlet.aspects;
 
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.RenderInvocation;
+import org.gatein.pc.api.invocation.response.FragmentResponse;
 import org.gatein.pc.portlet.PortletInvokerInterceptor;
 import org.gatein.pc.portlet.aspects.cache.ContentRef;
 import org.gatein.pc.portlet.aspects.cache.StrongContentRef;
@@ -147,13 +148,15 @@ public class ConsumerCacheInterceptor extends PortletInvokerInterceptor
             }
          }
 
-         ContentResponse fragment = cachedEntry != null ? cachedEntry.contentRef.getContent() : null;
+         //
+         final ContentResponse cachedContent = cachedEntry != null ? cachedEntry.contentRef.getContent() : null;
 
-         // If no valid fragment we must invoke
-         if (fragment == null || cachedEntry.expirationTimeMillis < System.currentTimeMillis())
+         // If no valid content we must invoke
+         long now = System.currentTimeMillis();
+         if (cachedContent == null || cachedEntry.expirationTimeMillis < now)
          {
-            // Set validation token for revalidation only we have have a fragment
-            if (fragment != null)
+            // Set validation token for revalidation only we have have a content
+            if (cachedContent != null)
             {
                renderInvocation.setValidationToken(cachedEntry.validationToken);
             }
@@ -161,54 +164,69 @@ public class ConsumerCacheInterceptor extends PortletInvokerInterceptor
             // Invoke
             PortletInvocationResponse response = super.invoke(invocation);
 
-            // Try to cache any fragment result
-            CacheControl control = null;
+            // If we had a cached content that was revalidated we substitute
+            if (response instanceof RevalidateMarkupResponse && cachedContent != null)
+            {
+               // Normally we receive such response when the validation token was set which implies we have an existing content
+               // We substitute with the appropriate content response
+               RevalidateMarkupResponse revalidate = (RevalidateMarkupResponse)response;
+               CacheControl control = revalidate.getCacheControl();
+               if (cachedContent instanceof FragmentResponse)
+               {
+                  response = new FragmentResponse((FragmentResponse)cachedContent, control);
+               }
+               else
+               {
+                  response = new ContentResponse(cachedContent, control);
+               }
+            }
+
+            // If we have a content cache it whenever it is possible
             if (response instanceof ContentResponse)
             {
-               fragment = (ContentResponse)response;
-               control = fragment.getCacheControl();
-            }
-            else if (response instanceof RevalidateMarkupResponse)
-            {
-               RevalidateMarkupResponse revalidate = (RevalidateMarkupResponse)response;
-               control = revalidate.getCacheControl();
-            }
+               ContentResponse contentResponse = (ContentResponse)response;
+               CacheControl control = contentResponse.getCacheControl();
 
-            // Compute expiration time, i.e when it will expire
-            long expirationTimeMillis = 0;
-            String validationToken = null;
-            if (control != null)
-            {
-               if (control.getExpirationSecs() == -1)
+               //
+               if (control != null)
                {
-                  expirationTimeMillis = Long.MAX_VALUE;
-               }
-               else if (control.getExpirationSecs() > 0)
-               {
-                  expirationTimeMillis = System.currentTimeMillis() + control.getExpirationSecs() * 1000;
-               }
-               if (control.getValidationToken() != null)
-               {
-                  validationToken = control.getValidationToken();
-               }
-               else if (cachedEntry != null)
-               {
-                  validationToken = cachedEntry.validationToken;
-               }
-            }
+                  // Compute expiration time, i.e when it will expire
+                  long expirationTimeMillis = 0;
+                  if (control.getExpirationSecs() == -1)
+                  {
+                     expirationTimeMillis = Long.MAX_VALUE;
+                  }
+                  else if (control.getExpirationSecs() > 0)
+                  {
+                     expirationTimeMillis = System.currentTimeMillis() + control.getExpirationSecs() * 1000;
+                  }
 
-            // Cache if we can
-            if (expirationTimeMillis > 0)
-            {
-               CacheEntry cacheEntry = new CacheEntry(
-                  navigationalState,
-                  publicNavigationalState,
-                  windowState,
-                  mode,
-                  fragment,
-                  expirationTimeMillis,
-                  validationToken);
-               userContext.setAttribute(scopeKey, cacheEntry);
+                  // Cache if we can
+                  if (expirationTimeMillis > 0)
+                  {
+                     // Use validation token if any
+                     String validationToken = null;
+                     if (control.getValidationToken() != null)
+                     {
+                        validationToken = control.getValidationToken();
+                     }
+                     else if (cachedEntry != null)
+                     {
+                        validationToken = cachedEntry.validationToken;
+                     }
+
+                     CacheEntry cacheEntry = new CacheEntry(
+                        navigationalState,
+                        publicNavigationalState,
+                        windowState,
+                        mode,
+                        contentResponse,
+                        expirationTimeMillis,
+                        validationToken);
+                     userContext.setAttribute(scopeKey, cacheEntry);
+                  }
+
+               }
             }
 
             //
@@ -216,8 +234,8 @@ public class ConsumerCacheInterceptor extends PortletInvokerInterceptor
          }
          else
          {
-            // Use the cached fragment
-            return fragment;
+            // Use the cached content
+            return cachedContent;
          }
       }
       else

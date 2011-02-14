@@ -213,6 +213,7 @@
       <package-jsr286-ext-test test="event"/>
       <package-jsr286-ext-test test="eventsupport"/>
       <package-jsr286-ext-test test="portletmode"/>
+      <package-jsr286-ext-test test="cache"/>
 
      <!-- -->
      <copy todir="${target}/test-classes/portlet-test-war/WEB-INF/lib" flatten="true">
