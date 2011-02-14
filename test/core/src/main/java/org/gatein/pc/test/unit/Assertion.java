@@ -1493,7 +1493,7 @@ public enum Assertion
 
    API286_MIME_RESPONSE_1(new API(MimeResponse.class), "CACHE_SCOPE"),
    API286_MIME_RESPONSE_2(new API(MimeResponse.class), "ETAG"),
-   API286_MIME_RESPONSE_3(new API(MimeResponse.class), "EXPIRIATION_CACHE"),
+   API286_MIME_RESPONSE_3(new API(MimeResponse.class), "EXPIRATION_CACHE"),
    API286_MIME_RESPONSE_4(new API(MimeResponse.class), "MARKUP_HEAD_ELEMENT"),
    API286_MIME_RESPONSE_5(new API(MimeResponse.class), "NAMESPACED_RESPONSE"),
    API286_MIME_RESPONSE_6(new API(MimeResponse.class), "PRIVATE_SCOPE"),
