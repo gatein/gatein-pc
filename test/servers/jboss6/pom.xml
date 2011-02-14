@@ -344,6 +344,12 @@
                   <configuration>
                      <tasks>
 
+                        <unjar src="${org.gatein.pc:pc-test-core:jar}" dest="${project.basedir}/target">
+                           <patternset>
+                              <include name="common.xml"/>
+                           </patternset>
+                        </unjar>
+
                         <property name="compile_classpath" refid="maven.compile.classpath" />
                         <property name="runtime_classpath" refid="maven.runtime.classpath" />
                         <property name="test_classpath" refid="maven.test.classpath" />
@@ -362,7 +368,7 @@
 
                         <!-- location of common.xml shared between the different server's build.xml -->
                         <!-- for now hardcode like that, it should be probably moved to the test-core package -->
-                        <property name="common.xml.file" value="${project.basedir}/../src/common/resources/common.xml" />
+                        <property name="common.xml.file" value="${project.basedir}/target/common.xml" />
 
                         <ant antfile="${basedir}/src/test/build.xml" inheritRefs="true">
                            <target name="tests" />
