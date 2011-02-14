@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<project name="portlet-integration-test" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+  <path id="maven-ant-tasks.classpath" path="${maven.dependency.org.apache.maven.maven-ant-tasks.jar.path}"/>
+  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+           uri="antlib:org.apache.maven.artifact.ant"
+           classpathref="maven-ant-tasks.classpath" />
+
+   <property name="target.dir" value="${basedir}/target"/>
+   <property name="test.dir" value="${target.dir}/integration-tests"/>
+   <property name="test.cargo.dir" value="${test.dir}/cargo/"/>
+
+   <target name="tests.common" depends="prepare_env" >
+
+      <echo message="compile classpath: ${compile_classpath}"/>
+      <echo message="runtime classpath: ${runtime_classpath}"/>
+      <echo message="test classpath:    ${test_classpath}"/>
+      <echo message="plugin classpath:  ${plugin_classpath}"/>
+      <echo message="base directory:    ${basedir}"/>
+
+      <echo message="You can run small subset of tests using -Pjboss42, -Pjboss51, -Ptomcat6, -Ptomcat7"/>
+
+      <antcall target="package-tests"/>
+
+      <antcall target="test.container-servlet"/>
+
+   </target>
+
+   <target name="prepare_env">
+
+      <!--Relative path to target dir-->
+      <property name="target" value="${basedir}/target"/>
+      <property name="test.temp.dir" value="${target}/integration-tests/test-apps"/>
+      <property name="test.temp.portlet" value="${test.temp.dir}/portlet-test"/>
+      <property name="test.temp.lib" value="${test.temp.dir}/lib"/>
+
+      <mkdir dir="${test.temp.dir}"/>
+      <mkdir dir="${test.temp.lib}"/>
+      <mkdir dir="${target}/jboss-unit"/>
+
+      <echo message="Preparing environment"/>
+
+      <path id="jboss-logging">
+         <pathelement location="${jboss:jboss-common-logging-spi:jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-jdk:jar}"/>
+         <pathelement location="${jboss:jboss-common-logging-log4j:jar}"/>
+      </path>
+
+      <path id="jboss-xb">
+         <pathelement location="${org.jboss:jbossxb:jar}"/>
+      </path>
+
+      <path id="portal-common">
+      </path>
+
+      <path id="portal-common-shared">
+        <pathelement location="${org.gatein.common:common-common:jar}"/>
+        <pathelement location="${org.gatein.common:common-logging:jar}"/>
+         <pathelement location="${org.slf4j:slf4j-simple:jar}"/>
+         <pathelement location="${org.slf4j:slf4j-api:jar}"/>
+      </path>
+
+      <path id="portal-web">
+      </path>
+
+      <path id="portal-web-shared">
+         <pathelement location="${org.gatein.wci:wci-wci:jar}"/>
+      </path>
+
+      <path id="portal-portlet">
+         <pathelement location="${org.gatein.pc:pc-controller:jar}"/>
+         <pathelement location="${org.gatein.pc:pc-mc:jar}"/>
+      </path>
+
+      <path id="portal-portlet-shared">
+         <pathelement location="${org.gatein.pc:pc-portlet:jar}"/>
+         <pathelement location="${org.gatein.pc:pc-api:jar}"/>
+         <pathelement location="${javax.portlet:portlet-api:jar}"/>
+      </path>
+
+      <path id="jboss-unit">
+      </path>
+
+      <path id="jboss-unit-shared">
+         <pathelement location="${org.jboss.unit:jboss-unit:jar}"/>
+         <pathelement location="${org.jboss.unit:jboss-unit-remote:jar}"/>
+         <pathelement location="${org.jboss.unit:portal-test-generic:jar}"/>
+         <pathelement location="${org.jboss.unit:portal-test:jar}"/>
+         <pathelement location="${org.jboss.remoting:jboss-remoting:jar}"/>
+      </path>
+
+   </target>
+
+   <macrodef name="package-ext-test">
+      <attribute name="test"/>
+      <sequential>
+         <package-testsuite testsuiteversion="jsr168" testsuitetype="ext" testsuitename="@{test}"/>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="package-tck-test">
+      <attribute name="test"/>
+      <sequential>
+         <package-testsuite testsuiteversion="jsr168" testsuitetype="tck" testsuitename="@{test}"/>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="package-api-test">
+      <attribute name="test"/>
+      <sequential>
+         <package-testsuite testsuiteversion="jsr168" testsuitetype="api" testsuitename="@{test}"/>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="package-jsr286-tck-test">
+      <attribute name="test"/>
+      <sequential>
+         <package-testsuite testsuiteversion="jsr286" testsuitetype="tck" testsuitename="@{test}"/>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="package-jsr286-api-test">
+      <attribute name="test"/>
+      <sequential>
+         <package-testsuite testsuiteversion="jsr286" testsuitetype="api" testsuitename="@{test}"/>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="package-jsr286-ext-test">
+      <attribute name="test"/>
+      <sequential>
+         <package-testsuite testsuiteversion="jsr286" testsuitetype="ext" testsuitename="@{test}"/>
+      </sequential>
+   </macrodef>
+
+   <macrodef name="package-testsuite">
+      <attribute name="testsuiteversion"/>
+      <attribute name="testsuitetype"/>
+      <attribute name="testsuitename"/>
+      <sequential>
+
+        <artifact:dependencies pathId="dependency.classpath">
+          <dependency
+              groupId="org.gatein.pc"
+              artifactId="pc-test-core-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}"
+              version="${project.version}"
+              type="war"/>
+        </artifact:dependencies>
+
+        <copy tofile="${test.temp.lib}/test-@{testsuiteversion}-@{testsuitetype}-@{testsuitename}.war">
+          <path refid="dependency.classpath"/>
+        </copy>
+
+      </sequential>
+   </macrodef>
+
+   <target name="package-tests" depends="prepare_env">
+
+      <package-tck-test test="portletinterface"/>
+      <package-tck-test test="dispatcher"/>
+      <package-tck-test test="portletrequests"/>
+      <package-tck-test test="portletmode"/>
+      <package-tck-test test="portletconfig"/>
+      <package-tck-test test="portletresponses"/>
+      <package-tck-test test="preferences"/>
+      <package-tck-test test="portletsession"/>
+      <package-tck-test test="portleturl"/>
+      <package-tck-test test="windowstates"/>
+      <package-tck-test test="portletcontext"/>
+      <package-api-test test="portletconfig"/>
+      <package-api-test test="portletmode"/>
+      <package-api-test test="windowstate"/>
+      <package-api-test test="portletsessionutil"/>
+      <package-api-test test="portalcontext"/>
+      <package-api-test test="portletcontext"/>
+      <package-api-test test="portleturl"/>
+      <package-api-test test="portletpreferences"/>
+      <package-api-test test="portletsession"/>
+      <package-api-test test="actionrequest"/>
+      <package-api-test test="renderrequest"/>
+      <package-api-test test="actionresponse"/>
+      <package-api-test test="renderresponse"/>
+      <package-ext-test test="nocache"/>
+      <package-ext-test test="expiringcache"/>
+      <package-ext-test test="neverexpiringcache"/>
+      <package-ext-test test="preferences"/>
+      <package-ext-test test="session"/>
+      <package-ext-test test="portletresponses"/>
+      <package-ext-test test="portletrequests"/>
+      <package-ext-test test="portletmode"/>
+      <package-ext-test test="portletconfig"/>
+      <package-ext-test test="taglib"/>
+      <package-jsr286-tck-test test="dispatcher"/>
+      <package-jsr286-tck-test test="portletconfig"/>
+      <package-jsr286-tck-test test="portletconfignonamespace"/>
+      <package-jsr286-tck-test test="event"/>
+      <package-jsr286-tck-test test="eventnonamespace"/>
+      <package-jsr286-tck-test test="stateawareresponse"/>
+      <package-jsr286-tck-test test="portletrequests"/>
+      <package-jsr286-tck-test test="resourceserving"/>
+      <package-jsr286-tck-test test="portleturl"/>
+      <package-jsr286-tck-test test="portletfilter"/>
+      <package-jsr286-tck-test test="taglib"/>
+      <package-jsr286-tck-test test="userinformation"/>
+      <package-jsr286-api-test test="event"/>
+      <package-jsr286-api-test test="portleturl"/>
+      <package-jsr286-ext-test test="portletrequests"/>
+      <package-jsr286-ext-test test="portletfilter"/>
+      <package-jsr286-ext-test test="portletresponses"/>
+      <package-jsr286-ext-test test="dispatcher"/>
+      <package-jsr286-ext-test test="portletcontext"/>
+      <package-jsr286-ext-test test="portletinterface"/>
+      <package-jsr286-ext-test test="event"/>
+      <package-jsr286-ext-test test="eventsupport"/>
+      <package-jsr286-ext-test test="portletmode"/>
+      <package-jsr286-ext-test test="cache"/>
+
+     <!-- -->
+     <copy todir="${target}/test-classes/portlet-test-war/WEB-INF/lib" flatten="true">
+        <path refid="${test.server.name}-${test.server.version}"/>
+        <path>
+          <pathelement location="${org.gatein.pc:pc-test-core:jar}"/>
+          <pathelement location="${org.gatein.pc:pc-test-core:test-jar:tests}"/>
+        </path>
+     </copy>
+     <mkdir dir="${test.temp.lib}/${test.server.name}-${test.server.version}"/>
+     <war
+       destfile="${test.temp.lib}/${test.server.name}-${test.server.version}/portlet-test.war"
+       needxmlfile="false">
+       <fileset dir="${target}/test-classes/portlet-test-war"/>
+     </war>
+
+   </target>
+
+   <target name="cargo.setup">
+      <property name="cargo.log.dir" value="${target}/integration-tests/cargo-logs"/>
+      <mkdir dir="${cargo.log.dir}"/>
+      <taskdef resource="cargo.tasks">
+         <classpath>
+            <pathelement path="${plugin_classpath}"/>
+         </classpath>
+      </taskdef>
+   </target>
+
+   <target name="test.container-servlet">
+      <echo message="Starting ${test.server.name} ${test.server.version} with ${test.remote.server.name} to execute ${test.server.name} tests"/>
+      <antcall target="cargo.start">
+         <param name="cargo.wait" value="false"/>
+      </antcall>
+      <antcall target="tests.remote">
+         <param name="test.server.name" value="${test.remote.server.name}"/>
+      </antcall>
+      <antcall target="cargo.stop"/>
+   </target>
+
+   <target name="tests.remote">
+
+      <taskdef name="jboss-unit" classname="org.jboss.unit.tooling.ant.JBossUnitTask" classpath="${plugin_classpath}"/>
+
+      <jboss-unit jpda="false" jpdaPort="9000" jpdaSuspend="true" failOnError="true">
+
+         <tests config="${target}/test-classes/test/remote-jboss-unit.xml">
+            <property name="archivePath" value="${test.temp.lib}"/>
+            <property name="serverName" value="${test.server.name}"/>
+         </tests>
+
+         <reports>
+            <xml toDir="${target}/tests/reports/xml/${test.server.name}"/>
+            <html toDir="${target}/tests/reports/html/${test.server.name}"/>
+         </reports>
+
+         <classpath>
+            <pathelement location="${test.temp.lib}"/>
+            <pathelement location="${target}/test-classes/test"/>
+            <pathelement path="${test_classpath}"/>
+         </classpath>
+
+      </jboss-unit>
+
+   </target>
+
+</project>
