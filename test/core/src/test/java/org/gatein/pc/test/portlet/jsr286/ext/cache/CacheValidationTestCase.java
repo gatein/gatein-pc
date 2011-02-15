@@ -61,9 +61,6 @@ public class CacheValidationTestCase
    /** . */
    private boolean cached;
 
-   /** . */
-   private String cachedMarkup;
-
    public CacheValidationTestCase(PortletTestCase seq)
    {
       // Set two seconds of expiration
@@ -82,13 +79,44 @@ public class CacheValidationTestCase
             response.getCacheControl().setExpirationTime(2);
             response.getCacheControl().setETag("footag");
 
-            // Refresh
-            return new InvokeGetResponse(response.createRenderURL().toString());
+            //
+            return null;
+         }
+      });
+      seq.bindAction(0, UTP2.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      {
+         protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
+         {
+            // Trigger a resource so we are sure that the cached portlet will not be part of the whole request
+            return new InvokeGetResponse(response.createResourceURL().toString());
          }
       });
 
       //
-      seq.bindAction(1, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      seq.bindAction(1, UTP2.RESOURCE_JOIN_POINT, new PortletResourceTestAction()
+      {
+         @Override
+         protected DriverResponse run(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
+         {
+            try
+            {
+               // Wait for one second so the cached content will be aged of 1 second
+               Thread.sleep(1000);
+
+               // Now render the full page
+               return new InvokeGetResponse(response.createRenderURL().toString());
+            }
+            catch (InterruptedException e)
+            {
+               return new FailureResponse(Failure.createFailure(e));
+            }
+         }
+      });
+
+      // Now make the request to the full page after one second, the goal is to test also an issue whereby the request
+      // to the cached content extends the expiration out of the box, as we will wait after that for one second, if that
+      // problem occur, then the revalidation would not occur at all
+      seq.bindAction(2, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
       {
          protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
          {
@@ -97,18 +125,17 @@ public class CacheValidationTestCase
             return null;
          }
       });
-      seq.bindAction(1, UTP2.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      seq.bindAction(2, UTP2.RENDER_JOIN_POINT, new PortletRenderTestAction()
       {
          protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
          {
             // Trigger a resource so we are sure that the cached portlet will not be part of the whole request
-            // and we can make the 2 seconds pause without messing with the invalid entry we want to revalidate
             return new InvokeGetResponse(response.createResourceURL().toString());
          }
       });
 
       //
-      seq.bindAction(2, UTP2.RESOURCE_JOIN_POINT, new PortletResourceTestAction()
+      seq.bindAction(3, UTP2.RESOURCE_JOIN_POINT, new PortletResourceTestAction()
       {
          @Override
          protected DriverResponse run(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
@@ -121,21 +148,23 @@ public class CacheValidationTestCase
             String cachedMarkup = new String(bytes, "UTF-8");
             Assert.assertTrue("Was expected " + cachedMarkup + " to contain foocached", cachedMarkup.contains("foocached"));
 
-            // Wait at least 2 seconds so we are sure content will expire
+            // Wait for one second so the content should have just expired
             try
             {
-               Thread.sleep(2000);
-               return new InvokeGetResponse(response.createRenderURL().toString());
+               Thread.sleep(1000);
             }
             catch (InterruptedException e)
             {
                return new FailureResponse(Failure.createFailure(e));
             }
+
+            //
+            return new InvokeGetResponse(response.createRenderURL().toString());
          }
       });
 
       // Assert we have the etag and revalidate response for two seconds
-      seq.bindAction(3, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      seq.bindAction(4, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
       {
          protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
          {
@@ -145,26 +174,16 @@ public class CacheValidationTestCase
             // Revalidate markup for two seconds and invoke again
             response.getCacheControl().setUseCachedContent(true);
             response.getCacheControl().setExpirationTime(2);
-            return new InvokeGetResponse(response.createRenderURL().toString());
+
+            //
+            return null;
          }
       });
-
-      //
       seq.bindAction(4, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
       {
          protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
          {
-            // Set cached to false to make test fail later
-            cached = false;
-            return null;
-         }
-      });
-      seq.bindAction(4, UTP2.RENDER_JOIN_POINT, new PortletRenderTestAction()
-      {
-         protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
-         {
             // Trigger a resource so we are sure that the cached portlet will not be part of the whole request
-            // and we can make the 2 seconds pause without messing with the invalid entry we want to revalidate
             return new InvokeGetResponse(response.createResourceURL().toString());
          }
       });
@@ -175,6 +194,47 @@ public class CacheValidationTestCase
          @Override
          protected DriverResponse run(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
          {
+            try
+            {
+               // Wait for one second so the cached content will be aged of 1 second
+               Thread.sleep(1000);
+
+               // Now render the full page
+               return new InvokeGetResponse(response.createRenderURL().toString());
+            }
+            catch (InterruptedException e)
+            {
+               return new FailureResponse(Failure.createFailure(e));
+            }
+         }
+      });
+
+      //
+      seq.bindAction(6, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      {
+         protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
+         {
+            // Set cached to false to make test fail later
+            cached = false;
+            return null;
+         }
+      });
+      seq.bindAction(6, UTP2.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      {
+         protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
+         {
+            // Trigger a resource so we are sure that the cached portlet will not be part of the whole request
+            // and we can make the 2 seconds pause without messing with the invalid entry we want to revalidate
+            return new InvokeGetResponse(response.createResourceURL().toString());
+         }
+      });
+
+      //
+      seq.bindAction(7, UTP2.RESOURCE_JOIN_POINT, new PortletResourceTestAction()
+      {
+         @Override
+         protected DriverResponse run(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
+         {
             // Check caching occurred
             Assert.assertTrue(cached);
 
@@ -183,7 +243,30 @@ public class CacheValidationTestCase
             String cachedMarkup = new String(bytes, "UTF-8");
             Assert.assertTrue("Was expected " + cachedMarkup + " to contain foocached", cachedMarkup.contains("foocached"));
 
-            // We are done
+            // Wait for one second so the content should have just expired
+            try
+            {
+               Thread.sleep(1000);
+            }
+            catch (InterruptedException e)
+            {
+               return new FailureResponse(Failure.createFailure(e));
+            }
+
+            //
+            return new InvokeGetResponse(response.createRenderURL().toString());
+         }
+      });
+
+      // Assert we have the etag and revalidate response for two seconds
+      seq.bindAction(8, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
+      {
+         protected DriverResponse run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context) throws IOException, PortletException
+         {
+            // Check everything is as espected
+            Assert.assertEquals("footag", request.getETag());
+
+            // Finish the test
             return new EndTestResponse();
          }
       });
