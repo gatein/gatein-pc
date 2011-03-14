@@ -23,7 +23,7 @@
             <include>org.slf4j:slf4j-api</include>
             <include>org.slf4j:slf4j-log4j12</include>
              
-            <include>apache-log4j:log4j</include>
+            <include>log4j:log4j</include>
             <include>javax.ccpp:ccpp</include>
             <include>javax.activation:activation</include>
             <include>javax.portlet:portlet-api</include>
@@ -33,8 +33,8 @@
             <include>apache-xerces:resolver</include>
             <include>apache-xerces:xml-apis</include>
 
-            <include>apache-taglibs:jstl</include>
-            <include>apache-taglibs:standard</include>
+            <include>javax.servlet:jstl</include>
+            <include>taglibs:standard</include>
 
          </includes>
       </dependencySet>

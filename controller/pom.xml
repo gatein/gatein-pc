@@ -23,6 +23,24 @@
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-remote</artifactId>
          <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>hibernate</groupId>
+               <artifactId>hibernate3</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-slide</groupId>
+               <artifactId>webdavlib</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-httpclient</groupId>
+               <artifactId>commons-httpclient</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
 
       <dependency>

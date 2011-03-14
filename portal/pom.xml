@@ -57,7 +57,6 @@
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-api</artifactId>
       </dependency>
-
       <dependency>
          <groupId>concurrent</groupId>
          <artifactId>concurrent</artifactId>
@@ -71,6 +70,16 @@
       <dependency>
          <groupId>jboss</groupId>
          <artifactId>jboss-common-logging-jdk</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>apache-slide</groupId>
+               <artifactId>webdavlib</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-httpclient</groupId>
+               <artifactId>commons-httpclient</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>jboss</groupId>
@@ -97,16 +106,16 @@
 
       <!-- JSTL for Tomcat -->
       <dependency>
-         <groupId>apache-taglibs</groupId>
+         <groupId>javax.servlet</groupId>
          <artifactId>jstl</artifactId>
       </dependency>
       <dependency>
-         <groupId>apache-taglibs</groupId>
+         <groupId>taglibs</groupId>
          <artifactId>standard</artifactId>
       </dependency>
       
       <dependency>
-         <groupId>apache-log4j</groupId>
+         <groupId>log4j</groupId>
          <artifactId>log4j</artifactId>
       </dependency>
 
@@ -115,7 +124,6 @@
          <artifactId>slf4j-log4j12</artifactId>
          <version>1.5.6</version>
       </dependency>
-      
    </dependencies>
 
    <build>

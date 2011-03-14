@@ -35,7 +35,7 @@
    <parent>
       <groupId>org.gatein</groupId>
       <artifactId>gatein-parent</artifactId>
-      <version>1.0.2-GA</version>
+      <version>1.1.0-Beta01</version>
    </parent>
 
    <scm>
@@ -45,8 +45,8 @@
    </scm>
 
    <properties>
-      <version.gatein.common>2.0.3-GA</version.gatein.common>
-      <version.gatein.wci>2.1.0-Alpha03</version.gatein.wci>
+      <version.gatein.common>2.0.4-Beta01</version.gatein.common>
+      <version.gatein.wci>2.1.0-Beta01</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
@@ -67,7 +67,7 @@
          <dependency>
             <groupId>org.gatein</groupId>
             <artifactId>gatein-dep</artifactId>
-            <version>1.0.2-GA</version>
+            <version>1.0.3-Beta01</version>
             <type>pom</type>
             <scope>import</scope>
          </dependency>
@@ -125,6 +125,12 @@
             <artifactId>pc-api</artifactId>
             <version>${project.version}</version>
          </dependency>
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-test-core</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
 
          <dependency>
             <groupId>org.gatein.wci</groupId>
@@ -153,12 +159,12 @@
          </dependency>
 
          <dependency>
-            <groupId>apache-taglibs</groupId>
+            <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>${version.apache.taglibs}</version>
          </dependency>
          <dependency>
-            <groupId>apache-taglibs</groupId>
+            <groupId>taglibs</groupId>
             <artifactId>standard</artifactId>
             <version>${version.apache.taglibs}</version>
          </dependency>
@@ -300,44 +306,5 @@
          </modules>
       </profile>
    </profiles>
-
-   <repositories>
-
-      <repository>
-         <id>jboss-public-repository-group</id>
-         <name>JBoss Public Maven Repository Group</name>
-         <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-         <layout>default</layout>
-         <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </snapshots>
-      </repository>
-      <repository>
-         <id>repository.jboss.org</id>
-         <name>JBoss Repository</name>
-         <layout>default</layout>
-         <url>http://repository.jboss.org/maven2/</url>
-         <snapshots>
-            <enabled>false</enabled>
-         </snapshots>
-      </repository>
-      <repository>
-         <id>snapshots.jboss.org</id>
-         <name>JBoss Snapshots Repository</name>
-         <layout>default</layout>
-         <url>http://snapshots.jboss.org/maven2/</url>
-         <snapshots>
-            <enabled>true</enabled>
-         </snapshots>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-      </repository>
-   </repositories>
 
 </project>
