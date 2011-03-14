@@ -3,7 +3,7 @@
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
-      <version>2.3.0-Alpha02-SNAPSHOT</version>
+      <version>2.3.0-Beta01</version>
    </parent>
    <artifactId>docs-aggregator</artifactId>
    <packaging>pom</packaging>
