@@ -22,16 +22,15 @@
 
 package org.gatein.pc.api;
 
-import static org.jboss.unit.api.Assert.*;
-import org.jboss.unit.api.pojo.annotations.Test;
+import junit.framework.TestCase;
+
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public class PortletContextTestCase
+public class PortletContextTestCase extends TestCase
 {
-   @Test
    public void testGetComponents()
    {
       PortletContext context = PortletContext.createPortletContext("/applicationName.portletName");
@@ -70,7 +69,6 @@ public class PortletContextTestCase
       assertEquals("/applicationName.portlet Name", context.getId());
    }
 
-   @Test
    public void testCreateFromNullOrEmpty()
    {
       try
