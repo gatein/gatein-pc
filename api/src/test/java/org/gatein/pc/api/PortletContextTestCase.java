@@ -24,7 +24,6 @@ package org.gatein.pc.api;
 
 import junit.framework.TestCase;
 
-
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -34,12 +33,12 @@ public class PortletContextTestCase extends TestCase
    public void testGetComponents()
    {
       PortletContext context = PortletContext.createPortletContext("/applicationName.portletName");
-      assertEquals("applicationName", context.getApplicationName());
+      assertEquals("/applicationName", context.getApplicationName());
       assertEquals("portletName", context.getPortletName());
       assertEquals("/applicationName.portletName", context.getId());
 
       context = PortletContext.createPortletContext("\t\t\n    /applicationName.portletName   \t");
-      assertEquals("applicationName", context.getApplicationName());
+      assertEquals("/applicationName", context.getApplicationName());
       assertEquals("portletName", context.getPortletName());
       assertEquals("/applicationName.portletName", context.getId());
 
@@ -54,19 +53,70 @@ public class PortletContextTestCase extends TestCase
       assertEquals("applicationName.portletName", context.getId());
 
       context = PortletContext.createPortletContext("/applicationName.portlet.Name");
-      assertEquals("applicationName", context.getApplicationName());
+      assertEquals("/applicationName", context.getApplicationName());
       assertEquals("portlet.Name", context.getPortletName());
       assertEquals("/applicationName.portlet.Name", context.getId());
 
       context = PortletContext.createPortletContext("/.");
-      assertEquals("", context.getApplicationName());
+      assertEquals("/", context.getApplicationName());
       assertEquals("", context.getPortletName());
       assertEquals("/.", context.getId());
 
       context = PortletContext.createPortletContext("/  applicationName\t.  portlet Name");
-      assertEquals("applicationName", context.getApplicationName());
+      assertEquals("/applicationName", context.getApplicationName());
       assertEquals("portlet Name", context.getPortletName());
       assertEquals("/applicationName.portlet Name", context.getId());
+   }
+
+   public void testPortletContextWithInvokerId()
+   {
+      PortletContext context = PortletContext.createPortletContext("local./foo.bar");
+      assertEquals("/foo", context.getApplicationName());
+      assertEquals("bar", context.getPortletName());
+      assertEquals("local./foo.bar", context.getId());
+
+      context = PortletContext.createPortletContext("   local\t  .  /  foo \t. \t\n bar");
+      assertEquals("/foo", context.getApplicationName());
+      assertEquals("bar", context.getPortletName());
+      assertEquals("local./foo.bar", context.getId());
+
+      context = PortletContext.createPortletContext("local.foo.bar");
+      assertNull(context.getApplicationName());
+      assertNull(context.getPortletName());
+      assertEquals("local.foo.bar", context.getId());
+
+      context = PortletContext.createPortletContext("local./foo");
+      assertNull(context.getApplicationName());
+      assertNull(context.getPortletName());
+      assertEquals("local./foo", context.getId());
+   }
+
+   public void testCreateFromComponents()
+   {
+      PortletContext context;
+      try
+      {
+         context = PortletContext.createPortletContext("applicationName", "portletName");
+         fail("'applicationName' is not a properly formatted application name");
+      }
+      catch (IllegalArgumentException e)
+      {
+         // expected
+      }
+
+      PortletContext fromId = PortletContext.createPortletContext("/applicationName.portletName");
+
+      context = PortletContext.createPortletContext("applicationName", "portletName", true);
+      assertEquals("/applicationName", context.getApplicationName());
+      assertEquals("portletName", context.getPortletName());
+      assertEquals("/applicationName.portletName", context.getId());
+      assertEquals(context, fromId);
+
+      context = PortletContext.createPortletContext("/applicationName", "portletName");
+      assertEquals("/applicationName", context.getApplicationName());
+      assertEquals("portletName", context.getPortletName());
+      assertEquals("/applicationName.portletName", context.getId());
+      assertEquals(context, fromId);
    }
 
    public void testCreateFromNullOrEmpty()

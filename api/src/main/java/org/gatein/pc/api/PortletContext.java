@@ -50,13 +50,11 @@ public class PortletContext implements Serializable
       String trimmedId = id.trim();
       if (trimmedId.startsWith(PREFIX)) // only consider components if the id starts with '/'
       {
-         String compound = trimmedId.substring(1); // exclude starting '/'
-
-         int separator = compound.indexOf(SEPARATOR); // find first separator, other separator are considered part of the portlet name
+         int separator = trimmedId.indexOf(SEPARATOR); // find first separator, other separator are considered part of the portlet name
          if (separator != -1)
          {
-            portletName = compound.substring(separator + 1).trim();
-            applicationName = compound.substring(0, separator).trim();
+            portletName = trimmedId.substring(separator + 1).trim();
+            applicationName = PREFIX + trimmedId.substring(1, separator).trim();
          }
          else
          {
@@ -66,8 +64,35 @@ public class PortletContext implements Serializable
       }
       else
       {
-         portletName = null;
-         applicationName = null;
+         // check if we have the case: invokerId./application.portlet
+         int prefix = trimmedId.indexOf(PREFIX);
+         int invoker = trimmedId.indexOf(SEPARATOR);
+
+         // find first separator, check if it could be an invoker id
+         if (invoker > 0 && invoker < prefix)
+         {
+            // check if we have a second separator, which would indicate a portlet context with invoker id
+            int separator = trimmedId.indexOf(SEPARATOR, prefix);
+            if (separator != -1)
+            {
+               String invokerId = trimmedId.substring(0, invoker).trim();
+               portletName = trimmedId.substring(separator + 1).trim();
+               trimmedId = trimmedId.substring(invoker + 1).trim();
+               applicationName = PREFIX + trimmedId.substring(1, trimmedId.indexOf(SEPARATOR)).trim();
+               this.id = invokerId + SEPARATOR + buildIdFrom(applicationName, portletName); // recreate id with invoker
+               return;
+            }
+            else
+            {
+               portletName = null;
+               applicationName = null;
+            }
+         }
+         else
+         {
+            portletName = null;
+            applicationName = null;
+         }
       }
 
       if (portletName == null || applicationName == null)
@@ -76,8 +101,35 @@ public class PortletContext implements Serializable
       }
       else
       {
-         this.id = PREFIX + applicationName + SEPARATOR + portletName;
+         this.id = buildIdFrom(applicationName, portletName);
       }
+   }
+
+   private PortletContext(String applicationName, String portletName, boolean formatApplicationName)
+   {
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(applicationName, "portlet application id", "PortletContext");
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(portletName, "container id", "PortletContext");
+
+      if (!applicationName.startsWith(PREFIX))
+      {
+         if (formatApplicationName)
+         {
+            applicationName = PREFIX + applicationName;
+         }
+         else
+         {
+            throw new IllegalArgumentException("Application name must start with '" + PREFIX + "'. Was: " + applicationName);
+         }
+      }
+
+      this.applicationName = applicationName;
+      this.portletName = portletName;
+      this.id = buildIdFrom(applicationName, portletName);
+   }
+
+   private String buildIdFrom(final String applicationName, final String portletName)
+   {
+      return applicationName + SEPARATOR + portletName;
    }
 
 
@@ -160,8 +212,35 @@ public class PortletContext implements Serializable
       return portletName;
    }
 
-   public static PortletContext createPortletContext(String portletApplicationId, String containerId)
+   /**
+    * Creates a new PortletContext referencing the specified portlet in the specified application (usually a web
+    * application).
+    *
+    * @param applicationName the application name (usually a web application context path)
+    * @param portletName     the portlet name
+    * @return a newly created PortletContext referencing the specified portlet in the specified application.
+    * @throws IllegalArgumentException if the specified arguments are null or empty and if the application name is not
+    *                                  properly formatted.
+    */
+   public static PortletContext createPortletContext(String applicationName, String portletName)
    {
-      return PortletContext.createPortletContext(portletApplicationId + SEPARATOR + containerId);
+      return createPortletContext(applicationName, portletName, false);
+   }
+
+   /**
+    * Creates a new PortletContext referencing the specified portlet in the specified application (usually a web
+    * application).
+    *
+    * @param applicationName       the application name (usually a web application context path)
+    * @param portletName           the portlet name
+    * @param formatApplicationName <code>true</code> if the application name should be formatted before attempting to
+    *                              create the PortletContext, <code>false</code> otherwise.
+    * @return a newly created PortletContext referencing the specified portlet in the specified application.
+    * @throws IllegalArgumentException if the specified arguments are null or empty and if the application name is not
+    *                                  properly formatted.
+    */
+   public static PortletContext createPortletContext(String applicationName, String portletName, boolean formatApplicationName)
+   {
+      return new PortletContext(applicationName, portletName, formatApplicationName);
    }
 }
