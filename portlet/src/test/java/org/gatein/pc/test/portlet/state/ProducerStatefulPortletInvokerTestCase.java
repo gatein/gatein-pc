@@ -1,25 +1,25 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2011, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.test.portlet.state;
 
 import org.gatein.pc.api.Portlet;
@@ -104,24 +104,24 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
 
    protected PortletContext createPOPRef(PortletInfoSupport portletSupport) throws PortletInvokerException
    {
-      container.addPortlet("PortletId", portletSupport);
+      container.addPortlet(PORTLET_ID, portletSupport);
       Portlet portlet = getSinglePOP();
       return portlet.getContext();
    }
 
    protected PortletContext createNonExistingPOPRef()
    {
-      container.addPortlet("NonExistingPortletId", new PortletInfoSupport());
+      container.addPortlet(NON_EXISTING_PORTLET_ID, new PortletInfoSupport());
       PortletContext popCtx = getSinglePOP().getContext();
-      container.removePortlet("NonExistingPortletId");
+      container.removePortlet(NON_EXISTING_PORTLET_ID);
       return popCtx;
    }
 
    protected PortletContext createInvalidPOPRef()
    {
-      container.addPortlet("InvalidPortletId", new PortletInfoSupport());
+      container.addPortlet(INVALID_PORTLET_ID, new PortletInfoSupport());
       PortletContext popCtx = getSinglePOP().getContext();
-      container.setValid("InvalidPortletId", false);
+      container.setValid(INVALID_PORTLET_ID, false);
       return popCtx;
    }
 

@@ -1,25 +1,25 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2011, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.test.portlet.state;
 
 import org.gatein.common.util.Tools;
@@ -65,6 +65,9 @@ import java.util.Arrays;
  */
 public abstract class AbstractStatefulPortletInvokerTestCase
 {
+   public static final String PORTLET_ID = "/foo.PortletId";
+   public static final String NON_EXISTING_PORTLET_ID = "/foo.NonExistingPortletId";
+   public static final String INVALID_PORTLET_ID = "/foo.InvalidPortletId";
 
    /** . */
    protected final boolean persistLocally;
@@ -472,7 +475,7 @@ public abstract class AbstractStatefulPortletInvokerTestCase
 //   @Test
 //   public void testDestroyInvalidCCP() throws Exception
 //   {
-//      PortletContext ccpId = getProducer().wrapCCP("PortletId");
+//      PortletContext ccpId = getProducer().wrapCCP(PORTLET_ID);
 //      List failures = getProducer().destroyClones(Collections.singletonList(ccpId));
 //      assertEquals(1, failures.size());
 //      DestroyCloneFailure failure = (DestroyCloneFailure)failures.get(0);
@@ -1050,7 +1053,7 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       PortletContext export0Ctx = exportPortletContext(popCtx);
 
       //Make sure we get back the ID for the original portlet
-      assertEquals("PortletId", export0Ctx.getId());
+      assertEquals(PORTLET_ID, export0Ctx.getId());
       //check by doing an import
       checkWithImportPortlet(export0Ctx, popCtx, new SimplePropertyMap());
 
@@ -1060,7 +1063,7 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       PortletContext export1Ctx = exportPortletContext(popCtx);
 
       //Make sure we get back the ID for the original portlet
-      assertEquals("PortletId", export1Ctx.getId());
+      assertEquals(PORTLET_ID, export1Ctx.getId());
       //check by doing an import
       checkWithImportPortlet(export1Ctx, popCtx, expectedProperties);
 
@@ -1068,7 +1071,7 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       PortletContext export2Ctx = exportPortletContext(ccp1Ctx);
 
       //Make sure we get back the ID for the original portlet
-      assertEquals("PortletId", export2Ctx.getId());
+      assertEquals(PORTLET_ID, export2Ctx.getId());
       //Check by doing an import
       checkWithImportPortlet(export2Ctx, ccp1Ctx, expectedProperties);
 
@@ -1083,7 +1086,7 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       PortletContext export3Ctx = exportPortletContext(ccp2Ctx);
 
       //Make sure we get back the ID for the original portlet
-      assertEquals("PortletId", export3Ctx.getId());
+      assertEquals(PORTLET_ID, export3Ctx.getId());
       //Check by doing an import
       checkWithImportPortlet(export3Ctx, ccp2Ctx, expectedProperties);
    }
@@ -1198,10 +1201,10 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       StateConverter sc = new StateConverterV0();
       PropertyMap propertyMap = new SimplePropertyMap();
       propertyMap.setProperty("test", Arrays.asList("123"));
-      PortletState portletState = new PortletState("PortletId", propertyMap);
+      PortletState portletState = new PortletState(PORTLET_ID, propertyMap);
       byte[] stateBytes = sc.marshall(PortletStateType.OPAQUE, portletState);
 
-      StatefulPortletContext portletContext = StatefulPortletContext.create("PortletId", PortletStateType.OPAQUE, stateBytes);
+      StatefulPortletContext portletContext = StatefulPortletContext.create(PORTLET_ID, PortletStateType.OPAQUE, stateBytes);
 
       //import portlet
       PortletContext importedPortletContext = importPortletContext(portletContext);
