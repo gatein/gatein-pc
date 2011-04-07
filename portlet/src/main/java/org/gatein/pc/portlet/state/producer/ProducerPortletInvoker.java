@@ -73,12 +73,6 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
 {
 
    /** . */
-   private static final String PRODUCER_CLONE_ID_PREFIX = "_";
-
-   /** . */
-   private static final String CONSUMER_CLONE_ID = "_dumbvalue";
-
-   /** . */
    private PortletStatePersistenceManager persistenceManager;
 
    /** . */
@@ -160,7 +154,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       String portletId = portletContext.getId();
 
       //
-      if (CONSUMER_CLONE_ID.equals(portletId))
+      if (PortletContext.CONSUMER_CLONE_ID.equals(portletId))
       {
          if (portletContext instanceof StatefulPortletContext)
          {
@@ -184,11 +178,11 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
             throw new InvalidPortletIdException("", portletId);
          }
       }
-      else if (portletId.startsWith(PRODUCER_CLONE_ID_PREFIX))
+      else if (portletId.startsWith(PortletContext.PRODUCER_CLONE_ID_PREFIX))
       {
          try
          {
-            String stateId = portletId.substring(PRODUCER_CLONE_ID_PREFIX.length());
+            String stateId = portletId.substring(PortletContext.PRODUCER_CLONE_ID_PREFIX.length());
             PortletStateContext stateContext = persistenceManager.loadState(stateId);
             PortletState state = stateContext.getState();
             Portlet delegate = super.getPortlet(PortletContext.createPortletContext(state.getPortletId()));
@@ -300,7 +294,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
                         String cloneStateId = persistenceManager.cloneState(portletStateId, newPrefs);
 
                         // Return the clone context
-                        String cloneId = PRODUCER_CLONE_ID_PREFIX + cloneStateId;
+                        String cloneId = PortletContext.PRODUCER_CLONE_ID_PREFIX + cloneStateId;
                         PortletContext clonedCtx = PortletContext.createPortletContext(cloneId);
                         StateEvent event = new StateEvent(clonedCtx, StateEvent.Type.PORTLET_CLONED_EVENT);
                         instanceCtx.onStateEvent(event);
@@ -333,7 +327,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
                      String cloneStateId = persistenceManager.createState(context.getPortletId(), newPrefs);
 
                      // Return the clone context
-                     String cloneId = PRODUCER_CLONE_ID_PREFIX + cloneStateId;
+                     String cloneId = PortletContext.PRODUCER_CLONE_ID_PREFIX + cloneStateId;
                      PortletContext clonedCtx = PortletContext.createPortletContext(cloneId);
                      StateEvent event = new StateEvent(clonedCtx, StateEvent.Type.PORTLET_CLONED_EVENT);
                      instanceCtx.onStateEvent(event);
@@ -418,8 +412,8 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          {
             try
             {
-               String stateId = portletId.substring(PRODUCER_CLONE_ID_PREFIX.length());
-               String cloneId = PRODUCER_CLONE_ID_PREFIX + persistenceManager.cloneState(stateId);
+               String stateId = portletId.substring(PortletContext.PRODUCER_CLONE_ID_PREFIX.length());
+               String cloneId = PortletContext.PRODUCER_CLONE_ID_PREFIX + persistenceManager.cloneState(stateId);
                return PortletContext.createPortletContext(cloneId);
             }
             catch (NoSuchStateException e)
@@ -443,7 +437,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          if (persistLocally)
          {
             String cloneId = persistenceManager.createState(portletId, newState);
-            return PortletContext.createPortletContext(PRODUCER_CLONE_ID_PREFIX + cloneId);
+            return PortletContext.createPortletContext(PortletContext.PRODUCER_CLONE_ID_PREFIX + cloneId);
          }
          else
          {
@@ -467,7 +461,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
          if (!(portletContext instanceof StatefulPortletContext))
          {
             String portletId = portletContext.getId();
-            if (!portletId.startsWith(PRODUCER_CLONE_ID_PREFIX))
+            if (!portletId.startsWith(PortletContext.PRODUCER_CLONE_ID_PREFIX))
             {
                log.debug("Attempt to destroy a producer offered portlet " + portletId);
                DestroyCloneFailure failure = new DestroyCloneFailure(portletId, "Cannot destroy POP");
@@ -477,7 +471,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
             {
                try
                {
-                  persistenceManager.destroyState(portletId.substring(PRODUCER_CLONE_ID_PREFIX.length()));
+                  persistenceManager.destroyState(portletId.substring(PortletContext.PRODUCER_CLONE_ID_PREFIX.length()));
                }
                catch (NoSuchStateException e)
                {
@@ -733,7 +727,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
                String cloneStateId = persistenceManager.createState(statefulPortletContext.getId(), portletState.getProperties());
 
                // Return the clone context
-               String cloneId = PRODUCER_CLONE_ID_PREFIX + cloneStateId;
+               String cloneId = PortletContext.PRODUCER_CLONE_ID_PREFIX + cloneStateId;
                return PortletContext.createPortletContext(cloneId);
             }
             else
@@ -758,7 +752,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       {
          PortletState sstate = new PortletState(portletId, props);
          S marshalledState = stateConverter.marshall(stateType, sstate);
-         return StatefulPortletContext.create(CONSUMER_CLONE_ID, stateType, marshalledState);
+         return StatefulPortletContext.create(PortletContext.CONSUMER_CLONE_ID, stateType, marshalledState);
       }
       catch (StateConversionException e)
       {
@@ -816,9 +810,9 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
       if (!(portletContext instanceof StatefulPortletContext))
       {
          String portletId = portletContext.getId();
-         if (portletContext.getId().startsWith(PRODUCER_CLONE_ID_PREFIX))
+         if (portletContext.getId().startsWith(PortletContext.PRODUCER_CLONE_ID_PREFIX))
          {
-            String stateId = portletId.substring(PRODUCER_CLONE_ID_PREFIX.length());
+            String stateId = portletId.substring(PortletContext.PRODUCER_CLONE_ID_PREFIX.length());
             try
             {
                PortletStateContext stateContext = persistenceManager.loadState(stateId);

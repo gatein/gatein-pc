@@ -39,6 +39,8 @@ public class PortletContextTestCase extends TestCase
       assertNull(components.getInvokerName());
       assertEquals("applicationName", components.getApplicationName());
       assertEquals("portletName", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
 
       context = PortletContext.createPortletContext("\t\t\n    /applicationName.portletName   \t");
       assertEquals("/applicationName.portletName", context.getId());
@@ -47,6 +49,8 @@ public class PortletContextTestCase extends TestCase
       assertNull(components.getInvokerName());
       assertEquals("applicationName", components.getApplicationName());
       assertEquals("portletName", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
 
       try
       {
@@ -65,6 +69,8 @@ public class PortletContextTestCase extends TestCase
       assertEquals("applicationName", components.getInvokerName());
       assertNull(components.getApplicationName());
       assertEquals("portletName", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
 
       context = PortletContext.createPortletContext("/applicationName.portlet.Name");
       assertEquals("/applicationName.portlet.Name", context.getId());
@@ -73,6 +79,8 @@ public class PortletContextTestCase extends TestCase
       assertNull(components.getInvokerName());
       assertEquals("applicationName", components.getApplicationName());
       assertEquals("portlet.Name", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
 
       try
       {
@@ -91,6 +99,8 @@ public class PortletContextTestCase extends TestCase
       assertNull(components.getInvokerName());
       assertEquals("applicationName", components.getApplicationName());
       assertEquals("portlet Name", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
    }
 
    public void testPortletContextWithInvokerId()
@@ -102,6 +112,8 @@ public class PortletContextTestCase extends TestCase
       assertEquals("local", components.getInvokerName());
       assertEquals("foo", components.getApplicationName());
       assertEquals("bar", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
 
       context = PortletContext.createPortletContext("   local\t  .  /  foo \t. \t\n bar");
       assertEquals("local./foo.bar", context.getId());
@@ -110,6 +122,8 @@ public class PortletContextTestCase extends TestCase
       assertEquals("local", components.getInvokerName());
       assertEquals("foo", components.getApplicationName());
       assertEquals("bar", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
 
       context = PortletContext.createPortletContext("local.foo.bar");
       assertEquals("local.foo.bar", context.getId());
@@ -118,6 +132,8 @@ public class PortletContextTestCase extends TestCase
       assertEquals("local", components.getInvokerName());
       assertNull(components.getApplicationName());
       assertEquals("foo.bar", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
 
       context = PortletContext.createPortletContext("local./foo");
       assertEquals("local./foo", context.getId());
@@ -126,6 +142,8 @@ public class PortletContextTestCase extends TestCase
       assertEquals("local", components.getInvokerName());
       assertNull(components.getApplicationName());
       assertEquals("/foo", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
    }
 
    public void testCreateFromComponents()
@@ -140,6 +158,8 @@ public class PortletContextTestCase extends TestCase
       assertEquals("applicationName", components.getApplicationName());
       assertEquals("portletName", components.getPortletName());
       assertEquals(context, fromId);
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
    }
 
    public void testShouldProperlyHandleApplicationNameStartingWithSlash()
@@ -153,7 +173,70 @@ public class PortletContextTestCase extends TestCase
       assertNull(components.getInvokerName());
       assertEquals("applicationName", components.getApplicationName());
       assertEquals("portletName", components.getPortletName());
+      assertFalse(components.isCloned());
+      assertNull(components.getStateId());
       assertEquals(context, fromId);
+   }
+
+   public void testShouldWorkWithoutInterpretation()
+   {
+      PortletContext context = PortletContext.createPortletContext("foo", false);
+      assertNull(context.getComponents());
+      assertEquals("foo", context.getId());
+   }
+
+   public void testAcceptClones()
+   {
+      PortletContext context = PortletContext.createPortletContext("_clone");
+      assertEquals("_clone", context.getId());
+      PortletContext.PortletContextComponents components = context.getComponents();
+      assertNotNull(components);
+      assertNull(components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertNull(components.getPortletName());
+      assertTrue(components.isCloned());
+      assertEquals("clone", components.getStateId());
+
+      context = PortletContext.createPortletContext("foo._clone");
+      assertEquals("foo._clone", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("foo", components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertNull(components.getPortletName());
+      assertTrue(components.isCloned());
+      assertEquals("clone", components.getStateId());
+
+      context = PortletContext.createPortletContext("foo \t  \n.  _   \t\nclone");
+      assertEquals("foo._clone", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("foo", components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertNull(components.getPortletName());
+      assertTrue(components.isCloned());
+      assertEquals("clone", components.getStateId());
+
+      context = PortletContext.createPortletContext("foo." + PortletContext.CONSUMER_CLONE_ID);
+      assertEquals("foo." + PortletContext.CONSUMER_CLONE_ID, context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("foo", components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertNull(components.getPortletName());
+      assertTrue(components.isCloned());
+      assertEquals(PortletContext.CONSUMER_CLONE_DUMMY_STATE_ID, components.getStateId());
+   }
+
+   public void testAcceptConsumerClone()
+   {
+      PortletContext.PortletContextComponents components = PortletContext.LOCAL_CONSUMER_CLONE.getComponents();
+      assertNotNull(components);
+      assertEquals(PortletInvoker.LOCAL_PORTLET_INVOKER_ID, components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertNull(components.getPortletName());
+      assertTrue(components.isCloned());
+      assertEquals(PortletContext.CONSUMER_CLONE_DUMMY_STATE_ID, components.getStateId());
    }
 
    public void testCreateFromNullOrEmpty()
