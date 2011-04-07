@@ -1,25 +1,25 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2011, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.api;
 
 import org.gatein.common.util.ParameterValidation;
@@ -39,8 +39,14 @@ public class PortletContext implements Serializable
    private static final char SEPARATOR = '.';
 
    public static final String PRODUCER_CLONE_ID_PREFIX = "_";
+   public static final int PRODUCER_CLONE_PREFIX_LENGTH = PRODUCER_CLONE_ID_PREFIX.length();
+
+   public static final String CONSUMER_CLONE_ID_PREFIX = "@";
+   public static final int CONSUMER_CLONE_PREFIX_LENGTH = CONSUMER_CLONE_ID_PREFIX.length();
+
    public static final String CONSUMER_CLONE_DUMMY_STATE_ID = "dumbvalue";
    public static final String CONSUMER_CLONE_ID = PRODUCER_CLONE_ID_PREFIX + CONSUMER_CLONE_DUMMY_STATE_ID;
+
    public final static PortletContext LOCAL_CONSUMER_CLONE = PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + SEPARATOR + CONSUMER_CLONE_ID);
 
    protected final String id;
@@ -79,12 +85,12 @@ public class PortletContext implements Serializable
                isSimpleAppPortlet = separator != -1 && appName.length() > 0 && portletName.length() > 0;
                if (isSimpleAppPortlet)
                {
-                  components = new PortletContextComponents(null, appName, portletName, false);
+                  components = new PortletContextComponents(null, appName, portletName, null);
                }
             }
             else
             {
-               if (!trimmedId.startsWith(PRODUCER_CLONE_ID_PREFIX))
+               if (!(trimmedId.startsWith(PRODUCER_CLONE_ID_PREFIX) || trimmedId.startsWith(CONSUMER_CLONE_ID_PREFIX)))
                {
                   int invoker = trimmedId.indexOf(SEPARATOR);
                   int prefix = trimmedId.indexOf(PREFIX);
@@ -106,7 +112,7 @@ public class PortletContext implements Serializable
                            isCompoundAppPortlet = invokerId.length() > 0 && applicationName.length() > 0 && portletName.length() > 0;
                            if (isCompoundAppPortlet)
                            {
-                              components = new PortletContextComponents(invokerId, applicationName, portletName, false);
+                              components = new PortletContextComponents(invokerId, applicationName, portletName, null);
                            }
                         }
                      }
@@ -123,15 +129,22 @@ public class PortletContext implements Serializable
 
                         if (portletNameOrStateId.length() > 0)
                         {
-                           if (portletNameOrStateId.startsWith(PRODUCER_CLONE_ID_PREFIX))
+                           boolean isProducerClone = portletNameOrStateId.startsWith(PRODUCER_CLONE_ID_PREFIX);
+                           boolean isConsumerClone = portletNameOrStateId.startsWith(CONSUMER_CLONE_ID_PREFIX);
+                           if (isProducerClone || isConsumerClone)
                            {
-                              isCloned = true;
-                              components = new PortletContextComponents(invokerId, null, portletNameOrStateId.substring(PRODUCER_CLONE_ID_PREFIX.length()).trim(), true);
+                              int prefixLength = isProducerClone ? PRODUCER_CLONE_PREFIX_LENGTH : CONSUMER_CLONE_PREFIX_LENGTH;
+                              portletNameOrStateId = portletNameOrStateId.substring(prefixLength).trim();
+                              if (portletNameOrStateId.length() > 0)
+                              {
+                                 isCloned = true;
+                                 components = new PortletContextComponents(invokerId, null, portletNameOrStateId, isProducerClone);
+                              }
                            }
                            else
                            {
                               isOpaquePortlet = true;
-                              components = new PortletContextComponents(invokerId, null, portletNameOrStateId, false);
+                              components = new PortletContextComponents(invokerId, null, portletNameOrStateId, null);
                            }
                         }
                      }
@@ -139,11 +152,17 @@ public class PortletContext implements Serializable
                }
                else
                {
-                  String stateId = trimmedId.substring(PRODUCER_CLONE_ID_PREFIX.length()).trim();
-                  isCloned = stateId.length() > 0;
-                  if (isCloned)
+                  boolean isProducerClone = trimmedId.startsWith(PRODUCER_CLONE_ID_PREFIX);
+                  boolean isConsumerClone = trimmedId.startsWith(CONSUMER_CLONE_ID_PREFIX);
+                  if (isProducerClone || isConsumerClone)
                   {
-                     components = new PortletContextComponents(null, null, stateId, true);
+                     int prefixLength = isProducerClone ? PRODUCER_CLONE_PREFIX_LENGTH : CONSUMER_CLONE_PREFIX_LENGTH;
+                     trimmedId = trimmedId.substring(prefixLength).trim();
+                     if (trimmedId.length() > 0)
+                     {
+                        isCloned = true;
+                        components = new PortletContextComponents(null, null, trimmedId, isProducerClone);
+                     }
                   }
                }
             }
@@ -269,7 +288,7 @@ public class PortletContext implements Serializable
          applicationName = applicationName.substring(1);
       }
 
-      return new PortletContext(new PortletContextComponents(null, applicationName, portletName, false));
+      return new PortletContext(new PortletContextComponents(null, applicationName, portletName, null));
    }
 
    public PortletContextComponents getComponents()
@@ -282,11 +301,13 @@ public class PortletContext implements Serializable
       private final String applicationName;
       private final String portletName;
       private final String invokerName;
-      private final boolean cloned;
+      private final Boolean producerCloned;
 
-      public PortletContextComponents(String invokerName, String applicationName, String portletNameOrStateId, boolean cloned)
+      public PortletContextComponents(String invokerName, String applicationName, String portletNameOrStateId, Boolean producerCloned)
       {
-         if (cloned && !ParameterValidation.isNullOrEmpty(applicationName))
+         this.producerCloned = producerCloned;
+
+         if (isCloned() && !ParameterValidation.isNullOrEmpty(applicationName))
          {
             throw new IllegalArgumentException("Cannot be a clone if applicationName is provided");
          }
@@ -294,7 +315,6 @@ public class PortletContext implements Serializable
          this.applicationName = applicationName;
          this.portletName = portletNameOrStateId;
          this.invokerName = invokerName;
-         this.cloned = cloned;
       }
 
       public String getApplicationName()
@@ -314,7 +334,17 @@ public class PortletContext implements Serializable
 
       public boolean isCloned()
       {
-         return cloned;
+         return producerCloned != null;
+      }
+
+      public boolean isProducerCloned()
+      {
+         return isCloned() && producerCloned;
+      }
+
+      public boolean isConsumerCloned()
+      {
+         return isCloned() && !producerCloned;
       }
 
       public String getStateId()
@@ -326,7 +356,7 @@ public class PortletContext implements Serializable
       {
          return (invokerName == null ? "" : invokerName + SEPARATOR)
             + (applicationName == null ? "" : PREFIX + applicationName + SEPARATOR)
-            + (portletName == null ? "" : (cloned ? PRODUCER_CLONE_ID_PREFIX : "") + portletName);
+            + (portletName == null ? "" : (producerCloned != null ? (producerCloned ? PRODUCER_CLONE_ID_PREFIX : CONSUMER_CLONE_ID_PREFIX) : "") + portletName);
       }
    }
 }

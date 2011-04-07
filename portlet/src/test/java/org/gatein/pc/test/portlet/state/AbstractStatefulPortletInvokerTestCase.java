@@ -1100,8 +1100,9 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       PortletContext portletContext = importedPortlet.getContext();
 
       //make sure the expected portlet context and the one we get back from the import are the same
-      assertEquals(originalPortletContext.getComponents().getApplicationName(), portletContext.getComponents().getApplicationName());
-      assertEquals(originalPortletContext.getComponents().getPortletName(), portletContext.getComponents().getPortletName());
+//      assertEquals(originalPortletContext.getComponents().getApplicationName(), portletContext.getComponents().getApplicationName());
+//      assertEquals(originalPortletContext.getComponents().getPortletName(), portletContext.getComponents().getPortletName());
+      assertEquals(originalPortletContext, portletContext);
 
       if (originalPortletContext instanceof StatefulPortletContext)
       {

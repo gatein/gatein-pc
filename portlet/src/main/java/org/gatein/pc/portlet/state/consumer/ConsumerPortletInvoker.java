@@ -1,25 +1,25 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2006, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2011, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.portlet.state.consumer;
 
 import org.gatein.common.NotYetImplemented;
@@ -55,9 +55,6 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
 {
 
    /** . */
-   private static final String CLONE_ID_PREFIX = "@";
-
-   /** . */
    private ConsumerPersistenceManager persistenceManager;
 
    public PortletContext unwrapCCP(String wrappedCCP) throws InvalidPortletIdException
@@ -66,11 +63,11 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       {
          throw new IllegalArgumentException();
       }
-      if (!wrappedCCP.startsWith(CLONE_ID_PREFIX))
+      if (!wrappedCCP.startsWith(PortletContext.CONSUMER_CLONE_ID_PREFIX))
       {
          throw new InvalidPortletIdException(wrappedCCP);
       }
-      return PortletContext.createPortletContext(wrappedCCP.substring(CLONE_ID_PREFIX.length()));
+      return PortletContext.createPortletContext(wrappedCCP.substring(PortletContext.CONSUMER_CLONE_ID_PREFIX.length()));
    }
 
    public PortletContext unwrapPOP(String wrappedPOPId) throws InvalidPortletIdException
@@ -88,7 +85,7 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       {
          throw new IllegalArgumentException();
       }
-      return CLONE_ID_PREFIX + ccpCtx.getId();
+      return PortletContext.CONSUMER_CLONE_ID_PREFIX + ccpCtx.getId();
    }
 
    public String wrapPOP(PortletContext popCtx) throws InvalidPortletIdException
@@ -97,9 +94,9 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       {
          throw new IllegalArgumentException();
       }
-      if (popCtx.getId().startsWith(CLONE_ID_PREFIX))
+      if (popCtx.getId().startsWith(PortletContext.CONSUMER_CLONE_ID_PREFIX))
       {
-         throw new IllegalArgumentException("Must not start with " + CLONE_ID_PREFIX);
+         throw new IllegalArgumentException("Must not start with " + PortletContext.CONSUMER_CLONE_ID_PREFIX);
       }
       return popCtx.getId();
    }
@@ -157,7 +154,7 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
                // Save the clone state
                ConsumerState consumerState = new ConsumerState<Serializable>(clonedContext.getId(), stateType, state);
                String stateId = persistenceManager.createState(consumerState);
-               String clonedId = CLONE_ID_PREFIX + stateId;
+               String clonedId = PortletContext.CONSUMER_CLONE_ID_PREFIX + stateId;
                StateEvent event = new StateEvent(PortletContext.createPortletContext(clonedId), StateEvent.Type.PORTLET_CLONED_EVENT);
                cictx.onStateEvent(event);
             }
@@ -217,7 +214,7 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
          StatefulPortletContext statefulClonedContext = (StatefulPortletContext)clonedContext;
          ConsumerState consumerState = new ConsumerState<Serializable>(clonedContext.getId(), statefulClonedContext.getType(), statefulClonedContext.getState());
          String id = persistenceManager.createState(consumerState);
-         return PortletContext.createPortletContext(CLONE_ID_PREFIX + id);
+         return PortletContext.createPortletContext(PortletContext.CONSUMER_CLONE_ID_PREFIX + id);
       }
       else
       {
@@ -237,7 +234,7 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
          StatefulPortletContext statefulimportContext = (StatefulPortletContext)importContext;
          ConsumerState consumerState = new ConsumerState<Serializable>(importContext.getId(), statefulimportContext.getType(), statefulimportContext.getState());
          String id = persistenceManager.createState(consumerState);
-         return PortletContext.createPortletContext(CLONE_ID_PREFIX + id);
+         return PortletContext.createPortletContext(PortletContext.CONSUMER_CLONE_ID_PREFIX + id);
       }
       else
       {
@@ -413,9 +410,9 @@ public class ConsumerPortletInvoker extends PortletInvokerInterceptor
       String portletId = portletContext.getId();
 
       //
-      if (portletId.startsWith(CLONE_ID_PREFIX))
+      if (portletId.startsWith(PortletContext.CONSUMER_CLONE_ID_PREFIX))
       {
-         String stateId = portletId.substring(CLONE_ID_PREFIX.length());
+         String stateId = portletId.substring(PortletContext.CONSUMER_CLONE_ID_PREFIX.length());
          try
          {
             ConsumerStateContext stateCtx = persistenceManager.loadState(stateId);

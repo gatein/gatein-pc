@@ -271,6 +271,6 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
       assertEquals(PortletStatus.MANAGED, producer.getStatus(ccp2Ctx));
 
       // inexistent portlet
-      assertNull(producer.getStatus(PortletContext.createPortletContext("foo")));
+      assertNull(producer.getStatus(PortletContext.createPortletContext("/foo.bar")));
    }
 }
