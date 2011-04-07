@@ -35,103 +35,114 @@ import java.io.Serializable;
 public class PortletContext implements Serializable
 {
 
-   /** . */
-   protected final String id;
-   private final String applicationName;
-   private final String portletName;
    private static final String PREFIX = "/";
    private static final char SEPARATOR = '.';
 
-   PortletContext(String id) throws IllegalArgumentException
+   /* TODO: remove from ProducerPortletInvoker so that we can use these constants in GateIn
+   public static final String CONSUMER_CLONE_ID = "_dumbvalue";
+   public static final String PRODUCER_CLONE_ID_PREFIX = "_";
+   public final static PortletContext CONSUMER_CLONE = PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + SEPARATOR + CONSUMER_CLONE_ID);*/
+
+   protected final String id;
+   private final PortletContextComponents components;
+
+   protected PortletContext(String id) throws IllegalArgumentException
+   {
+      this(id, true);
+   }
+
+   protected PortletContext(String id, boolean interpret)
    {
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(id, "portlet id", "PortletContext");
 
-      // components
-      String trimmedId = id.trim();
-      if (trimmedId.startsWith(PREFIX)) // only consider components if the id starts with '/'
-      {
-         int separator = trimmedId.indexOf(SEPARATOR); // find first separator, other separator are considered part of the portlet name
-         if (separator != -1)
-         {
-            portletName = trimmedId.substring(separator + 1).trim();
-            applicationName = PREFIX + trimmedId.substring(1, separator).trim();
-         }
-         else
-         {
-            portletName = null;
-            applicationName = null;
-         }
-      }
-      else
-      {
-         // check if we have the case: invokerId./application.portlet
-         int prefix = trimmedId.indexOf(PREFIX);
-         int invoker = trimmedId.indexOf(SEPARATOR);
+      PortletContextComponents components = null;
+      boolean isSimpleAppPortlet = false;
+      boolean isOpaquePortlet = false;
+      boolean isCompoundAppPortlet = false;
 
-         // find first separator, check if it could be an invoker id
-         if (invoker > 0 && invoker < prefix)
+      // components
+      if (interpret)
+      {
+         ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(id, "portlet id", "PortletContext");
+
+         String trimmedId = id.trim();
+
+         try
          {
-            // check if we have a second separator, which would indicate a portlet context with invoker id
-            int separator = trimmedId.indexOf(SEPARATOR, prefix);
-            if (separator != -1)
+            if (trimmedId.startsWith(PREFIX))
             {
-               String invokerId = trimmedId.substring(0, invoker).trim();
-               portletName = trimmedId.substring(separator + 1).trim();
-               trimmedId = trimmedId.substring(invoker + 1).trim();
-               applicationName = PREFIX + trimmedId.substring(1, trimmedId.indexOf(SEPARATOR)).trim();
-               this.id = invokerId + SEPARATOR + buildIdFrom(applicationName, portletName); // recreate id with invoker
-               return;
+               // check the case: /application.portlet
+               int separator = trimmedId.indexOf(SEPARATOR); // find first separator, other separator are considered part of the portlet name
+               String portletName = trimmedId.substring(separator + 1).trim();
+               String appName = trimmedId.substring(1, separator).trim();
+               isSimpleAppPortlet = separator != -1 && appName.length() > 0 && portletName.length() > 0;
+               if (isSimpleAppPortlet)
+               {
+                  components = new PortletContextComponents(null, appName, portletName);
+               }
             }
             else
             {
-               portletName = null;
-               applicationName = null;
+               int invoker = trimmedId.indexOf(SEPARATOR);
+               int prefix = trimmedId.indexOf(PREFIX);
+
+               if (prefix != -1)
+               {
+                  // check if we have the case: invokerId./something
+                  if (invoker > 0 && invoker < prefix)
+                  {
+                     String invokerId = trimmedId.substring(0, invoker).trim();
+
+                     int separator = trimmedId.indexOf(SEPARATOR, prefix);
+                     // check the case: invokerId./application.portlet
+                     if (separator != -1)
+                     {
+                        String portletName = trimmedId.substring(separator + 1).trim();
+                        trimmedId = trimmedId.substring(invoker + 1).trim();
+                        String applicationName = trimmedId.substring(1, trimmedId.indexOf(SEPARATOR)).trim();
+                        isCompoundAppPortlet = invokerId.length() > 0 && applicationName.length() > 0 && portletName.length() > 0;
+                        if (isCompoundAppPortlet)
+                        {
+                           components = new PortletContextComponents(invokerId, applicationName, portletName);
+                        }
+                     }
+                  }
+               }
+
+               // check if we have the case: invokerId.portletId
+               if (!isCompoundAppPortlet && invoker > 0)
+               {
+                  String invokerId = trimmedId.substring(0, invoker).trim();
+                  String portletName = trimmedId.substring(invoker + 1).trim();
+                  isOpaquePortlet = invokerId.length() > 0 && portletName.length() > 0;
+                  if (isOpaquePortlet)
+                  {
+                     components = new PortletContextComponents(invokerId, null, portletName);
+                  }
+               }
             }
          }
-         else
+         catch (Exception e)
          {
-            portletName = null;
-            applicationName = null;
+            throw new IllegalArgumentException("Couldn't interpret id '" + id + "'", e);
          }
       }
 
-      if (portletName == null || applicationName == null)
+      if (interpret && !(isSimpleAppPortlet || isCompoundAppPortlet || isOpaquePortlet))
       {
-         this.id = trimmedId;
+         throw new IllegalArgumentException("Couldn't interpret id '" + id + "'");
       }
-      else
-      {
-         this.id = buildIdFrom(applicationName, portletName);
-      }
+
+      this.components = components;
+      this.id = components != null ? components.getId() : id;
    }
 
-   private PortletContext(String applicationName, String portletName, boolean formatApplicationName)
+   protected PortletContext(PortletContextComponents components)
    {
-      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(applicationName, "portlet application id", "PortletContext");
-      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(portletName, "container id", "PortletContext");
-
-      if (!applicationName.startsWith(PREFIX))
-      {
-         if (formatApplicationName)
-         {
-            applicationName = PREFIX + applicationName;
-         }
-         else
-         {
-            throw new IllegalArgumentException("Application name must start with '" + PREFIX + "'. Was: " + applicationName);
-         }
-      }
-
-      this.applicationName = applicationName;
-      this.portletName = portletName;
-      this.id = buildIdFrom(applicationName, portletName);
+      ParameterValidation.throwIllegalArgExceptionIfNull(components, "portlet context components");
+      this.components = components;
+      this.id = components.getId();
    }
-
-   private String buildIdFrom(final String applicationName, final String portletName)
-   {
-      return applicationName + SEPARATOR + portletName;
-   }
-
 
    public boolean equals(Object o)
    {
@@ -172,14 +183,7 @@ public class PortletContext implements Serializable
    @Deprecated()
    public static PortletContext createPortletContext(String id, byte[] state)
    {
-      if (state != null && state.length > 0)
-      {
-         return new StatefulPortletContext<byte[]>(id, PortletStateType.OPAQUE, state);
-      }
-      else
-      {
-         return new PortletContext(id);
-      }
+      return createPortletContext(id, state, true);
    }
 
    /**
@@ -199,17 +203,19 @@ public class PortletContext implements Serializable
 
    public static PortletContext createPortletContext(String portletId)
    {
-      return createPortletContext(portletId, (byte[])null);
+      return createPortletContext(portletId, null, true);
    }
 
-   public String getApplicationName()
+   public static PortletContext createPortletContext(String portletId, byte[] state, boolean interpret)
    {
-      return applicationName;
-   }
-
-   public String getPortletName()
-   {
-      return portletName;
+      if (state != null && state.length > 0)
+      {
+         return new StatefulPortletContext<byte[]>(portletId, PortletStateType.OPAQUE, state);
+      }
+      else
+      {
+         return new PortletContext(portletId, interpret);
+      }
    }
 
    /**
@@ -224,23 +230,55 @@ public class PortletContext implements Serializable
     */
    public static PortletContext createPortletContext(String applicationName, String portletName)
    {
-      return createPortletContext(applicationName, portletName, false);
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(applicationName, "portlet application id", "PortletContext");
+      ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(portletName, "container id", "PortletContext");
+
+      if (applicationName.startsWith(PREFIX))
+      {
+         applicationName = applicationName.substring(1);
+      }
+
+      return new PortletContext(new PortletContextComponents(null, applicationName, portletName));
    }
 
-   /**
-    * Creates a new PortletContext referencing the specified portlet in the specified application (usually a web
-    * application).
-    *
-    * @param applicationName       the application name (usually a web application context path)
-    * @param portletName           the portlet name
-    * @param formatApplicationName <code>true</code> if the application name should be formatted before attempting to
-    *                              create the PortletContext, <code>false</code> otherwise.
-    * @return a newly created PortletContext referencing the specified portlet in the specified application.
-    * @throws IllegalArgumentException if the specified arguments are null or empty and if the application name is not
-    *                                  properly formatted.
-    */
-   public static PortletContext createPortletContext(String applicationName, String portletName, boolean formatApplicationName)
+   public PortletContextComponents getComponents()
    {
-      return new PortletContext(applicationName, portletName, formatApplicationName);
+      return components;
+   }
+
+   public static class PortletContextComponents
+   {
+      private final String applicationName;
+      private final String portletName;
+      private final String invokerName;
+
+      public PortletContextComponents(String invokerName, String applicationName, String portletName)
+      {
+         this.applicationName = applicationName;
+         this.portletName = portletName;
+         this.invokerName = invokerName;
+      }
+
+      public String getApplicationName()
+      {
+         return applicationName;
+      }
+
+      public String getPortletName()
+      {
+         return portletName;
+      }
+
+      public String getInvokerName()
+      {
+         return invokerName;
+      }
+
+      public String getId()
+      {
+         return (invokerName == null ? "" : invokerName + SEPARATOR)
+            + (applicationName == null ? "" : PREFIX + applicationName + SEPARATOR)
+            + (portletName == null ? "" : portletName);
+      }
    }
 }

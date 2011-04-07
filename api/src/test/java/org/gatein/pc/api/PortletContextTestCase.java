@@ -33,89 +33,126 @@ public class PortletContextTestCase extends TestCase
    public void testGetComponents()
    {
       PortletContext context = PortletContext.createPortletContext("/applicationName.portletName");
-      assertEquals("/applicationName", context.getApplicationName());
-      assertEquals("portletName", context.getPortletName());
       assertEquals("/applicationName.portletName", context.getId());
+      PortletContext.PortletContextComponents components = context.getComponents();
+      assertNotNull(components);
+      assertNull(components.getInvokerName());
+      assertEquals("applicationName", components.getApplicationName());
+      assertEquals("portletName", components.getPortletName());
 
       context = PortletContext.createPortletContext("\t\t\n    /applicationName.portletName   \t");
-      assertEquals("/applicationName", context.getApplicationName());
-      assertEquals("portletName", context.getPortletName());
       assertEquals("/applicationName.portletName", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertNull(components.getInvokerName());
+      assertEquals("applicationName", components.getApplicationName());
+      assertEquals("portletName", components.getPortletName());
 
-      context = PortletContext.createPortletContext("/");
-      assertNull(context.getApplicationName());
-      assertNull(context.getPortletName());
-      assertEquals("/", context.getId());
-
-      context = PortletContext.createPortletContext("applicationName.portletName");
-      assertNull(context.getApplicationName());
-      assertNull(context.getPortletName());
-      assertEquals("applicationName.portletName", context.getId());
-
-      context = PortletContext.createPortletContext("/applicationName.portlet.Name");
-      assertEquals("/applicationName", context.getApplicationName());
-      assertEquals("portlet.Name", context.getPortletName());
-      assertEquals("/applicationName.portlet.Name", context.getId());
-
-      context = PortletContext.createPortletContext("/.");
-      assertEquals("/", context.getApplicationName());
-      assertEquals("", context.getPortletName());
-      assertEquals("/.", context.getId());
-
-      context = PortletContext.createPortletContext("/  applicationName\t.  portlet Name");
-      assertEquals("/applicationName", context.getApplicationName());
-      assertEquals("portlet Name", context.getPortletName());
-      assertEquals("/applicationName.portlet Name", context.getId());
-   }
-
-   public void testPortletContextWithInvokerId()
-   {
-      PortletContext context = PortletContext.createPortletContext("local./foo.bar");
-      assertEquals("/foo", context.getApplicationName());
-      assertEquals("bar", context.getPortletName());
-      assertEquals("local./foo.bar", context.getId());
-
-      context = PortletContext.createPortletContext("   local\t  .  /  foo \t. \t\n bar");
-      assertEquals("/foo", context.getApplicationName());
-      assertEquals("bar", context.getPortletName());
-      assertEquals("local./foo.bar", context.getId());
-
-      context = PortletContext.createPortletContext("local.foo.bar");
-      assertNull(context.getApplicationName());
-      assertNull(context.getPortletName());
-      assertEquals("local.foo.bar", context.getId());
-
-      context = PortletContext.createPortletContext("local./foo");
-      assertNull(context.getApplicationName());
-      assertNull(context.getPortletName());
-      assertEquals("local./foo", context.getId());
-   }
-
-   public void testCreateFromComponents()
-   {
-      PortletContext context;
       try
       {
-         context = PortletContext.createPortletContext("applicationName", "portletName");
-         fail("'applicationName' is not a properly formatted application name");
+         PortletContext.createPortletContext("/");
+         fail("invalid");
       }
       catch (IllegalArgumentException e)
       {
          // expected
       }
 
+      context = PortletContext.createPortletContext("applicationName.portletName");
+      assertEquals("applicationName.portletName", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("applicationName", components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertEquals("portletName", components.getPortletName());
+
+      context = PortletContext.createPortletContext("/applicationName.portlet.Name");
+      assertEquals("/applicationName.portlet.Name", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertNull(components.getInvokerName());
+      assertEquals("applicationName", components.getApplicationName());
+      assertEquals("portlet.Name", components.getPortletName());
+
+      try
+      {
+         PortletContext.createPortletContext("/.");
+         fail();
+      }
+      catch (IllegalArgumentException e)
+      {
+         // expected
+      }
+
+      context = PortletContext.createPortletContext("/  applicationName\t.  portlet Name");
+      assertEquals("/applicationName.portlet Name", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertNull(components.getInvokerName());
+      assertEquals("applicationName", components.getApplicationName());
+      assertEquals("portlet Name", components.getPortletName());
+   }
+
+   public void testPortletContextWithInvokerId()
+   {
+      PortletContext context = PortletContext.createPortletContext("local./foo.bar");
+      assertEquals("local./foo.bar", context.getId());
+      PortletContext.PortletContextComponents components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("local", components.getInvokerName());
+      assertEquals("foo", components.getApplicationName());
+      assertEquals("bar", components.getPortletName());
+
+      context = PortletContext.createPortletContext("   local\t  .  /  foo \t. \t\n bar");
+      assertEquals("local./foo.bar", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("local", components.getInvokerName());
+      assertEquals("foo", components.getApplicationName());
+      assertEquals("bar", components.getPortletName());
+
+      context = PortletContext.createPortletContext("local.foo.bar");
+      assertEquals("local.foo.bar", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("local", components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertEquals("foo.bar", components.getPortletName());
+
+      context = PortletContext.createPortletContext("local./foo");
+      assertEquals("local./foo", context.getId());
+      components = context.getComponents();
+      assertNotNull(components);
+      assertEquals("local", components.getInvokerName());
+      assertNull(components.getApplicationName());
+      assertEquals("/foo", components.getPortletName());
+   }
+
+   public void testCreateFromComponents()
+   {
       PortletContext fromId = PortletContext.createPortletContext("/applicationName.portletName");
 
-      context = PortletContext.createPortletContext("applicationName", "portletName", true);
-      assertEquals("/applicationName", context.getApplicationName());
-      assertEquals("portletName", context.getPortletName());
+      PortletContext context = PortletContext.createPortletContext("applicationName", "portletName");
       assertEquals("/applicationName.portletName", context.getId());
+      PortletContext.PortletContextComponents components = context.getComponents();
+      assertNotNull(components);
+      assertNull(components.getInvokerName());
+      assertEquals("applicationName", components.getApplicationName());
+      assertEquals("portletName", components.getPortletName());
       assertEquals(context, fromId);
+   }
 
-      context = PortletContext.createPortletContext("/applicationName", "portletName");
-      assertEquals("/applicationName", context.getApplicationName());
-      assertEquals("portletName", context.getPortletName());
+   public void testShouldProperlyHandleApplicationNameStartingWithSlash()
+   {
+      PortletContext fromId = PortletContext.createPortletContext("/applicationName.portletName");
+
+      PortletContext context = PortletContext.createPortletContext("/applicationName", "portletName");
       assertEquals("/applicationName.portletName", context.getId());
+      PortletContext.PortletContextComponents components = context.getComponents();
+      assertNotNull(components);
+      assertNull(components.getInvokerName());
+      assertEquals("applicationName", components.getApplicationName());
+      assertEquals("portletName", components.getPortletName());
       assertEquals(context, fromId);
    }
 
