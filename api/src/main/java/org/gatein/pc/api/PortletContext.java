@@ -48,6 +48,7 @@ public class PortletContext implements Serializable
    public static final String CONSUMER_CLONE_ID = PRODUCER_CLONE_ID_PREFIX + CONSUMER_CLONE_DUMMY_STATE_ID;
 
    public final static PortletContext LOCAL_CONSUMER_CLONE = PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + SEPARATOR + CONSUMER_CLONE_ID);
+   public static final String INVALID_PORTLET_CONTEXT = "Invalid portlet context: ";
 
    protected final String id;
    private final PortletContextComponents components;
@@ -169,13 +170,13 @@ public class PortletContext implements Serializable
          }
          catch (Exception e)
          {
-            throw new IllegalArgumentException("Couldn't interpret id '" + id + "'", e);
+            throw new IllegalArgumentException(INVALID_PORTLET_CONTEXT + id, e);
          }
       }
 
       if (interpret && !(isSimpleAppPortlet || isCompoundAppPortlet || isOpaquePortlet || isCloned))
       {
-         throw new IllegalArgumentException("Couldn't interpret id '" + id + "'");
+         throw new IllegalArgumentException(INVALID_PORTLET_CONTEXT + id);
       }
 
       this.components = components;
