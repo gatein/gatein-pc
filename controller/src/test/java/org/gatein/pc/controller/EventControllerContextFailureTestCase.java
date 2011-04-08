@@ -1,25 +1,25 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2008, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2011, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.controller;
 
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
@@ -36,9 +36,9 @@ import org.gatein.pc.controller.handlers.FailingEventHandler;
 import org.gatein.pc.controller.handlers.NoOpEventHandler;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.controller.PortletController;
 import org.jboss.unit.api.pojo.annotations.Test;
 import org.jboss.unit.api.pojo.annotations.Create;
+
 import static org.jboss.unit.api.Assert.assertInstanceOf;
 import static org.jboss.unit.api.Assert.assertEquals;
 import static org.jboss.unit.api.Assert.assertTrue;
@@ -54,6 +54,8 @@ import javax.xml.namespace.QName;
 @Test
 public class EventControllerContextFailureTestCase
 {
+
+   public static final String DST_WINDOW_ID = "/webappdst.dst";
 
    /** . */
    private PortletController controller = new PortletController();
@@ -85,11 +87,11 @@ public class EventControllerContextFailureTestCase
    @Create
    public void create()
    {
-      request = context.createActionRequest("foo");
-      srcName = new QName("juu", "foo");
-      dstName = new QName("juu", "bar");
-      fooPortlet = invoker.addPortlet("foo");
-      barPortlet = invoker.addPortlet("bar");
+      request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
+      srcName = new QName("ns1", "src");
+      dstName = new QName("ns2", "dst");
+      fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
+      barPortlet = invoker.addPortlet(PortletInvokerSupport.BAR_PORTLET_ID);
       called = false;
    }
 
@@ -104,7 +106,7 @@ public class EventControllerContextFailureTestCase
             throw new RuntimeException();
          }
       };
-      ecc.createWire(srcName, "foo", dstName, "bar");
+      ecc.createWire(srcName, PortletInvokerSupport.FOO_PORTLET_ID, dstName, PortletInvokerSupport.BAR_PORTLET_ID);
 
       // We test that a runtime exception thrown does not interrrupt the flow of the controller
       context.setEventControllerContext(ecc);
@@ -126,7 +128,7 @@ public class EventControllerContextFailureTestCase
             throw error;
          }
       };
-      ecc.createWire(srcName, "foo", dstName, "bar");
+      ecc.createWire(srcName, PortletInvokerSupport.FOO_PORTLET_ID, dstName, PortletInvokerSupport.BAR_PORTLET_ID);
 
       //
       context.setEventControllerContext(ecc);
@@ -202,7 +204,7 @@ public class EventControllerContextFailureTestCase
             throw new RuntimeException();
          }
       };
-      ecc.createWire(srcName, "foo", dstName, "bar");
+      ecc.createWire(srcName, PortletInvokerSupport.FOO_PORTLET_ID, dstName, PortletInvokerSupport.BAR_PORTLET_ID);
 
       // We test that a runtime exception thrown does not interrrupt the flow of the controller
       context.setEventControllerContext(ecc);
@@ -224,7 +226,7 @@ public class EventControllerContextFailureTestCase
             throw error;
          }
       };
-      ecc.createWire(srcName, "foo", dstName, "bar");
+      ecc.createWire(srcName, PortletInvokerSupport.FOO_PORTLET_ID, dstName, PortletInvokerSupport.BAR_PORTLET_ID);
 
       //
       context.setEventControllerContext(ecc);
@@ -254,7 +256,7 @@ public class EventControllerContextFailureTestCase
             throw new RuntimeException();
          }
       };
-      ecc.createWire(srcName, "foo", dstName, "bar_");
+      ecc.createWire(srcName, PortletInvokerSupport.FOO_PORTLET_ID, dstName, DST_WINDOW_ID);
 
       // We test that a runtime exception thrown does not interrrupt the flow of the controller
       context.setEventControllerContext(ecc);
@@ -276,7 +278,7 @@ public class EventControllerContextFailureTestCase
             throw error;
          }
       };
-      ecc.createWire(srcName, "foo", dstName, "bar_");
+      ecc.createWire(srcName, PortletInvokerSupport.FOO_PORTLET_ID, dstName, DST_WINDOW_ID);
 
       //
       context.setEventControllerContext(ecc);

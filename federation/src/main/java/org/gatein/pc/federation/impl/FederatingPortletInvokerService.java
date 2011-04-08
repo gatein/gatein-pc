@@ -1,6 +1,6 @@
 /*
  * JBoss, a division of Red Hat
- * Copyright 2010, Red Hat Middleware, LLC, and individual
+ * Copyright 2011, Red Hat Middleware, LLC, and individual
  * contributors as indicated by the @authors tag. See the
  * copyright.txt in the distribution for a full listing of
  * individual contributors.
@@ -63,7 +63,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    private static final Logger log = LoggerFactory.getLogger(FederatingPortletInvokerService.class);
 
    /** The separator used in the id to route to the correct invoker. */
-   static final String SEPARATOR = ".";
+   public static final String SEPARATOR = ".";
 
    /** The registred FederatedPortletInvokers. */
    private volatile Map<String, FederatedPortletInvoker> registry = new HashMap<String, FederatedPortletInvoker>();
@@ -72,7 +72,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 
    public static PortletContext dereference(PortletContext compoundPortletContext, String invokerId)
    {
-      String portletId = compoundPortletContext.getId().substring(invokerId.length() + 1);
+      String portletId = compoundPortletContext.getId().substring(invokerId.length() + SEPARATOR.length());
       if (compoundPortletContext instanceof StatefulPortletContext)
       {
          StatefulPortletContext<?> compoundStatefulPortletContext = (StatefulPortletContext<?>)compoundPortletContext;
@@ -315,18 +315,21 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
          throw new IllegalArgumentException("No null portlet id accepted");
       }
 
-      //
-      String compoundPortletId = compoundPortletContext.getId();
+      PortletContext.PortletContextComponents components = compoundPortletContext.getComponents();
+      final String compoundPortletId = compoundPortletContext.getId();
+      if (components == null)
+      {
+         // force intepretation
+         compoundPortletContext = PortletContext.createPortletContext(compoundPortletId, true);
+         components = compoundPortletContext.getComponents();
+      }
 
-      //
-      int pos = compoundPortletId.indexOf(SEPARATOR);
-      if (pos == -1)
+      final String invokerId = components.getInvokerName();
+      if (invokerId == null)
       {
          throw new IllegalArgumentException("Bad portlet id format " + compoundPortletId);
       }
 
-      //
-      String invokerId = compoundPortletId.substring(0, pos);
       FederatedPortletInvoker federated = registry.get(invokerId);
       if (federated == null)
       {

@@ -1,25 +1,25 @@
-/******************************************************************************
- * JBoss, a division of Red Hat                                               *
- * Copyright 2008, Red Hat Middleware, LLC, and individual                    *
- * contributors as indicated by the @authors tag. See the                     *
- * copyright.txt in the distribution for a full listing of                    *
- * individual contributors.                                                   *
- *                                                                            *
- * This is free software; you can redistribute it and/or modify it            *
- * under the terms of the GNU Lesser General Public License as                *
- * published by the Free Software Foundation; either version 2.1 of           *
- * the License, or (at your option) any later version.                        *
- *                                                                            *
- * This software is distributed in the hope that it will be useful,           *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU           *
- * Lesser General Public License for more details.                            *
- *                                                                            *
- * You should have received a copy of the GNU Lesser General Public           *
- * License along with this software; if not, write to the Free                *
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
- ******************************************************************************/
+/*
+ * JBoss, a division of Red Hat
+ * Copyright 2011, Red Hat Middleware, LLC, and individual
+ * contributors as indicated by the @authors tag. See the
+ * copyright.txt in the distribution for a full listing of
+ * individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.gatein.pc.controller;
 
 import org.gatein.pc.controller.request.ControllerRequest;
@@ -45,11 +45,11 @@ import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.invocation.response.UpdateNavigationalStateResponse;
 import org.gatein.pc.api.invocation.ActionInvocation;
 import org.gatein.pc.api.invocation.EventInvocation;
-import org.gatein.pc.controller.PortletController;
 import org.gatein.common.util.Tools;
 import org.gatein.pc.api.WindowState;
 import org.jboss.unit.api.pojo.annotations.Test;
 import org.jboss.unit.api.pojo.annotations.Create;
+
 import static org.jboss.unit.api.Assert.*;
 
 import javax.xml.namespace.QName;
@@ -75,6 +75,9 @@ public class PortletControllerTestCase
    /** . */
    PortletInvokerSupport invoker = context.getInvoker();
 
+   public static final QName SRC_NAME = new QName("ns1", "src");
+   public static final QName DST_NAME = new QName("ns2", "dest");
+
    @Create
    public void create()
    {
@@ -84,16 +87,16 @@ public class PortletControllerTestCase
    @Test
    public void testPortletControllerRenderRequest() throws PortletInvokerException
    {
-      invoker.addPortlet("foo");
+      invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
       StateString portletNS = new OpaqueStateString("abc");
       PortletPageNavigationalState pageNS = context.getStateControllerContext().createPortletPageNavigationalState(true);
       PortletWindowNavigationalState windowNS = new PortletWindowNavigationalState(portletNS, org.gatein.pc.api.Mode.EDIT, WindowState.MAXIMIZED);
-      PortletRenderRequest render = new PortletRenderRequest("foo", windowNS, new HashMap<String, String[]>(), pageNS);
+      PortletRenderRequest render = new PortletRenderRequest(PortletInvokerSupport.FOO_PORTLET_ID, windowNS, new HashMap<String, String[]>(), pageNS);
       ControllerResponse response = controller.process(context, render);
       PageUpdateResponse pageUpdate = assertInstanceOf(response, PageUpdateResponse.class);
       PortletPageNavigationalState pageNS2 = assertNotNull(pageUpdate.getPageNavigationalState());
-      assertEquals(Tools.toSet("foo"), pageNS2.getPortletWindowIds());
-      PortletWindowNavigationalState windowNS2 = pageNS2.getPortletWindowNavigationalState("foo");
+      assertEquals(Tools.toSet(PortletInvokerSupport.FOO_PORTLET_ID), pageNS2.getPortletWindowIds());
+      PortletWindowNavigationalState windowNS2 = pageNS2.getPortletWindowNavigationalState(PortletInvokerSupport.FOO_PORTLET_ID);
       assertNotNull(windowNS2);
       assertEquals(portletNS, windowNS2.getPortletNavigationalState());
       assertEquals(org.gatein.pc.api.Mode.EDIT, windowNS2.getMode());
@@ -114,11 +117,8 @@ public class PortletControllerTestCase
 
    private void testAction(final boolean publishEvent) throws PortletInvokerException
    {
-      final QName srcName = new QName("juu", "foo");
-      final QName dstName = new QName("juu", "bar");
-
       //
-      PortletSupport fooPortlet = invoker.addPortlet("foo");
+      PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
       fooPortlet.addHandler(new PortletSupport.ActionHandler()
       {
          protected PortletInvocationResponse invoke(ActionInvocation action) throws PortletInvokerException
@@ -131,21 +131,21 @@ public class PortletControllerTestCase
             //
             if (publishEvent)
             {
-               updateNS.queueEvent(new UpdateNavigationalStateResponse.Event(srcName, null));
+               updateNS.queueEvent(new UpdateNavigationalStateResponse.Event(SRC_NAME, null));
             }
-            
+
             //
             return updateNS;
          }
       });
 
       //
-      PortletSupport barPortlet = invoker.addPortlet("bar");
+      PortletSupport barPortlet = invoker.addPortlet(PortletInvokerSupport.BAR_PORTLET_ID);
       barPortlet.addHandler(new PortletSupport.EventHandler()
       {
          protected PortletInvocationResponse invoke(EventInvocation action) throws PortletInvokerException
          {
-            assertEquals(dstName, action.getName());
+            assertEquals(DST_NAME, action.getName());
             assertEquals(null, action.getPayload());
 
             //
@@ -160,16 +160,16 @@ public class PortletControllerTestCase
       });
 
       //
-      eventControllerContext.createWire(srcName, "foo", dstName, "bar");
+      eventControllerContext.createWire(SRC_NAME, PortletInvokerSupport.FOO_PORTLET_ID, DST_NAME, PortletInvokerSupport.BAR_PORTLET_ID);
 
       //
-      ControllerRequest request = context.createActionRequest("foo");
+      ControllerRequest request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
       ControllerResponse response = controller.process(context, request);
       PageUpdateResponse pageUpdate = assertInstanceOf(response, PageUpdateResponse.class);
       PortletPageNavigationalState pageNS = assertNotNull(pageUpdate.getPageNavigationalState());
 
       //
-      PortletWindowNavigationalState fooNS = assertNotNull(pageNS.getPortletWindowNavigationalState("foo"));
+      PortletWindowNavigationalState fooNS = assertNotNull(pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.FOO_PORTLET_ID));
       assertEquals(WindowState.MAXIMIZED, fooNS.getWindowState());
       assertEquals(org.gatein.pc.api.Mode.EDIT, fooNS.getMode());
       assertEquals(new OpaqueStateString("abc"), fooNS.getPortletNavigationalState());
@@ -177,17 +177,17 @@ public class PortletControllerTestCase
       //
       if (publishEvent)
       {
-         assertEquals(Tools.toSet("foo", "bar"), pageNS.getPortletWindowIds());
+         assertEquals(Tools.toSet(PortletInvokerSupport.FOO_PORTLET_ID, PortletInvokerSupport.BAR_PORTLET_ID), pageNS.getPortletWindowIds());
 
          //
-         PortletWindowNavigationalState barNS = assertNotNull(pageNS.getPortletWindowNavigationalState("bar"));
+         PortletWindowNavigationalState barNS = assertNotNull(pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.BAR_PORTLET_ID));
          assertEquals(WindowState.MINIMIZED, barNS.getWindowState());
          assertEquals(org.gatein.pc.api.Mode.HELP, barNS.getMode());
          assertEquals(new OpaqueStateString("def"), barNS.getPortletNavigationalState());
       }
       else
       {
-         assertEquals(Tools.toSet("foo"), pageNS.getPortletWindowIds());
+         assertEquals(Tools.toSet(PortletInvokerSupport.FOO_PORTLET_ID), pageNS.getPortletWindowIds());
       }
    }
 
@@ -195,7 +195,7 @@ public class PortletControllerTestCase
    public void testActionThrowsPortletInvokerException() throws PortletInvokerException
    {
       final PortletInvokerException e = new PortletInvokerException();
-      PortletSupport fooPortlet = invoker.addPortlet("foo");
+      PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
       fooPortlet.addHandler(new PortletSupport.ActionHandler()
       {
          protected PortletInvocationResponse invoke(ActionInvocation action) throws PortletInvokerException
@@ -205,7 +205,7 @@ public class PortletControllerTestCase
       });
 
       //
-      ControllerRequest request = context.createActionRequest("foo");
+      ControllerRequest request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
 
       try
       {
@@ -221,14 +221,12 @@ public class PortletControllerTestCase
    @Test
    public void testProcessActionProducedEventIsDistributed() throws PortletInvokerException
    {
-      QName srcName = new QName("juu", "foo");
-      QName dstName = new QName("juu", "bar");
-      PortletSupport fooPortlet = invoker.addPortlet("foo");
-      PortletSupport barPortlet = invoker.addPortlet("bar");
-      EventProducerActionHandler eventProducerHandler = new EventProducerActionHandler(srcName);
+      PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
+      PortletSupport barPortlet = invoker.addPortlet(PortletInvokerSupport.BAR_PORTLET_ID);
+      EventProducerActionHandler eventProducerHandler = new EventProducerActionHandler(SRC_NAME);
       NoOpEventHandler eventConsumer = new NoOpEventHandler();
-      eventControllerContext.createWire(srcName, "foo", dstName, "bar");
-      ControllerRequest request = context.createActionRequest("foo");
+      eventControllerContext.createWire(SRC_NAME, PortletInvokerSupport.FOO_PORTLET_ID, DST_NAME, PortletInvokerSupport.BAR_PORTLET_ID);
+      ControllerRequest request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
 
       //
       controller.setDistributeNonProduceableEvents(true);
@@ -248,7 +246,7 @@ public class PortletControllerTestCase
       barPortlet.assertInvocationCountIs(1);
 
       //
-      barPortlet.getInfo().getEventing().addConsumedEvent(new EventInfoSupport(dstName));
+      barPortlet.getInfo().getEventing().addConsumedEvent(new EventInfoSupport(DST_NAME));
 
       //
       controller.setDistributeNonProduceableEvents(true);
@@ -285,7 +283,7 @@ public class PortletControllerTestCase
       barPortlet.assertInvocationCountIs(3);
 
       //
-      fooPortlet.getInfo().getEventing().addProducedEvent(new EventInfoSupport(srcName));
+      fooPortlet.getInfo().getEventing().addProducedEvent(new EventInfoSupport(SRC_NAME));
 
       //
       controller.setDistributeNonProduceableEvents(false);
@@ -309,14 +307,13 @@ public class PortletControllerTestCase
    @Test
    public void testEventFloodDetection() throws PortletInvokerException
    {
-      QName srcName = new QName("juu", "foo");
-      PortletSupport fooPortlet = invoker.addPortlet("foo");
-      eventControllerContext.createWire(srcName, "foo", srcName, "foo");
-      ControllerRequest request = context.createActionRequest("foo");
+      PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
+      eventControllerContext.createWire(SRC_NAME, PortletInvokerSupport.FOO_PORTLET_ID, SRC_NAME, PortletInvokerSupport.FOO_PORTLET_ID);
+      ControllerRequest request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
 
       //
-      EventProducerActionHandler eventProducerActionHandler = new EventProducerActionHandler(srcName);
-      EventProducerEventHandler eventProducerEventHandler = new EventProducerEventHandler(srcName);
+      EventProducerActionHandler eventProducerActionHandler = new EventProducerActionHandler(SRC_NAME);
+      EventProducerEventHandler eventProducerEventHandler = new EventProducerEventHandler(SRC_NAME);
 
       //
       controller.setConsumedEventThreshold(10);
@@ -340,13 +337,12 @@ public class PortletControllerTestCase
    @Test
    public void testEventFloodInterruption() throws PortletInvokerException
    {
-      QName srcName = new QName("juu", "foo");
-      PortletSupport fooPortlet = invoker.addPortlet("foo");
-      eventControllerContext.createWire(srcName, "foo", srcName, "foo");
-      ControllerRequest request = context.createActionRequest("foo");
+      PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
+      eventControllerContext.createWire(SRC_NAME, PortletInvokerSupport.FOO_PORTLET_ID, SRC_NAME, PortletInvokerSupport.FOO_PORTLET_ID);
+      ControllerRequest request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
 
       //
-      EventProducerActionHandler eventProducerActionHandler = new EventProducerActionHandler(srcName);
+      EventProducerActionHandler eventProducerActionHandler = new EventProducerActionHandler(SRC_NAME);
 
       //
       controller.setConsumedEventThreshold(10);

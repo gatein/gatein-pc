@@ -147,7 +147,7 @@ public class PortletContextTestCase extends TestCase
       assertNull(components.getStateId());
    }
 
-   public void testCreateFromComponents()
+   public void testCreateFromAppAndPortletName()
    {
       PortletContext fromId = PortletContext.createPortletContext("/applicationName.portletName");
 
