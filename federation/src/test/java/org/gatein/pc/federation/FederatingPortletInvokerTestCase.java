@@ -54,8 +54,8 @@ public class FederatingPortletInvokerTestCase
    private static final PortletContext PORTLET = PortletContext.createPortletContext("/webapp.portlet", false);
    private static final String INVOKER_ID = "foo";
    private static final PortletContext LOCAL_PORTLET = PortletContext.createPortletContext("/web.local", false);
-   private static final PortletContext REFERENCED_PORTLET = FederatingPortletInvokerService.reference(PORTLET, INVOKER_ID);
-   private static final PortletContext REFERENCED_LOCAL_PORTLET = FederatingPortletInvokerService.reference(LOCAL_PORTLET, PortletInvoker.LOCAL_PORTLET_INVOKER_ID);
+   private static final PortletContext REFERENCED_PORTLET = PortletContext.reference(INVOKER_ID, PORTLET);
+   private static final PortletContext REFERENCED_LOCAL_PORTLET = PortletContext.reference(PortletInvoker.LOCAL_PORTLET_INVOKER_ID, LOCAL_PORTLET);
 
    /** . */
    private FederatingPortletInvoker federatingInvoker;
@@ -231,8 +231,8 @@ public class FederatingPortletInvokerTestCase
          }
       });
 
-      assertEquals(portlet, federatingInvoker.getPortlet(PortletContext.createPortletContext(federatedId + FederatingPortletInvokerService.SEPARATOR + context.getId())));
-      assertEquals(portlet, federatingInvoker.getPortlet(FederatingPortletInvokerService.reference(context, federatedId)));
+      assertEquals(portlet, federatingInvoker.getPortlet(PortletContext.createPortletContext(federatedId + PortletContext.INVOKER_SEPARATOR + context.getId())));
+      assertEquals(portlet, federatingInvoker.getPortlet(PortletContext.reference(federatedId, context)));
    }
 
    private class TestFederatedPortletInvoker extends PortletInvokerSupport implements FederatedPortletInvoker
@@ -248,9 +248,9 @@ public class FederatingPortletInvokerTestCase
       {
          // fake dereferencing of compound portlet id
          String portletId = portletContext.getId();
-         if (portletId.startsWith(getId() + FederatingPortletInvokerService.SEPARATOR))
+         if (portletId.startsWith(getId() + PortletContext.INVOKER_SEPARATOR))
          {
-            return super.getPortlet(PortletContext.createPortletContext(portletId.substring(portletId.indexOf(FederatingPortletInvokerService.SEPARATOR) + 1)));
+            return super.getPortlet(PortletContext.createPortletContext(portletId.substring(portletId.indexOf(PortletContext.INVOKER_SEPARATOR) + 1)));
          }
          else
          {

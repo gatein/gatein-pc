@@ -197,7 +197,7 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
       {
          DestroyCloneFailure failure = failures.get(i);
          String cloneId = failure.getPortletId();
-         failure = new DestroyCloneFailure(FederatingPortletInvokerService.reference(cloneId, id));
+         failure = new DestroyCloneFailure(PortletContext.reference(id, PortletContext.createPortletContext(cloneId)).getId());
          failures.set(i, failure);
       }
 
@@ -242,12 +242,12 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
 
    private PortletContext dereference(PortletContext compoundPortletContext)
    {
-      return FederatingPortletInvokerService.dereference(compoundPortletContext, id);
+      return PortletContext.dereference(id, compoundPortletContext);
    }
 
    private PortletContext reference(PortletContext portletContext)
    {
-      return FederatingPortletInvokerService.reference(portletContext, id);
+      return PortletContext.reference(id, portletContext);
    }
 
 }

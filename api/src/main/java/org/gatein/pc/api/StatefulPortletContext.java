@@ -67,8 +67,9 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
       this.state = state;
    }
 
-   public PortletStateType<S> getType() {
-     return type;
+   public PortletStateType<S> getType()
+   {
+      return type;
    }
 
    public boolean equals(Object o)
@@ -114,6 +115,6 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
 
    public String toString()
    {
-      return "StatefulPortletContext[" + id + "," + type.toString(state) + "]";
+      return "StatefulPortletContext[" + getId() + "," + type.toString(state) + "]";
    }
 }

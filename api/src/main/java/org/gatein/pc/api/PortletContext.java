@@ -37,6 +37,8 @@ public class PortletContext implements Serializable
 
    private static final String PREFIX = "/";
    private static final char SEPARATOR = '.';
+   /** The separator used in the id to route to the correct invoker. */
+   public static final String INVOKER_SEPARATOR = "+";
 
    public static final String PRODUCER_CLONE_ID_PREFIX = "_";
    public static final int PRODUCER_CLONE_PREFIX_LENGTH = PRODUCER_CLONE_ID_PREFIX.length();
@@ -47,10 +49,9 @@ public class PortletContext implements Serializable
    public static final String CONSUMER_CLONE_DUMMY_STATE_ID = "dumbvalue";
    public static final String CONSUMER_CLONE_ID = PRODUCER_CLONE_ID_PREFIX + CONSUMER_CLONE_DUMMY_STATE_ID;
 
-   public final static PortletContext LOCAL_CONSUMER_CLONE = PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + SEPARATOR + CONSUMER_CLONE_ID);
+   public final static PortletContext LOCAL_CONSUMER_CLONE = PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + INVOKER_SEPARATOR + CONSUMER_CLONE_ID);
    public static final String INVALID_PORTLET_CONTEXT = "Invalid portlet context: ";
 
-   protected final String id;
    private final PortletContextComponents components;
 
    protected PortletContext(String id) throws IllegalArgumentException
@@ -86,14 +87,14 @@ public class PortletContext implements Serializable
                isSimpleAppPortlet = separator != -1 && appName.length() > 0 && portletName.length() > 0;
                if (isSimpleAppPortlet)
                {
-                  components = new PortletContextComponents(null, appName, portletName, null);
+                  components = new InterpretedPortletContextComponents(null, appName, portletName, null);
                }
             }
             else
             {
                if (!(trimmedId.startsWith(PRODUCER_CLONE_ID_PREFIX) || trimmedId.startsWith(CONSUMER_CLONE_ID_PREFIX)))
                {
-                  int invoker = trimmedId.indexOf(SEPARATOR);
+                  int invoker = trimmedId.indexOf(INVOKER_SEPARATOR);
                   int prefix = trimmedId.indexOf(PREFIX);
 
                   if (prefix != -1)
@@ -113,7 +114,7 @@ public class PortletContext implements Serializable
                            isCompoundAppPortlet = invokerId.length() > 0 && applicationName.length() > 0 && portletName.length() > 0;
                            if (isCompoundAppPortlet)
                            {
-                              components = new PortletContextComponents(invokerId, applicationName, portletName, null);
+                              components = new InterpretedPortletContextComponents(invokerId, applicationName, portletName, null);
                            }
                         }
                      }
@@ -139,13 +140,13 @@ public class PortletContext implements Serializable
                               if (portletNameOrStateId.length() > 0)
                               {
                                  isCloned = true;
-                                 components = new PortletContextComponents(invokerId, null, portletNameOrStateId, isProducerClone);
+                                 components = new InterpretedPortletContextComponents(invokerId, null, portletNameOrStateId, isProducerClone);
                               }
                            }
                            else
                            {
                               isOpaquePortlet = true;
-                              components = new PortletContextComponents(invokerId, null, portletNameOrStateId, null);
+                              components = new InterpretedPortletContextComponents(invokerId, null, portletNameOrStateId, null);
                            }
                         }
                      }
@@ -162,7 +163,7 @@ public class PortletContext implements Serializable
                      if (trimmedId.length() > 0)
                      {
                         isCloned = true;
-                        components = new PortletContextComponents(null, null, trimmedId, isProducerClone);
+                        components = new InterpretedPortletContextComponents(null, null, trimmedId, isProducerClone);
                      }
                   }
                }
@@ -173,6 +174,10 @@ public class PortletContext implements Serializable
             throw new IllegalArgumentException(INVALID_PORTLET_CONTEXT + id, e);
          }
       }
+      else
+      {
+         components = new UninterpretedPortletContextComponents(id);
+      }
 
       if (interpret && !(isSimpleAppPortlet || isCompoundAppPortlet || isOpaquePortlet || isCloned))
       {
@@ -180,14 +185,45 @@ public class PortletContext implements Serializable
       }
 
       this.components = components;
-      this.id = components != null ? components.getId() : id;
    }
 
    protected PortletContext(PortletContextComponents components)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(components, "portlet context components");
       this.components = components;
-      this.id = components.getId();
+   }
+
+   public static PortletContext dereference(String invokerId, PortletContext compoundPortletContext)
+   {
+      String portletId = compoundPortletContext.getId().substring(invokerId.length() + INVOKER_SEPARATOR.length());
+      if (compoundPortletContext instanceof StatefulPortletContext)
+      {
+         StatefulPortletContext<?> compoundStatefulPortletContext = (StatefulPortletContext<?>)compoundPortletContext;
+         return StatefulPortletContext.create(portletId, compoundStatefulPortletContext);
+      }
+      else
+      {
+         return createPortletContext(portletId);
+      }
+   }
+
+   public static PortletContext reference(String invokerId, PortletContext portletContext)
+   {
+      String compoundPortletId = reference(portletContext.getId(), invokerId);
+      if (portletContext instanceof StatefulPortletContext)
+      {
+         StatefulPortletContext<?> statefulPortletContext = (StatefulPortletContext<?>)portletContext;
+         return StatefulPortletContext.create(compoundPortletId, statefulPortletContext);
+      }
+      else
+      {
+         return createPortletContext(compoundPortletId);
+      }
+   }
+
+   private static String reference(String portletId, String invokerId)
+   {
+      return invokerId + INVOKER_SEPARATOR + portletId;
    }
 
    public boolean equals(Object o)
@@ -199,24 +235,24 @@ public class PortletContext implements Serializable
       if (o instanceof PortletContext)
       {
          PortletContext that = (PortletContext)o;
-         return id.equals(that.id);
+         return getId().equals(that.getId());
       }
       return false;
    }
 
    public int hashCode()
    {
-      return id.hashCode();
+      return getId().hashCode();
    }
 
    public String getId()
    {
-      return id;
+      return components.getId();
    }
 
    public String toString()
    {
-      return "PortletContext[" + id + "]";
+      return "PortletContext[" + getId() + "]";
    }
 
    /**
@@ -289,7 +325,7 @@ public class PortletContext implements Serializable
          applicationName = applicationName.substring(1);
       }
 
-      return new PortletContext(new PortletContextComponents(null, applicationName, portletName, null));
+      return new PortletContext(new InterpretedPortletContextComponents(null, applicationName, portletName, null));
    }
 
    public PortletContextComponents getComponents()
@@ -297,14 +333,36 @@ public class PortletContext implements Serializable
       return components;
    }
 
-   public static class PortletContextComponents
+   public static interface PortletContextComponents
+   {
+      public String getApplicationName();
+
+      public String getPortletName();
+
+      public String getInvokerName();
+
+      public boolean isCloned();
+
+      public boolean isProducerCloned();
+
+      public boolean isConsumerCloned();
+
+      public String getStateId();
+
+      public String getId();
+
+      public boolean isInterpreted();
+   }
+
+   private static class InterpretedPortletContextComponents implements PortletContextComponents
    {
       private final String applicationName;
       private final String portletName;
       private final String invokerName;
       private final Boolean producerCloned;
+      private final String id;
 
-      public PortletContextComponents(String invokerName, String applicationName, String portletNameOrStateId, Boolean producerCloned)
+      public InterpretedPortletContextComponents(String invokerName, String applicationName, String portletNameOrStateId, Boolean producerCloned)
       {
          this.producerCloned = producerCloned;
 
@@ -316,6 +374,10 @@ public class PortletContext implements Serializable
          this.applicationName = applicationName;
          this.portletName = portletNameOrStateId;
          this.invokerName = invokerName;
+
+         id = (invokerName == null ? "" : invokerName + INVOKER_SEPARATOR)
+            + (applicationName == null ? "" : PREFIX + applicationName + SEPARATOR)
+            + (portletName == null ? "" : (producerCloned != null ? (producerCloned ? PRODUCER_CLONE_ID_PREFIX : CONSUMER_CLONE_ID_PREFIX) : "") + portletName);
       }
 
       public String getApplicationName()
@@ -355,9 +417,68 @@ public class PortletContext implements Serializable
 
       public String getId()
       {
-         return (invokerName == null ? "" : invokerName + SEPARATOR)
-            + (applicationName == null ? "" : PREFIX + applicationName + SEPARATOR)
-            + (portletName == null ? "" : (producerCloned != null ? (producerCloned ? PRODUCER_CLONE_ID_PREFIX : CONSUMER_CLONE_ID_PREFIX) : "") + portletName);
+         return id;
+      }
+
+      public boolean isInterpreted()
+      {
+         return true;
+      }
+   }
+
+   private static class UninterpretedPortletContextComponents implements PortletContextComponents
+   {
+      private static final String ERROR = "This PortletContext was not intepreted, only the portlet name is available!";
+      private final String portletName;
+
+      private UninterpretedPortletContextComponents(String portletName)
+      {
+         this.portletName = portletName;
+      }
+
+      public String getApplicationName()
+      {
+         throw new IllegalStateException(ERROR);
+      }
+
+      public String getPortletName()
+      {
+         return portletName;
+      }
+
+      public String getInvokerName()
+      {
+         throw new IllegalStateException(ERROR);
+      }
+
+      public boolean isCloned()
+      {
+         throw new IllegalStateException(ERROR);
+      }
+
+      public boolean isProducerCloned()
+      {
+         throw new IllegalStateException(ERROR);
+      }
+
+      public boolean isConsumerCloned()
+      {
+         throw new IllegalStateException(ERROR);
+      }
+
+      public String getStateId()
+      {
+         throw new IllegalStateException(ERROR);
+      }
+
+      public String getId()
+      {
+         return portletName;
+      }
+
+      public boolean isInterpreted()
+      {
+         return false;
       }
    }
 }

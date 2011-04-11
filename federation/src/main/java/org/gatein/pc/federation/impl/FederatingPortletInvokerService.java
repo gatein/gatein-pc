@@ -62,46 +62,10 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    /** . */
    private static final Logger log = LoggerFactory.getLogger(FederatingPortletInvokerService.class);
 
-   /** The separator used in the id to route to the correct invoker. */
-   public static final String SEPARATOR = ".";
-
    /** The registred FederatedPortletInvokers. */
    private volatile Map<String, FederatedPortletInvoker> registry = new HashMap<String, FederatedPortletInvoker>();
 
    private NullInvokerHandler nullHandler = NullInvokerHandler.DEFAULT_HANDLER;
-
-   public static PortletContext dereference(PortletContext compoundPortletContext, String invokerId)
-   {
-      String portletId = compoundPortletContext.getId().substring(invokerId.length() + SEPARATOR.length());
-      if (compoundPortletContext instanceof StatefulPortletContext)
-      {
-         StatefulPortletContext<?> compoundStatefulPortletContext = (StatefulPortletContext<?>)compoundPortletContext;
-         return StatefulPortletContext.create(portletId, compoundStatefulPortletContext);
-      }
-      else
-      {
-         return PortletContext.createPortletContext(portletId);
-      }
-   }
-
-   public static PortletContext reference(PortletContext portletContext, String invokerId)
-   {
-      String compoundPortletId = reference(portletContext.getId(), invokerId);
-      if (portletContext instanceof StatefulPortletContext)
-      {
-         StatefulPortletContext<?> statefulPortletContext = (StatefulPortletContext<?>)portletContext;
-         return StatefulPortletContext.create(compoundPortletId, statefulPortletContext);
-      }
-      else
-      {
-         return PortletContext.createPortletContext(compoundPortletId);
-      }
-   }
-
-   static String reference(String portletId, String invokerId)
-   {
-      return invokerId + SEPARATOR + portletId;
-   }
 
    public synchronized FederatedPortletInvoker registerInvoker(String federatedId, PortletInvoker federatedInvoker)
    {
