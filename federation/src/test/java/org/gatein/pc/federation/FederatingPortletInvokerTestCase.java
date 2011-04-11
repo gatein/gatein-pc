@@ -182,7 +182,7 @@ public class FederatingPortletInvokerTestCase
    @Test
    public void testGetPortletOnFederatedInvoker() throws PortletInvokerException
    {
-      PortletContext federatedContext = PortletContext.createPortletContext(federatedInvoker.getId() + "." + portletContext.getId());
+      PortletContext federatedContext = PortletContext.createPortletContext(federatedInvoker.getId() + PortletContext.INVOKER_SEPARATOR + portletContext.getId());
       Portlet samePortlet = federatedInvoker.getPortlet(federatedContext);
       assertNotNull(samePortlet);
       assertEquals(samePortlet.getContext(), federatedContext);

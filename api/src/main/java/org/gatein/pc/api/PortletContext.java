@@ -37,7 +37,11 @@ public class PortletContext implements Serializable
 
    private static final String PREFIX = "/";
    private static final char SEPARATOR = '.';
-   /** The separator used in the id to route to the correct invoker. */
+
+   /**
+    * The separator used in the id to route to the correct invoker. TODO: change value back once tests have been done to
+    * remove incidental use of value
+    */
    public static final String INVOKER_SEPARATOR = "+";
 
    public static final String PRODUCER_CLONE_ID_PREFIX = "_";
