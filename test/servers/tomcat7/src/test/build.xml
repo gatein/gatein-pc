@@ -92,6 +92,7 @@
             <property name="cargo.logging" value="high"/>
             <property name="cargo.jvmargs" value="-Duser.language=en ${cargo.debug}"/>
             <file file="${target}/test-classes/config/tomcat-users.xml" tofile="conf/tomcat-users.xml" overwrite="true"/>
+            <file file="${target}/test-classes/config/server.xml" tofile="conf/server.xml" overwrite="true"/>
             <deployable type="war" file="${test.temp.lib}/Tomcat-7.0/portlet-test.war"/>
          </configuration>
       </cargo>
