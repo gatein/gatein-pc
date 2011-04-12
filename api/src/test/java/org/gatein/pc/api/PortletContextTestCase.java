@@ -31,6 +31,27 @@ import junit.framework.TestCase;
  */
 public class PortletContextTestCase extends TestCase
 {
+   public void testSimple()
+   {
+      try
+      {
+         PortletContext.createPortletContext("foo");
+         fail("Invalid by default");
+      }
+      catch (Exception e)
+      {
+         // expected
+      }
+
+      final PortletContext foo = PortletContext.createPortletContext("foo", false);
+      assertEquals("foo", foo.getId());
+      final PortletContext.PortletContextComponents components = foo.getComponents();
+      assertNotNull(components);
+      assertFalse(components.isInterpreted());
+      assertEquals("foo", components.getId());
+      assertEquals("foo", components.getPortletName());
+   }
+
    public void testGetComponents()
    {
       PortletContext context = PortletContext.createPortletContext("/applicationName.portletName");
@@ -58,6 +79,16 @@ public class PortletContextTestCase extends TestCase
       try
       {
          PortletContext.createPortletContext("/");
+         fail("invalid");
+      }
+      catch (IllegalArgumentException e)
+      {
+         // expected
+      }
+
+      try
+      {
+         PortletContext.createPortletContext("/app");
          fail("invalid");
       }
       catch (IllegalArgumentException e)
@@ -362,5 +393,56 @@ public class PortletContextTestCase extends TestCase
       {
          // expected
       }
+   }
+
+   public void testReference()
+   {
+      final String invoker = "invoker";
+      final PortletContext context = PortletContext.createPortletContext("app", "portlet");
+
+      final PortletContext referenced = PortletContext.reference(invoker, context);
+      final PortletContext.PortletContextComponents components = referenced.getComponents();
+      assertTrue(components.isInterpreted());
+
+      assertEquals(invoker, components.getInvokerName());
+
+      final PortletContext.PortletContextComponents originalComponents = context.getComponents();
+      assertEquals(originalComponents.getApplicationName(), components.getApplicationName());
+      assertEquals(originalComponents.getPortletName(), components.getPortletName());
+      assertEquals(originalComponents.isCloned(), components.isCloned());
+      assertEquals(originalComponents.isConsumerCloned(), components.isConsumerCloned());
+      assertEquals(originalComponents.isProducerCloned(), components.isProducerCloned());
+   }
+
+   public void testDereferenceDoesNotAffectNonReferencedPortletContexts()
+   {
+      final PortletContext foo = PortletContext.createPortletContext("foo", false);
+      assertEquals(foo, PortletContext.dereference(foo));
+   }
+
+   public void testDereferenceWorksOnValidUninterpretedPortletContexts()
+   {
+      final String invoker = "foo";
+      final PortletContext referenced = PortletContext.createPortletContext(invoker + PortletContext.INVOKER_SEPARATOR + "portlet", false);
+      final PortletContext dereferenced = PortletContext.dereference(referenced);
+
+      // force interpretation of referenced
+      final PortletContext.PortletContextComponents referencedComponents = referenced.interpret();
+      assertTrue(referencedComponents.isInterpreted());
+      assertEquals(invoker, referencedComponents.getInvokerName());
+
+      final PortletContext.PortletContextComponents dereferencedComponents = dereferenced.getComponents();
+      assertTrue(dereferencedComponents.isInterpreted());
+
+      assertEquals(referencedComponents.getPortletName(), dereferencedComponents.getPortletName());
+      assertNull(dereferencedComponents.getInvokerName());
+      assertFalse(dereferenced.getId().contains(invoker));
+   }
+
+   public void testReferencingRoundtrip()
+   {
+      final PortletContext context = PortletContext.createPortletContext("app", "portlet");
+      final PortletContext referencedContext = PortletContext.reference("invoker", context);
+      assertEquals(context, PortletContext.dereference(referencedContext));
    }
 }
