@@ -1,6 +1,6 @@
 <!--
   ~ JBoss, a division of Red Hat
-  ~ Copyright 2010, Red Hat Middleware, LLC, and individual
+  ~ Copyright 2011, Red Hat Middleware, LLC, and individual
   ~ contributors as indicated by the @authors tag. See the
   ~ copyright.txt in the distribution for a full listing of
   ~ individual contributors.
@@ -21,7 +21,8 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
    <modelVersion>4.0.0</modelVersion>
 
@@ -45,12 +46,14 @@
    </scm>
 
    <properties>
-      <version.gatein.common>2.0.4-Beta01</version.gatein.common>
+      <version.gatein.common>2.0.4-Beta02</version.gatein.common>
       <version.gatein.wci>2.1.0-Beta01</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
       <version.discovery>0.4</version.discovery>
+      <version.servlet>2.5</version.servlet>
+      <version.junit>4.6</version.junit>
 
       <!-- used in test module by maven-antrun-extended-plugin -->
       <version.jboss.unit>1.2.3</version.jboss.unit>
@@ -164,6 +167,16 @@
             <version>${version.apache.taglibs}</version>
          </dependency>
          <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${version.servlet}</version>
+         </dependency>
+         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+         </dependency>
+         <dependency>
             <groupId>taglibs</groupId>
             <artifactId>standard</artifactId>
             <version>${version.apache.taglibs}</version>
@@ -171,9 +184,9 @@
 
          <dependency>
             <groupId>org.codehaus.cargo</groupId>
-           <artifactId>cargo-jetty-deployer</artifactId>
-           <type>war</type>
-           <version>${version.cargo.jetty.deployer}</version>
+            <artifactId>cargo-jetty-deployer</artifactId>
+            <type>war</type>
+            <version>${version.cargo.jetty.deployer}</version>
          </dependency>
          <dependency>
             <groupId>org.jboss.integration</groupId>
