@@ -1,0 +1,367 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.gatein.pc</groupId>
+      <artifactId>pc-test</artifactId>
+      <version>2.3.0-Beta02</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>pc-test-core</artifactId>
+   <packaging>jar</packaging>
+   <name>GateIn - Portlet Container (test - core)</name>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>org.gatein.common</groupId>
+         <artifactId>common-mc</artifactId>
+      </dependency>
+
+
+      <dependency>
+         <groupId>org.gatein.common</groupId>
+         <artifactId>common-logging</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-wci</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-controller</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-portlet</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-mc</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-api</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>log4j</groupId>
+         <artifactId>log4j</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>jboss-unit</artifactId>
+         <exclusions>
+           <exclusion>
+             <groupId>cargo</groupId>
+             <artifactId>core</artifactId>
+           </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>jboss-unit-remote</artifactId>
+         <exclusions>
+           <exclusion>
+             <groupId>cargo</groupId>
+             <artifactId>core</artifactId>
+           </exclusion>
+           <exclusion>
+               <groupId>hibernate</groupId>
+               <artifactId>hibernate3</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-slide</groupId>
+               <artifactId>webdavlib</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-httpclient</groupId>
+               <artifactId>commons-httpclient</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>jboss-unit-tooling-ant</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>portal-test</artifactId>
+         <exclusions>
+           <exclusion>
+               <groupId>hibernate</groupId>
+               <artifactId>hibernate3</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-slide</groupId>
+               <artifactId>webdavlib</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-httpclient</groupId>
+               <artifactId>commons-httpclient</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>portal-test-generic</artifactId>
+         <exclusions>
+           <exclusion>
+             <groupId>org.codehaus.cargo</groupId>
+             <artifactId>cargo-core-uberjar</artifactId>
+           </exclusion>
+           <exclusion>
+               <groupId>hibernate</groupId>
+               <artifactId>hibernate3</artifactId>
+           </exclusion>
+           <exclusion>
+               <groupId>apache-log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.remoting</groupId>
+         <artifactId>jboss-remoting</artifactId>
+      </dependency>
+
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>concurrent</groupId>
+         <artifactId>concurrent</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-serialization</artifactId>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-common-logging-jdk</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-common-logging-log4j</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>commons-logging</groupId>
+         <artifactId>commons-logging</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>commons-httpclient</groupId>
+         <artifactId>commons-httpclient</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.ccpp</groupId>
+        <artifactId>ccpp</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>javax.portlet</groupId>
+         <artifactId>portlet-api</artifactId>
+      </dependency>
+
+     <dependency>
+       <groupId>org.apache.maven</groupId>
+       <artifactId>maven-ant-tasks</artifactId>
+       <version>2.1.1</version>
+     </dependency>
+
+   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <excludes>
+                <exclude>org/gatein/pc/test/unit/reports/*</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+       </plugins>
+     </build>
+    </profile>
+      <profile>
+         <id>apt</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.myfaces.tobago</groupId>
+                  <artifactId>maven-apt-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <phase>package</phase>
+                        <configuration>
+                           <factory>org.gatein.pc.test.unit.reports.TestCaseAPF</factory>
+                           <force>true</force>
+                           <target>1.5</target>
+                           <nocompile>true</nocompile>
+                           <showWarnings>true</showWarnings>
+                        </configuration>
+                        <goals>
+                           <goal>testExecute</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+         <dependencies>
+            <dependency>
+               <groupId>sun.jdk</groupId>
+               <artifactId>tools</artifactId>
+               <version>1.5.0</version>
+               <scope>system</scope>
+               <systemPath>${java.home}/../lib/tools.jar</systemPath>
+            </dependency>
+         </dependencies>
+      </profile>
+      <!--On MacOSX the tools.jar should be already in the classpath-->
+      <profile>
+         <id>apt-mac</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.myfaces.tobago</groupId>
+                  <artifactId>maven-apt-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <phase>package</phase>
+                        <configuration>
+                           <factory>org.gatein.pc.test.unit.reports.TestCaseAPF</factory>
+                           <force>true</force>
+                           <target>1.5</target>
+                           <nocompile>true</nocompile>
+                           <showWarnings>true</showWarnings>
+                        </configuration>
+                        <goals>
+                           <goal>testExecute</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+
+      <!-- Deploy the test jar and its sources -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <classifier>framework</classifier>
+              <descriptors>
+                <descriptor>src/main/assembly/framework.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.6</version>
+        <dependencies>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>package-test</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+
+                <property name="dependency.portal-portlet-portlet.jar" value="${maven.dependency.org.gatein.pc.pc-portlet.jar.path}" />
+
+                <property name="target" value="${basedir}/target" />
+                <property name="test.temp.dir" value="${basedir}/target/temp" />
+                <property name="groupId" value="${project.groupId}" />
+                <property name="artifactId" value="${project.artifactId}" />
+                <property name="version" value="${project.version}" />
+
+                <ant antfile="${basedir}/src/main/build.xml" inheritRefs="true">
+                   <target name="package-tests" />
+                </ant>
+
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

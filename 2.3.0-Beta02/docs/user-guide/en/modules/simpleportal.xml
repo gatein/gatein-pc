@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="simpleportal">
+   <chapterinfo>
+      <author>
+         <firstname>Julien</firstname>
+         <surname>Viet</surname>
+         <email>julien@jboss.org</email>
+      </author>
+      <author>
+         <firstname>Chris</firstname>
+         <surname>Laprun</surname>
+         <email>chris.laprun@jboss.com</email>
+      </author>
+   </chapterinfo>
+   <title>Simple Portal</title>
+   <sect1>
+      <title>Motivation</title>
+      <para>A spin-off of the JBoss Portlet Container product is a portal called<emphasis>Simple Portal</emphasis>. As
+         its name implies, Simple Portal provides an easy to use portal for small-sized sites that only require
+         aggregation of portlets in portal pages, without the extra features of a full-fledged portal. In particular the
+         following features are not addressed by Simple Portal:
+      </para>
+      <informaltable frame='none'>
+         <tgroup cols='2'>
+            <tbody>
+               <row>
+                  <entry>Security</entry>
+                  <entry>
+                     Simple Portal relies on the servlet container authentication and does not provide any kind of
+                     security enforcement
+                  </entry>
+               </row>
+               <row>
+                  <entry>Dynamic page creation</entry>
+                  <entry>Simple Portal relies on JSP pages to create portal pages</entry>
+               </row>
+               <row>
+                  <entry>Identity integration</entry>
+                  <entry>Integration with identity systems is not provided, in particular access to the user's identity
+                     and profile
+                  </entry>
+               </row>
+            </tbody>
+         </tgroup>
+      </informaltable>
+      <para>On the other hand, Simple Portal is much simpler than a traditionnal portal server because it just consist
+         in a few modules that only handles the basic protal concerns: the aggregation of portlet components in a web
+         page.
+      </para>
+      <para>The targeted use for Simple Portal are therefore restricted to:</para>
+      <itemizedlist>
+         <listitem>Portlet development</listitem>
+         <listitem>Static portals build on top of the JSR286 specification</listitem>
+      </itemizedlist>
+   </sect1>
+   <sect1>
+      <title>Development</title>
+      <sect2>
+         <title>Portlet deployment</title>
+         <para>Simple Portal integrates with a few web containers in order to provide handling of portlet deployment and
+            runtime. This feature leverages GateIn's Web Service Provider Interface (SPI). In particular, JBoss
+            Portlet Container uses the Web SPI in order to transparently react to the life cycle of WAR files that
+            contains portlet components as they are deployed or undeployed on the target servlet container. The SPI
+            defines two levels of integrations.
+         </para>
+         <para>SPI implementation level 1 works with any web container but relies on portlet developers to insert a
+            specific servlet in the
+            <filename>web.xml</filename>
+            descriptor of their portlet applications.
+         </para>
+         <para>SPI implementation level 2 is based on more advanced integration with specific web containers and
+            provides transparent deployment of portlet applications without requiring any proprietary modification of
+            the war file, keeping your application vendor agnostic. A few containers are supported:
+         </para>
+         <itemizedlist>
+            <listitem>Tomcat 6.0.x</listitem>
+            <listitem>JBoss Application Server 4.2.x</listitem>
+         </itemizedlist>
+      </sect2>
+      <sect2>
+         <title>Simple Portal tag library</title>
+         <para>Simple Portal relies on the JSP technology to build pages for several good reasons:</para>
+         <itemizedlist>
+            <listitem>JSPs provide an adequate technology for building portal pages. This does not mean that portlet
+               applications are required to use JSP, just that Simple Portal uses JSPs to organize portlets as pages.
+               Portlets themselves are independent of the technology used for pages and can be developed using whichever
+               technology or web framework you prefer/require.
+            </listitem>
+            <listitem>Java web developers are familiar with JSP technology.</listitem>
+            <listitem>JSP makes it is easy and straightforward to create portal pages without requiring advanced tooling
+               and, in most instances, can leverage IDEs support for JSPs.
+            </listitem>
+            <listitem>Several web frameworks are compatible with JSP and it is possible to leverage them. For example,
+               it is possible to use Sitemesh for application skinning and still leverage Simple Portal's JSP tag
+               library.
+            </listitem>
+         </itemizedlist>
+         <page>If you need more advanced page creation capabilities, you should consider using a more advanced portal
+            product such as GateIn.
+         </page>
+         <sect3>
+            <title>Page creation</title>
+            <para>Any JSP page can contain portlets, the only requirement to make this possible is to have the page
+               located in Simple Portal's WAR file and to use the portal tag library.
+            </para>
+            <para>Let's look at a minimal portal page using the portal tag library:</para>
+            <example>
+               <title>Minimal portal page</title>
+               <programlisting><![CDATA[
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="/WEB-INF/portal.tld" prefix="portal" %>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Simple portal page</title>
+  </head>
+  <body>
+    <portal:page>
+       <portal:portlet name="JSPPortlet" applicationName="samples-jsp-portlet">
+          <portal:portletmarkup/>
+       </portal:portlet>
+    </portal:page>
+  </body>
+</html>]]></programlisting>
+            </example>
+
+            <para>The portal tag library declaration enables the JSP compiler to know about the existence of the simple
+               portal. It is declared by the JSP declaration
+               <code>&lt;%@ taglib uri="/WEB-INF/portal.tld" prefix="portal" %&gt;</code>
+               and it binds the portal tag library to the
+               <sgmltag class="namespace">portal</sgmltag>
+               namespace.
+            </para>
+            <para>The interesting part of the markup is the
+               <sgmltag class="element">portal:page</sgmltag>
+               element and its children. The
+               <sgmltag class="element">page</sgmltag>
+               tag defines a logical scope that is used by Simple Portal to generate markup:
+            </para>
+            <itemizedlist>
+               <listitem>It defines a container for a set of portlets.</listitem>
+               <listitem>It defines the page area that will be replaced entirely by a maximized portlet markup (when the
+                  maximized window state is requested).
+               </listitem>
+               <listitem>It defines a scope for the coordination features.</listitem>
+            </itemizedlist>
+            <para>Currently, only one portal page can be specified per JSP file but this should be extended to several
+               portal pages per JSP file in future versions of JBoss Portlet Container.
+            </para>
+            <para>Access to portlet information within a portal page is done by defining a reference to the portlet
+               using the
+               <sgmltag class="element">portlet</sgmltag>
+               tag. The mandatory attributes for this tag are
+               <sgmltag class="attribute">name</sgmltag>
+               and
+               <sgmltag class="attribute">applicationName</sgmltag>
+               that are used to locate the deployed portlet. The
+               <sgmltag class="attribute">applicationName</sgmltag>
+               refers to the name of the WAR file containing your portlet application without the extension
+               <filename>.war</filename>
+               and the
+               <sgmltag class="element">name</sgmltag>
+               attribute refers to the portlet name as declared by the
+               <sgmltag class="element">portlet-name</sgmltag>
+               element in the
+               <filename>portlet.xml</filename>
+               file of your portlet application WAR file. Similarly to the
+               <sgmltag class="element">page</sgmltag>
+               tag, the
+               <sgmltag class="element">portlet</sgmltag>
+               tag does not produce any markup but rather makes your portlet available to Simple Portal.
+            </para>
+            <para>The portlet markup is output using the
+               <sgmltag class="element">portletmarkup</sgmltag>
+               tag. This tag is replaced by the referenced portlet markup (without any decoration) when the page is
+               rendered.
+            </para>
+         </sect3>
+         <sect3>
+            <title>Portlet title</title>
+            <para>The previous example only output the portlet markup. Let's examine how to output a complete portlet
+               representation. The
+               <sgmltag class="title">portlettitle</sgmltag>
+               tag is used to insert the render phase generated title of the portlet referenced by the enclosing
+               <sgmltag class="element">portlet</sgmltag>
+               element:
+            </para>
+            <example>
+               <title>Portlet title</title>
+               <programlisting><![CDATA[
+<portal:portlet name="JSPPortlet" applicationName="samples-jsp-portlet">
+   ...
+   <portal:portlettitle/>
+   ...
+</portal:portlet>]]></programlisting>
+            </example>
+
+         </sect3>
+         <sect3>
+            <title>Portlet urls</title>
+            <para>It is also possible to output URLs targeting a given portlet. This can be used to create controls to
+               change the mode or window state of the portlet. The
+               <sgmltag class="element">portleturl</sgmltag>
+               tag outputs such URLs and insert them in the page.
+            </para>
+            <example>
+               <title>Portlet URL</title>
+               <programlisting><![CDATA[
+<portal:portlet name="JSPPortlet" applicationName="samples-jsp-portlet">
+   ...
+   <portal:portleturl windowState="maximized" mode="edit"/>
+   ...
+</portal:portlet>]]></programlisting>
+            </example>
+
+            <para>The
+               <sgmltag class="element">portleturl</sgmltag>
+               tag has two optional attributes. The
+               <sgmltag class="attribute">windowState</sgmltag>
+               attribute allows to change the window state of the associated portlet while the
+               <sgmltag class="attribute">mode</sgmltag>
+               attribute controls the portlet mode.
+            </para>
+         </sect3>
+         <sect3>
+            <title>Page headers</title>
+            <para>The Portlet 2 specification allows portlet to participate to the headers of the page. If you want to
+               allow portlets on the page to add header information to your page then you need to insert a
+               <sgmltag class="element">headers</sgmltag>
+               tag in the
+               <sgmltag class="element">head</sgmltag>
+               section of the page, as shown in the following example:
+            </para>
+            <example>
+               <title>Adding portlets header contribution</title>
+               <programlisting><![CDATA[
+<head>
+   <portal:headers/>
+   ...
+</head>
+]]></programlisting>
+            </example>
+
+            <para>This instructs Simple Portal to insert header information contributed by portlets present on the page
+               at the specified spot.
+            </para>
+         </sect3>
+         <sect3>
+            <title>Portlet events</title>
+            <para>Portlet events provides a powerful way to decouple portlets. After the process action phase, an
+               optional event phase is executed by the portal to process any events generated and produced by portlets.
+               We recommend that you read the portlet specification to learn more about portlet events.
+            </para>
+            <para>Coordination of portlets via events is scoped by pages. When an event is produced by a portlet on a
+               page, Simple Portal will locate all portlets on that very same page that can consume the produced event.
+               Produced events and consumer portlets are matched using the event's qualified name as specified in
+               <filename>portlet.xml</filename>.
+            </para>
+         </sect3>
+         <sect3>
+            <title>Public render parameters</title>
+            <para>Public render parameters allows several portlets on the same page to share render parameters.
+               Similarly to how portlet events are handled by Simple Portal, pages are natural scopes for shared render
+               parameters. Simple Portal's tag library provides for the definition of initial values for such parameters
+               allowing developpers to configure different pages initialized with different values of the same
+               parameter. This is accomplished via the
+               <sgmltag class="element">pageparam</sgmltag>
+               tag.
+            </para>
+            <example>
+               <title>Defining a shared render parameter</title>
+               <programlisting><![CDATA[
+<portal:page>
+   <portal:pageparam namespaceURI="urn:jboss:portal:simple:google" localName="zipcode" value="80201"/>
+   ...
+</portal:page>
+]]></programlisting>
+            </example>
+
+            <para>In the above example, we specify that the shared render parameter (or page parameter) identified by
+               the attribute pair
+               <sgmltag class="attribute">localName</sgmltag>
+               (
+               <literal>zipcode</literal>
+               in the example) and
+               <sgmltag class="attribute">namespaceURI</sgmltag>
+               (
+               <literal>urn:jboss:portal:simple:google</literal>
+               in the example) will be initialized with the value
+               <literal>80201</literal>
+               the first time the page is rendered. This value can change if any portlet supporting this shared
+               parameter updates it during an interaction triggered by the end user. However it is possible to make this
+               parameter unmodifiable (i.e. the parameter value will not change even if a portlet tries to update it) by
+               setting the optional
+               <sgmltag class="attribute">frozen</sgmltag>
+               attribute to the
+               <literal>true</literal>
+               value.
+            </para>
+         </sect3>
+         <sect3>
+            <title>Error handling</title>
+            <para>Errors can be handled either during page rendering or when a portlet is interacted with. Simple Portal
+               categorizes errors and associates each error type with a category name (string) that can be used to for
+               programatic handling. The error categories are as follows:
+            </para>
+            <table frame='all' id='error_categories'>
+               <title>Error Categories</title>
+               <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+                  <thead>
+                     <row>
+                        <entry>Category name</entry>
+                        <entry>Use case</entry>
+                     </row>
+                  </thead>
+                  <tbody>
+                     <row>
+                        <entry>
+                           <literal>not_found</literal>
+                        </entry>
+                        <entry>The portlet that triggered the error cannot be located</entry>
+                     </row>
+                     <row>
+                        <entry>
+                           <literal>portlet_error</literal>
+                        </entry>
+                        <entry>The portlet triggered an exception</entry>
+                     </row>
+                     <row>
+                        <entry>
+                           <literal>internal_error</literal>
+                        </entry>
+                        <entry>The portlet triggered an unexpected exception recognized as an internal error</entry>
+                     </row>
+                     <row>
+                        <entry>
+                           <literal>unavailable</literal>
+                        </entry>
+                        <entry>The portlet is located but has been put out of service</entry>
+                     </row>
+                  </tbody>
+               </tgroup>
+            </table>
+            <sect4>
+               <title>Error handling during render</title>
+               <para>Simple Portal can display the content of an alternative page if, for some reason, a portlet fails
+                  during the render phase. This is similar to JSP error pages.
+               </para>
+               <para>Several request attributes are set by Simple Portal so that the markup of the error page can be
+                  customized appropriately. The following table sums up these request attributes and their meaning.
+               </para>
+               <table frame='all'>
+                  <title>Request Attributes for Error Pages</title>
+                  <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+                     <thead>
+                        <row>
+                           <entry>Attribute name</entry>
+                           <entry>Meaning</entry>
+                        </row>
+                     </thead>
+                     <tbody>
+                        <row>
+                           <entry>
+                              <parameter>org.gatein.pc.portal.error.status</parameter>
+                           </entry>
+                           <entry>A
+                              <className>String</className>
+                              containing the error category as detailed in
+                              <xref linkend='error_categories'/>
+                           </entry>
+                        </row>
+                        <row>
+                           <entry>
+                              <parameter>org.gatein.pc.portal.error.cause</parameter>
+                           </entry>
+                           <entry>A (possibly<literal>null</literal>)
+                              <className>Throwable</className>
+                              representing the cause of the error, for example, a portlet exception
+                           </entry>
+                        </row>
+                        <row>
+                           <entry>
+                              <parameter>org.gatein.pc.portal.error.message</parameter>
+                           </entry>
+                           <entry>A
+                              <className>String</className>
+                              containing the error message, if any
+                           </entry>
+                        </row>
+                        <row>
+                           <entry>
+                              <parameter>org.gatein.pc.portal.error.portlet_name</parameter>
+                           </entry>
+                           <entry>A
+                              <className>String</className>
+                              containing the name of the portlet that generated the error, as defined on the associated
+                              <sgmltag class='element'>portlet</sgmltag>
+                              tag
+                           </entry>
+                        </row>
+                        <row>
+                           <entry>
+                              <parameter>org.gatein.pc.portal.error.application_name</parameter>
+                           </entry>
+                           <entry>A
+                              <className>String</className>
+                              containing the name of the portlet application that generated the error, as defined on the
+                              associated
+                              <sgmltag class='element'>portlet</sgmltag>
+                              tag
+                           </entry>
+                        </row>
+                        <row>
+                           <entry>
+                              <parameter>org.gatein.pc.portal.error.window_id</parameter>
+                           </entry>
+                           <entry>A
+                              <className>String</className>
+                              containing the identifier of the window associated with the portlet that generated the
+                              error, especially useful when several portlet windows reference the same portlet
+                           </entry>
+                        </row>
+                     </tbody>
+                  </tgroup>
+               </table>
+               <para>The
+                  <sgmltag class="attribute">errorPage</sgmltag>
+                  attribute of the
+                  <sgmltag class="element">portlet</sgmltag>
+                  tag is used to specify which error page to use for this specific portlet. The value of the attribute
+                  should be the path to the error page relative to the root of the WAR file for that portlet. Note that
+                  it could be a JSP or a plain file.
+               </para>
+               <example>
+                  <title>Defining an error page</title>
+                  <programlisting><![CDATA[
+<portal:portlet name="JSPPortlet" applicationName="samples-jsp-portlet" errorPage="/WEB-INF/jsp/error.jsp">
+   ...
+</portal:portlet>
+]]></programlisting>
+               </example>
+
+            </sect4>
+            <sect4>
+               <title>Error handling during action</title>
+               <para>If a a failure occurs during an interaction with a portlet, Simple Portal will throw a servlet
+                  exception with a message set to one of the category names as specified in
+                  <xref linkend="error_categories"/>
+               </para>
+               <para>The default error handling strategy is handled by a servlet filter that catches error messages and
+                  translates them into HTTP errors. This filter is called
+                  <className>ErrorHandlingFilter</className>
+                  and is declared in the
+                  <filename>web.xml</filename>
+                  file of Simple Portal WAR file. This allows developers to change the error handling behavior if
+                  desired.
+               </para>
+               <example>
+                  <title>Error handling servlet filter definition</title>
+                  <programlisting><![CDATA[
+<web-app>
+   ...
+   <filter-mapping>
+      <filter-name>ErrorHandlingFilter</filter-name>
+      <url-pattern>*.jsp</url-pattern>
+   </filter-mapping>
+   ...
+</web-app>]]></programlisting>
+               </example>
+
+            </sect4>
+         </sect3>
+      </sect2>
+      <sect2>
+         <title>Extended tag library</title>
+         <para>So far, we have examined the basic building blocks provided by Simple Portal's tag library. We will now
+            examine an extension provided to allow the display of portlets pretty much as they are rendered in classic
+            portals, that is with decorations. This extension is built on top of Simple Portal's tag library and uses
+            the JSP 2.0 tag library extension feature. A pretty good overview of this feature can be found at<ulink
+               url="http://www.onjava.com/pub/a/onjava/2004/05/12/jsp2part4.html">
+               http://www.onjava.com/pub/a/onjava/2004/05/12/jsp2part4.html</ulink>.
+         </para>
+         <sect3>
+            <title>The extended portlet tag</title>
+            <para>The extended portlet consists of a JSP tag file located in the folder
+               <filename>/WEB-INF/tags/portal</filename>
+               of Simple Portal's WAR file.
+            </para>
+            <example>
+               <title>Example use of the extended portlet tag</title>
+               <programlisting><![CDATA[
+<%@ page contentType="text/html" %>
+<%@ page language="java" %>
+<%@ taglib prefix="xportal" tagdir="/WEB-INF/tags/portal" %>
+...
+   <xportal:portlet name="GoogleMap" applicationName="samples-google-portlet"/>
+...
+]]></programlisting>
+            </example>
+
+            <para>You can consider this extension pretty much like a JSP include, just more powerful. More specifically,
+               the JSP tag file can be edited and tweaked to your needs.
+            </para>
+         </sect3>
+      </sect2>
+   </sect1>
+   <sect1>
+      <title>Portlet debugging</title>
+      <para>The Portlet 2.0 specification provides a new eventing feature for coordinating several portlets.
+         This long awaited feature is very powerful but can sometime lead to complex scenarios when multiple
+         events are consumed and fired by multiple portlets on the same page.
+      </para>
+      <para>The simple portal provides a visual debugger that can be used to understand what happens during the
+         event phase orchestrated by the portal. It comes as a portlet that you can place on any page and it shows
+         a tree of events that were produced and consumed during the event phase.
+      </para>
+      <mediaobject>
+         <imageobject>
+            <imagedata align="center" fileref="images/debugger1.png" format="PNG"
+                       valign="middle"/>
+         </imageobject>
+         <caption>
+            <para>Event debugger portlet.</para>
+         </caption>
+      </mediaobject>
+      <para>The event debugger displays a tree of events produced and consumed by portlets. The nodes of the
+         tree don't represent events, they rather represent event routings from a source portlet to
+         a destination portlet. By default it shows the name of the portlet that published the event,
+         the event name and the destination of the event that was chosen by the simple portal during
+         the event distribution phase. Hovering the mouse on a node shows more information.
+      </para>
+      <mediaobject>
+         <imageobject>
+            <imagedata align="center" fileref="images/debugger2.png" format="PNG"
+                       valign="middle"/>
+         </imageobject>
+         <caption>
+            <para>Event debugger portlet.</para>
+         </caption>
+      </mediaobject>
+      <para>When hovering the mouse on a node you can see the optional event payload represented by
+         the string returned when invoked its
+         <code>toString()</code>
+         method and the state of the portlet
+         after the event phase. The state of the portlet consist in its portlet mode, its window state and the
+         set of its render parameters. Adding the event debugger to a page is easy.
+      </para>
+      <example>
+         <title>Adding the event debugger to a portal page</title>
+         <programlisting><![CDATA[
+...<xportal:portlet name="DebuggerPortlet" applicationName="simple-portal"/>...]]></programlisting>
+      </example>
+   </sect1>
+   <sect1>
+      <title>Administration</title>
+      <sect2>
+         <title>Admin portlet</title>
+         <para>The admin portlet shows the list of portlet applications deployed in the simple portal. For each
+            portlet application it is possible to unfold the appliation to display the portlet contained in the
+            unfolded application as well as the portlet filters.
+         </para>
+         <sect3>
+            <title>Portlet application administration</title>
+            <para>By default the admin portlet displays the list of portlet applications. It shows the status
+               of each application and provides the capability to stop or start an application.
+            </para>
+            <mediaobject>
+               <imageobject>
+                  <imagedata align="center" fileref="images/admin1.png" format="PNG"
+                             valign="middle"/>
+               </imageobject>
+               <caption>
+                  <para>The admin portlet showing all the portlet applications.</para>
+               </caption>
+            </mediaobject>
+            <para>On the example we can see that all the applications are in started mode except the
+               <emphasis>samples-basic-portlet</emphasis>
+               application. It is possible to manage the
+               life cycle of each application by clicking on the
+               <emphasis>start</emphasis>
+               link when it
+               is stopped or clicking on the
+               <emphasis>stop</emphasis>
+               link when it is started.
+            </para>
+         </sect3>
+         <sect3>
+            <title>Portlet container and filter administration</title>
+            <para>Selecting a particular portlet application unfolds it and shows the list of portlet containers
+               that the application contains as well as the filters it contains.
+            </para>
+            <mediaobject>
+               <imageobject>
+                  <imagedata align="center" fileref="images/admin2.png" format="PNG"
+                             valign="middle"/>
+               </imageobject>
+               <caption>
+                  <para>The admin portlet showing the portlets container and filters contained in an application.</para>
+               </caption>
+            </mediaobject>
+            <para>Again here it displays the name of the container and filters, the status of the life cycle and
+               a link to start or stop the corresponding item.
+            </para>
+         </sect3>
+      </sect2>
+      <sect2>
+         <title>Logging configuration</title>
+         <para>todo</para>
+      </sect2>
+   </sect1>
+</chapter>

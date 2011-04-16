@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+             version="1.0"
+             id="id">
+  <portlet id="id">
+    <description xml:lang="en">description</description>
+    <portlet-name>portlet-name</portlet-name>
+    <display-name xml:lang="en">display-name</display-name>
+    <portlet-class>portlet-class</portlet-class>
+    <init-param id="id">
+      <description xml:lang="en">description</description>
+      <name>name</name>
+      <value>value</value>
+    </init-param>
+    <expiration-cache>0</expiration-cache>
+    <supports id="id">
+      <mime-type>mime-type</mime-type>
+      <portlet-mode>portlet-mode</portlet-mode>
+    </supports>
+    <supported-locale>supported-locale</supported-locale>
+    <resource-bundle>resource-bundle</resource-bundle>
+    <portlet-info id="id">
+      <title>title</title>
+      <short-title>short-title</short-title>
+      <keywords>keywords</keywords>
+    </portlet-info>
+    <portlet-preferences id="id">
+      <preference id="id">
+        <name>name</name>
+        <value>value</value>
+        <read-only>true</read-only>
+      </preference>
+      <preferences-validator>preferences-validator</preferences-validator>
+    </portlet-preferences>
+    <security-role-ref id="id">
+      <description xml:lang="">description</description>
+      <role-name>NMTOKEN</role-name>
+      <role-link>role-link</role-link>
+    </security-role-ref>
+  </portlet>
+  <custom-portlet-mode id="id">
+    <description xml:lang="en">description</description>
+    <portlet-mode>portlet-mode</portlet-mode>
+  </custom-portlet-mode>
+  <custom-window-state id="id">
+    <description xml:lang="en">description</description>
+    <window-state>window-state</window-state>
+  </custom-window-state>
+  <user-attribute id="">
+    <description xml:lang="en">description</description>
+    <name>name</name>
+  </user-attribute>
+  <security-constraint id="id">
+    <display-name xml:lang="en">display-name</display-name>
+    <portlet-collection>
+      <portlet-name>portlet-name</portlet-name>
+    </portlet-collection>
+    <user-data-constraint id="">
+      <description xml:lang="">description</description>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+</portlet-app>

@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.gatein.pc</groupId>
+      <artifactId>pc-parent</artifactId>
+      <version>2.3.0-Beta02</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>pc-test</artifactId>
+   <packaging>pom</packaging>
+   <name>GateIn - Portlet Container (test)</name>
+
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-test-core</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+   
+   <modules>
+      <module>core</module>
+      <module>servers</module>
+   </modules>
+
+</project>
