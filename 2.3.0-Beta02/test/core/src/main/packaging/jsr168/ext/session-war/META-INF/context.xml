@@ -1,6 +1,0 @@
-<!--
-   | The sessionCookiePath set to '/' is necessary for Tomcat 7 . Normally it should be set as a default in Tomcat configuration
-   | but setting it here allows to make the test path with a an unmodified Tomcat
-  -->
-<Context sessionCookiePath="/">
-</Context>
