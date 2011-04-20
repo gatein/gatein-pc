@@ -38,10 +38,7 @@ public class PortletContext implements Serializable
    private static final String PREFIX = "/";
    private static final char SEPARATOR = '.';
 
-   /**
-    * The separator used in the id to route to the correct invoker. TODO: change value back once tests have been done to
-    * remove incidental use of value
-    */
+   /** The separator used in the id to route to the correct invoker. */
    public static final String INVOKER_SEPARATOR = ".";
 
    public static final String PRODUCER_CLONE_ID_PREFIX = "_";
@@ -56,7 +53,7 @@ public class PortletContext implements Serializable
    public final static PortletContext LOCAL_CONSUMER_CLONE = PortletContext.createPortletContext(PortletInvoker.LOCAL_PORTLET_INVOKER_ID + INVOKER_SEPARATOR + CONSUMER_CLONE_ID);
    public static final String INVALID_PORTLET_CONTEXT = "Invalid portlet context: ";
 
-   private final PCComponents components;
+   private final Components components;
 
    protected PortletContext(String id) throws IllegalArgumentException
    {
@@ -67,7 +64,7 @@ public class PortletContext implements Serializable
    {
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(id, "portlet id", "PortletContext");
 
-      PCComponents components;
+      Components components;
 
       // components
       if (interpret)
@@ -84,7 +81,24 @@ public class PortletContext implements Serializable
       this.components = components;
    }
 
-   private PCComponents interpretIntoComponents(String id)
+   /**
+    * <p>Interprets the specified identifier and splits it into Components that can then be used to create a
+    * PortletContext.</p>
+    * <p/>
+    * <ul>Currently supported formats: <li>portletContext := invokerId + {@link #INVOKER_SEPARATOR} + {@link #PREFIX} +
+    * applicationName + {@link #SEPARATOR} + portletName</li> <li>portletContext := invokerId + {@link
+    * #INVOKER_SEPARATOR} + arbitraryPortletName</li> <li>portletContext := {@link #PRODUCER_CLONE_ID_PREFIX} +
+    * portletName</li> <li>portletContext := {@link #CONSUMER_CLONE_ID_PREFIX} + portletName</li> <li>invokerId :=
+    * space* + (digit | letter)+ + (digit | letter | space)*</li> <li>applicationName := space* + (digit | letter)+ +
+    * (digit | letter | space)*</li> <li>portletName := space* + (digit | letter)+ + (digit | letter | space)*</li>
+    * <li>arbitraryPortletName := ({@link #PREFIX} | {@link #PRODUCER_CLONE_ID_PREFIX} | {@link
+    * #CONSUMER_CLONE_ID_PREFIX})? + portletName</li> </ul>
+    *
+    * @param id the portlet identifier to interpret into components
+    * @return a Components object representing the interpreted components of the specified portlet identifier
+    * @throws IllegalArgumentException if the specified identifier cannot be properly interpreted into components
+    */
+   private Components interpretIntoComponents(String id)
    {
       String trimmedId = id.trim();
       try
@@ -193,7 +207,7 @@ public class PortletContext implements Serializable
       }
    }
 
-   protected PortletContext(PCComponents components)
+   protected PortletContext(Components components)
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(components, "portlet context components");
       this.components = components;
@@ -203,7 +217,7 @@ public class PortletContext implements Serializable
    {
       ParameterValidation.throwIllegalArgExceptionIfNull(compoundPortletContext, "PortletContext to dereference");
 
-      PCComponents components = compoundPortletContext.getInternalComponents();
+      Components components = compoundPortletContext.getInternalComponents();
       if (!components.isInterpreted())
       {
          try
@@ -221,7 +235,7 @@ public class PortletContext implements Serializable
       return createCopyWithNewComponents(compoundPortletContext, components.createCopyWithoutInvoker());
    }
 
-   protected PCComponents interpret()
+   protected Components interpret()
    {
       return interpretIntoComponents(components.getId());
    }
@@ -231,12 +245,12 @@ public class PortletContext implements Serializable
       ParameterValidation.throwIllegalArgExceptionIfNull(portletContext, "PortletContext to reference");
       ParameterValidation.throwIllegalArgExceptionIfNullOrEmpty(invokerId, "Invoker id to reference with", null);
 
-      final PCComponents newComponents = portletContext.getInternalComponents().createCopyWithInvoker(invokerId);
+      final Components newComponents = portletContext.getInternalComponents().createCopyWithInvoker(invokerId);
 
       return createCopyWithNewComponents(portletContext, newComponents);
    }
 
-   private static PortletContext createCopyWithNewComponents(PortletContext portletContextToCopy, PCComponents newComponents)
+   private static PortletContext createCopyWithNewComponents(PortletContext portletContextToCopy, Components newComponents)
    {
       if (portletContextToCopy instanceof StatefulPortletContext)
       {
@@ -306,6 +320,17 @@ public class PortletContext implements Serializable
       return new StatefulPortletContext<byte[]>(id, PortletStateType.OPAQUE, state);
    }
 
+   /**
+    * Creates a PortletContext by interpreting the specified identifier and breaking it down to its components. When
+    * possible, it's better to use {@link #createPortletContext(String, String)} to create the PortletContext from its
+    * components instead of trying to build it manually. In case a PortletContext namespaced by a PortletInvoker id is
+    * needed, please use {@link #reference(String, PortletContext)}.
+    *
+    * @param portletId the portlet identifier to interpret as a PortletContext
+    * @return a newly created PortletContext representing the portlet associated with the specified identifier
+    * @throws IllegalArgumentException if the specified identifier cannot be properly interpreted into components
+    * @see {@link #interpretIntoComponents(String)}
+    */
    public static PortletContext createPortletContext(String portletId)
    {
       return createPortletContext(portletId, true);
@@ -356,7 +381,7 @@ public class PortletContext implements Serializable
       return getInternalComponents();
    }
 
-   private PCComponents getInternalComponents()
+   private Components getInternalComponents()
    {
       return components;
    }
@@ -382,14 +407,14 @@ public class PortletContext implements Serializable
       boolean isInterpreted();
    }
 
-   protected static interface PCComponents extends PortletContextComponents
+   protected static interface Components extends PortletContextComponents
    {
-      PCComponents createCopyWithoutInvoker();
+      Components createCopyWithoutInvoker();
 
-      PCComponents createCopyWithInvoker(String invoker);
+      Components createCopyWithInvoker(String invoker);
    }
 
-   private static class InterpretedPortletContextComponents implements PCComponents
+   private static class InterpretedPortletContextComponents implements Components
    {
       private final String applicationName;
       private final String portletName;
@@ -460,18 +485,18 @@ public class PortletContext implements Serializable
          return true;
       }
 
-      public PCComponents createCopyWithoutInvoker()
+      public Components createCopyWithoutInvoker()
       {
          return new InterpretedPortletContextComponents(null, applicationName, portletName, producerCloned);
       }
 
-      public PCComponents createCopyWithInvoker(String invoker)
+      public Components createCopyWithInvoker(String invoker)
       {
          return new InterpretedPortletContextComponents(invoker, applicationName, portletName, producerCloned);
       }
    }
 
-   private static class UninterpretedPortletContextComponents implements PCComponents
+   private static class UninterpretedPortletContextComponents implements Components
    {
       private static final String ERROR = "This PortletContext was not intepreted, only the portlet name is available!";
       private final String portletName;
@@ -526,12 +551,12 @@ public class PortletContext implements Serializable
          return false;
       }
 
-      public PCComponents createCopyWithoutInvoker()
+      public Components createCopyWithoutInvoker()
       {
          throw new IllegalStateException(ERROR);
       }
 
-      public PCComponents createCopyWithInvoker(String invoker)
+      public Components createCopyWithInvoker(String invoker)
       {
          return new InterpretedPortletContextComponents(invoker, null, portletName, null);
       }

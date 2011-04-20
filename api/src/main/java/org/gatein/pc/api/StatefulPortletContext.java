@@ -40,7 +40,7 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
       return new StatefulPortletContext<S>(id, spc.type, spc.state);
    }
 
-   static <S extends Serializable> StatefulPortletContext<S> create(PortletContext.PCComponents components, StatefulPortletContext<S> spc)
+   static <S extends Serializable> StatefulPortletContext<S> create(Components components, StatefulPortletContext<S> spc)
    {
       return new StatefulPortletContext<S>(components, spc.type, spc.state);
    }
@@ -70,7 +70,7 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
       this.state = state;
    }
 
-   StatefulPortletContext(PCComponents components, PortletStateType<S> type, S state)
+   StatefulPortletContext(Components components, PortletStateType<S> type, S state)
    {
       super(components);
 
