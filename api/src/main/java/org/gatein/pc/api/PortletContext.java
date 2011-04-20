@@ -42,7 +42,7 @@ public class PortletContext implements Serializable
     * The separator used in the id to route to the correct invoker. TODO: change value back once tests have been done to
     * remove incidental use of value
     */
-   public static final String INVOKER_SEPARATOR = "+";
+   public static final String INVOKER_SEPARATOR = ".";
 
    public static final String PRODUCER_CLONE_ID_PREFIX = "_";
    public static final int PRODUCER_CLONE_PREFIX_LENGTH = PRODUCER_CLONE_ID_PREFIX.length();
