@@ -85,12 +85,15 @@ public class PortletContext implements Serializable
     * <p>Interprets the specified identifier and splits it into Components that can then be used to create a
     * PortletContext.</p>
     * <p/>
-    * <ul>Currently supported formats: <li>portletContext := invokerId + {@link #INVOKER_SEPARATOR} + {@link #PREFIX} +
-    * applicationName + {@link #SEPARATOR} + portletName</li> <li>portletContext := invokerId + {@link
-    * #INVOKER_SEPARATOR} + arbitraryPortletName</li> <li>portletContext := {@link #PRODUCER_CLONE_ID_PREFIX} +
-    * portletName</li> <li>portletContext := {@link #CONSUMER_CLONE_ID_PREFIX} + portletName</li> <li>invokerId :=
-    * space* + (digit | letter)+ + (digit | letter | space)*</li> <li>applicationName := space* + (digit | letter)+ +
-    * (digit | letter | space)*</li> <li>portletName := space* + (digit | letter)+ + (digit | letter | space)*</li>
+    * <ul>Currently supported formats:
+    * <li>portletContext := invokerId + {@link #INVOKER_SEPARATOR} + {@link #PREFIX} + applicationName + {@link
+    * #SEPARATOR} + portletName</li>
+    * <li>portletContext := invokerId + {@link #INVOKER_SEPARATOR} + arbitraryPortletName</li>
+    * <li>portletContext := {@link #PRODUCER_CLONE_ID_PREFIX} + portletName</li>
+    * <li>portletContext := {@link #CONSUMER_CLONE_ID_PREFIX} + portletName</li>
+    * <li>invokerId := space* + (digit | letter)+ + (digit | letter | space)*</li>
+    * <li>applicationName := space* + (digit | letter)+ + (digit | letter | space)*</li>
+    * <li>portletName := space* + (digit | letter)+ + (digit | letter | space)*</li>
     * <li>arbitraryPortletName := ({@link #PREFIX} | {@link #PRODUCER_CLONE_ID_PREFIX} | {@link
     * #CONSUMER_CLONE_ID_PREFIX})? + portletName</li> </ul>
     *
