@@ -29,10 +29,12 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
@@ -41,6 +43,22 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public abstract class PortletResponseImpl implements PortletResponse
 {
+
+   /** Keep a document builder in a thread local as it can create contention during its creation. */
+   private static final ThreadLocal<DocumentBuilder> builder = new ThreadLocal<DocumentBuilder>()
+   {
+      protected DocumentBuilder initialValue()
+      {
+         try
+         {
+           return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+         }
+         catch (ParserConfigurationException e)
+         {
+           throw new UndeclaredThrowableException(e);
+         }
+      }
+   };
 
    /** . */
    protected final PortletInvocation invocation;
@@ -117,15 +135,7 @@ public abstract class PortletResponseImpl implements PortletResponse
    {
       if (doc == null)
       {
-         try
-         {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            doc = factory.newDocumentBuilder().newDocument();
-         }
-         catch (ParserConfigurationException e)
-         {
-            throw new IllegalStateException("Could not create a document builder factory", e);
-         }
+         doc = builder.get().newDocument();
       }
 
       //
