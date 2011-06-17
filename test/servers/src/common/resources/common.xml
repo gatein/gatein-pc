@@ -42,8 +42,8 @@
 
       <path id="jboss-logging">
          <pathelement location="${jboss:jboss-common-logging-spi:jar}"/>
-         <pathelement location="${jboss:jboss-common-logging-jdk:jar}"/>
-         <pathelement location="${jboss:jboss-common-logging-log4j:jar}"/>
+         <pathelement location="${org.jboss.logging:jboss-logging-jdk:jar}"/>
+         <pathelement location="${org.jboss.logging:jboss-logging-log4j:jar}"/>
       </path>
 
       <path id="jboss-xb">

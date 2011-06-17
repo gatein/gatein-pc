@@ -34,7 +34,7 @@
 
    <build>
       <plugins>
-         <plugin>
+         <!--<plugin>
             <groupId>org.jboss.unit</groupId>
             <artifactId>jboss-unit-tooling-maven2</artifactId>
             <executions>
@@ -57,7 +57,7 @@
                   <html>target/tests/reports/html/local</html>
                </reports>
             </configuration>
-         </plugin>
+         </plugin>-->
       </plugins>
    </build>
 

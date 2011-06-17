@@ -153,12 +153,12 @@
       </dependency>
 
       <dependency>
-         <groupId>jboss</groupId>
-         <artifactId>jboss-common-logging-jdk</artifactId>
+         <groupId>org.jboss.logging</groupId>
+         <artifactId>jboss-logging-jdk</artifactId>
       </dependency>
       <dependency>
-         <groupId>jboss</groupId>
-         <artifactId>jboss-common-logging-log4j</artifactId>
+         <groupId>org.jboss.logging</groupId>
+         <artifactId>jboss-logging-log4j</artifactId>
       </dependency>
 
       <dependency>

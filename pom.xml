@@ -36,7 +36,7 @@
    <parent>
       <groupId>org.gatein</groupId>
       <artifactId>gatein-parent</artifactId>
-      <version>1.1.0-Beta01</version>
+      <version>1.1.0-Beta02</version>
    </parent>
 
    <scm>
@@ -46,7 +46,7 @@
    </scm>
 
    <properties>
-      <version.gatein.common>2.0.4-Beta02</version.gatein.common>
+      <version.gatein.common>2.0.4-Beta03</version.gatein.common>
       <version.gatein.wci>2.1.0-Beta01</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
@@ -61,6 +61,10 @@
       <version.cargo.jetty.deployer>1.0.1</version.cargo.jetty.deployer>
       <version.cargo.jboss5.deployer>5.1.0.SP1</version.cargo.jboss5.deployer>
 
+      <!-- This needs to be removed after gatein-dep is fixed. -->
+      <!-- Currently it forces 2.0.5.GA for groupId "jboss" and this is not present in the repo -->
+      <version.jboss.logging>2.0.5.GA</version.jboss.logging>
+
       <preparationGoals>clean install</preparationGoals>
    </properties>
 
@@ -70,7 +74,7 @@
          <dependency>
             <groupId>org.gatein</groupId>
             <artifactId>gatein-dep</artifactId>
-            <version>1.0.3-Beta01</version>
+            <version>1.1.0-Beta02</version>
             <type>pom</type>
             <scope>import</scope>
          </dependency>
@@ -199,6 +203,19 @@
             <artifactId>commons-discovery</artifactId>
             <version>${version.discovery}</version>
          </dependency>
+
+         <!-- This needs to be removed after gatein-dep is fixed. -->
+         <!-- Currently it forces 2.0.5.GA for groupId "jboss" and this is not present in the repo -->
+         <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-jdk</artifactId>
+            <version>${version.jboss.logging}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-log4j</artifactId>
+            <version>${version.jboss.logging}</version>
+          </dependency>
 
       </dependencies>
    </dependencyManagement>
