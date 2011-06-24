@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
+import junit.framework.Assert;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
@@ -30,8 +31,6 @@ import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
 import org.gatein.pc.portlet.container.managed.ManagedObjectLifeCycleEvent;
 
 import java.util.LinkedList;
-
-import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -51,7 +50,7 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
    public void assertAddedEvent(ManagedObject managedObject)
    {
       ManagedObjectAddedEvent event = nextEvent(ManagedObjectAddedEvent.class);
-      assertSame(managedObject, event.getManagedObject());
+      Assert.assertSame(managedObject, event.getManagedObject());
    }
 
    public void assertStartedEvent(ManagedObject managedObject)
@@ -72,13 +71,13 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
    public void assertLifeCycleEvent(ManagedObject managedObject, LifeCycleStatus status)
    {
       ManagedObjectLifeCycleEvent event = nextEvent(ManagedObjectLifeCycleEvent.class);
-      assertSame(managedObject, event.getManagedObject());
-      assertEquals(status, event.getStatus());
+      Assert.assertSame(managedObject, event.getManagedObject());
+      Assert.assertEquals(status, event.getStatus());
    }
 
    public void assertEmpty()
    {
-      assertTrue(list.isEmpty());
+      Assert.assertTrue(list.isEmpty());
    }
 
    public void clear()
@@ -88,7 +87,9 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
 
    private <T extends ManagedObjectRegistryEvent> T nextEvent(Class<T> type)
    {
-      assertFalse(list.isEmpty());
-      return assertInstanceOf(list.removeFirst(), type);
+      Assert.assertFalse(list.isEmpty());
+      ManagedObjectRegistryEvent first = list.removeFirst();
+      Assert.assertTrue(type.isInstance(first));
+      return type.cast(first);
    }
 }

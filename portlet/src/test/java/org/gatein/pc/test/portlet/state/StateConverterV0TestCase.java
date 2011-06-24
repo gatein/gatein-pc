@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.state;
 
+import junit.framework.TestCase;
 import org.gatein.pc.portlet.impl.state.StateConverterV0;
 import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.state.PropertyMap;
@@ -30,9 +31,6 @@ import org.gatein.pc.portlet.state.StateConversionException;
 import org.gatein.pc.portlet.state.StateConverter;
 import org.gatein.pc.portlet.state.producer.PortletState;
 
-import static org.jboss.unit.api.Assert.*;
-import org.jboss.unit.api.pojo.annotations.Test;
-
 import java.util.Arrays;
 import java.util.ArrayList;
 
@@ -40,13 +38,11 @@ import java.util.ArrayList;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-@Test
-public class StateConverterV0TestCase
+public class StateConverterV0TestCase extends TestCase
 {
 
    private final StateConverter converter = new StateConverterV0();
 
-   @Test
    public void testIAE() throws StateConversionException
    {
       try
@@ -67,7 +63,6 @@ public class StateConverterV0TestCase
       }
    }
 
-   @Test
    public void testAlteredMagic() throws StateConversionException
    {
       byte[] bytes = converter.marshall(PortletStateType.OPAQUE, new PortletState("foo"));
@@ -85,7 +80,6 @@ public class StateConverterV0TestCase
       }
    }
 
-   @Test
    public void testBadVersionNumber() throws StateConversionException
    {
       byte[] bytes = converter.marshall(PortletStateType.OPAQUE,new PortletState("foo"));
@@ -100,7 +94,6 @@ public class StateConverterV0TestCase
       }
    }
 
-   @Test
    public void testWorks() throws Exception
    {
       assertWorks(new PortletState("foo"));

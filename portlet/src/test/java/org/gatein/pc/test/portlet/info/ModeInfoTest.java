@@ -22,18 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.info;
 
-import org.gatein.pc.api.Mode;
-import org.gatein.common.net.media.MediaType;
-import org.gatein.pc.portlet.container.managed.ManagedPortletContainer;
-import org.gatein.pc.api.info.CapabilitiesInfo;
-import org.gatein.pc.api.info.ModeInfo;
-
-import static org.jboss.unit.api.Assert.*;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 /**
  * @author <a href="mailto:boleslaw.dawidowicz@jboss.com">Boleslaw Dawidowicz</a>
  * @version $Revision: 7954 $
@@ -46,49 +34,49 @@ public class ModeInfoTest extends AbstractInfoTest
       super("ModeInfoTest");
    }
 
-   public void execute()
-   {
-      ManagedPortletContainer container1 = registry.getManagedPortletApplication("/test-info").getManagedPortletContainer("ModePortlet1");
-      ManagedPortletContainer container2 = registry.getManagedPortletApplication("/test-info").getManagedPortletContainer("ModePortlet2");
-      CapabilitiesInfo capaInfo = container1.getInfo().getCapabilities();
-
-      //Portlet 1 with VIEW, EDIT, HELP
-      Set modeInfos = capaInfo.getModes(MediaType.TEXT_HTML);
-
-      //shoule be 3 modes
-      assertEquals(3, modeInfos.size());
-
-      Set portletModes = new HashSet();
-      for (Iterator i = modeInfos.iterator(); i.hasNext();)
-      {
-         ModeInfo mode = (ModeInfo)i.next();
-         portletModes.add(mode.getMode());
-         assertEquals(mode.getModeName(), mode.getMode().toString());
-      }
-
-
-      assertTrue(portletModes.contains(org.gatein.pc.api.Mode.VIEW));
-      assertTrue(portletModes.contains(Mode.HELP));
-      assertTrue(portletModes.contains(Mode.EDIT));
-
-      //Portlet 2 with only VIEW
-      capaInfo = container2.getInfo().getCapabilities();
-      modeInfos = capaInfo.getModes(MediaType.TEXT_HTML);
-
-      //shoule be 1 mode
-      assertEquals(1, modeInfos.size());
-
-
-      portletModes = new HashSet();
-      for (Iterator i = modeInfos.iterator(); i.hasNext();)
-      {
-         ModeInfo mode = (ModeInfo)i.next();
-         portletModes.add(mode.getMode());
-         assertEquals(mode.getModeName(), mode.getMode().toString());
-      }
-
-      assertTrue(portletModes.contains(Mode.VIEW));
-      assertTrue(!portletModes.contains(Mode.HELP));
-      assertTrue(!portletModes.contains(Mode.EDIT));
-   }
+//   public void execute()
+//   {
+//      ManagedPortletContainer container1 = registry.getManagedPortletApplication("/test-info").getManagedPortletContainer("ModePortlet1");
+//      ManagedPortletContainer container2 = registry.getManagedPortletApplication("/test-info").getManagedPortletContainer("ModePortlet2");
+//      CapabilitiesInfo capaInfo = container1.getInfo().getCapabilities();
+//
+//      //Portlet 1 with VIEW, EDIT, HELP
+//      Set modeInfos = capaInfo.getModes(MediaType.TEXT_HTML);
+//
+//      //shoule be 3 modes
+//      assertEquals(3, modeInfos.size());
+//
+//      Set portletModes = new HashSet();
+//      for (Iterator i = modeInfos.iterator(); i.hasNext();)
+//      {
+//         ModeInfo mode = (ModeInfo)i.next();
+//         portletModes.add(mode.getMode());
+//         assertEquals(mode.getModeName(), mode.getMode().toString());
+//      }
+//
+//
+//      assertTrue(portletModes.contains(org.gatein.pc.api.Mode.VIEW));
+//      assertTrue(portletModes.contains(Mode.HELP));
+//      assertTrue(portletModes.contains(Mode.EDIT));
+//
+//      //Portlet 2 with only VIEW
+//      capaInfo = container2.getInfo().getCapabilities();
+//      modeInfos = capaInfo.getModes(MediaType.TEXT_HTML);
+//
+//      //shoule be 1 mode
+//      assertEquals(1, modeInfos.size());
+//
+//
+//      portletModes = new HashSet();
+//      for (Iterator i = modeInfos.iterator(); i.hasNext();)
+//      {
+//         ModeInfo mode = (ModeInfo)i.next();
+//         portletModes.add(mode.getMode());
+//         assertEquals(mode.getModeName(), mode.getMode().toString());
+//      }
+//
+//      assertTrue(portletModes.contains(Mode.VIEW));
+//      assertTrue(!portletModes.contains(Mode.HELP));
+//      assertTrue(!portletModes.contains(Mode.EDIT));
+//   }
 }

@@ -23,25 +23,21 @@
 
 package org.gatein.pc.test.portlet.navigation;
 
+import junit.framework.TestCase;
 import org.gatein.pc.api.ParametersStateString;
 import org.gatein.pc.api.StateString;
-import static org.jboss.unit.api.Assert.assertEquals;
-import static org.jboss.unit.api.Assert.assertNotNull;
-import org.jboss.unit.api.pojo.annotations.Test;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision: 5976 $
  * @since 2.4 (Apr 30, 2006)
  */
-@Test
-public class StateStringTestCase
+public class StateStringTestCase extends TestCase
 {
    public static final String NAME1 = "param1";
    public static final String VALUE1 = "value1";
    public static final String VALUE2 = "value2";
 
-   @Test
    public void testNavigationalState() throws Exception
    {
       ParametersStateString ns = ParametersStateString.create();

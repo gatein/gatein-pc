@@ -42,14 +42,10 @@ import org.gatein.pc.portlet.state.producer.ProducerPortletInvoker;
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.PortletSupport;
 import org.gatein.pc.portlet.support.info.PortletInfoSupport;
-import org.jboss.unit.api.pojo.annotations.Create;
-import org.jboss.unit.api.pojo.annotations.Test;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -78,8 +74,8 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
    /** . */
    protected StateConverter stateConverter;
 
-   @Create
-   public void create() throws Exception
+   @Override
+   protected void setUp() throws Exception
    {
       producer = new ProducerPortletInvoker();
       container = new PortletInvokerSupport();
@@ -252,7 +248,6 @@ public abstract class ProducerStatefulPortletInvokerTestCase extends AbstractSta
       return producer.exportPortlet(PortletStateType.OPAQUE, originalPortletContext);
    }
 
-   @Test
    public void testGetStatus() throws Exception
    {
       PortletInfoSupport info = new PortletInfoSupport();

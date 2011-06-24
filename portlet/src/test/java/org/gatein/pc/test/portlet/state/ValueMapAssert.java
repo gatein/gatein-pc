@@ -22,18 +22,17 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.state;
 
+import junit.framework.Assert;
 import org.gatein.pc.api.state.PropertyMap;
 
 import java.util.HashSet;
 import java.util.List;
 
-import org.jboss.unit.api.Assert;
-
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 5448 $
  */
-public class ValueMapAssert
+public class ValueMapAssert extends Assert
 {
    public static void assertEquals(PropertyMap vm1, PropertyMap vm2)
    {
@@ -41,24 +40,22 @@ public class ValueMapAssert
       {
          if (vm2 != null)
          {
-            Assert.fail("Value map should be null");
+            fail("Value map should be null");
          }
       }
       else
       {
          if (vm2 == null)
          {
-            Assert.fail("Value map should not be null");
+            fail("Value map should not be null");
          }
-         Assert.assertEquals("Value maps don't have the same keys", new HashSet<String>(vm1.keySet()), new HashSet<String>(vm2.keySet()));
+         assertEquals("Value maps don't have the same keys", new HashSet<String>(vm1.keySet()), new HashSet<String>(vm2.keySet()));
          for (String key : vm1.keySet())
          {
             List<String> v1 = vm1.getProperty(key);
             List<String> v2 = vm2.getProperty(key);
-            Assert.assertEquals("Values for key " + key + " are not equals", v1, v2);
+            assertEquals("Values for key " + key + " are not equals", v1, v2);
          }
       }
    }
-
-
 }

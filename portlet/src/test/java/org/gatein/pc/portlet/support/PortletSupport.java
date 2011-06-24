@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.support;
 
+import junit.framework.Assert;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.Portlet;
@@ -32,7 +33,6 @@ import org.gatein.pc.api.invocation.EventInvocation;
 import org.gatein.pc.api.invocation.RenderInvocation;
 import org.gatein.pc.api.invocation.ResourceInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import static org.jboss.unit.api.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -106,12 +106,12 @@ public final class PortletSupport implements Portlet
 
    public void assertInvocationCountIs(int expectedInvocationCount)
    {
-      assertEquals(expectedInvocationCount, invocationCount);
+      Assert.assertEquals(expectedInvocationCount, invocationCount);
    }
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
    {
-      assertNotNull(invocation);
+      Assert.assertNotNull(invocation);
 
       //
       if (invocationCount == handlers.size())

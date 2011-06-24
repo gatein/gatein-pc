@@ -22,21 +22,17 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
-import org.jboss.unit.api.pojo.annotations.Test;
-import org.jboss.unit.api.pojo.annotations.Create;
+import junit.framework.TestCase;
 import org.gatein.pc.portlet.impl.container.PortletApplicationLifeCycle;
 import org.gatein.pc.portlet.impl.container.PortletContainerLifeCycle;
 import org.gatein.pc.portlet.impl.container.LifeCycle;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
 
-import static org.jboss.unit.api.Assert.*;
-
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class LifeCycleReentranceDetectionTest
+public class LifeCycleReentranceDetectionTest extends TestCase
 {
 
    PortletApplicationLifeCycle applicationLF;
@@ -46,8 +42,8 @@ public class LifeCycleReentranceDetectionTest
 
    IllegalStateException ise;
 
-   @Create
-   public void create()
+   @Override
+   protected void setUp() throws Exception
    {
       this.ise = null;
    }
@@ -97,8 +93,7 @@ public class LifeCycleReentranceDetectionTest
       }
    }
 
-   @Test
-   public void applicationReentersApplication1()
+   public void testApplicationReentersApplication1()
    {
       application = new PortletApplicationObjectSupport("application");
       applicationLF = new PortletApplicationLifeCycle(new PortletApplicationContextSupport(), application);
@@ -115,8 +110,7 @@ public class LifeCycleReentranceDetectionTest
       assertEquals(LifeCycleStatus.STARTED, applicationLF.getStatus());
    }
 
-   @Test
-   public void applicationReentersApplication2()
+   public void testApplicationReentersApplication2()
    {
       application = new PortletApplicationObjectSupport("application");
       applicationLF = new PortletApplicationLifeCycle(new PortletApplicationContextSupport(), application);
@@ -133,8 +127,7 @@ public class LifeCycleReentranceDetectionTest
       assertEquals(LifeCycleStatus.FAILED, applicationLF.getStatus());
    }
 
-   @Test
-   public void containerReentersContainer1()
+   public void testContainerReentersContainer1()
    {
       application = new PortletApplicationObjectSupport("application");
       applicationLF = new PortletApplicationLifeCycle(new PortletApplicationContextSupport(), application);
@@ -154,8 +147,7 @@ public class LifeCycleReentranceDetectionTest
       assertEquals(LifeCycleStatus.STARTED, containerLF.getStatus());
    }
 
-   @Test
-   public void containerReentersContainer2()
+   public void testContainerReentersContainer2()
    {
       application = new PortletApplicationObjectSupport("application");
       applicationLF = new PortletApplicationLifeCycle(new PortletApplicationContextSupport(), application);
@@ -175,8 +167,7 @@ public class LifeCycleReentranceDetectionTest
       assertEquals(LifeCycleStatus.FAILED, containerLF.getStatus());
    }
 
-   @Test
-   public void containerReentersApplication1()
+   public void testContainerReentersApplication1()
    {
       application = new PortletApplicationObjectSupport("application");
       applicationLF = new PortletApplicationLifeCycle(new PortletApplicationContextSupport(), application);
@@ -196,8 +187,7 @@ public class LifeCycleReentranceDetectionTest
       assertEquals(LifeCycleStatus.STARTED, containerLF.getStatus());
    }
 
-   @Test
-   public void containerReentersApplication2()
+   public void testContainerReentersApplication2()
    {
       application = new PortletApplicationObjectSupport("application");
       applicationLF = new PortletApplicationLifeCycle(new PortletApplicationContextSupport(), application);

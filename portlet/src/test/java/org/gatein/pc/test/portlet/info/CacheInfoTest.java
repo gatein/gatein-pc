@@ -22,12 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.info;
 
-import org.gatein.pc.portlet.container.managed.ManagedPortletContainer;
-import org.gatein.pc.api.info.CacheInfo;
-import org.gatein.pc.api.info.PortletInfo;
-
-import static org.jboss.unit.api.Assert.*;
-
 /**
  * @author <a href="mailto:boleslaw.dawidowicz@jboss.com">Boleslaw Dawidowicz</a>
  * @version $Revision: 7954 $
@@ -40,12 +34,12 @@ public class CacheInfoTest extends AbstractInfoTest
       super("CacheInfoTest");
    }
 
-   public void execute()
-   {
-      ManagedPortletContainer container = registry.getManagedPortletApplication("/test-info").getManagedPortletContainer("CachePortlet");
-      PortletInfo info = container.getInfo();
-      CacheInfo cacheInfo = info.getCache();
-      assertEquals(65, cacheInfo.getExpirationSecs());
-      //TODO:implement getReferenceType();
-   }
+//   public void execute()
+//   {
+//      ManagedPortletContainer container = registry.getManagedPortletApplication("/test-info").getManagedPortletContainer("CachePortlet");
+//      PortletInfo info = container.getInfo();
+//      CacheInfo cacheInfo = info.getCache();
+//      assertEquals(65, cacheInfo.getExpirationSecs());
+//      //TODO:implement getReferenceType();
+//   }
 }

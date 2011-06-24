@@ -22,24 +22,21 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet;
 
-import org.jboss.unit.api.pojo.annotations.Test;
+import junit.framework.TestCase;
 import org.gatein.pc.portlet.impl.jsr168.ContentBuffer;
-import static org.jboss.unit.api.Assert.*;
-import static org.jboss.unit.api.Assert.assertEquals;
 
 import java.io.PrintWriter;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class ContentBufferTestCase
+public class ContentBufferTestCase extends TestCase
 {
 
-   @Test
    public void testResetChars()
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -50,7 +47,6 @@ public class ContentBufferTestCase
       assertEquals("", buffer.getChars());
    }
 
-   @Test
    public void testResetBytes() throws IOException
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -58,10 +54,9 @@ public class ContentBufferTestCase
       OutputStream out = buffer.getOutputStream();
       out.write("foo".getBytes("UTF8"));
       buffer.reset();
-      assertEquals(new byte[0], buffer.getBytes());
+      assertEquals(0, buffer.getBytes().length);
    }
 
-   @Test
    public void testResetAfterCommit()
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -77,7 +72,6 @@ public class ContentBufferTestCase
       }
    }
 
-   @Test
    public void testCommit()
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -87,7 +81,6 @@ public class ContentBufferTestCase
       assertTrue(buffer.isCommited());
    }
 
-   @Test
    public void testWriteCharsAfterCommit()
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -100,7 +93,6 @@ public class ContentBufferTestCase
       assertEquals("foo", buffer.getChars());
    }
 
-   @Test
    public void testWriteCharsAndCommit()
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -114,7 +106,6 @@ public class ContentBufferTestCase
       assertEquals("foobar", buffer.getChars());
    }
 
-   @Test
    public void testWriteBytesAfterCommit() throws IOException
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -124,10 +115,9 @@ public class ContentBufferTestCase
       assertNotNull(out);
       out.write("foo".getBytes("UTF8"));
       out.close();
-      assertEquals("foo".getBytes("UTF8"), buffer.getBytes());
+      assertTrue(Arrays.equals("foo".getBytes("UTF8"), buffer.getBytes()));
    }
 
-   @Test
    public void testWriteBytesAndCommit() throws IOException
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -138,10 +128,9 @@ public class ContentBufferTestCase
       assertNotNull(out);
       out.write("bar".getBytes("UTF8"));
       out.close();
-      assertEquals("foobar".getBytes("UTF8"), buffer.getBytes());
+      assertTrue(Arrays.equals("foobar".getBytes("UTF8"), buffer.getBytes()));
    }
 
-   @Test
    public void testFlushWriterDoesCommit()
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -152,7 +141,6 @@ public class ContentBufferTestCase
       assertTrue(buffer.isCommited());
    }
 
-   @Test
    public void testCloseWriterDoesCommit()
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -163,7 +151,6 @@ public class ContentBufferTestCase
       assertTrue(buffer.isCommited());
    }
 
-   @Test
    public void testFlushStreamDoesCommit() throws IOException
    {
       ContentBuffer buffer = new ContentBuffer();
@@ -174,8 +161,7 @@ public class ContentBufferTestCase
       assertTrue(buffer.isCommited());
    }
 
-   @Test
-   public void testClosestreamDoesCommit() throws IOException 
+   public void testClosestreamDoesCommit() throws IOException
    {
       ContentBuffer buffer = new ContentBuffer();
       buffer.setContentType("text/html");

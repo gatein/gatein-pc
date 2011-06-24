@@ -22,6 +22,8 @@
  */
 package org.gatein.pc.test.portlet.state;
 
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 import org.gatein.common.util.Tools;
 import org.gatein.common.i18n.LocalizedString;
 import org.gatein.pc.api.InvalidPortletIdException;
@@ -48,10 +50,6 @@ import org.gatein.pc.api.state.PropertyContext;
 import org.gatein.pc.portlet.state.SimplePropertyMap;
 import org.gatein.pc.portlet.state.producer.PortletState;
 
-import static org.jboss.unit.api.Assert.*;
-
-import org.jboss.unit.api.pojo.annotations.Test;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +61,7 @@ import java.util.Arrays;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public abstract class AbstractStatefulPortletInvokerTestCase
+public abstract class AbstractStatefulPortletInvokerTestCase extends TestCase
 {
    public static final String PORTLET_ID = "/foo.PortletId";
    public static final String NON_EXISTING_PORTLET_ID = "/foo.NonExistingPortletId";
@@ -205,7 +203,9 @@ public abstract class AbstractStatefulPortletInvokerTestCase
          }
          catch (PortletInvokerException e)
          {
-            fail(e);
+            AssertionFailedError afe = new AssertionFailedError();
+            afe.initCause(e);
+            throw afe;
          }
       }
       else
@@ -218,7 +218,9 @@ public abstract class AbstractStatefulPortletInvokerTestCase
          }
          catch (PortletInvokerException e)
          {
-            fail(e);
+            AssertionFailedError afe = new AssertionFailedError();
+            afe.initCause(e);
+            throw afe;
          }
       }
    }
@@ -252,7 +254,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       return createPOPRef(info);
    }
 
-   @Test
    public void testCloneWithNullContext() throws Exception
    {
       try
@@ -266,7 +267,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testCloneNonExistingPOP() throws Exception
    {
       PortletContext popCtx = createNonExistingPOPRef();
@@ -281,7 +281,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testCloneNonExistingCCP() throws Exception
    {
       PortletContext ccpCtx = createNonExistingLocalCCPRef();
@@ -296,7 +295,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-//   @Test
 //   public void testCloneInvalidCCP() throws Exception
 //   {
 //      PortletContext ccpCtx = getProducer().wrapCCP("InvalidPortletId");
@@ -311,7 +309,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
 //      assertNoExistingState();
 //   }
 
-   @Test
    public void testCloneInvalidPOP() throws Exception
    {
       PortletContext popCtx = createInvalidPOPRef();
@@ -326,7 +323,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testClonePortlet() throws Exception
    {
       PortletInfoSupport info = new PortletInfoSupport();
@@ -370,7 +366,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertEquals("MyPortlet", def.getString(Locale.ENGLISH, true));
    }
 
-   @Test
    public void testGetWithNullId() throws Exception
    {
       try
@@ -383,7 +378,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetNonExistingPOP() throws Exception
    {
       PortletContext pop = createNonExistingPOPRef();
@@ -397,7 +391,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetNonExistingCCP() throws Exception
    {
       PortletContext ccpCtx = createNonExistingLocalCCPRef();
@@ -411,7 +404,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetInvalidPOP() throws Exception
    {
       PortletContext popCtx = createInvalidPOPRef();
@@ -425,7 +417,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-//   @Test
 //   public void testGetInvalidCCP() throws Exception
 //   {
 //      PortletContext ccpId = getProducer().wrapCCP("InvalidPortletId");
@@ -439,7 +430,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
 //      }
 //   }
 
-   @Test
    public void testDestroyWithNullId() throws Exception
    {
       try
@@ -452,7 +442,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testDestroyPOP() throws Exception
    {
       PortletContext popCtx = createPOPRef();
@@ -462,7 +451,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertEquals(getPortletId(popCtx), failure.getPortletId());
    }
 
-   @Test
    public void testDestroyCCP() throws Exception
    {
       PortletContext popCtx = createPOPRef();
@@ -482,7 +470,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
 //      assertEquals(ccpId.getId(), failure.getPortletId());
 //   }
 
-   @Test
    public void testDestroyNonExistingCCP() throws Exception
    {
       PortletContext ccpCtx = createNonExistingLocalCCPRef();
@@ -492,7 +479,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertEquals(getPortletId(ccpCtx), failure.getPortletId());
    }
 
-   @Test
    public void testGetPropertiesWithNullPortlet() throws Exception
    {
       try
@@ -513,7 +499,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetNonExistingPOPProperties() throws Exception
    {
       PortletContext popCtx = createNonExistingPOPRef();
@@ -535,7 +520,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetInvalidPOPProperties() throws Exception
    {
       PortletContext popCtx = createInvalidPOPRef();
@@ -557,7 +541,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetNonExistingCCPProperties() throws Exception
    {
       PortletContext ccpCtx = createNonExistingLocalCCPRef();
@@ -579,7 +562,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-//   @Test
 //   public void testGetInvalidCCPProperties() throws Exception
 //   {
 //      PortletContext ccpId = getProducer().wrapCCP("InvalidPortletId");
@@ -601,7 +583,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
 //      }
 //   }
 
-   @Test
    public void testGetPOPWithNullKeys() throws Exception
    {
       PortletContext popCtx = createPOPRef();
@@ -615,7 +596,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetCCPWithNullKeys() throws Exception
    {
       PortletContext ccpCtx = createLocalCCPRef();
@@ -629,7 +609,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetPOPProperties() throws Exception
    {
       PortletInfoSupport info = new PortletInfoSupport();
@@ -651,7 +630,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       ValueMapAssert.assertEquals(expectedProps, props);
    }
 
-   @Test
    public void testGetCCPProperties() throws Exception
    {
       PortletInfoSupport info = new PortletInfoSupport();
@@ -686,7 +664,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       ValueMapAssert.assertEquals(expectedProps, props);
    }
 
-   @Test
    public void testSetPropertiesWithNullId() throws Exception
    {
       try
@@ -699,7 +676,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testSetPropertiesWithNullProperties() throws Exception
    {
       PortletContext ccpCtx = createLocalCCPRef();
@@ -713,7 +689,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testSetPOPProperties() throws Exception
    {
       PortletContext popCtx = createPOPRef();
@@ -727,7 +702,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testSetNonExistingCCPProperties() throws Exception
    {
       PortletContext ccpCtx = createNonExistingLocalCCPRef();
@@ -741,7 +715,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testSetCCPProperties() throws Exception
    {
       PortletInfoSupport info = new PortletInfoSupport();
@@ -796,13 +769,11 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       ValueMapAssert.assertEquals(expectedProps, ccpProps);
    }
 
-   @Test
    public void testInvokeCloneBeforeWritePOPWithUpdate() throws Exception
    {
       invokeCloneBeforeWriteWithUpdate(true);
    }
 
-   @Test
    public void testInvokeCloneBeforeWriteCCPWithUpdate() throws Exception
    {
       invokeCloneBeforeWriteWithUpdate(false);
@@ -862,7 +833,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertCloneDoesNotExist(cloneRef);
    }
 
-   @Test
    public void testInvokeReadOnlyWithUpdate() throws Exception
    {
       final Boolean[] ise = {Boolean.FALSE};
@@ -903,7 +873,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertEquals(Boolean.TRUE, ise[0]);
    }
 
-   @Test
    public void testInvokeReadWriteWithUpdate() throws Exception
    {
       PortletInfoSupport info = new PortletInfoSupport();
@@ -978,7 +947,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testExportNullPortletContext() throws Exception
    {
       try
@@ -993,7 +961,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testExportsNonExisitngPOP() throws Exception
    {
       PortletContext popCTX = createNonExistingPOPRef();
@@ -1009,7 +976,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testExportNonExisitngCCP() throws Exception
    {
       PortletContext ccpCTX = createNonExistingLocalCCPRef();
@@ -1025,7 +991,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testExportInvalidPOP() throws Exception
    {
       PortletContext popCtx = createInvalidPOPRef();
@@ -1040,7 +1005,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testExportPortlet() throws Exception
    {
       PropertyMap expectedProperties = new SimplePropertyMap();
@@ -1126,7 +1090,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
 
    }
 
-   @Test
    public void testImportNullPortletContext() throws Exception
    {
       try
@@ -1141,7 +1104,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testImportsNonExisitngPOP() throws Exception
    {
       PortletContext popCTX = createNonExistingPOPRef();
@@ -1157,7 +1119,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testImportNonExisitngCCP() throws Exception
    {
       PortletContext ccpCTX = createNonExistingLocalCCPRef();
@@ -1173,7 +1134,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testImportInvalidPOP() throws Exception
    {
       PortletContext popCtx = createInvalidPOPRef();
@@ -1188,7 +1148,6 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       assertNoExistingState();
    }
 
-   @Test
    public void testImport() throws Exception
    {
       //This will create the portlet into the container and check that it doesn't have any properties set
@@ -1211,5 +1170,4 @@ public abstract class AbstractStatefulPortletInvokerTestCase
       //Make sure that this new portlet has the properties we want
       assertEquals(propertyMap, getProperties(importedPortletContext));
    }
-
 }

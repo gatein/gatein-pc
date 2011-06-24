@@ -22,19 +22,15 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet;
 
+import junit.framework.TestCase;
 import org.gatein.pc.portlet.impl.jsr168.PortletParameterMap;
 import org.gatein.pc.portlet.support.info.NavigationInfoSupport;
 import org.gatein.pc.portlet.support.info.ParameterInfoSupport;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.jboss.unit.api.Assert.*;
-import static org.jboss.unit.api.Assert.assertEquals;
-import org.jboss.unit.api.pojo.annotations.Test;
-import org.jboss.unit.api.pojo.annotations.Create;
-import org.jboss.unit.api.pojo.annotations.Destroy;
 
 import javax.xml.namespace.QName;
 
@@ -42,8 +38,7 @@ import javax.xml.namespace.QName;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 6639 $
  */
-@Test
-public class ParametersTestCase
+public class ParametersTestCase extends TestCase
 {
 
    public ParametersTestCase()
@@ -53,21 +48,18 @@ public class ParametersTestCase
    private NavigationInfoSupport navigation;
    private PortletParameterMap map;
 
-   @Create
    public void setUp()
    {
       navigation = new NavigationInfoSupport();
       map = new PortletParameterMap(navigation);
    }
 
-   @Destroy
    public void tearDown()
    {
       map = null;
       navigation = null;
    }
 
-   @Test
    public void testGetWithNullName()
    {
       try
@@ -80,14 +72,12 @@ public class ParametersTestCase
       }
    }
 
-   @Test
    public void testSet()
    {
       map.setParameterValue("a", "b");
       assertEquals(map.getParameterValue("a"), "b");
    }
 
-   @Test
    public void testSetWithNullName()
    {
       try
@@ -100,7 +90,6 @@ public class ParametersTestCase
       }
    }
 
-   @Test
    public void testSetWithNullValue()
    {
       try
@@ -113,7 +102,6 @@ public class ParametersTestCase
       }
    }
 
-//   @Test
 //   public void testRemoveWithNullName()
 //   {
 //      try
@@ -126,7 +114,6 @@ public class ParametersTestCase
 //      }
 //   }
 
-//   @Test
 //   public void testRemove()
 //   {
 //      param.setValue("a", "b");
@@ -134,7 +121,6 @@ public class ParametersTestCase
 //      assertEquals(param.getValue("a"), null);
 //   }
 
-   @Test
    public void testSetValues()
    {
       map.setParameterValues("a", new String[]{"b", "c"});
@@ -143,7 +129,6 @@ public class ParametersTestCase
       assertEquals(map.getParameterValue("a"), "b");
    }
 
-   @Test
    public void testSetValuesWithNullName()
    {
       try
@@ -156,7 +141,6 @@ public class ParametersTestCase
       }
    }
 
-   @Test
    public void testSetValuesWithNullValues()
    {
       try
@@ -169,7 +153,6 @@ public class ParametersTestCase
       }
    }
 
-   @Test
    public void testSetValuesWithZeroLengthValues()
    {
       try
@@ -182,7 +165,6 @@ public class ParametersTestCase
       }
    }
 
-   @Test
    public void testSetValuesWithOneNullValue()
    {
       try
@@ -206,7 +188,6 @@ public class ParametersTestCase
 //      assertTrue(Arrays.equals(param.getValues("c"), new String[]{"d", "e"}));
 //   }
 
-   @Test
    public void testBlah()
    {
       navigation.addPublicParameter(new ParameterInfoSupport("foo", new QName("", "foo")));
@@ -218,21 +199,20 @@ public class ParametersTestCase
 
       Map<String, String[]> privateMap = map.getPrivateMapSnapshot();
       assertEquals(1, privateMap.size());
-      assertEquals(new String[]{"daa"}, privateMap.get("juu"));
+      assertEquals(Arrays.asList("daa"), Arrays.asList(privateMap.get("juu")));
       assertEquals(null, privateMap.get("abc"));
 
       Map<String, String[]> publicMap = map.getPublicMapSnapshot();
       assertEquals(2, publicMap.size());
-      assertEquals(new String[]{"bar"}, publicMap.get("foo"));
-      assertEquals(new String[]{}, publicMap.get("abc"));
+      assertEquals(Arrays.asList("bar"), Arrays.asList(publicMap.get("foo")));
+      assertEquals(Collections.<String>emptyList(), Arrays.asList(publicMap.get("abc")));
 
       Map<String, String[]> combinedMap = map.getMap();
       assertEquals(2, combinedMap.size());
-      assertEquals(new String[]{"bar"}, combinedMap.get("foo"));
-      assertEquals(new String[]{"daa"}, combinedMap.get("juu"));
+      assertEquals(Arrays.asList("bar"), Arrays.asList(combinedMap.get("foo")));
+      assertEquals(Arrays.asList("daa"), Arrays.asList(combinedMap.get("juu")));
    }
 
-//   @Test
 //   public void testReplaceWithNullMap()
 //   {
 //      try
@@ -245,7 +225,6 @@ public class ParametersTestCase
 //      }
 //   }
 
-//   @Test
 //   public void testReplaceWithInvalidMap()
 //   {
 //      Map[] maps = buildInvalidMaps();
@@ -265,7 +244,6 @@ public class ParametersTestCase
 //      }
 //   }
 
-//   @Test
 //   public void testReplace()
 //   {
 //      param.setValue("a", "b");
@@ -282,7 +260,6 @@ public class ParametersTestCase
 //      assertEquals(param.getValues("h"), new String[]{"_i"});
 //   }
 
-//   @Test
 //   public void testAppendWithInvalidMap()
 //   {
 //      Map[] maps = buildInvalidMaps();
@@ -305,7 +282,6 @@ public class ParametersTestCase
 //      }
 //   }
 
-//   @Test
 //   public void testAppend()
 //   {
 //      param.setValue("a", "b");
@@ -323,7 +299,6 @@ public class ParametersTestCase
 //      assertEquals(param.getValues("h"), new String[]{"_i"});
 //   }
 
-//   @Test
 //   public void testClear()
 //   {
 //      param.setValue("a", "b");

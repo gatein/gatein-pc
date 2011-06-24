@@ -45,10 +45,6 @@ import org.gatein.pc.portlet.state.consumer.ConsumerPortlet;
 import org.gatein.pc.portlet.state.producer.ProducerPortletInvoker;
 import org.gatein.pc.portlet.state.producer.ProducerPortlet;
 
-import static org.jboss.unit.api.Assert.*;
-
-import org.jboss.unit.api.pojo.annotations.Create;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +53,7 @@ import java.util.Set;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public class ConsumerStatefulPortletInvokerTestCase extends AbstractStatefulPortletInvokerTestCase
+public abstract class ConsumerStatefulPortletInvokerTestCase extends AbstractStatefulPortletInvokerTestCase
 {
    public ConsumerStatefulPortletInvokerTestCase(boolean persistLocally)
    {
@@ -85,7 +81,6 @@ public class ConsumerStatefulPortletInvokerTestCase extends AbstractStatefulPort
    /** . */
    protected StateConverter stateConverter;
 
-   @Create
    public void setUp() throws Exception
    {
       consumer = new ConsumerPortletInvoker();

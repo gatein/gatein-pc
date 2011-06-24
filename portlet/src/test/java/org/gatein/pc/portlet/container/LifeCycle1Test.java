@@ -22,21 +22,17 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container;
 
-import org.jboss.unit.api.pojo.annotations.Test;
-import org.jboss.unit.api.pojo.annotations.Create;
+import junit.framework.TestCase;
 import org.gatein.pc.portlet.impl.container.PortletApplicationLifeCycle;
 import org.gatein.pc.portlet.impl.container.PortletFilterLifeCycle;
 import org.gatein.pc.portlet.impl.container.PortletContainerLifeCycle;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
 
-import static org.jboss.unit.api.Assert.*;
-
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class LifeCycle1Test
+public class LifeCycle1Test extends TestCase
 {
 
    ManagedObjectRegistryEventList events;
@@ -49,8 +45,8 @@ public class LifeCycle1Test
    PortletFilterLifeCycle filterLC;
    PortletContainerLifeCycle containerLC;
 
-   @Create
-   public void create()
+   @Override
+   protected void setUp() throws Exception
    {
       events = new ManagedObjectRegistryEventList();
 
@@ -89,7 +85,6 @@ public class LifeCycle1Test
       assertEquals(filterStatus, filterLC.getStatus());
    }
 
-   @Test
    public void testWiring()
    {
       events.assertAddedEvent(filterLC);
@@ -110,7 +105,6 @@ public class LifeCycle1Test
       assertSame(filter, container.filters.get(filter.getId()));
    }
 
-   @Test
    public void testApplicationLifeCycle()
    {
       events.clear();
@@ -143,7 +137,6 @@ public class LifeCycle1Test
       events.assertEmpty();
    }
 
-   @Test
    public void testFilterLifeCycle()
    {
       events.clear();
@@ -180,7 +173,6 @@ public class LifeCycle1Test
       events.assertEmpty();
    }
 
-   @Test
    public void testContainerLifeCycle()
    {
       events.clear();
@@ -208,7 +200,6 @@ public class LifeCycle1Test
       events.assertEmpty();
    }
 
-   @Test
    public void testContainerFailsOnStart()
    {
       events.clear();
@@ -275,7 +266,6 @@ public class LifeCycle1Test
       events.assertEmpty();
    }
 
-   @Test
    public void testApplicationFailsOnStart()
    {
       events.clear();
@@ -306,7 +296,6 @@ public class LifeCycle1Test
       events.assertEmpty();
    }
 
-   @Test
    public void testFilterFailsOnStart()
    {
       events.clear();
@@ -368,7 +357,6 @@ public class LifeCycle1Test
       events.assertEmpty();
    }
 
-   @Test
    public void testContainerFailsOnStop()
    {
       container.stopCallback = ObjectSupport.FAILURE_CALLBACK;
@@ -377,7 +365,6 @@ public class LifeCycle1Test
       testApplicationLifeCycle();
    }
 
-   @Test
    public void testApplicationFailsOnStop()
    {
       application.stopCallback = ObjectSupport.FAILURE_CALLBACK;
@@ -386,7 +373,6 @@ public class LifeCycle1Test
       testApplicationLifeCycle();
    }
 
-   @Test
    public void testFilterFailsOnStop()
    {
       filter.stopCallback = ObjectSupport.FAILURE_CALLBACK;

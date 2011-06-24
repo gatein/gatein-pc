@@ -22,12 +22,11 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet;
 
+import junit.framework.TestCase;
 import org.gatein.common.util.MapBuilder;
 import org.gatein.pc.api.OpaqueStateString;
 import org.gatein.pc.api.ParametersStateString;
 import org.gatein.pc.api.StateString;
-import static org.jboss.unit.api.Assert.assertEquals;
-import org.jboss.unit.api.pojo.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,11 +39,9 @@ import java.util.Map;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class StateStringTestCase
+public class StateStringTestCase extends TestCase
 {
 
-   @Test
    public void testMarshalling() throws IOException
    {
       check(new OpaqueStateString("blah"));
