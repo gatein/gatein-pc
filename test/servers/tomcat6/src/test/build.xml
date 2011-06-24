@@ -20,6 +20,7 @@
       <path refid="portal-portlet"/>
       <path refid="jboss-unit"/>
       <path refid="jboss-xb"/>
+      <path refid="staxnav"/>
       <pathelement location="${apache-xerces:xercesImpl:jar}"/>
       <pathelement location="${apache-xerces:xml-apis:jar}"/>
       <pathelement location="${apache-xerces:resolver:jar}"/>

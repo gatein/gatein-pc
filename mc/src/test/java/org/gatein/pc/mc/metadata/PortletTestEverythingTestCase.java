@@ -38,9 +38,6 @@ import org.gatein.pc.portlet.impl.metadata.portlet.PortletPreferencesMetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.SecurityRoleRefMetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.SupportedLocaleMetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.SupportsMetaData;
-import org.jboss.unit.api.pojo.annotations.Test;
-
-import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
@@ -49,14 +46,13 @@ import static org.jboss.unit.api.Assert.*;
 public class PortletTestEverythingTestCase extends AbstractMetaDataTestCase
 {
 
-   @Test
    public void test01()
    {
       try
       {
          String xmlFile = "metadata/portlet/portlet1.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication10MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
          assertEquals("1.0", md.getVersion());
@@ -212,19 +208,17 @@ public class PortletTestEverythingTestCase extends AbstractMetaDataTestCase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         throw fail(e);
       }
    }
 
-   @Test
    public void test02()
    {
       try
       {
          String xmlFile = "metadata/portlet/portlet2.xml";
 
-         PortletApplication20MetaData md = this.unmarshall20(xmlFile);
+         PortletApplication20MetaData md = this._unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -372,19 +366,17 @@ public class PortletTestEverythingTestCase extends AbstractMetaDataTestCase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         throw fail(e);
       }
    }
 
-   @Test
    public void test021()
    {
       try
       {
          String xmlFile = "metadata/portlet/portlet2-jsr286.xml";
 
-         PortletApplication20MetaData md = this.unmarshall20(xmlFile);
+         PortletApplication20MetaData md = this._unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -494,12 +486,10 @@ public class PortletTestEverythingTestCase extends AbstractMetaDataTestCase
          assertEquals("value1", p1.getContainerRuntimeOptions().get("option1").getValues().get(0));
          assertEquals("value2", p1.getContainerRuntimeOptions().get("option1").getValues().get(1));
          assertEquals("value3", p1.getContainerRuntimeOptions().get("option2").getValues().get(0));
-
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         throw fail(e);
       }
    }
 

@@ -29,9 +29,6 @@ import org.gatein.pc.portlet.impl.metadata.ListenerMetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.portlet.impl.metadata.PublicRenderParameterMetaData;
-import org.jboss.unit.api.pojo.annotations.Test;
-
-import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
@@ -40,44 +37,41 @@ import static org.jboss.unit.api.Assert.*;
 public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
 {
 
-   @Test
    public void test01()
    {
       try
       {
-         PortletApplication10MetaData md = this.unmarshall10("metadata/general/portlet1.xml");
+         PortletApplication10MetaData md = _unmarshall10("metadata/general/portlet1.xml");
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
          assertEquals("1.0", md.getVersion());
       }
       catch (Exception e)
       {
-         fail(e, "No exception expected");
+         throw fail(e, "No exception expected");
       }
    }
 
-   @Test
    public void test02()
    {
       try
       {
-         PortletApplication20MetaData md = unmarshall20("metadata/general/portlet2.xml");
+         PortletApplication20MetaData md = _unmarshall10("metadata/general/portlet2.xml");
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
       }
       catch (Exception e)
       {
-         fail(e, "No exception expected");
+         throw fail(e, "No exception expected");
       }
    }
 
-   @Test
    public void test021()
    {
       try
       {
-         PortletApplication20MetaData md = unmarshall20("metadata/general/portlet2-jsr286.xml");
+         PortletApplication20MetaData md = _unmarshall10("metadata/general/portlet2-jsr286.xml");
          assertEquals("2.0", md.getVersion());
          assertTrue(md instanceof PortletApplication20MetaData);
 
@@ -103,19 +97,21 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
          assertEquals("Beschreibung", listener1.getDescription().getString(new Locale("de"), false));
             
          assertNotNull(md.getListeners().get(1));
+
+         assertEquals("MyResourceBundle", md.getResourceBundle());
+         assertEquals(new URI("foobar"), md.getDefaultNamespace());
       }
       catch (Exception e)
       {
-        fail(e, "No exception expected");
+        throw fail(e, "No exception expected");
       }
    }
    
-   @Test
    public void test01_generated()
    {
       try
       {
-         PortletApplication10MetaData md = unmarshall10("metadata/general/portlet-app_1_0.xml");
+         PortletApplication10MetaData md = _unmarshall10("metadata/general/portlet-app_1_0.xml");
 
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
@@ -125,22 +121,21 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
       }
       catch(Exception e)
       {
-        fail(e, "No exception expected");
+        throw fail(e, "No exception expected");
       }
    }
    
-   @Test
    public void test02_generated()
    {
       try
       {
-         PortletApplication20MetaData md = this.unmarshall20("metadata/general/portlet-app_2_0.xml");
+         PortletApplication20MetaData md = _unmarshall10("metadata/general/portlet-app_2_0.xml");
          assertEquals("2.0", md.getVersion());
          assertTrue(md instanceof PortletApplication20MetaData);
       }
       catch(Exception e)
       {
-        fail(e, "No exception expected");
+        throw fail(e, "No exception expected");
       }
    }
 }

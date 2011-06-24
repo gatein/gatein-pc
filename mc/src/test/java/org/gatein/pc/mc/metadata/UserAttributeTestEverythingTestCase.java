@@ -27,9 +27,6 @@ import java.util.Locale;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.portlet.impl.metadata.UserAttributeMetaData;
-import org.jboss.unit.api.pojo.annotations.Test;
-
-import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
@@ -38,14 +35,13 @@ import static org.jboss.unit.api.Assert.*;
 public class UserAttributeTestEverythingTestCase extends AbstractMetaDataTestCase
 {
 
-   @Test
    public void test01()
    {
       try
       {
          String xmlFile = "metadata/userAttribute/portlet1.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication10MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
 
@@ -68,14 +64,13 @@ public class UserAttributeTestEverythingTestCase extends AbstractMetaDataTestCas
       }
    }
 
-   @Test
    public void test02()
    {
       try
       {
          String xmlFile = "metadata/userAttribute/portlet2.xml";
 
-         PortletApplication20MetaData md = this.unmarshall20(xmlFile);
+         PortletApplication20MetaData md = this._unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
 

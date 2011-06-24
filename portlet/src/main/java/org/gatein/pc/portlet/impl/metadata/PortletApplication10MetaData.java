@@ -125,7 +125,7 @@ public class PortletApplication10MetaData
 
    public PortletMetaData getPortlet(String portletName)
    {
-      return portlets.get(portletName);
+      return portlets != null ? portlets.get(portletName) : null;
    }
    
    public void addPortlet(PortletMetaData portlet)

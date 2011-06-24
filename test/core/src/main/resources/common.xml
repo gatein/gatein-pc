@@ -50,6 +50,10 @@
          <pathelement location="${org.jboss:jbossxb:jar}"/>
       </path>
 
+      <path id="staxnav">
+         <pathelement location="${org.staxnav:staxnav.core:jar}"/>
+      </path>
+
       <path id="portal-common">
       </path>
 

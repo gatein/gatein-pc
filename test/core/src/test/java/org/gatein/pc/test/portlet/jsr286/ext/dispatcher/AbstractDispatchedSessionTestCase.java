@@ -70,7 +70,8 @@ public abstract class AbstractDispatchedSessionTestCase
             PortletSession session = request.getPortletSession(false);
             assertNotNull(session);
             assertTrue(session.isNew());
-            assertEquals("foo_dispatched_value", session.getAttribute("foo", sessionScope));
+            Object value = session.getAttribute("foo", sessionScope);
+            assertEquals("foo_dispatched_value", value);
 
             //
             return new InvokeGetResponse(response.createRenderURL().toString());

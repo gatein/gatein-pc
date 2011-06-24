@@ -26,6 +26,7 @@ import org.gatein.common.logging.Logger;
 import org.gatein.common.io.IOTools;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.mc.staxnav.PortletApplicationMetaDataBuilder;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
@@ -281,7 +282,14 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
             {
                in = IOTools.safeBufferedWrapper(url.openStream());
 
-               // Validate 
+               //
+               PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
+
+               //
+               return builder.build(in);
+
+/*
+               // Validate
                Unmarshaller unmarshaller = UnmarshallerFactory.newInstance().newUnmarshaller();
                unmarshaller.setNamespaceAware(true);
                unmarshaller.setSchemaValidation(false);
@@ -295,6 +303,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
 
                //
                return portletApplicationMD;
+*/
             }
             finally
             {
@@ -302,13 +311,9 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
             }
          }
       }
-      catch (IOException e)
+      catch (Exception e)
       {
          log.error("Cannot read portlet.xml", e);
-      }
-      catch (JBossXBException e)
-      {
-         log.error("Cannot parse portlet.xml", e);
       }
       return null;
    }

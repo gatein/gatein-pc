@@ -27,9 +27,6 @@ import java.util.Locale;
 import org.gatein.pc.portlet.impl.metadata.CustomPortletModeMetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
-import org.jboss.unit.api.pojo.annotations.Test;
-
-import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
@@ -39,14 +36,13 @@ public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTes
 {
 
    
-   @Test
    public void test01()
    {
       try
       {
          String xmlFile = "metadata/customPortletMode/portlet1.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication10MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
          assertEquals("1.0", md.getVersion());
@@ -67,7 +63,6 @@ public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTes
       }
    }
 
-   @Test
    public void test02()
    {
       try
@@ -75,7 +70,7 @@ public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTes
 
          String xmlFile = "metadata/customPortletMode/portlet2.xml";
 
-         PortletApplication20MetaData md = unmarshall20(xmlFile);
+         PortletApplication20MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -109,21 +104,9 @@ public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTes
       }
    }
 
-   @Test
-   public void test03()
+   public void test03() throws Exception
    {
-      try
-      {
-
-         String xmlFile = "metadata/customPortletMode/portlet1-fail.xml";
-
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
-         fail("portlet 2.0 properties are not allowed");
-      }
-      catch (Exception e)
-      {
-         // OK
-      }
+      String xmlFile = "metadata/customPortletMode/portlet1-fail.xml";
+      _unmarshall10(xmlFile, true);
    }
-
 }

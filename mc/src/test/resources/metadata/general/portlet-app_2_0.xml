@@ -49,8 +49,8 @@
     </supported-publishing-event>
     <supported-public-render-parameter>supported-public-render-parameter</supported-public-render-parameter>
     <container-runtime-option>
-      <name>name</name>
-      <value>value</value>
+      <name>portlet_container_runtime_option_name</name>
+      <value>portlet_container_runtime_option_value</value>
     </container-runtime-option>
   </portlet>
   <custom-portlet-mode id="id">
@@ -112,7 +112,7 @@
     <listener-class>listener-class</listener-class>
   </listener>
   <container-runtime-option>
-    <name>name</name>
-    <value>value</value>
+    <name>application_container_runtime_option_name</name>
+    <value>application_container_runtime_option_value</value>
   </container-runtime-option>
 </portlet-app>

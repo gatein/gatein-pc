@@ -24,9 +24,7 @@ package org.gatein.pc.mc.metadata;
 
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.portlet.impl.metadata.PublicRenderParameterMetaData;
-import org.jboss.unit.api.pojo.annotations.Test;
 
-import static org.jboss.unit.api.Assert.*;
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
@@ -34,7 +32,6 @@ import static org.jboss.unit.api.Assert.*;
 public class RenderParameterTestEverythingTestCase extends AbstractMetaDataTestCase
 {
 
-   @Test
    public void test02()
    {
       try
@@ -42,7 +39,7 @@ public class RenderParameterTestEverythingTestCase extends AbstractMetaDataTestC
 
          String xmlFile = "metadata/renderParameter/portlet2.xml";
 
-         PortletApplication20MetaData md = unmarshall20(xmlFile);
+         PortletApplication20MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -75,5 +72,4 @@ public class RenderParameterTestEverythingTestCase extends AbstractMetaDataTestC
          fail();
       }
    }
-
 }

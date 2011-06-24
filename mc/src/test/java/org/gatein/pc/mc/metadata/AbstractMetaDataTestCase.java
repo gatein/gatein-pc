@@ -26,16 +26,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 import org.gatein.pc.mc.metadata.factory.PortletApplicationModelFactory;
 import org.gatein.pc.mc.metadata.impl.AnnotationPortletApplication10MetaData;
 import org.gatein.pc.mc.metadata.impl.AnnotationPortletApplication20MetaData;
 import org.gatein.pc.mc.metadata.impl.ValueTrimmingFilter;
+import org.gatein.pc.mc.staxnav.PortletApplicationMetaDataBuilder;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 
 import static org.gatein.pc.portlet.impl.metadata.PortletMetaDataConstants.*;
 
-import org.jboss.unit.api.pojo.annotations.Parameter;
 import org.jboss.xb.binding.JBossXBException;
 import org.jboss.xb.binding.Unmarshaller;
 import org.jboss.xb.binding.UnmarshallerFactory;
@@ -43,14 +45,15 @@ import org.jboss.xb.binding.resolver.MutableSchemaResolver;
 import org.jboss.xb.binding.sunday.unmarshalling.SingletonSchemaResolverFactory;
 import org.jboss.xb.builder.JBossXBBuilder;
 import org.xml.sax.SAXException;
-import static org.jboss.unit.api.Assert.*;
 import org.jboss.util.xml.JBossEntityResolver;
+
+import javax.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-public abstract class AbstractMetaDataTestCase
+public abstract class AbstractMetaDataTestCase extends TestCase
 {
 
    /** Test parameter for using xml binding annotation. */
@@ -69,13 +72,7 @@ public abstract class AbstractMetaDataTestCase
    protected Unmarshaller unmarshaller = null;
 
    /** Annotation or ObjectModelFactory parsing. */
-   private String parser;
-
-   @Parameter(name = "parser")
-   public void setParser(String parser)
-   {
-      this.parser = parser;
-   }
+   private String parser = ANNOTATION_BINDING;
 
    static
    {
@@ -99,6 +96,55 @@ public abstract class AbstractMetaDataTestCase
       }
    }
 
+   protected PortletApplication20MetaData _unmarshall10(String file) throws JBossXBException, SAXException, IOException
+   {
+      return _unmarshall10(file, false);
+   }
+
+   protected PortletApplication20MetaData _unmarshall10(String file, boolean fail) throws JBossXBException, SAXException, IOException
+   {
+      try
+      {
+         PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
+         String path = getPath(file);
+         URL url = new URL(path);
+         InputStream in = url.openStream();
+         assertNotNull(in);
+         PortletApplication20MetaData build = builder.build(in);
+         if (fail)
+         {
+            throw new AssertionFailedError("Was expecting unmarshalling of " + file + " to fail");
+         }
+         return build;
+      }
+      catch (Exception e)
+      {
+         if (fail)
+         {
+            // OK
+            return null;
+         }
+         else
+         {
+            throw fail(e);
+         }
+      }
+   }
+
+   protected final Error fail(Throwable t)
+   {
+      AssertionFailedError afe = new AssertionFailedError();
+      afe.initCause(t);
+      throw afe;
+   }
+
+   protected final Error fail(Throwable t, String msg)
+   {
+      AssertionFailedError afe = new AssertionFailedError(msg);
+      afe.initCause(t);
+      throw afe;
+   }
+
    protected PortletApplication10MetaData unmarshall10(String file) throws JBossXBException, SAXException, IOException
    {
       if (ANNOTATION_BINDING.equals(parser))
@@ -111,7 +157,7 @@ public abstract class AbstractMetaDataTestCase
       }
       else
       {
-         throw new IllegalArgumentException("Wrong parameter for parser.");
+         throw new IllegalArgumentException("Wrong parameter for parser: " + parser);
       }
    }
 
@@ -127,7 +173,7 @@ public abstract class AbstractMetaDataTestCase
       }
       else
       {
-         throw new IllegalArgumentException("Wrong parameter for parser.");
+         throw new IllegalArgumentException("Wrong parameter for parser: " + parser);
       }
    }
 

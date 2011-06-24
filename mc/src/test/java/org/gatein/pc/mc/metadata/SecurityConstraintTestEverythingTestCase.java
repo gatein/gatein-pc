@@ -29,9 +29,7 @@ import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.PortletMetaData;
 import org.gatein.pc.portlet.impl.metadata.security.SecurityConstraintMetaData;
-import org.jboss.unit.api.pojo.annotations.Test;
 
-import static org.jboss.unit.api.Assert.*;
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
@@ -39,7 +37,6 @@ import static org.jboss.unit.api.Assert.*;
 public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTestCase
 {
 
-   @Test
    public void test01()
    {
       try
@@ -47,7 +44,7 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
 
          String xmlFile = "metadata/security/portlet1.xml";
 
-         PortletApplication10MetaData md = unmarshall10(xmlFile);
+         PortletApplication10MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
          assertEquals("1.0", md.getVersion());
@@ -87,8 +84,7 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         fail(e);
       }
    }
 
@@ -129,7 +125,6 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
    }
    */
 
-   @Test
    public void test02()
    {
       try
@@ -137,7 +132,7 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
 
          String xmlFile = "metadata/security/portlet2.xml";
 
-         PortletApplication20MetaData md = this.unmarshall20( xmlFile);
+         PortletApplication20MetaData md = this._unmarshall10( xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -173,8 +168,7 @@ public class SecurityConstraintTestEverythingTestCase extends AbstractMetaDataTe
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         fail(e);
       }
    }
    /*  

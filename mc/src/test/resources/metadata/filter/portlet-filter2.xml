@@ -55,10 +55,12 @@
 		<lifecycle>ACTION_PHASE</lifecycle>
 	</filter>
 	
+<!--
 	<filter>
 		<filter-name>foo</filter-name>
 	</filter>
-	
+-->
+
 	<filter-mapping>
 		<filter-name>testFilter</filter-name>
 		<portlet-name>Portlet1</portlet-name>

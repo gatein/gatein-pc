@@ -28,9 +28,6 @@ import org.gatein.pc.api.LifeCyclePhase;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.portlet.impl.metadata.common.InitParamMetaData;
 import org.gatein.pc.portlet.impl.metadata.filter.FilterMetaData;
-import org.jboss.unit.api.pojo.annotations.Test;
-
-import static org.jboss.unit.api.Assert.*;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
@@ -39,29 +36,18 @@ import static org.jboss.unit.api.Assert.*;
 public class FilterTestEverythingTestCase extends AbstractMetaDataTestCase
 {
 
-   @Test
-   public void test01()
+   public void test01() throws Exception
    {
-      try
-      {
-         unmarshall10("metadata/filter/portlet-filter1.xml");
-         // no filters in jsr 168
-         fail();
-      }
-      catch (Exception e)
-      {
-         // ok
-      }
+      _unmarshall10("metadata/filter/portlet-filter1.xml", true);
    }
 
-   @Test
    public void test02()
    {
       try
       {
          String xmlFile = "metadata/filter/portlet-filter2.xml";
 
-         PortletApplication20MetaData md = unmarshall20(xmlFile);
+         PortletApplication20MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
 
