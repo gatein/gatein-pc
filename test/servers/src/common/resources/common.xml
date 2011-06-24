@@ -46,10 +46,6 @@
          <pathelement location="${org.jboss.logging:jboss-logging-log4j:jar}"/>
       </path>
 
-      <path id="jboss-xb">
-         <pathelement location="${org.jboss:jbossxb:jar}"/>
-      </path>
-
       <path id="staxnav">
          <pathelement location="${org.staxnav:staxnav.core:jar}"/>
       </path>

@@ -18,7 +18,6 @@
       <path refid="portal-common"/>
       <path refid="portal-web"/>
       <path refid="portal-portlet"/>
-      <path refid="jboss-xb"/>
       <path refid="staxnav"/>
       <path location="${org.jboss:jboss-common-core:jar}"/>
    </path>

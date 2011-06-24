@@ -19,7 +19,6 @@
       <path refid="portal-web"/>
       <path refid="portal-portlet"/>
       <path refid="jboss-unit"/>
-      <path refid="jboss-xb"/>
       <path refid="staxnav"/>
       <pathelement path="${apache-xerces:xercesImpl:jar}"/>
       <pathelement path="${apache-xerces:resolver:jar}"/>

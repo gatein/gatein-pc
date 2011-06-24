@@ -28,26 +28,10 @@ import java.net.URL;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import org.gatein.pc.mc.metadata.factory.PortletApplicationModelFactory;
-import org.gatein.pc.mc.metadata.impl.AnnotationPortletApplication10MetaData;
-import org.gatein.pc.mc.metadata.impl.AnnotationPortletApplication20MetaData;
-import org.gatein.pc.mc.metadata.impl.ValueTrimmingFilter;
 import org.gatein.pc.mc.staxnav.PortletApplicationMetaDataBuilder;
-import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 
-import static org.gatein.pc.portlet.impl.metadata.PortletMetaDataConstants.*;
-
-import org.jboss.xb.binding.JBossXBException;
-import org.jboss.xb.binding.Unmarshaller;
-import org.jboss.xb.binding.UnmarshallerFactory;
-import org.jboss.xb.binding.resolver.MutableSchemaResolver;
-import org.jboss.xb.binding.sunday.unmarshalling.SingletonSchemaResolverFactory;
-import org.jboss.xb.builder.JBossXBBuilder;
 import org.xml.sax.SAXException;
-import org.jboss.util.xml.JBossEntityResolver;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
@@ -59,49 +43,15 @@ public abstract class AbstractMetaDataTestCase extends TestCase
    /** Test parameter for using xml binding annotation. */
    public static final String ANNOTATION_BINDING = "annotation";
 
-   /** Test parameter for using the ObjectModelFactory. */
-   public static final String FACTORY_BINDING = "factory";
-
-   /** The schema resolver factory. */
-   protected static SingletonSchemaResolverFactory factory;
-
-   /** The schema resolver. */
-   protected static MutableSchemaResolver resolver;
-
-   /** The unmarshaller. */
-   protected Unmarshaller unmarshaller = null;
-
    /** Annotation or ObjectModelFactory parsing. */
    private String parser = ANNOTATION_BINDING;
 
-   static
-   {
-      try
-      {
-         factory = SingletonSchemaResolverFactory.getInstance();
-         resolver =  factory.getSchemaBindingResolver();
-
-         JBossEntityResolver.registerEntity(PORTLET_JSR_168_NS, "metadata/portlet-app_1_0.xsd");
-         JBossEntityResolver.registerEntity(PORTLET_JSR_286_NS, "metadata/portlet-app_2_0.xsd");
-
-         /** SchemaResolver */
-         resolver.mapSchemaLocation(PORTLET_JSR_168_NS, "portlet-app_1_0.xsd");
-         resolver.mapSchemaLocation(PORTLET_JSR_286_NS, "portlet-app_2_0.xsd");
-         resolver.mapLocationToClass(PORTLET_JSR_286_NS, AnnotationPortletApplication20MetaData.class);
-         resolver.mapLocationToClass(PORTLET_JSR_168_NS, AnnotationPortletApplication10MetaData.class);
-      }
-      catch (Exception e)
-      {
-         e.printStackTrace();
-      }
-   }
-
-   protected PortletApplication20MetaData _unmarshall10(String file) throws JBossXBException, SAXException, IOException
+   protected PortletApplication20MetaData _unmarshall10(String file) throws SAXException, IOException
    {
       return _unmarshall10(file, false);
    }
 
-   protected PortletApplication20MetaData _unmarshall10(String file, boolean fail) throws JBossXBException, SAXException, IOException
+   protected PortletApplication20MetaData _unmarshall10(String file, boolean fail) throws SAXException, IOException
    {
       try
       {
@@ -143,64 +93,6 @@ public abstract class AbstractMetaDataTestCase extends TestCase
       AssertionFailedError afe = new AssertionFailedError(msg);
       afe.initCause(t);
       throw afe;
-   }
-
-   protected PortletApplication10MetaData unmarshall10(String file) throws JBossXBException, SAXException, IOException
-   {
-      if (ANNOTATION_BINDING.equals(parser))
-      {
-         return this.unmarshallAnnotation(file, AnnotationPortletApplication10MetaData.class);
-      }
-      else if (FACTORY_BINDING.equals(parser))
-      {
-         return this.unmarshallWithFactory(file);
-      }
-      else
-      {
-         throw new IllegalArgumentException("Wrong parameter for parser: " + parser);
-      }
-   }
-
-   protected PortletApplication20MetaData unmarshall20(String file) throws JBossXBException, SAXException, IOException
-   {
-      if (ANNOTATION_BINDING.equals(parser))
-      {
-         return this.unmarshallAnnotation(file, AnnotationPortletApplication20MetaData.class);
-      }
-      else if (FACTORY_BINDING.equals(parser))
-      {
-         return (PortletApplication20MetaData)this.unmarshallWithFactory(file);
-      }
-      else
-      {
-         throw new IllegalArgumentException("Wrong parameter for parser: " + parser);
-      }
-   }
-
-   private PortletApplication10MetaData unmarshallWithFactory(String file) throws JBossXBException
-   {
-      /** validate */
-      unmarshaller = UnmarshallerFactory.newInstance().newUnmarshaller();
-      unmarshaller.setNamespaceAware(true);
-      unmarshaller.setSchemaValidation(true);
-      unmarshaller.setValidation(true);
-
-      PortletApplicationModelFactory factory = new PortletApplicationModelFactory();
-      /** unmarshal */
-      return (PortletApplication10MetaData) unmarshaller.unmarshal(getStream(file), new ValueTrimmingFilter(factory),
-            null);
-   }
-
-   private <T> T unmarshallAnnotation(String file, Class<T> clazz) throws JBossXBException
-   {
-	    /** validate */
-	    unmarshaller = UnmarshallerFactory.newInstance().newUnmarshaller();
-	    unmarshaller.setNamespaceAware(true);
-	    unmarshaller.setSchemaValidation(true);
-	    unmarshaller.setValidation(true);
-     
-	    /** unmarshal */
-	    return clazz.cast(unmarshaller.unmarshal(getPath(file), JBossXBBuilder.build(clazz)));
    }
 
    protected String getPath(String file)

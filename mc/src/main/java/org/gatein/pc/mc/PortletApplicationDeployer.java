@@ -41,25 +41,13 @@ import org.gatein.pc.portlet.container.managed.PortletApplicationRegistry;
 import org.gatein.pc.portlet.impl.container.PortletApplicationLifeCycle;
 import org.gatein.pc.portlet.impl.container.PortletContainerLifeCycle;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
-import static org.gatein.pc.portlet.impl.metadata.PortletMetaDataConstants.PORTLET_JSR_168_NS;
-import static org.gatein.pc.portlet.impl.metadata.PortletMetaDataConstants.PORTLET_JSR_286_NS;
-import org.gatein.pc.mc.metadata.factory.PortletApplicationModelFactory;
-import org.gatein.pc.mc.metadata.impl.AnnotationPortletApplication10MetaData;
-import org.gatein.pc.mc.metadata.impl.AnnotationPortletApplication20MetaData;
-import org.gatein.pc.mc.metadata.impl.ValueTrimmingFilter;
 import org.gatein.wci.ServletContainer;
 import org.gatein.wci.ServletContainerFactory;
 import org.gatein.wci.WebApp;
 import org.gatein.wci.WebAppEvent;
 import org.gatein.wci.WebAppLifeCycleEvent;
 import org.gatein.wci.WebAppListener;
-import org.jboss.xb.binding.JBossXBException;
-import org.jboss.xb.binding.Unmarshaller;
-import org.jboss.xb.binding.UnmarshallerFactory;
-import org.jboss.xb.binding.resolver.MutableSchemaResolver;
-import org.jboss.xb.binding.sunday.unmarshalling.SingletonSchemaResolverFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
@@ -72,25 +60,6 @@ import java.util.Map;
  */
 public class PortletApplicationDeployer implements WebAppListener, PortletApplicationRegistry
 {
-
-   static
-   {
-      try
-      {
-         SingletonSchemaResolverFactory factory = SingletonSchemaResolverFactory.getInstance();
-         MutableSchemaResolver resolver = factory.getSchemaBindingResolver();
-
-         /** SchemaResolver */
-         resolver.mapSchemaLocation(PORTLET_JSR_168_NS, "portlet-app_1_0.xsd");
-         resolver.mapSchemaLocation(PORTLET_JSR_286_NS, "portlet-app_2_0.xsd");
-         resolver.mapLocationToClass(PORTLET_JSR_286_NS, AnnotationPortletApplication20MetaData.class);
-         resolver.mapLocationToClass(PORTLET_JSR_168_NS, AnnotationPortletApplication10MetaData.class);
-      }
-      catch (Exception e)
-      {
-         throw new Error(e);
-      }
-   }
 
    /** . */
    private Logger log = LoggerFactory.getLogger(PortletApplicationDeployer.class);
