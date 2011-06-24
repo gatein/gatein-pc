@@ -20,27 +20,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc;
+package org.gatein.pc.portlet.impl.deployment;
 
-import org.gatein.pc.portlet.container.PortletFilterContext;
-import org.gatein.pc.portlet.container.managed.ManagedPortletFilter;
+import org.gatein.pc.portlet.container.PortletContainerContext;
+import org.gatein.pc.portlet.container.managed.ManagedPortletContainer;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class PortletFilterContextImpl implements PortletFilterContext
+public class PortletContainerContextImpl implements PortletContainerContext
 {
 
-   ManagedPortletFilter managedPortletFilter;
+   /** . */
+   ManagedPortletContainer managedPortletContainer;
 
    public void managedStart()
    {
-      managedPortletFilter.managedStart();
+      managedPortletContainer.managedStart();
    }
 
    public void managedStop()
    {
-      managedPortletFilter.managedStop();
+      managedPortletContainer.managedStop();
    }
 }

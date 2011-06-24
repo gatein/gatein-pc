@@ -20,7 +20,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc;
+package org.gatein.pc.portlet.impl.deployment;
 
 import org.gatein.common.logging.Logger;
 import org.gatein.common.logging.LoggerFactory;

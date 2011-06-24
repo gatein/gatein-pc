@@ -20,7 +20,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc.metadata;
+package org.gatein.pc.portlet.deployment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ import java.net.URL;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import org.gatein.pc.mc.staxnav.PortletApplicationMetaDataBuilder;
+import org.gatein.pc.portlet.impl.deployment.staxnav.PortletApplicationMetaDataBuilder;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 
 import org.xml.sax.SAXException;

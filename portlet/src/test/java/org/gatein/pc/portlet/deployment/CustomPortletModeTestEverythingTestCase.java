@@ -20,47 +20,46 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc.metadata;
+package org.gatein.pc.portlet.deployment;
 
 import java.util.Locale;
 
+import org.gatein.pc.portlet.impl.metadata.CustomPortletModeMetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
-import org.gatein.pc.portlet.impl.metadata.UserAttributeMetaData;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-public class UserAttributeTestEverythingTestCase extends AbstractMetaDataTestCase
+public class CustomPortletModeTestEverythingTestCase extends AbstractMetaDataTestCase
 {
 
+   
    public void test01()
    {
       try
       {
-         String xmlFile = "metadata/userAttribute/portlet1.xml";
+         String xmlFile = "metadata/customPortletMode/portlet1.xml";
 
          PortletApplication10MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
+         assertEquals("1.0", md.getVersion());
+         assertNotNull(md.getCustomPortletModes());
 
-         UserAttributeMetaData umb = md.getUserAttributes().get("blub");
-         assertNotNull(umb);
-         assertEquals("notFoo", umb.getId());
-         assertNull(umb.getDescription());
+         CustomPortletModeMetaData cmd1 = md.getCustomPortletModes().get("Custom");
+         assertNotNull(cmd1);
+         assertEquals("mode1", cmd1.getId());
+         assertEquals("Custom", cmd1.getPortletMode());
+         assertEquals("portletMode1", cmd1.getDescription().getDefaultString());
+         assertEquals("eigener portlet modus", cmd1.getDescription().getString(new Locale("de"), false));
 
-         UserAttributeMetaData umd = md.getUserAttributes().get("foo");
-         assertNotNull(umd);
-         assertEquals("realFoo", umd.getId());
-         assertEquals("foobar", umd.getDescription().getDefaultString());
-         assertEquals("fuhbar", umd.getDescription().getString(new Locale("de"), true));
-
+         assertNotNull(md.getCustomPortletModes().get("Custom2"));
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         fail(e);
       }
    }
 
@@ -68,28 +67,46 @@ public class UserAttributeTestEverythingTestCase extends AbstractMetaDataTestCas
    {
       try
       {
-         String xmlFile = "metadata/userAttribute/portlet2.xml";
 
-         PortletApplication20MetaData md = this._unmarshall10(xmlFile);
+         String xmlFile = "metadata/customPortletMode/portlet2.xml";
+
+         PortletApplication20MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
+         assertEquals("2.0", md.getVersion());
 
-         UserAttributeMetaData umb = md.getUserAttributes().get("blub");
-         assertNotNull(umb);
-         assertEquals("notFoo", umb.getId());
-         assertNull(umb.getDescription());
+         CustomPortletModeMetaData cmd1 = md.getCustomPortletModes().get("Custom");
+         assertNotNull(cmd1);
+         assertEquals("Custom", cmd1.getPortletMode());
+         assertEquals("portletMode1", cmd1.getDescription().getDefaultString());         
+         assertEquals(true, cmd1.isPortalManaged());
+         assertEquals("cmode1", cmd1.getId());
+         
+         CustomPortletModeMetaData cmd2 = md.getCustomPortletModes().get("Custom2");
+         assertNotNull(cmd2);
+         assertEquals("Custom2", cmd2.getPortletMode());
+         assertEquals(false, cmd2.isPortalManaged());
 
-         UserAttributeMetaData umd = md.getUserAttributes().get("foo");
-         assertNotNull(umd);
-         assertEquals("realFoo", umd.getId());
-         assertEquals("foobar", umd.getDescription().getDefaultString());
-         assertEquals("fuhbar", umd.getDescription().getString(new Locale("de"), true));
+         CustomPortletModeMetaData cmd3 = md.getCustomPortletModes().get("Custom3");
+         assertNotNull(cmd3);
+         assertEquals("Custom3", cmd3.getPortletMode());
+
+         // default value
+         assertEquals(true, cmd3.isPortalManaged());
+         assertEquals("eigener portlet modus", cmd1.getDescription().getString(new Locale("de"), false));
+         assertEquals("Portlet Mode Three", cmd3.getDescription().getDefaultString());
+
+
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         fail();
+         fail(e);
       }
    }
 
+   public void test03() throws Exception
+   {
+      String xmlFile = "metadata/customPortletMode/portlet1-fail.xml";
+      _unmarshall10(xmlFile, true);
+   }
 }

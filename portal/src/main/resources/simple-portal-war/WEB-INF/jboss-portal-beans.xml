@@ -23,7 +23,7 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <deployment xmlns="urn:jboss:bean-deployer:2.0">
 
-   <bean name="PortletApplicationDeployer" class="org.gatein.pc.mc.PortletApplicationDeployer">
+   <bean name="PortletApplicationDeployer" class="org.gatein.pc.portlet.impl.deployment.PortletApplicationDeployer">
       <alias>PortletApplicationRegistry</alias>
       <property name="servletContainerFactory"><inject bean="ServletContainerFactory"/></property>
       <property name="containerPortletInvoker"><inject bean="ContainerPortletInvoker"/></property>

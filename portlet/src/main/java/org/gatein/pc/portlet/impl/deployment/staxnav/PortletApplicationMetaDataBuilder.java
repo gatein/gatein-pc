@@ -17,7 +17,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.pc.mc.staxnav;
+package org.gatein.pc.portlet.impl.deployment.staxnav;
 
 import org.gatein.common.i18n.LocaleFormat;
 import org.gatein.common.i18n.LocalizedString;

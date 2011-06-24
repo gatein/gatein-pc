@@ -24,7 +24,7 @@
 package org.gatein.pc.test;
 
 import org.gatein.wci.WebApp;
-import org.gatein.pc.mc.PortletApplicationDeployer;
+import org.gatein.pc.portlet.impl.deployment.PortletApplicationDeployer;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>

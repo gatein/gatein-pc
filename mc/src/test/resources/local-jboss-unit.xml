@@ -5,63 +5,63 @@
    xsi:schemaLocation="urn:jboss:jboss-unit:1.0 jboss-unit_1_0.xsd">
    <pojo>
       <test>
-         <class name="org.gatein.pc.mc.metadata.CustomPortletModeTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.CustomPortletModeTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.CustomWindowStateTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.CustomWindowStateTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.EventTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.EventTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.FilterTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.FilterTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.GeneralMetaDataTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.GeneralMetaDataTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.PortletTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.PortletTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.RenderParameterTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.RenderParameterTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.SecurityConstraintTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.SecurityConstraintTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>
          </parameter>
       </test>
       <test>
-         <class name="org.gatein.pc.mc.metadata.UserAttributeTestEverythingTestCase" />
+         <class name="org.gatein.pc.portlet.deployment.UserAttributeTestEverythingTestCase" />
          <parameter name="parser">
          	<value>annotation</value>
          	<value>factory</value>

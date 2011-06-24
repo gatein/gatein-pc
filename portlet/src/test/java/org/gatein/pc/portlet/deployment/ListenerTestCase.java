@@ -17,7 +17,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.pc.mc.metadata;
+package org.gatein.pc.portlet.deployment;
 
 import org.gatein.pc.portlet.impl.metadata.ListenerMetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;

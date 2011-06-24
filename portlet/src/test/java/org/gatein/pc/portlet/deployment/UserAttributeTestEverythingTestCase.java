@@ -20,42 +20,42 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc.metadata;
+package org.gatein.pc.portlet.deployment;
 
 import java.util.Locale;
 
-import org.gatein.pc.portlet.impl.metadata.CustomWindowStateMetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
+import org.gatein.pc.portlet.impl.metadata.UserAttributeMetaData;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-public class CustomWindowStateTestEverythingTestCase extends AbstractMetaDataTestCase
+public class UserAttributeTestEverythingTestCase extends AbstractMetaDataTestCase
 {
+
    public void test01()
    {
       try
       {
-
-         String xmlFile = "metadata/customWindowState/portlet1.xml";
+         String xmlFile = "metadata/userAttribute/portlet1.xml";
 
          PortletApplication10MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
-         assertEquals("1.0", md.getVersion());
 
-         CustomWindowStateMetaData cws1 = md.getCustomWindowStates().get("windowState1");
-         assertEquals("WindowState", cws1.getDescription().getDefaultString());
-         assertEquals("windowState1", cws1.getWindowState());
-         assertEquals("Offenes Fenster", cws1.getDescription().getString(new Locale("de"), false));
-         assertEquals("foo", cws1.getId());
-         CustomWindowStateMetaData cws2 = md.getCustomWindowStates().get("windowState2");
-         assertNotNull(cws2);
+         UserAttributeMetaData umb = md.getUserAttributes().get("blub");
+         assertNotNull(umb);
+         assertEquals("notFoo", umb.getId());
+         assertNull(umb.getDescription());
 
-         CustomWindowStateMetaData cws3 = md.getCustomWindowStates().get("windowState3");
-         assertEquals("drei", cws3.getId());
+         UserAttributeMetaData umd = md.getUserAttributes().get("foo");
+         assertNotNull(umd);
+         assertEquals("realFoo", umd.getId());
+         assertEquals("foobar", umd.getDescription().getDefaultString());
+         assertEquals("fuhbar", umd.getDescription().getString(new Locale("de"), true));
+
       }
       catch (Exception e)
       {
@@ -68,25 +68,22 @@ public class CustomWindowStateTestEverythingTestCase extends AbstractMetaDataTes
    {
       try
       {
+         String xmlFile = "metadata/userAttribute/portlet2.xml";
 
-         String xmlFile = "metadata/customWindowState/portlet2.xml";
-
-         PortletApplication20MetaData md = _unmarshall10(xmlFile);
+         PortletApplication20MetaData md = this._unmarshall10(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
-         assertEquals("2.0", md.getVersion());
 
-         CustomWindowStateMetaData cws1 = md.getCustomWindowStates().get("windowState1");
-         assertEquals("WindowState", cws1.getDescription().getDefaultString());
-         assertEquals("windowState1", cws1.getWindowState());
-         assertEquals("Offenes Fenster", cws1.getDescription().getString(new Locale("de"), false));
-         assertEquals("foo", cws1.getId());
-         
-         CustomWindowStateMetaData cws2 = md.getCustomWindowStates().get("windowState2");
-         assertNotNull(cws2);
+         UserAttributeMetaData umb = md.getUserAttributes().get("blub");
+         assertNotNull(umb);
+         assertEquals("notFoo", umb.getId());
+         assertNull(umb.getDescription());
 
-         CustomWindowStateMetaData cws3 = md.getCustomWindowStates().get("windowState3");
-         assertEquals("drei", cws3.getId());
+         UserAttributeMetaData umd = md.getUserAttributes().get("foo");
+         assertNotNull(umd);
+         assertEquals("realFoo", umd.getId());
+         assertEquals("foobar", umd.getDescription().getDefaultString());
+         assertEquals("fuhbar", umd.getDescription().getString(new Locale("de"), true));
       }
       catch (Exception e)
       {

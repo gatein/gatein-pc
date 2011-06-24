@@ -19,7 +19,6 @@
       <path refid="portal-web"/>
       <path refid="portal-portlet"/>
       <path refid="jboss-unit"/>
-      <path refid="staxnav"/>
       <pathelement path="${apache-xerces:xercesImpl:jar}"/>
       <pathelement path="${apache-xerces:resolver:jar}"/>
       <pathelement path="${apache-xerces.xml-apis:jar}"/>
@@ -27,6 +26,7 @@
    </path>
 
    <path id="Tomcat-7.0-shared">
+      <path refid="staxnav"/>
       <path refid="portal-common-shared"/>
       <path refid="portal-web-shared"/>
       <path refid="portal-portlet-shared"/>

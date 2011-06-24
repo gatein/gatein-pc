@@ -20,14 +20,13 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc.metadata;
+package org.gatein.pc.portlet.deployment;
 
 import java.util.Locale;
 
 import javax.xml.namespace.QName;
 
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
-import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.event.EventDefinitionMetaData;
 import org.gatein.pc.portlet.impl.metadata.event.EventDefinitionReferenceMetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.PortletMetaData;

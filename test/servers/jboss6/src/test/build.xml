@@ -18,11 +18,11 @@
       <path refid="portal-common"/>
       <path refid="portal-web"/>
       <path refid="portal-portlet"/>
-      <path refid="staxnav"/>
       <path location="${org.jboss:jboss-common-core:jar}"/>
    </path>
 
    <path id="JBoss-6-shared">
+      <path refid="staxnav"/>
       <path refid="portal-common-shared"/>
       <path refid="portal-web-shared"/>
       <path refid="portal-portlet-shared"/>

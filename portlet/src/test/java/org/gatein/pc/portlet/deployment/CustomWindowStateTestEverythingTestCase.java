@@ -20,51 +20,42 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc.metadata;
+package org.gatein.pc.portlet.deployment;
 
+import java.util.Locale;
+
+import org.gatein.pc.portlet.impl.metadata.CustomWindowStateMetaData;
+import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
-import org.gatein.pc.portlet.impl.metadata.PublicRenderParameterMetaData;
 
 /**
  * @author <a href="mailto:emuckenh@redhat.com">Emanuel Muckenhuber</a>
  * @version $Revision$
  */
-public class RenderParameterTestEverythingTestCase extends AbstractMetaDataTestCase
+public class CustomWindowStateTestEverythingTestCase extends AbstractMetaDataTestCase
 {
-
-   public void test02()
+   public void test01()
    {
       try
       {
 
-         String xmlFile = "metadata/renderParameter/portlet2.xml";
+         String xmlFile = "metadata/customWindowState/portlet1.xml";
 
-         PortletApplication20MetaData md = _unmarshall10(xmlFile);
+         PortletApplication10MetaData md = _unmarshall10(xmlFile);
          assertNotNull(md);
-         assertTrue(md instanceof PortletApplication20MetaData);
-         assertEquals("2.0", md.getVersion());
+         assertTrue(md instanceof PortletApplication10MetaData);
+         assertEquals("1.0", md.getVersion());
 
-         PublicRenderParameterMetaData prp1 = md.getPublicRenderParameters().get(0);
-         assertNotNull(prp1);
-         
-         assertEquals("blah", prp1.getIdentifier());
-         assertEquals("renderParameter1", prp1.getName());
-         
-         
-         PublicRenderParameterMetaData prp2 = md.getPublicRenderParameters().get(1);
-         assertEquals("foo", prp2.getQname().getLocalPart());
-         assertEquals("x", prp2.getQname().getPrefix());
-         assertEquals("http://someurl.com", prp2.getQname().getNamespaceURI());
+         CustomWindowStateMetaData cws1 = md.getCustomWindowStates().get("windowState1");
+         assertEquals("WindowState", cws1.getDescription().getDefaultString());
+         assertEquals("windowState1", cws1.getWindowState());
+         assertEquals("Offenes Fenster", cws1.getDescription().getString(new Locale("de"), false));
+         assertEquals("foo", cws1.getId());
+         CustomWindowStateMetaData cws2 = md.getCustomWindowStates().get("windowState2");
+         assertNotNull(cws2);
 
-         assertEquals("fooo", prp1.getAlias().get(0).getLocalPart());
-         assertEquals("rP1", prp1.getAlias().get(1).getLocalPart());
-
-         assertEquals("foo", prp2.getAlias().get(0).getLocalPart());
-         assertEquals("http://someurl.alias.com", prp2.getAlias().get(0).getNamespaceURI());
-         assertEquals("s", prp2.getAlias().get(0).getPrefix());
-         
-         assertEquals("render parameter foo", prp1.getDescription().getDefaultString());
-
+         CustomWindowStateMetaData cws3 = md.getCustomWindowStates().get("windowState3");
+         assertEquals("drei", cws3.getId());
       }
       catch (Exception e)
       {
@@ -72,4 +63,36 @@ public class RenderParameterTestEverythingTestCase extends AbstractMetaDataTestC
          fail();
       }
    }
+
+   public void test02()
+   {
+      try
+      {
+
+         String xmlFile = "metadata/customWindowState/portlet2.xml";
+
+         PortletApplication20MetaData md = _unmarshall10(xmlFile);
+         assertNotNull(md);
+         assertTrue(md instanceof PortletApplication20MetaData);
+         assertEquals("2.0", md.getVersion());
+
+         CustomWindowStateMetaData cws1 = md.getCustomWindowStates().get("windowState1");
+         assertEquals("WindowState", cws1.getDescription().getDefaultString());
+         assertEquals("windowState1", cws1.getWindowState());
+         assertEquals("Offenes Fenster", cws1.getDescription().getString(new Locale("de"), false));
+         assertEquals("foo", cws1.getId());
+         
+         CustomWindowStateMetaData cws2 = md.getCustomWindowStates().get("windowState2");
+         assertNotNull(cws2);
+
+         CustomWindowStateMetaData cws3 = md.getCustomWindowStates().get("windowState3");
+         assertEquals("drei", cws3.getId());
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
+         fail();
+      }
+   }
+
 }

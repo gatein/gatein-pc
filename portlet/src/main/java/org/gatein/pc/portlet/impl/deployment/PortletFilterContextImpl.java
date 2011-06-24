@@ -20,53 +20,27 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc;
+package org.gatein.pc.portlet.impl.deployment;
 
-import org.gatein.pc.portlet.container.PortletApplicationContext;
-import org.gatein.pc.portlet.container.managed.ManagedPortletApplication;
-import org.gatein.wci.WebApp;
-
-import javax.servlet.ServletContext;
+import org.gatein.pc.portlet.container.PortletFilterContext;
+import org.gatein.pc.portlet.container.managed.ManagedPortletFilter;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class PortletApplicationContextImpl implements PortletApplicationContext
+public class PortletFilterContextImpl implements PortletFilterContext
 {
 
-   /** . */
-   private final WebApp webApp;
-
-   ManagedPortletApplication managedPortletApplication;
-
-   public PortletApplicationContextImpl(WebApp webApp)
-   {
-      this.webApp = webApp;
-   }
-
-   public ServletContext getServletContext()
-   {
-      return webApp.getServletContext();
-   }
-
-   public String getContextPath()
-   {
-      return webApp.getContextPath();
-   }
-
-   public ClassLoader getClassLoader()
-   {
-      return webApp.getClassLoader();
-   }
+   ManagedPortletFilter managedPortletFilter;
 
    public void managedStart()
    {
-      managedPortletApplication.managedStart();
+      managedPortletFilter.managedStart();
    }
 
    public void managedStop()
    {
-      managedPortletApplication.managedStop();
+      managedPortletFilter.managedStop();
    }
 }

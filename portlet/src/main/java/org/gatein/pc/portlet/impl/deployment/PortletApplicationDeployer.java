@@ -20,13 +20,13 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.mc;
+package org.gatein.pc.portlet.impl.deployment;
 
 import org.gatein.common.logging.Logger;
 import org.gatein.common.io.IOTools;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvoker;
-import org.gatein.pc.mc.staxnav.PortletApplicationMetaDataBuilder;
+import org.gatein.pc.portlet.impl.deployment.staxnav.PortletApplicationMetaDataBuilder;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
@@ -47,6 +47,7 @@ import org.gatein.wci.WebApp;
 import org.gatein.wci.WebAppEvent;
 import org.gatein.wci.WebAppLifeCycleEvent;
 import org.gatein.wci.WebAppListener;
+import org.staxnav.ValueType;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -252,27 +253,13 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
                in = IOTools.safeBufferedWrapper(url.openStream());
 
                //
+               ValueType vt = null;
+
+               //
                PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
 
                //
                return builder.build(in);
-
-/*
-               // Validate
-               Unmarshaller unmarshaller = UnmarshallerFactory.newInstance().newUnmarshaller();
-               unmarshaller.setNamespaceAware(true);
-               unmarshaller.setSchemaValidation(false);
-               unmarshaller.setValidation(false);
-
-               //
-               PortletApplicationModelFactory factory = new PortletApplicationModelFactory();
-
-               // Unmarshal
-               PortletApplication10MetaData portletApplicationMD = (PortletApplication10MetaData)unmarshaller.unmarshal(in, new ValueTrimmingFilter(factory), null);
-
-               //
-               return portletApplicationMD;
-*/
             }
             finally
             {
