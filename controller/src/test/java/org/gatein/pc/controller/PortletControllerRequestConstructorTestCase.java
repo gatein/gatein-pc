@@ -31,8 +31,6 @@ import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
 import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.OpaqueStateString;
 import org.gatein.common.util.ParameterMap;
-import static org.jboss.unit.api.Assert.*;
-import org.jboss.unit.api.pojo.annotations.Test;
 
 import java.util.Map;
 import java.util.Collections;
@@ -41,8 +39,7 @@ import java.util.Collections;
  * @author <a href="mailto:julien@jboss-portal.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class PortletControllerRequestConstructorTestCase
+public class PortletControllerRequestConstructorTestCase extends junit.framework.TestCase
 {
 
    private String windowId = "foo";
@@ -53,7 +50,6 @@ public class PortletControllerRequestConstructorTestCase
    private PortletPageNavigationalState pageNS = new StateControllerContextImpl(new PortletControllerContextSupport()).createPortletPageNavigationalState(false);
    private Map<String, String[]> pageNSChanges = Collections.emptyMap();
 
-   @Test
    public void testWithNonNullArgs()
    {
       new PortletActionRequest(windowId, interactionState, body, windowNS, pageNS);
@@ -63,7 +59,6 @@ public class PortletControllerRequestConstructorTestCase
       new PortletResourceRequest(windowId, "foo", resourceState, body, new PortletResourceRequest.PageScope(windowNS, pageNS));
    }
 
-   @Test
    public void testWithNullWindowNavigationalState()
    {
       new PortletActionRequest(windowId, interactionState, body, null, pageNS);
@@ -71,7 +66,6 @@ public class PortletControllerRequestConstructorTestCase
       new PortletResourceRequest(windowId, "foo", resourceState, body, new PortletResourceRequest.PageScope(null, pageNS));
    }
 
-   @Test
    public void testNullPageNavigationalState()
    {
       new PortletActionRequest(windowId, interactionState, body, windowNS, null);
@@ -79,7 +73,6 @@ public class PortletControllerRequestConstructorTestCase
       new PortletResourceRequest(windowId, "foo", resourceState, body, new PortletResourceRequest.PageScope(windowNS, null));
    }
 
-   @Test
    public void testWithNullBody()
    {
       new PortletActionRequest(windowId, interactionState, null, windowNS, pageNS);
@@ -88,7 +81,6 @@ public class PortletControllerRequestConstructorTestCase
       new PortletResourceRequest(windowId, "foo", resourceState, null, new PortletResourceRequest.PageScope(windowNS, pageNS));
    }
 
-   @Test
    public void testWithNullResourceId()
    {
       new PortletResourceRequest(windowId, null, resourceState, body, new PortletResourceRequest.FullScope());
@@ -96,7 +88,6 @@ public class PortletControllerRequestConstructorTestCase
       new PortletResourceRequest(windowId, null, resourceState, body, new PortletResourceRequest.PageScope(windowNS, pageNS));
    }
 
-   @Test
    public void testNullWindowId()
    {
       try
@@ -141,7 +132,6 @@ public class PortletControllerRequestConstructorTestCase
       }
    }
 
-   @Test
    public void testNullInteractionState()
    {
       try
@@ -154,7 +144,6 @@ public class PortletControllerRequestConstructorTestCase
       }
    }
 
-   @Test
    public void testNullResourceState()
    {
       try
@@ -183,7 +172,6 @@ public class PortletControllerRequestConstructorTestCase
       }
    }
 
-   @Test
    public void testNullScope()
    {
       try

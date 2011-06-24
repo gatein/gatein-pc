@@ -36,14 +36,6 @@ import org.gatein.pc.controller.handlers.FailingEventHandler;
 import org.gatein.pc.controller.handlers.NoOpEventHandler;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.jboss.unit.api.pojo.annotations.Test;
-import org.jboss.unit.api.pojo.annotations.Create;
-
-import static org.jboss.unit.api.Assert.assertInstanceOf;
-import static org.jboss.unit.api.Assert.assertEquals;
-import static org.jboss.unit.api.Assert.assertTrue;
-import static org.jboss.unit.api.Assert.fail;
-import static org.jboss.unit.api.Assert.assertSame;
 
 import javax.xml.namespace.QName;
 
@@ -51,8 +43,7 @@ import javax.xml.namespace.QName;
  * @author <a href="mailto:julien@jboss-portal.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class EventControllerContextFailureTestCase
+public class EventControllerContextFailureTestCase extends junit.framework.TestCase
 {
 
    public static final String DST_WINDOW_ID = "/webappdst.dst";
@@ -84,8 +75,8 @@ public class EventControllerContextFailureTestCase
    /** . */
    private boolean called;
 
-   @Create
-   public void create()
+   @Override
+   protected void setUp() throws Exception
    {
       request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
       srcName = new QName("ns1", "src");
@@ -95,7 +86,6 @@ public class EventControllerContextFailureTestCase
       called = false;
    }
 
-   @Test
    public void testEventControllerContextFailsDuringEventConsumedCallback() throws PortletInvokerException
    {
       WiringEventControllerContext ecc = new WiringEventControllerContext()
@@ -113,7 +103,7 @@ public class EventControllerContextFailureTestCase
       fooPortlet.addHandler(new EventProducerActionHandler(srcName));
       barPortlet.addHandler(new NoOpEventHandler());
       ControllerResponse response = controller.process(context, request);
-      PageUpdateResponse updateResponse = assertInstanceOf(response, PageUpdateResponse.class);
+      PageUpdateResponse updateResponse = (PageUpdateResponse)response;
       assertEquals(PortletResponse.DISTRIBUTION_DONE, updateResponse.getEventDistributionStatus());
       assertTrue(called);
 
@@ -146,7 +136,6 @@ public class EventControllerContextFailureTestCase
       }
    }
 
-   @Test
    public void testEventControllerContextFailsDuringEventProducedCallback() throws PortletInvokerException
    {
       AbstractEventControllerContext ecc = new AbstractEventControllerContext()
@@ -162,7 +151,7 @@ public class EventControllerContextFailureTestCase
       context.setEventControllerContext(ecc);
       fooPortlet.addHandler(new EventProducerActionHandler(srcName));
       ControllerResponse response = controller.process(context, request);
-      PageUpdateResponse updateResponse = assertInstanceOf(response, PageUpdateResponse.class);
+      PageUpdateResponse updateResponse = (PageUpdateResponse)response;
       assertEquals(PortletResponse.DISTRIBUTION_DONE, updateResponse.getEventDistributionStatus());
       assertTrue(called);
 
@@ -193,7 +182,6 @@ public class EventControllerContextFailureTestCase
       }
    }
 
-   @Test
    public void testEventControllerContextFailsDuringEventFailedCallback() throws PortletInvokerException
    {
       WiringEventControllerContext ecc = new WiringEventControllerContext()
@@ -211,7 +199,7 @@ public class EventControllerContextFailureTestCase
       fooPortlet.addHandler(new EventProducerActionHandler(srcName));
       barPortlet.addHandler(new FailingEventHandler(new RuntimeException()));
       ControllerResponse response = controller.process(context, request);
-      PageUpdateResponse updateResponse = assertInstanceOf(response, PageUpdateResponse.class);
+      PageUpdateResponse updateResponse = (PageUpdateResponse)response;
       assertEquals(PortletResponse.DISTRIBUTION_DONE, updateResponse.getEventDistributionStatus());
       assertTrue(called);
 
@@ -244,7 +232,6 @@ public class EventControllerContextFailureTestCase
       }
    }
 
-   @Test
    public void testEventControllerContextFailsDuringEventDiscardedCallback() throws PortletInvokerException
    {
       WiringEventControllerContext ecc = new WiringEventControllerContext()
@@ -262,7 +249,7 @@ public class EventControllerContextFailureTestCase
       context.setEventControllerContext(ecc);
       fooPortlet.addHandler(new EventProducerActionHandler(srcName));
       ControllerResponse response = controller.process(context, request);
-      PageUpdateResponse updateResponse = assertInstanceOf(response, PageUpdateResponse.class);
+      PageUpdateResponse updateResponse = (PageUpdateResponse)response;
       assertEquals(PortletResponse.DISTRIBUTION_DONE, updateResponse.getEventDistributionStatus());
       assertTrue(called);
 

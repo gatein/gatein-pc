@@ -27,8 +27,6 @@ import org.gatein.pc.controller.event.PortletWindowEvent;
 import org.gatein.pc.controller.event.EventPhaseContext;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 
-import static org.jboss.unit.api.Assert.*;
-
 import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.Map;
@@ -144,19 +142,19 @@ public class WiringEventControllerContext implements EventControllerContext
 
       public PortletInvocationResponse assertConsumed()
       {
-         assertEquals(EVENT_CONSUMED, type);
+         junit.framework.Assert.assertEquals(EVENT_CONSUMED, type);
          return (PortletInvocationResponse)data;
       }
 
       public Throwable assertFailed()
       {
-         assertEquals(EVENT_FAILED, type);
+         junit.framework.Assert.assertEquals(EVENT_FAILED, type);
          return (Throwable)data;
       }
 
       public int assertDiscarded()
       {
-         assertEquals(EVENT_DISCARDED, type);
+         junit.framework.Assert.assertEquals(EVENT_DISCARDED, type);
          return (Integer)data;
       }
    }

@@ -22,9 +22,7 @@
  */
 package org.gatein.pc.controller;
 
-import static org.jboss.unit.api.Assert.*;
-
-import org.jboss.unit.api.pojo.annotations.Test;
+import junit.framework.TestCase;
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.PortletSupport;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -51,8 +49,7 @@ import java.util.HashMap;
  * @author <a href="mailto:julien@jboss-portal.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class PortletControllerRequestTestCase
+public class PortletControllerRequestTestCase extends TestCase
 {
 
    /** . */
@@ -85,7 +82,6 @@ public class PortletControllerRequestTestCase
    /** . */
    OpaqueStateString rs = new OpaqueStateString("rs");
 
-   @Test
    public void testPortletControllerActionRequest() throws PortletInvokerException
    {
       PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -112,7 +108,6 @@ public class PortletControllerRequestTestCase
       controller.process(context, action);
    }
 
-   @Test
    public void testPortletControllerRenderRequest() throws PortletInvokerException
    {
       invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -120,7 +115,6 @@ public class PortletControllerRequestTestCase
       controller.process(context, render);
    }
 
-   @Test
    public void testPortletControllerResourceRequestFullScope() throws PortletInvokerException
    {
       PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -150,7 +144,6 @@ public class PortletControllerRequestTestCase
       controller.process(context, fullServing3);
    }
 
-   @Test
    public void testPortletControllerResourceRequestPortletScope() throws PortletInvokerException
    {
       PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -182,7 +175,6 @@ public class PortletControllerRequestTestCase
       controller.process(context, portletServing3);
    }
 
-   @Test
    public void testPortletControllerResourceRequestPageScope() throws PortletInvokerException
    {
       PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);

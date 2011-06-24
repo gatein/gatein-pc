@@ -111,7 +111,7 @@ public final class PortletSupport implements Portlet
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
    {
-      Assert.assertNotNull(invocation);
+      junit.framework.Assert.assertNotNull(invocation);
 
       //
       if (invocationCount == handlers.size())

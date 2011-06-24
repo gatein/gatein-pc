@@ -20,29 +20,11 @@
       <!-- Dependencies for tests -->
 
       <dependency>
-         <groupId>org.jboss.unit</groupId>
-         <artifactId>jboss-unit-remote</artifactId>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>3.8.2</version>
          <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>hibernate</groupId>
-               <artifactId>hibernate3</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-log4j</groupId>
-               <artifactId>log4j</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-slide</groupId>
-               <artifactId>webdavlib</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-httpclient</groupId>
-               <artifactId>commons-httpclient</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
-
       <dependency>
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-portlet</artifactId>
@@ -58,45 +40,15 @@
          <scope>test</scope>
       </dependency>
 
-      <dependency>
-         <groupId>apache-xerces</groupId>
-         <artifactId>resolver</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>apache-xerces</groupId>
-         <artifactId>xercesImpl</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>apache-xerces</groupId>
-         <artifactId>xml-apis</artifactId>
-      </dependency>
-
    </dependencies>
 
    <build>
       <plugins>
          <plugin>
-            <groupId>org.jboss.unit</groupId>
-            <artifactId>jboss-unit-tooling-maven2</artifactId>
-            <executions>
-               <execution>
-                  <phase>test</phase>
-                  <goals>
-                     <goal>execute</goal>
-                  </goals>
-               </execution>
-            </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-               <failOnError>true</failOnError>
-               <testsuites>
-                  <testsuite>
-                     <config>local-jboss-unit.xml</config>
-                  </testsuite>
-               </testsuites>
-               <reports>
-                  <xml>target/tests/reports/xml</xml>
-                  <html>target/tests/reports/html</html>
-               </reports>
+               <skip>false</skip>
             </configuration>
          </plugin>
       </plugins>

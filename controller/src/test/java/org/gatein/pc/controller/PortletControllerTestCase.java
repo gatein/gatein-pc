@@ -22,6 +22,7 @@
  */
 package org.gatein.pc.controller;
 
+import junit.framework.TestCase;
 import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.controller.request.PortletRenderRequest;
 import org.gatein.pc.controller.state.PortletPageNavigationalState;
@@ -47,10 +48,6 @@ import org.gatein.pc.api.invocation.ActionInvocation;
 import org.gatein.pc.api.invocation.EventInvocation;
 import org.gatein.common.util.Tools;
 import org.gatein.pc.api.WindowState;
-import org.jboss.unit.api.pojo.annotations.Test;
-import org.jboss.unit.api.pojo.annotations.Create;
-
-import static org.jboss.unit.api.Assert.*;
 
 import javax.xml.namespace.QName;
 import java.util.HashMap;
@@ -59,8 +56,7 @@ import java.util.HashMap;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class PortletControllerTestCase
+public class PortletControllerTestCase extends TestCase
 {
 
    /** . */
@@ -78,13 +74,12 @@ public class PortletControllerTestCase
    public static final QName SRC_NAME = new QName("ns1", "src");
    public static final QName DST_NAME = new QName("ns2", "dest");
 
-   @Create
-   public void create()
+   @Override
+   protected void setUp() throws Exception
    {
       context.setEventControllerContext(eventControllerContext);
    }
 
-   @Test
    public void testPortletControllerRenderRequest() throws PortletInvokerException
    {
       invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -93,8 +88,9 @@ public class PortletControllerTestCase
       PortletWindowNavigationalState windowNS = new PortletWindowNavigationalState(portletNS, org.gatein.pc.api.Mode.EDIT, WindowState.MAXIMIZED);
       PortletRenderRequest render = new PortletRenderRequest(PortletInvokerSupport.FOO_PORTLET_ID, windowNS, new HashMap<String, String[]>(), pageNS);
       ControllerResponse response = controller.process(context, render);
-      PageUpdateResponse pageUpdate = assertInstanceOf(response, PageUpdateResponse.class);
-      PortletPageNavigationalState pageNS2 = assertNotNull(pageUpdate.getPageNavigationalState());
+      PageUpdateResponse pageUpdate = (PageUpdateResponse)response;
+      assertNotNull(pageUpdate.getPageNavigationalState());
+      PortletPageNavigationalState pageNS2 = pageUpdate.getPageNavigationalState();
       assertEquals(Tools.toSet(PortletInvokerSupport.FOO_PORTLET_ID), pageNS2.getPortletWindowIds());
       PortletWindowNavigationalState windowNS2 = pageNS2.getPortletWindowNavigationalState(PortletInvokerSupport.FOO_PORTLET_ID);
       assertNotNull(windowNS2);
@@ -103,13 +99,11 @@ public class PortletControllerTestCase
       assertEquals(WindowState.MAXIMIZED, windowNS2.getWindowState());
    }
 
-   @Test
    public void testAction() throws PortletInvokerException
    {
       testAction(false);
    }
 
-   @Test
    public void testActionPublishesAnEvent() throws PortletInvokerException
    {
       testAction(true);
@@ -165,11 +159,13 @@ public class PortletControllerTestCase
       //
       ControllerRequest request = context.createActionRequest(PortletInvokerSupport.FOO_PORTLET_ID);
       ControllerResponse response = controller.process(context, request);
-      PageUpdateResponse pageUpdate = assertInstanceOf(response, PageUpdateResponse.class);
-      PortletPageNavigationalState pageNS = assertNotNull(pageUpdate.getPageNavigationalState());
+      PageUpdateResponse pageUpdate = (PageUpdateResponse)response;
+      assertNotNull(pageUpdate.getPageNavigationalState());
+      PortletPageNavigationalState pageNS = pageUpdate.getPageNavigationalState();
 
       //
-      PortletWindowNavigationalState fooNS = assertNotNull(pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.FOO_PORTLET_ID));
+      assertNotNull(pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.FOO_PORTLET_ID));
+      PortletWindowNavigationalState fooNS = pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.FOO_PORTLET_ID);
       assertEquals(WindowState.MAXIMIZED, fooNS.getWindowState());
       assertEquals(org.gatein.pc.api.Mode.EDIT, fooNS.getMode());
       assertEquals(new OpaqueStateString("abc"), fooNS.getPortletNavigationalState());
@@ -180,7 +176,8 @@ public class PortletControllerTestCase
          assertEquals(Tools.toSet(PortletInvokerSupport.FOO_PORTLET_ID, PortletInvokerSupport.BAR_PORTLET_ID), pageNS.getPortletWindowIds());
 
          //
-         PortletWindowNavigationalState barNS = assertNotNull(pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.BAR_PORTLET_ID));
+         assertNotNull(pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.BAR_PORTLET_ID));
+         PortletWindowNavigationalState barNS = pageNS.getPortletWindowNavigationalState(PortletInvokerSupport.BAR_PORTLET_ID);
          assertEquals(WindowState.MINIMIZED, barNS.getWindowState());
          assertEquals(org.gatein.pc.api.Mode.HELP, barNS.getMode());
          assertEquals(new OpaqueStateString("def"), barNS.getPortletNavigationalState());
@@ -191,7 +188,6 @@ public class PortletControllerTestCase
       }
    }
 
-   @Test
    public void testActionThrowsPortletInvokerException() throws PortletInvokerException
    {
       final PortletInvokerException e = new PortletInvokerException();
@@ -218,7 +214,6 @@ public class PortletControllerTestCase
       }
    }
 
-   @Test
    public void testProcessActionProducedEventIsDistributed() throws PortletInvokerException
    {
       PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -304,7 +299,6 @@ public class PortletControllerTestCase
       barPortlet.assertInvocationCountIs(5);
    }
 
-   @Test
    public void testEventFloodDetection() throws PortletInvokerException
    {
       PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -321,7 +315,7 @@ public class PortletControllerTestCase
       fooPortlet.addHandler(eventProducerActionHandler);
       fooPortlet.addHandler(eventProducerEventHandler);
       ControllerResponse response = controller.process(context, request);
-      PageUpdateResponse updateResponse = assertInstanceOf(response, PageUpdateResponse.class);
+      PageUpdateResponse updateResponse = (PageUpdateResponse)response;
       assertEquals(PortletResponse.PRODUCED_EVENT_FLOODED, updateResponse.getEventDistributionStatus());
 
       //
@@ -330,11 +324,10 @@ public class PortletControllerTestCase
       fooPortlet.addHandler(eventProducerActionHandler);
       fooPortlet.addHandler(eventProducerEventHandler);
       response = controller.process(context, request);
-      updateResponse = assertInstanceOf(response, PageUpdateResponse.class);
+      updateResponse = (PageUpdateResponse)response;
       assertEquals(PortletResponse.CONSUMED_EVENT_FLOODED, updateResponse.getEventDistributionStatus());
    }
 
-   @Test
    public void testEventFloodInterruption() throws PortletInvokerException
    {
       PortletSupport fooPortlet = invoker.addPortlet(PortletInvokerSupport.FOO_PORTLET_ID);
@@ -356,7 +349,7 @@ public class PortletControllerTestCase
       });
       fooPortlet.addHandler(eventProducerActionHandler);
       ControllerResponse response = controller.process(context, request);
-      PageUpdateResponse updateResponse = assertInstanceOf(response, PageUpdateResponse.class);
+      PageUpdateResponse updateResponse = (PageUpdateResponse)response;
       assertEquals(PortletResponse.INTERRUPTED, updateResponse.getEventDistributionStatus());
    }
 }
