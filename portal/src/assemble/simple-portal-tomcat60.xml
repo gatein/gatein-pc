@@ -43,7 +43,6 @@
          <includes>
             <include>org.gatein.common:common-mc</include>
             <include>org.gatein.pc:pc-controller</include>
-            <include>org.gatein.pc:pc-mc</include>
 
             <include>jboss:jboss-common-logging-spi</include>
             <include>jboss:jboss-common-logging-log4j</include>

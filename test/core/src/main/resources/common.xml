@@ -69,7 +69,6 @@
 
       <path id="portal-portlet">
          <pathelement location="${org.gatein.pc:pc-controller:jar}"/>
-         <pathelement location="${org.gatein.pc:pc-mc:jar}"/>
       </path>
 
       <path id="portal-portlet-shared">

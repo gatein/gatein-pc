@@ -123,11 +123,6 @@
          </dependency>
          <dependency>
             <groupId>org.gatein.pc</groupId>
-            <artifactId>pc-mc</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.gatein.pc</groupId>
             <artifactId>pc-api</artifactId>
             <version>${project.version}</version>
          </dependency>
@@ -290,7 +285,6 @@
             <module>bridge</module>
             <module>federation</module>
             <module>management</module>
-            <module>mc</module>
             <module>test</module>
             <module>portal</module>
             <module>samples</module>
@@ -312,7 +306,6 @@
             <module>api</module>
             <module>portlet</module>
             <module>controller</module>
-            <module>mc</module>
             <module>test</module>
          </modules>
       </profile>
@@ -322,7 +315,6 @@
             <module>api</module>
             <module>portlet</module>
             <module>controller</module>
-            <module>mc</module>
             <module>portal</module>
             <module>samples</module>
          </modules>
@@ -337,7 +329,6 @@
             <module>bridge</module>
             <module>federation</module>
             <module>management</module>
-            <module>mc</module>
             <module>portal</module>
             <module>samples</module>
             <module>docs</module>

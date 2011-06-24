@@ -34,7 +34,6 @@
 
             <include>org.gatein.common:common-mc</include>
             <include>org.gatein.pc:pc-controller</include>
-            <include>org.gatein.pc:pc-mc</include>
 
             <include>org.jboss:jboss-common-core</include>
             <include>org.jboss.microcontainer:jboss-kernel</include>
