@@ -216,6 +216,23 @@
             <version>${version.jboss.logging}</version>
           </dependency>
 
+         <dependency>
+            <groupId>org.apache.portals.bridges</groupId>
+            <artifactId>portals-bridges-common</artifactId>
+            <version>${version.apache.portals.bridges}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+         </dependency>
+         <dependency>
+           <groupId>org.apache.maven</groupId>
+           <artifactId>maven-ant-tasks</artifactId>
+           <version>2.1.1</version>
+         </dependency>
+
       </dependencies>
    </dependencyManagement>
 
@@ -229,6 +246,7 @@
    </dependencies>
 
    <build>
+
       <plugins>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -241,7 +259,6 @@
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>2.1</version>
             <configuration>
                <archive>
                   <manifest>
@@ -254,12 +271,32 @@
       <pluginManagement>
          <plugins>
             <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>2.2</version>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>2.1.2</version>
+            </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-surefire-plugin</artifactId>
+               <version>2.3.1</version>
+            </plugin>
+            <plugin>
                <groupId>org.jboss.unit</groupId>
                <artifactId>jboss-unit-tooling-maven2</artifactId>
                <version>1.2.1</version>
             </plugin>
             <plugin>
+              <artifactId>maven-antrun-plugin</artifactId>
+              <version>1.6</version>
+            </plugin>
+            <plugin>
                <artifactId>maven-assembly-plugin</artifactId>
+               <version>2.2</version>
                <executions>
                   <execution>
                      <id>make-assembly</id>

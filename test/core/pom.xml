@@ -13,12 +13,6 @@
 
       <dependency>
          <groupId>org.gatein.common</groupId>
-         <artifactId>common-mc</artifactId>
-      </dependency>
-
-
-      <dependency>
-         <groupId>org.gatein.common</groupId>
          <artifactId>common-logging</artifactId>
       </dependency>
 
@@ -131,7 +125,6 @@
          <artifactId>jboss-remoting</artifactId>
       </dependency>
 
-
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-simple</artifactId>
@@ -178,7 +171,6 @@
      <dependency>
        <groupId>org.apache.maven</groupId>
        <artifactId>maven-ant-tasks</artifactId>
-       <version>2.1.1</version>
      </dependency>
 
    </dependencies>
@@ -281,7 +273,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.2</version>
         <executions>
           <execution>
             <goals>
@@ -293,7 +284,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.1.2</version>
         <executions>
           <execution>
             <goals>
@@ -306,7 +296,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2</version>
         <executions>
           <execution>
             <id>make-assembly</id>
@@ -326,9 +315,6 @@
 
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.6</version>
-        <dependencies>
-        </dependencies>
         <executions>
           <execution>
             <id>package-test</id>
