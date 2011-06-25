@@ -21,7 +21,8 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
    <modelVersion>4.0.0</modelVersion>
 
@@ -214,7 +215,7 @@
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging-log4j</artifactId>
             <version>${version.jboss.logging}</version>
-          </dependency>
+         </dependency>
 
          <dependency>
             <groupId>org.apache.portals.bridges</groupId>
@@ -223,14 +224,9 @@
          </dependency>
 
          <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.2</version>
-         </dependency>
-         <dependency>
-           <groupId>org.apache.maven</groupId>
-           <artifactId>maven-ant-tasks</artifactId>
-           <version>2.1.1</version>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-ant-tasks</artifactId>
+            <version>2.1.1</version>
          </dependency>
 
       </dependencies>
@@ -271,14 +267,14 @@
       <pluginManagement>
          <plugins>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jar-plugin</artifactId>
-              <version>2.2</version>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-jar-plugin</artifactId>
+               <version>2.2</version>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-source-plugin</artifactId>
-              <version>2.1.2</version>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-source-plugin</artifactId>
+               <version>2.1.2</version>
             </plugin>
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
@@ -291,8 +287,8 @@
                <version>1.2.1</version>
             </plugin>
             <plugin>
-              <artifactId>maven-antrun-plugin</artifactId>
-              <version>1.6</version>
+               <artifactId>maven-antrun-plugin</artifactId>
+               <version>1.6</version>
             </plugin>
             <plugin>
                <artifactId>maven-assembly-plugin</artifactId>
