@@ -32,7 +32,7 @@ import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class LifeCycle1Test extends TestCase
+public class LifeCycle1TestCase extends TestCase
 {
 
    ManagedObjectRegistryEventList events;

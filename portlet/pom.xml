@@ -59,6 +59,9 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
                <skip>false</skip>
+               <excludes>
+                  <exclude>**/*Test.java</exclude>
+               </excludes>
             </configuration>
          </plugin>
          <plugin>

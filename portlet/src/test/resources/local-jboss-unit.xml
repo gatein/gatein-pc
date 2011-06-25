@@ -29,10 +29,10 @@
          <class name="org.gatein.pc.test.portlet.StateStringTestCase"/>
       </test>
       <test>
-         <class name="org.gatein.pc.portlet.container.LifeCycle1Test"/>
+         <class name="org.gatein.pc.portlet.container.LifeCycle1TestCase"/>
       </test>
       <test>
-         <class name="org.gatein.pc.portlet.container.LifeCycleReentranceDetectionTest"/>
+         <class name="org.gatein.pc.portlet.container.LifeCycleReentranceDetectionTestCase"/>
       </test>
    </pojo>
 </jboss-unit>
