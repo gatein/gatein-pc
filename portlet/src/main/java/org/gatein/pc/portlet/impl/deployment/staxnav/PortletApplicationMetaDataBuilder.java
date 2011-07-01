@@ -187,6 +187,7 @@ public class PortletApplicationMetaDataBuilder
       PortletApplication20MetaData md = new PortletApplication20MetaData();
 
       XMLInputFactory factory = XMLInputFactory.newInstance();
+      factory.setProperty("javax.xml.stream.isCoalescing", true);
       XMLStreamReader stream = factory.createXMLStreamReader(is);
       StaxNavigator<Element> nav = new StaxNavigatorImpl<Element>(new Naming.Enumerated.Simple<Element>(Element.class, null), stream);
       
