@@ -22,84 +22,8 @@
       <plugins>
          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.5</version>
-
-            <dependencies>
-
-               <dependency>
-                  <groupId>org.jboss.unit</groupId>
-                  <artifactId>jboss-unit-tooling-ant</artifactId>
-                  <version>${version.jboss.unit}</version>
-               </dependency>
-               <dependency>
-                  <groupId>org.jboss.unit</groupId>
-                  <artifactId>jboss-unit</artifactId>
-                  <version>${version.jboss.unit}</version>
-               </dependency>
-
-               <dependency>
-                  <groupId>org.codehaus.cargo</groupId>
-                  <artifactId>cargo-ant</artifactId>
-                  <version>${version.cargo}</version>
-                  <exclusions>
-                     <exclusion>
-                        <groupId>ant</groupId>
-                        <artifactId>ant</artifactId>
-                     </exclusion>
-                  </exclusions>
-               </dependency>
-               <dependency>
-                 <groupId>org.jdom</groupId>
-                 <artifactId>jdom</artifactId>
-                 <version>1.1</version>
-               </dependency>
-               <dependency>
-                 <groupId>dom4j</groupId>
-                 <artifactId>dom4j</artifactId>
-                 <version>1.6.1</version>
-               </dependency>
-               <dependency>
-                 <groupId>jaxen</groupId>
-                 <artifactId>jaxen</artifactId>
-                 <version>1.1.1</version>
-               </dependency>
-            </dependencies>
-            <executions>
-               <execution>
-                  <id>test</id>
-                  <phase>test</phase>
-                  <configuration>
-                     <tasks>
-
-                        <property name="compile_classpath" refid="maven.compile.classpath" />
-                        <property name="runtime_classpath" refid="maven.runtime.classpath" />
-                        <property name="test_classpath" refid="maven.test.classpath" />
-                        <property name="plugin_classpath" refid="maven.plugin.classpath" />
-                        <property name="project.version" value="${project.version}" />
-                        <property name="basedir" value="${basedir}" />
-
-                        <condition property="cargo.debug" value="${test.cargo.debug}">
-                           <isset property="test.cargo.debug" />
-                        </condition>
-                        <condition property="cargo.debug" value="">
-                          <not>
-                            <isset property="test.cargo.debug" />
-                          </not>
-                        </condition>
-
-                        <ant antfile="${basedir}/src/test/build.xml" inheritRefs="true">
-                           <target name="tests" />
-                        </ant>
-
-                     </tasks>
-                  </configuration>
-                  <goals>
-                     <goal>run</goal>
-                  </goals>
-               </execution>
-            </executions>
          </plugin>
       </plugins>
-
    </build>
+
 </project>
