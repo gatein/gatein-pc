@@ -39,7 +39,6 @@
          <artifactId>log4j</artifactId>
       </dependency>
 
-
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit</artifactId>
@@ -114,19 +113,15 @@
         <artifactId>pc-test-core</artifactId>
         <scope>test</scope>
       </dependency>
-
       <dependency>
         <groupId>org.gatein.pc</groupId>
         <artifactId>pc-test-core</artifactId>
-        <version>${project.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
       </dependency>
-
       <dependency>
         <groupId>org.gatein.pc</groupId>
         <artifactId>pc-test-core</artifactId>
-        <version>${project.version}</version>
         <type>xml</type>
       </dependency>
 
@@ -149,13 +144,11 @@
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-core-uberjar</artifactId>
         <version>${version.cargo}</version>
-        <scope>test</scope>
       </dependency>
 
      <dependency>
        <groupId>org.apache.maven</groupId>
        <artifactId>maven-ant-tasks</artifactId>
-       <version>2.1.1</version>
      </dependency>
 
    </dependencies>
