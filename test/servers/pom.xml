@@ -66,11 +66,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-      </dependency>
-
-      <dependency>
         <groupId>concurrent</groupId>
         <artifactId>concurrent</artifactId>
         <scope>test</scope>

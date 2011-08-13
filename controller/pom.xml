@@ -14,7 +14,6 @@
       <dependency>
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-portlet</artifactId>
-         <type>jar</type>
       </dependency>
 
       <!-- Dependencies for tests -->
@@ -28,14 +27,6 @@
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-portlet</artifactId>
          <type>test-jar</type>
-         <scope>test</scope>
-      </dependency>
-
-      <!--TEST SCOPE-->
-
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-simple</artifactId>
          <scope>test</scope>
       </dependency>
 
