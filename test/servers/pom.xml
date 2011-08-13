@@ -143,7 +143,6 @@
       <dependency>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-core-uberjar</artifactId>
-        <version>${version.cargo}</version>
       </dependency>
 
      <dependency>
