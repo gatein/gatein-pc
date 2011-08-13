@@ -54,7 +54,7 @@ import org.gatein.pc.portlet.impl.metadata.security.UserDataConstraintMetaData;
 import org.staxnav.Naming;
 import org.staxnav.StaxNavException;
 import org.staxnav.StaxNavigator;
-import org.staxnav.StaxNavigatorImpl;
+import org.staxnav.StaxNavigatorFactory;
 import org.staxnav.ValueType;
 
 import javax.xml.namespace.QName;
@@ -189,7 +189,7 @@ public class PortletApplicationMetaDataBuilder
       XMLInputFactory factory = XMLInputFactory.newInstance();
       factory.setProperty("javax.xml.stream.isCoalescing", true);
       XMLStreamReader stream = factory.createXMLStreamReader(is);
-      StaxNavigator<Element> nav = new StaxNavigatorImpl<Element>(new Naming.Enumerated.Simple<Element>(Element.class, null), stream);
+      StaxNavigator<Element> nav = StaxNavigatorFactory.create(new Naming.Enumerated.Simple<Element>(Element.class, null), stream);
       
       nav.setTrimContent(true);
 
