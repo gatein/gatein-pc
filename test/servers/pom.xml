@@ -9,6 +9,201 @@
    <packaging>pom</packaging>
    <name>GateIn - Portlet Container (test - servers)</name>
 
+   <dependencies>
+
+      <dependency>
+         <groupId>org.gatein.common</groupId>
+         <artifactId>common-logging</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-wci</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-controller</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-portlet</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-api</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>log4j</groupId>
+         <artifactId>log4j</artifactId>
+      </dependency>
+
+
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>jboss-unit</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>cargo</groupId>
+               <artifactId>core</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>jboss-unit-remote</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>cargo</groupId>
+               <artifactId>core</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-httpclient</groupId>
+               <artifactId>commons-httpclient</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>jboss-unit-tooling-ant</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>portal-test</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>hibernate</groupId>
+               <artifactId>hibernate3</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-slide</groupId>
+               <artifactId>webdavlib</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>apache-httpclient</groupId>
+               <artifactId>commons-httpclient</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.unit</groupId>
+         <artifactId>portal-test-generic</artifactId>
+         <exclusions>
+            <exclusion>
+               <groupId>hibernate</groupId>
+               <artifactId>hibernate3</artifactId>
+           </exclusion>
+           <exclusion>
+               <groupId>apache-log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jboss.remoting</groupId>
+        <artifactId>jboss-remoting</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>concurrent</groupId>
+        <artifactId>concurrent</artifactId>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>jboss</groupId>
+        <artifactId>jboss-serialization</artifactId>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-jdk</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-log4j</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.ccpp</groupId>
+        <artifactId>ccpp</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>javax.portlet</groupId>
+        <artifactId>portlet-api</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.gatein.pc</groupId>
+        <artifactId>pc-test-core</artifactId>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.gatein.pc</groupId>
+        <artifactId>pc-test-core</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.gatein.pc</groupId>
+        <artifactId>pc-test-core</artifactId>
+        <version>${project.version}</version>
+        <type>xml</type>
+      </dependency>
+
+      <!-- JSTL for Tomcat -->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>taglibs</groupId>
+        <artifactId>standard</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-discovery</groupId>
+        <artifactId>commons-discovery</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-core-uberjar</artifactId>
+        <version>${version.cargo}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+       <groupId>org.apache.maven</groupId>
+       <artifactId>maven-ant-tasks</artifactId>
+       <version>2.1.1</version>
+     </dependency>
+
+   </dependencies>
+
    <profiles>
       <profile>
          <id>default-servers</id>
