@@ -9,9 +9,4 @@
    <packaging>jar</packaging>
    <name>GateIn - Portlet Container (JSR 168 API)</name>
 
-   <dependencies>
-
-   </dependencies>
-
-
 </project>
