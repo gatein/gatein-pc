@@ -40,8 +40,6 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 
-import static org.jboss.unit.api.Assert.*;
-
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
