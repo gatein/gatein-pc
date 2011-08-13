@@ -166,6 +166,13 @@
          <scope>test</scope>
       </dependency>
 
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-test-core</artifactId>
+         <version>${project.version}</version>
+         <type>xml</type>
+      </dependency>
+
       <!-- JSTL for Tomcat -->
       <dependency>
          <groupId>javax.servlet</groupId>
@@ -310,18 +317,6 @@
    <build>
       <plugins>
          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>copy-common-build.xml</id>
-                  <phase>process-resources</phase>
-                  <goals>
-                     <goal>copy</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <version>1.5</version>
 
@@ -387,10 +382,6 @@
                             <isset property="test.cargo.debug" />
                           </not>
                         </condition>
-
-                        <!-- location of common.xml shared between the different server's build.xml -->
-                        <!-- for now hardcode like that, it should be probably moved to the test-core package -->
-                        <property name="common.xml.file" value="${project.basedir}/../src/common/resources/common.xml" />
 
                         <ant antfile="${basedir}/src/test/build.xml" inheritRefs="true">
                            <target name="tests" />

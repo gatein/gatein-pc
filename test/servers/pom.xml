@@ -9,53 +9,6 @@
    <packaging>pom</packaging>
    <name>GateIn - Portlet Container (test - servers)</name>
 
-   <properties>
-      <test.common.xml>${project.build.directory}/common/common.xml</test.common.xml>
-   </properties>
-
-   <build>
-      <plugins>
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>1.4</version>
-            <inherited>false</inherited>
-            <executions>
-               <execution>
-                  <id>attach-artifacts</id>
-                  <phase>generate-resources</phase>
-                  <configuration>
-                     <artifacts>
-                        <artifact>
-                           <file>src/common/resources/common.xml</file>
-                           <type>xml</type>
-                        </artifact>
-                     </artifacts>
-                  </configuration>
-                  <goals>
-                     <goal>attach-artifact</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <configuration>
-               <artifactItems>
-                  <artifactItem>
-                     <groupId>org.gatein.pc</groupId>
-                     <artifactId>pc-test-servers</artifactId>
-                     <version>${project.version}</version>
-                     <type>xml</type>
-                     <outputDirectory>${project.build.directory}/common</outputDirectory>
-                     <destFileName>common.xml</destFileName>
-                  </artifactItem>
-               </artifactItems>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
-
    <profiles>
       <profile>
          <id>default-servers</id>
@@ -64,7 +17,7 @@
          </activation>
          <modules>
             <module>tomcat6</module>
-            <!--<module>tomcat7</module>-->
+            <module>tomcat7</module>
             <module>jboss51</module>
             <module>jboss6</module>
             <module>jetty6</module>
@@ -77,6 +30,7 @@
             <module>tomcat7</module>
             <module>jboss42</module>
             <module>jboss51</module>
+            <module>jboss6</module>
             <module>jetty6</module>
          </modules>
       </profile>

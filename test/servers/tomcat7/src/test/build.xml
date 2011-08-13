@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="tomcat-integration-test" default="tests">
 
-   <import file="${common.xml.file}"/>
+   <import file="${org.gatein.pc:pc-test-core:xml}"/>
 
    <!-- SYSTEM PROPERTIES -->
    <property environment="env"/>
