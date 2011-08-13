@@ -42,38 +42,10 @@
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit</artifactId>
-         <exclusions>
-           <exclusion>
-             <groupId>cargo</groupId>
-             <artifactId>core</artifactId>
-           </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-remote</artifactId>
-         <exclusions>
-           <exclusion>
-             <groupId>cargo</groupId>
-             <artifactId>core</artifactId>
-           </exclusion>
-           <exclusion>
-               <groupId>hibernate</groupId>
-               <artifactId>hibernate3</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-log4j</groupId>
-               <artifactId>log4j</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-slide</groupId>
-               <artifactId>webdavlib</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-httpclient</groupId>
-               <artifactId>commons-httpclient</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
@@ -82,42 +54,10 @@
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>portal-test</artifactId>
-         <exclusions>
-           <exclusion>
-               <groupId>hibernate</groupId>
-               <artifactId>hibernate3</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-log4j</groupId>
-               <artifactId>log4j</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-slide</groupId>
-               <artifactId>webdavlib</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>apache-httpclient</groupId>
-               <artifactId>commons-httpclient</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>portal-test-generic</artifactId>
-         <exclusions>
-           <exclusion>
-             <groupId>org.codehaus.cargo</groupId>
-             <artifactId>cargo-core-uberjar</artifactId>
-           </exclusion>
-           <exclusion>
-               <groupId>hibernate</groupId>
-               <artifactId>hibernate3</artifactId>
-           </exclusion>
-           <exclusion>
-               <groupId>apache-log4j</groupId>
-               <artifactId>log4j</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
 
       <dependency>

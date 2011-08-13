@@ -22,23 +22,19 @@
  ******************************************************************************/
 package org.gatein.pc.federation;
 
+import junit.framework.TestCase;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.federation.FederatingPortletInvoker;
 import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
 
 import java.util.HashSet;
 import java.util.ArrayList;
 
-import static org.jboss.unit.api.Assert.*;
-import org.jboss.unit.api.pojo.annotations.Test;
-
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public class NoInvokersTestCase
+public class NoInvokersTestCase extends TestCase
 {
-   @Test
    public void testNoFederated() throws PortletInvokerException
    {
       FederatingPortletInvoker federating = new FederatingPortletInvokerService();

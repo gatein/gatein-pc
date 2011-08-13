@@ -9,12 +9,101 @@
    <packaging>pom</packaging>
    <name>GateIn - Portlet Container (test)</name>
 
+   <properties>
+      <version.jboss.unit>1.2.3</version.jboss.unit>
+   </properties>
+
    <dependencyManagement>
       <dependencies>
          <dependency>
             <groupId>org.gatein.pc</groupId>
             <artifactId>pc-test-core</artifactId>
             <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.unit</groupId>
+            <artifactId>jboss-unit</artifactId>
+            <version>${version.jboss.unit}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>cargo</groupId>
+                <artifactId>core</artifactId>
+              </exclusion>
+            </exclusions>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.unit</groupId>
+            <artifactId>jboss-unit-remote</artifactId>
+            <version>${version.jboss.unit}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>cargo</groupId>
+                <artifactId>core</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>hibernate</groupId>
+                  <artifactId>hibernate3</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>apache-log4j</groupId>
+                  <artifactId>log4j</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>apache-slide</groupId>
+                  <artifactId>webdavlib</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>apache-httpclient</groupId>
+                  <artifactId>commons-httpclient</artifactId>
+               </exclusion>
+            </exclusions>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.unit</groupId>
+            <artifactId>jboss-unit-tooling-ant</artifactId>
+            <version>${version.jboss.unit}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.unit</groupId>
+            <artifactId>portal-test</artifactId>
+            <version>${version.jboss.unit}</version>
+            <exclusions>
+              <exclusion>
+                  <groupId>hibernate</groupId>
+                  <artifactId>hibernate3</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>apache-log4j</groupId>
+                  <artifactId>log4j</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>apache-slide</groupId>
+                  <artifactId>webdavlib</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>apache-httpclient</groupId>
+                  <artifactId>commons-httpclient</artifactId>
+               </exclusion>
+            </exclusions>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.unit</groupId>
+            <artifactId>portal-test-generic</artifactId>
+            <version>${version.jboss.unit}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-core-uberjar</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>hibernate</groupId>
+                  <artifactId>hibernate3</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>apache-log4j</groupId>
+                  <artifactId>log4j</artifactId>
+               </exclusion>
+            </exclusions>
          </dependency>
       </dependencies>
    </dependencyManagement>

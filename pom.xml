@@ -56,7 +56,6 @@
       <version.junit>4.6</version.junit>
 
       <!-- used in test module by maven-antrun-extended-plugin -->
-      <version.jboss.unit>1.2.3</version.jboss.unit>
       <version.cargo>1.0.3</version.cargo>
       <version.cargo.jetty.deployer>1.0.1</version.cargo.jetty.deployer>
       <version.cargo.jboss5.deployer>5.1.0.SP1</version.cargo.jboss5.deployer>
@@ -280,11 +279,6 @@
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-surefire-plugin</artifactId>
                <version>2.3.1</version>
-            </plugin>
-            <plugin>
-               <groupId>org.jboss.unit</groupId>
-               <artifactId>jboss-unit-tooling-maven2</artifactId>
-               <version>1.2.1</version>
             </plugin>
             <plugin>
                <artifactId>maven-antrun-plugin</artifactId>

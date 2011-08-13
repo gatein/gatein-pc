@@ -22,6 +22,7 @@
  */
 package org.gatein.pc.federation;
 
+import junit.framework.TestCase;
 import org.gatein.common.i18n.LocalizedString;
 import org.gatein.pc.api.NoSuchPortletException;
 import org.gatein.pc.api.Portlet;
@@ -34,9 +35,6 @@ import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.info.PortletInfoSupport;
-import org.jboss.unit.api.pojo.annotations.Create;
-import org.jboss.unit.api.pojo.annotations.Destroy;
-import org.jboss.unit.api.pojo.annotations.Test;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -48,7 +46,7 @@ import static org.jboss.unit.api.Assert.*;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public class FederatingPortletInvokerTestCase
+public class FederatingPortletInvokerTestCase extends TestCase
 {
 
    private static final PortletContext PORTLET = PortletContext.createPortletContext("/webapp.portlet", false);
@@ -72,7 +70,6 @@ public class FederatingPortletInvokerTestCase
    /** . */
    private PortletContext portletContext;
 
-   @Create
    public void setUp() throws Exception
    {
       federatingInvoker = new FederatingPortletInvokerService();
@@ -97,7 +94,6 @@ public class FederatingPortletInvokerTestCase
       assertEquals(PortletInvoker.LOCAL_PORTLET_INVOKER_ID, localInvoker.getId());
    }
 
-   @Destroy
    public void tearDown() throws Exception
    {
       federatedInvoker = null;
@@ -107,7 +103,6 @@ public class FederatingPortletInvokerTestCase
       portletContext = null;
    }
 
-   @Test
    public void testGetPortlets() throws PortletInvokerException
    {
       Set<Portlet> portlets = federatingInvoker.getPortlets();
@@ -122,7 +117,6 @@ public class FederatingPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetStatus() throws PortletInvokerException
    {
       assertEquals(PortletStatus.OFFERED, federatingInvoker.getStatus(REFERENCED_PORTLET));
@@ -132,7 +126,6 @@ public class FederatingPortletInvokerTestCase
       assertEquals(PortletStatus.OFFERED, localInvoker.getStatus(REFERENCED_LOCAL_PORTLET));
    }
 
-   @Test
    public void testFederation() throws PortletInvokerException
    {
       Collection federateds = federatingInvoker.getFederatedInvokers();
@@ -152,7 +145,6 @@ public class FederatingPortletInvokerTestCase
       assertEquals(localInvokerDelegate, federated.getPortletInvoker());
    }
 
-   @Test
    public void testInfo() throws PortletInvokerException
    {
       PortletInfo info = portlet.getInfo();
@@ -165,7 +157,6 @@ public class FederatingPortletInvokerTestCase
       assertEquals("FooPortlet", description.getDefaultString());
    }
 
-   @Test
    public void testGetPortletNonFederatedContext() throws PortletInvokerException
    {
       try
@@ -179,7 +170,6 @@ public class FederatingPortletInvokerTestCase
       }
    }
 
-   @Test
    public void testGetPortletOnFederatedInvoker() throws PortletInvokerException
    {
       PortletContext federatedContext = PortletContext.createPortletContext(federatedInvoker.getId() + PortletContext.INVOKER_SEPARATOR + portletContext.getId());
@@ -188,7 +178,6 @@ public class FederatingPortletInvokerTestCase
       assertEquals(samePortlet.getContext(), federatedContext);
    }
 
-   @Test
    public void testGetLocalPortlets() throws PortletInvokerException
    {
       Set<Portlet> localPortlets = federatingInvoker.getLocalPortlets();
@@ -198,7 +187,6 @@ public class FederatingPortletInvokerTestCase
       assertEquals(REFERENCED_LOCAL_PORTLET, localPortlet.getContext());
    }
 
-   @Test
    public void testGetRemotePortlets() throws PortletInvokerException
    {
       Set<Portlet> portlets = federatingInvoker.getRemotePortlets();
@@ -208,7 +196,6 @@ public class FederatingPortletInvokerTestCase
       assertEquals(REFERENCED_PORTLET, portlet.getContext());
    }
 
-   @Test
    public void testDelegatedResolution() throws PortletInvokerException
    {
       // create an invoker to check NullInvokerHandler behavior
