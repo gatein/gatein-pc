@@ -74,6 +74,10 @@
       <!-- Currently it forces 2.0.5.GA for groupId "jboss" and this is not present in the repo -->
       <version.jboss.logging>2.0.5.GA</version.jboss.logging>
 
+      <!-- maven-release-plugin -->
+      <useReleaseProfile>false</useReleaseProfile>
+      <arguments>-Prelease,all-servers</arguments>
+      <autoVersionSubmodules>true</autoVersionSubmodules>
       <preparationGoals>clean install</preparationGoals>
    </properties>
 
