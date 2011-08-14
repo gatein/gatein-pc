@@ -26,18 +26,28 @@
 
    <modelVersion>4.0.0</modelVersion>
 
-   <name>GateIn - Portlet Container</name>
+   <parent>
+      <groupId>org.gatein</groupId>
+      <artifactId>gatein-parent</artifactId>
+      <version>1.1.0-Beta02</version>
+   </parent>
 
    <groupId>org.gatein.pc</groupId>
    <artifactId>pc-parent</artifactId>
    <version>2.3.0-Beta05-SNAPSHOT</version>
    <packaging>pom</packaging>
 
-   <parent>
-      <groupId>org.gatein</groupId>
-      <artifactId>gatein-parent</artifactId>
-      <version>1.1.0-Beta02</version>
-   </parent>
+   <name>GateIn - Portlet Container</name>
+   <description>GateIn Portlet Container is the next generation portlet container on which GateIn Portal, and the Enterprise Portal
+      Platform are based. It provides a standard-compliant implementation of the JSR-286 Portlet 2.0 specification. It has been developed
+      with reusability in mind so that advanced users, who don't require a full-fledged portal, can leverage the portlet management services
+      it provides in their own applications. GateIn Portlet Container is available through the business-friendly LGPL open source license.</description>
+   <url>http://www.jboss.org/gatein/portletcontainer.html</url>
+   <inceptionYear>2003</inceptionYear>
+   <issueManagement>
+      <system>jira</system>
+      <url>https://issues.jboss.org/browse/GTNPC</url>
+   </issueManagement>
 
    <scm>
       <connection>scm:svn:http://anonsvn.jboss.org/repos/gatein/components/pc/trunk</connection>
@@ -66,6 +76,37 @@
 
       <preparationGoals>clean install</preparationGoals>
    </properties>
+
+   <organization>
+     <name>GateIn</name>
+     <url>http://www.gatein.org</url>
+   </organization>
+
+   <licenses>
+     <license>
+       <name>LGPL, version 2.1</name>
+       <url>http://www.opensource.org/licenses/lgpl-license.php</url>
+     </license>
+   </licenses>
+
+   <developers>
+     <developer>
+       <id>julien.viet</id>
+       <name>Julien Viet</name>
+       <email>julien.viet@exoplatform.com</email>
+       <roles>
+         <role>Lead</role>
+       </roles>
+     </developer>
+      <developer>
+        <id>chris.laprun</id>
+        <name>Christophe Laprun</name>
+        <email>claprun@redhat.com</email>
+        <roles>
+          <role>Developer</role>
+        </roles>
+      </developer>
+   </developers>
 
    <dependencyManagement>
       <dependencies>
