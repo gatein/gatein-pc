@@ -57,7 +57,7 @@
 
    <properties>
       <version.gatein.common>2.0.4-Beta03</version.gatein.common>
-      <version.gatein.wci>2.1.0-Beta01</version.gatein.wci>
+      <version.gatein.wci>2.1.0-Beta06</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
@@ -114,7 +114,7 @@
          <dependency>
             <groupId>org.gatein</groupId>
             <artifactId>gatein-dep</artifactId>
-            <version>1.1.0-Beta02</version>
+            <version>1.1.0-Beta06</version>
             <type>pom</type>
             <scope>import</scope>
          </dependency>
@@ -284,6 +284,12 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-ant-tasks</artifactId>
             <version>2.1.1</version>
+         </dependency>
+
+         <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
          </dependency>
 
       </dependencies>
