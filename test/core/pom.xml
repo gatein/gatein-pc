@@ -202,6 +202,21 @@
   </profiles>
 
   <build>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>org/gatein/pc/test/**/*.java</exclude>
+            </excludes>
+         </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
 
       <!-- Deploy the test jar and its sources -->

@@ -22,30 +22,23 @@
  ******************************************************************************/
 package org.gatein.pc.test.url;
 
+import junit.framework.TestCase;
 import org.gatein.common.util.ParameterMap;
-
-import static org.jboss.unit.api.Assert.*;
-import org.jboss.unit.api.pojo.annotations.Create;
-import org.jboss.unit.api.pojo.annotations.Test;
-import org.gatein.pc.test.url.CodecBuilder;
-import org.gatein.pc.test.url.ParameterEncoder;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public class EncoderTestCase
+public class EncoderTestCase extends TestCase
 {
 
    Tester tester;
 
-   @Create
    public void setUp() throws Exception
    {
       tester = new Tester();
    }
 
-   @Test
    public void testEncodeNoMeta()
    {
       ParameterMap result = tester.encode();
@@ -65,7 +58,6 @@ public class EncoderTestCase
       assertEquals(new String[]{"0"}, result.getValues("action"));
    }
 
-   @Test
    public void testEncodeOneMeta()
    {
       tester.meta("m1");
@@ -97,7 +89,6 @@ public class EncoderTestCase
       assertEquals(new String[]{"bar","foo"}, result.getValues("m1"));
    }
 
-   @Test
    public void testEncodeTwoMeta()
    {
       tester.meta("m1");

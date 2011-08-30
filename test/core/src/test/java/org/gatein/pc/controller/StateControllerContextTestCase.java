@@ -22,14 +22,13 @@
  ******************************************************************************/
 package org.gatein.pc.controller;
 
-import org.jboss.unit.api.pojo.annotations.Test;
+import junit.framework.TestCase;
 import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
 import org.gatein.pc.controller.state.PortletPageNavigationalState;
 import org.gatein.pc.controller.state.StateControllerContext;
 import org.gatein.pc.controller.state.PortletWindowNavigationalState;
 import org.gatein.pc.controller.state.PortletPageNavigationalStateSerialization;
 import org.gatein.pc.controller.event.EventControllerContext;
-import org.gatein.pc.controller.PortletControllerContext;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.ParametersStateString;
@@ -44,7 +43,6 @@ import org.gatein.common.NotYetImplemented;
 import org.gatein.common.io.IOTools;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.WindowState;
-import static org.jboss.unit.api.Assert.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,21 +53,18 @@ import java.util.List;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-@Test
-public class StateControllerContextTestCase
+public class StateControllerContextTestCase extends TestCase
 {
 
    /** . */
    private StateControllerContextImpl cc = new StateControllerContextImpl(dummyContext);
 
-   @Test
    public void testMarshalling1()
    {
       PortletPageNavigationalState pageNS = cc.createPortletPageNavigationalState(true);
       assertMarshallable(pageNS);
    }
 
-   @Test
    public void testMarshalling2()
    {
       ParametersStateString params = ParametersStateString.create();

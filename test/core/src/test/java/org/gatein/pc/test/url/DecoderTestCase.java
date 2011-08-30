@@ -22,32 +22,25 @@
  ******************************************************************************/
 package org.gatein.pc.test.url;
 
+import junit.framework.TestCase;
 import org.gatein.common.util.ParameterMap;
 
 import java.util.ArrayList;
-
-import static org.jboss.unit.api.Assert.*;
-import org.jboss.unit.api.pojo.annotations.Create;
-import org.jboss.unit.api.pojo.annotations.Test;
-import org.gatein.pc.test.url.CodecBuilder;
-import org.gatein.pc.test.url.ParameterDecoder;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public class DecoderTestCase
+public class DecoderTestCase extends TestCase
 {
 
    Tester tester;
 
-   @Create
    public void setUp() throws Exception
    {
       tester = new Tester();
    }
 
-   @Test
    public void testNoMeta()
    {
       tester.assertActual(0);
@@ -65,14 +58,12 @@ public class DecoderTestCase
       tester.checkAndReset();
    }
 
-   @Test
    public void testNoMetaCorruption()
    {
       tester.parameter("action", "a").assertFailed().checkAndReset();
       tester.parameter("action", "1").assertFailed().checkAndReset();
    }
 
-   @Test
    public void testOneMeta()
    {
       tester.builder.addMetaParameter("m1");
@@ -133,7 +124,6 @@ public class DecoderTestCase
       tester.checkAndReset();
    }
 
-   @Test
    public void testOneMetaCorruption()
    {
       tester.builder.addMetaParameter("m1");
@@ -148,7 +138,6 @@ public class DecoderTestCase
       tester.parameter("action", "10").parameter("m1", "foo").assertFailed().checkAndReset();
    }
 
-   @Test
    public void testTwoMeta()
    {
       tester.builder.addMetaParameter("m1");
