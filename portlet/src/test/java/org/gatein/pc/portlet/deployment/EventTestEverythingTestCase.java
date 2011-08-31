@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.deployment;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.xml.namespace.QName;
@@ -66,7 +67,10 @@ public class EventTestEverythingTestCase extends AbstractMetaDataTestCase
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
 
-         EventDefinitionMetaData emd = md.getEvents().get(0);
+         final List<EventDefinitionMetaData> eventDefinitions = md.getEvents();
+         assertEquals(2, eventDefinitions.size());
+
+         EventDefinitionMetaData emd = eventDefinitions.get(0);
          QName qname = emd.getQname();
          assertEquals("eventID", emd.getId());
          assertEquals("http://example.com/testEvents", qname.getNamespaceURI());
@@ -77,11 +81,14 @@ public class EventTestEverythingTestCase extends AbstractMetaDataTestCase
          assertEquals("descriptionDefaultLanguage", emd.getDescription().getString(new Locale("en"), false));
          assertEquals("Beschreibung in Deutsch", emd.getDescription().getString(new Locale("de"), false));
 
-         EventDefinitionMetaData emd2 = md.getEvents().get(1);
+         EventDefinitionMetaData emd2 = eventDefinitions.get(1);
          
          assertNull(emd2.getQname());
          assertEquals("hellouh", emd2.getName());
-         assertEquals("hello", emd2.getAlias().get(0).getLocalPart());
+         final List<QName> aliases = emd2.getAlias();
+         assertEquals(2, aliases.size());
+         assertEquals("hello", aliases.get(0).getLocalPart());
+         assertEquals(new QName("http://example.com/testEvents", "helloWithNS"), aliases.get(1));
 
          // portlet event reference testing
          PortletMetaData p1 = md.getPortlet("Portlet2");

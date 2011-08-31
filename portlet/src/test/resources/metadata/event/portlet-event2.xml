@@ -64,6 +64,7 @@
 	<event-definition>
 		<name>hellouh</name>
 		<alias>hello</alias>
+		<alias xmlns:x='http://example.com/testEvents'>x:helloWithNS</alias>
 	</event-definition>
 
 </portlet-app>
