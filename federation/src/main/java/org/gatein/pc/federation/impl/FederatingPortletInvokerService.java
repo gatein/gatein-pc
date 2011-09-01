@@ -128,9 +128,12 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       if (federatedPortletInvoker == null)
       {
          federatedPortletInvoker = nullHandler.resolvePortletInvokerFor(federatedId, this, compoundPortletId);
-         synchronized (this)
+         if (federatedPortletInvoker != null)
          {
-            invokerCache.put(federatedId, federatedPortletInvoker); // put newly resolved invoker in cache
+            synchronized (this)
+            {
+               invokerCache.put(federatedId, federatedPortletInvoker); // put newly resolved invoker in cache
+            }
          }
       }
       return federatedPortletInvoker;
