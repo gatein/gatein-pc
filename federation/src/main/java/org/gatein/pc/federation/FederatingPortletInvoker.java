@@ -49,7 +49,10 @@ public interface FederatingPortletInvoker extends PortletInvoker
    FederatedPortletInvoker registerInvoker(String federatedId, PortletInvoker registeredInvoker) throws IllegalArgumentException;
 
    /**
-    * Return a portlet invoker registered or null if not found
+    * Returns the registered FederatedPortletInvoker associated with the specified identifier, delegating to the {@link
+    * NullInvokerHandler} specified using {@link #setNullInvokerHandler(NullInvokerHandler)} if it's not initially
+    * resolved or returns <code>null</code> if a FederatedPortletInvoker is not found after going through the specified
+    * NullInvokerHandler resolution mechanism.
     *
     * @param federatedId the id
     * @return the invoker
@@ -58,11 +61,32 @@ public interface FederatingPortletInvoker extends PortletInvoker
    FederatedPortletInvoker getFederatedInvoker(String federatedId) throws IllegalArgumentException;
 
    /**
-    * Return the registered portlet invokers.
+    * Returns the known portlet invoker identifiers, including resolvable ones (though they might not have been already
+    * resolved).
     *
-    * @return a collection that contains the portlet invokers
+    * @return a collection of all the resolvable portlet invoker identifiers
     */
-   Collection<FederatedPortletInvoker> getFederatedInvokers();
+   Collection<String> getFederatedInvokerIds();
+
+   /**
+    * Returns only the portlet invoker identifiers of the currently resolved invokers, which might be different from
+    * the
+    * set potentially resolvable invokers as returned by {@link #getFederatedInvokerIds()}.
+    *
+    * @return a collection of the currently resolved portlet invoker identifiers
+    */
+   Collection<String> getResolvedInvokerIds();
+
+   /**
+    * Determines whether the FederatedPortletInvoker with the specified identifier has already been resolved.
+    *
+    * @param federatedId the identifier of the FederatedPortletInvoker to test for resolution status
+    * @return <code>true</code> if the specified invoker is already resolved, <code>false</code> otherwise
+    * @throws IllegalArgumentException if the specified invoker identifier is not among the known resolvable
+    *                                  identifiers
+    *                                  as returned by {@link #getFederatedInvokerIds()}
+    */
+   boolean isResolved(String federatedId) throws IllegalArgumentException;
 
    /**
     * Unregisters the invoker associated with the specified identifier.

@@ -32,7 +32,6 @@ import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletStateType;
 import org.gatein.pc.api.PortletStatus;
-import org.gatein.pc.api.StatefulPortletContext;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.state.DestroyCloneFailure;
@@ -45,6 +44,7 @@ import org.gatein.pc.federation.NullInvokerHandler;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    private static final Logger log = LoggerFactory.getLogger(FederatingPortletInvokerService.class);
 
    /** The registred FederatedPortletInvokers. */
-   private volatile Map<String, FederatedPortletInvoker> registry = new HashMap<String, FederatedPortletInvoker>();
+   private volatile Map<String, FederatedPortletInvoker> invokerCache = new HashMap<String, FederatedPortletInvoker>();
 
    private NullInvokerHandler nullHandler = NullInvokerHandler.DEFAULT_HANDLER;
 
@@ -77,14 +77,15 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       {
          throw new IllegalArgumentException("No null invoker");
       }
-      if (registry.containsKey(federatedId))
+      if (invokerCache.containsKey(federatedId))
       {
          throw new IllegalArgumentException("Attempting dual registration of " + federatedId);
       }
-      Map<String, FederatedPortletInvoker> copy = new HashMap<String, FederatedPortletInvoker>(registry);
+
+      Map<String, FederatedPortletInvoker> copy = new HashMap<String, FederatedPortletInvoker>(invokerCache);
       FederatedPortletInvokerService invoker = new FederatedPortletInvokerService(this, federatedId, federatedInvoker);
       copy.put(federatedId, invoker);
-      registry = copy;
+      invokerCache = copy;
       return invoker;
    }
 
@@ -94,13 +95,13 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       {
          throw new IllegalArgumentException("No null id accepted");
       }
-      if (!registry.containsKey(federatedId))
+      if (!invokerCache.containsKey(federatedId) && !nullHandler.knows(federatedId))
       {
          throw new IllegalArgumentException("Attempting to unregister unknown invoker " + federatedId);
       }
-      Map<String, FederatedPortletInvoker> copy = new HashMap<String, FederatedPortletInvoker>(registry);
+      Map<String, FederatedPortletInvoker> copy = new HashMap<String, FederatedPortletInvoker>(invokerCache);
       copy.remove(federatedId);
-      registry = copy;
+      invokerCache = copy;
    }
 
    public FederatedPortletInvoker getFederatedInvoker(String federatedId) throws IllegalArgumentException
@@ -109,30 +110,82 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       {
          throw new IllegalArgumentException("No null id provided");
       }
-      return registry.get(federatedId);
+
+      try
+      {
+         return getOrResolveFederatedInvoker(federatedId, null);
+      }
+      catch (NoSuchPortletException e)
+      {
+         return null;
+      }
    }
 
-   public Collection<FederatedPortletInvoker> getFederatedInvokers()
+   private FederatedPortletInvoker getOrResolveFederatedInvoker(String federatedId, String compoundPortletId) throws NoSuchPortletException
    {
-      return registry.values();
+      // check cache first and then see if we can resolve the invoker if we didn't hit the cache
+      FederatedPortletInvoker federatedPortletInvoker = invokerCache.get(federatedId);
+      if (federatedPortletInvoker == null)
+      {
+         federatedPortletInvoker = nullHandler.resolvePortletInvokerFor(federatedId, this, compoundPortletId);
+         synchronized (this)
+         {
+            invokerCache.put(federatedId, federatedPortletInvoker); // put newly resolved invoker in cache
+         }
+      }
+      return federatedPortletInvoker;
+   }
+
+   public Collection<String> getFederatedInvokerIds()
+   {
+      final Collection<String> ids = getResolvedInvokerIds();
+      ids.addAll(nullHandler.getKnownInvokerIds());
+
+      return ids;
+   }
+
+   public Collection<String> getResolvedInvokerIds()
+   {
+      Set<String> ids = new HashSet<String>(invokerCache.size() * 2);
+      ids.addAll(invokerCache.keySet());
+
+      return ids;
+   }
+
+   public boolean isResolved(String federatedId) throws IllegalArgumentException
+   {
+      return invokerCache.containsKey(federatedId);
    }
 
    // PortletInvoker implementation ************************************************************************************
 
    public Set<Portlet> getPortlets() throws PortletInvokerException
    {
-      return getPortlets(false);
+      return getPortlets(true, true);
    }
 
-   private Set<Portlet> getPortlets(boolean remoteOnly) throws PortletInvokerException
+   private Set<Portlet> getPortlets(boolean includeRemotePortlets, boolean includeLocalPortlets) throws PortletInvokerException
    {
       LinkedHashSet<Portlet> portlets = new LinkedHashSet<Portlet>();
-      for (FederatedPortletInvoker federated : registry.values())
+      for (String invokerId : getFederatedInvokerIds())
       {
-         // if we're only interested in remote portlets, skip the local invoker.
-         if (remoteOnly && LOCAL_PORTLET_INVOKER_ID.equals(federated.getId()))
+         final FederatedPortletInvoker federated = getFederatedInvoker(invokerId);
+
+         if (LOCAL_PORTLET_INVOKER_ID.equals(federated.getId()))
          {
-            continue;
+            // skip invoker if it's local and we don't want local portlets
+            if (!includeLocalPortlets)
+            {
+               continue;
+            }
+         }
+         else
+         {
+            // skip invoker if it's remote and we don't want remote portlets
+            if (!includeRemotePortlets)
+            {
+               continue;
+            }
          }
 
          try
@@ -144,23 +197,22 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
          {
             Throwable cause = e.getCause();
             log.debug(e.fillInStackTrace());
-            log.warn("PortletInvoker with id: " + federated.getId() + " is not available.\nReason: " + e.getMessage()
+            log.warn("PortletInvoker with id: " + invokerId + " is not available.\nReason: " + e.getMessage()
                + "\nCaused by:\n" + (cause == null ? e : cause));
          }
       }
+
       return portlets;
    }
 
    public Set<Portlet> getLocalPortlets() throws PortletInvokerException
    {
-      PortletInvoker local = registry.get(PortletInvoker.LOCAL_PORTLET_INVOKER_ID);
-
-      return local.getPortlets();
+      return getPortlets(false, true);
    }
 
    public Set<Portlet> getRemotePortlets() throws PortletInvokerException
    {
-      return getPortlets(true);
+      return getPortlets(true, false);
    }
 
    public Portlet getPortlet(PortletContext compoundPortletContext) throws IllegalArgumentException, PortletInvokerException
@@ -294,13 +346,6 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
          throw new IllegalArgumentException("Bad portlet id format " + compoundPortletId);
       }
 
-      FederatedPortletInvoker federated = registry.get(invokerId);
-      if (federated == null)
-      {
-         return nullHandler.resolvePortletInvokerFor(compoundPortletId, invokerId, this);
-      }
-
-      //
-      return federated;
+      return getOrResolveFederatedInvoker(invokerId, compoundPortletId);
    }
 }

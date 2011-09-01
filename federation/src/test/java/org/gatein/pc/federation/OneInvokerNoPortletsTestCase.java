@@ -24,11 +24,11 @@ package org.gatein.pc.federation;
 
 import junit.framework.TestCase;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
+import org.gatein.pc.portlet.support.PortletInvokerSupport;
 
-import java.util.HashSet;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -47,11 +47,12 @@ public class OneInvokerNoPortletsTestCase extends TestCase
       assertEquals(new HashSet(), federating.getPortlets());
 
       //
-      Collection federateds = federating.getFederatedInvokers();
+      Collection<String> federateds = federating.getFederatedInvokerIds();
       assertNotNull(federateds);
       assertEquals(1, federateds.size());
-      FederatedPortletInvoker federated = (FederatedPortletInvoker)federateds.iterator().next();
-      assertEquals("foo", federated.getId());
-      assertEquals(support, federated.getPortletInvoker());
+
+      String id = federateds.iterator().next();
+      assertEquals("foo", id);
+      assertEquals(support, federating.getFederatedInvoker(id).getPortletInvoker());
    }
 }

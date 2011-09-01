@@ -37,6 +37,7 @@ import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.info.PortletInfoSupport;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
@@ -126,7 +127,7 @@ public class FederatingPortletInvokerTestCase extends TestCase
 
    public void testFederation() throws PortletInvokerException
    {
-      Collection federateds = federatingInvoker.getFederatedInvokers();
+      Collection federateds = federatingInvoker.getFederatedInvokerIds();
       assertNotNull(federateds);
       assertEquals(2, federateds.size());
 
@@ -209,10 +210,20 @@ public class FederatingPortletInvokerTestCase extends TestCase
 
       federatingInvoker.setNullInvokerHandler(new NullInvokerHandler()
       {
-         public FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId, FederatingPortletInvoker callingInvoker) throws NoSuchPortletException
+         public FederatedPortletInvoker resolvePortletInvokerFor(String invokerId, FederatingPortletInvoker callingInvoker, String compoundPortletId) throws NoSuchPortletException
          {
             assertEquals(federatingInvoker, callingInvoker);
             return remote;
+         }
+
+         public boolean knows(String invokerId)
+         {
+            return federatedId.equals(invokerId);
+         }
+
+         public Collection<String> getKnownInvokerIds()
+         {
+            return Collections.singletonList(federatedId);
          }
       });
 

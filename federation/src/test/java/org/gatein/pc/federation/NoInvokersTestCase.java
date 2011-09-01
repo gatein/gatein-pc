@@ -26,8 +26,8 @@ import junit.framework.TestCase;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.federation.impl.FederatingPortletInvokerService;
 
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -43,6 +43,6 @@ public class NoInvokersTestCase extends TestCase
       assertEquals(new HashSet(), federating.getPortlets());
 
       //
-      assertEquals(new ArrayList(), new ArrayList(federating.getFederatedInvokers()));
+      assertEquals(new ArrayList(), new ArrayList(federating.getFederatedInvokerIds()));
    }
 }

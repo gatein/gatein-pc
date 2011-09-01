@@ -25,6 +25,9 @@ package org.gatein.pc.federation;
 
 import org.gatein.pc.api.NoSuchPortletException;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Encapsulates behavior to resolve FederatedPortletInvokers in the context of a FederatingPortletInvoker when the
  * default resolution mechanism fails to retrieve an associated FederatedPortletInvoker.
@@ -40,25 +43,47 @@ public interface NullInvokerHandler
     */
    NullInvokerHandler DEFAULT_HANDLER = new NullInvokerHandler()
    {
-      public FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId,
-                                                              FederatingPortletInvoker callingInvoker) throws NoSuchPortletException
+      public FederatedPortletInvoker resolvePortletInvokerFor(String invokerId, FederatingPortletInvoker callingInvoker, String compoundPortletId) throws NoSuchPortletException
       {
-         throw new NoSuchPortletException(compoundPortletId);
+         if (compoundPortletId != null)
+         {
+            throw new NoSuchPortletException(compoundPortletId);
+         }
+         else
+         {
+            return null;
+         }
+      }
+
+      public boolean knows(String invokerId)
+      {
+         return false;
+      }
+
+      public Collection<String> getKnownInvokerIds()
+      {
+         return Collections.emptyList();
       }
    };
 
    /**
-    * Attempts to resolve a FederatedPortletInvoker for the specified compound portlet id in the context of the
-    * specified calling FederatingPortletInvoker.
+    * Attempts to resolve a FederatedPortletInvoker with the specified identifier in the context of the specified
+    * calling FederatingPortletInvoker, optionally trying to perform resolution to invoke an action on the specified
+    * portlet identifier.
     *
-    * @param compoundPortletId the portlet identifier for which we're trying to resolve a FederatedPortletInvoker
-    * @param invokerId         the identifier of the FederatedPortletInvoker to be retrieved as parsed from the compound
-    *                          portlet id by the calling FederatingPortletInvoker
+    * @param invokerId         the identifier of the FederatedPortletInvoker to be retrieved. Should match the optional
+    *                          compound portlet identifier if one is specified.
     * @param callingInvoker    the calling FederatingPortletInvoker which failed to resolve a FederatedPortletInvoker
-    *                          for the specified portlet id
+    *                          for the specified invoker identifier
+    * @param compoundPortletId an optional portlet identifier for which we are trying to resolve an invoker, if no such
+    *                          portlet identifier is required for the resolution, this argument should be
+    *                          <code>null</code> and implementations should be prepared for that case.
     * @return
     * @throws NoSuchPortletException
     */
-   FederatedPortletInvoker resolvePortletInvokerFor(String compoundPortletId, String invokerId,
-                                                    FederatingPortletInvoker callingInvoker) throws NoSuchPortletException;
+   FederatedPortletInvoker resolvePortletInvokerFor(String invokerId, FederatingPortletInvoker callingInvoker, String compoundPortletId) throws NoSuchPortletException;
+
+   boolean knows(String invokerId);
+
+   Collection<String> getKnownInvokerIds();
 }
