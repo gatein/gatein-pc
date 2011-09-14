@@ -141,18 +141,18 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 
    public Collection<String> getFederatedInvokerIds()
    {
-      final Collection<String> ids = getResolvedInvokerIds();
-      ids.addAll(nullHandler.getKnownInvokerIds());
+      final Collection<String> resolvedIds = getResolvedInvokerIds();
+      final Collection<String> resolvableIds = nullHandler.getKnownInvokerIds();
+      final HashSet<String> ids = new HashSet<String>(resolvedIds.size() + resolvableIds.size());
+      ids.addAll(resolvedIds);
+      ids.addAll(resolvableIds);
 
       return ids;
    }
 
    public Collection<String> getResolvedInvokerIds()
    {
-      Set<String> ids = new HashSet<String>(invokerCache.size() * 2);
-      ids.addAll(invokerCache.keySet());
-
-      return ids;
+      return invokerCache.keySet();
    }
 
    public boolean isResolved(String federatedId) throws IllegalArgumentException
@@ -172,9 +172,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       LinkedHashSet<Portlet> portlets = new LinkedHashSet<Portlet>();
       for (String invokerId : getFederatedInvokerIds())
       {
-         final FederatedPortletInvoker federated = getFederatedInvoker(invokerId);
-
-         if (LOCAL_PORTLET_INVOKER_ID.equals(federated.getId()))
+         if (LOCAL_PORTLET_INVOKER_ID.equals(invokerId))
          {
             // skip invoker if it's local and we don't want local portlets
             if (!includeLocalPortlets)
@@ -190,6 +188,8 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
                continue;
             }
          }
+
+         final FederatedPortletInvoker federated = getFederatedInvoker(invokerId);
 
          try
          {
