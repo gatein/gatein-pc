@@ -208,7 +208,7 @@ public class FederatingPortletInvokerTestCase extends TestCase
       final String federatedId = "inexistent";
       assertNull(federatingInvoker.getFederatedInvoker(federatedId));
 
-      federatingInvoker.setNullInvokerHandler(new PortletInvokerResolver()
+      federatingInvoker.setPortletInvokerResolver(new PortletInvokerResolver()
       {
          public FederatedPortletInvoker resolvePortletInvokerFor(String invokerId, FederatingPortletInvoker callingInvoker, String compoundPortletId) throws NoSuchPortletException
          {

@@ -305,7 +305,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       return federated.importPortlet(stateType, compoundPortletContext);
    }
 
-   public synchronized void setNullInvokerHandler(PortletInvokerResolver portletResolver)
+   public synchronized void setPortletInvokerResolver(PortletInvokerResolver portletResolver)
    {
       if (portletResolver == null)
       {
