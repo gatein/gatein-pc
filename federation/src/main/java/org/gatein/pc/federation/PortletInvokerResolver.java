@@ -35,13 +35,13 @@ import java.util.Collections;
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
  */
-public interface NullInvokerHandler
+public interface PortletInvokerResolver
 {
    /**
     * Default handling mechanism: if we haven't found an invoker for the portlet id in the first place, throw
-    * NoSuchPortletException.
+    * NoSuchPortletException if we specified a portlet id or null if we didn't.
     */
-   NullInvokerHandler DEFAULT_HANDLER = new NullInvokerHandler()
+   PortletInvokerResolver DEFAULT_RESOLVER = new PortletInvokerResolver()
    {
       public FederatedPortletInvoker resolvePortletInvokerFor(String invokerId, FederatingPortletInvoker callingInvoker, String compoundPortletId) throws NoSuchPortletException
       {
@@ -78,8 +78,9 @@ public interface NullInvokerHandler
     * @param compoundPortletId an optional portlet identifier for which we are trying to resolve an invoker, if no such
     *                          portlet identifier is required for the resolution, this argument should be
     *                          <code>null</code> and implementations should be prepared for that case.
-    * @return
-    * @throws NoSuchPortletException
+    * @return the resolved FederatedPortletInvoker or <code>null</code> if one couldn't be found
+    * @throws NoSuchPortletException if a PortletInvoker couldn't be found and a compound portlet identifier was
+    *                                specified
     */
    FederatedPortletInvoker resolvePortletInvokerFor(String invokerId, FederatingPortletInvoker callingInvoker, String compoundPortletId) throws NoSuchPortletException;
 

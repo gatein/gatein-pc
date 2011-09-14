@@ -50,7 +50,8 @@ public interface FederatingPortletInvoker extends PortletInvoker
 
    /**
     * Returns the registered FederatedPortletInvoker associated with the specified identifier, delegating to the {@link
-    * NullInvokerHandler} specified using {@link #setNullInvokerHandler(NullInvokerHandler)} if it's not initially
+    * PortletInvokerResolver} specified using {@link #setNullInvokerHandler(PortletInvokerResolver)} if it's not
+    * initially
     * resolved or returns <code>null</code> if a FederatedPortletInvoker is not found after going through the specified
     * NullInvokerHandler resolution mechanism.
     *
@@ -115,7 +116,7 @@ public interface FederatingPortletInvoker extends PortletInvoker
     * Specifies which NullInvokerHandler to use to attempt retrieval of a federated invoker when default resolution
     * mechanism cannot find an associated invoker.
     *
-    * @param nullHandler
+    * @param portletResolver
     */
-   void setNullInvokerHandler(NullInvokerHandler nullHandler);
+   void setNullInvokerHandler(PortletInvokerResolver portletResolver);
 }

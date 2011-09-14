@@ -39,7 +39,7 @@ import org.gatein.pc.api.state.PropertyChange;
 import org.gatein.pc.api.state.PropertyMap;
 import org.gatein.pc.federation.FederatedPortletInvoker;
 import org.gatein.pc.federation.FederatingPortletInvoker;
-import org.gatein.pc.federation.NullInvokerHandler;
+import org.gatein.pc.federation.PortletInvokerResolver;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -65,7 +65,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    /** The registred FederatedPortletInvokers. */
    private volatile Map<String, FederatedPortletInvoker> invokerCache = new HashMap<String, FederatedPortletInvoker>();
 
-   private NullInvokerHandler nullHandler = NullInvokerHandler.DEFAULT_HANDLER;
+   private PortletInvokerResolver portletResolver = PortletInvokerResolver.DEFAULT_RESOLVER;
 
    public synchronized FederatedPortletInvoker registerInvoker(String federatedId, PortletInvoker federatedInvoker)
    {
@@ -95,7 +95,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       {
          throw new IllegalArgumentException("No null id accepted");
       }
-      if (!invokerCache.containsKey(federatedId) && !nullHandler.knows(federatedId))
+      if (!invokerCache.containsKey(federatedId) && !portletResolver.knows(federatedId))
       {
          throw new IllegalArgumentException("Attempting to unregister unknown invoker " + federatedId);
       }
@@ -127,7 +127,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       FederatedPortletInvoker federatedPortletInvoker = invokerCache.get(federatedId);
       if (federatedPortletInvoker == null)
       {
-         federatedPortletInvoker = nullHandler.resolvePortletInvokerFor(federatedId, this, compoundPortletId);
+         federatedPortletInvoker = portletResolver.resolvePortletInvokerFor(federatedId, this, compoundPortletId);
          if (federatedPortletInvoker != null)
          {
             synchronized (this)
@@ -142,7 +142,7 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    public Collection<String> getFederatedInvokerIds()
    {
       final Collection<String> resolvedIds = getResolvedInvokerIds();
-      final Collection<String> resolvableIds = nullHandler.getKnownInvokerIds();
+      final Collection<String> resolvableIds = portletResolver.getKnownInvokerIds();
       final HashSet<String> ids = new HashSet<String>(resolvedIds.size() + resolvableIds.size());
       ids.addAll(resolvedIds);
       ids.addAll(resolvableIds);
@@ -305,15 +305,15 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
       return federated.importPortlet(stateType, compoundPortletContext);
    }
 
-   public synchronized void setNullInvokerHandler(NullInvokerHandler nullHandler)
+   public synchronized void setNullInvokerHandler(PortletInvokerResolver portletResolver)
    {
-      if (nullHandler == null)
+      if (portletResolver == null)
       {
-         this.nullHandler = NullInvokerHandler.DEFAULT_HANDLER;
+         this.portletResolver = PortletInvokerResolver.DEFAULT_RESOLVER;
       }
       else
       {
-         this.nullHandler = nullHandler;
+         this.portletResolver = portletResolver;
       }
    }
 
