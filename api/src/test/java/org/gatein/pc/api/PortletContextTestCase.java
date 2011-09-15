@@ -25,6 +25,12 @@ package org.gatein.pc.api;
 
 import junit.framework.TestCase;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
  * @version $Revision$
@@ -444,5 +450,28 @@ public class PortletContextTestCase extends TestCase
       final PortletContext context = PortletContext.createPortletContext("app", "portlet");
       final PortletContext referencedContext = PortletContext.reference("invoker", context);
       assertEquals(context, PortletContext.dereference(referencedContext));
+   }
+
+   public void testSerializationRoundtrip()
+   {
+      final PortletContext context = PortletContext.createPortletContext("   local\t  " + PortletContext.INVOKER_SEPARATOR + "  /  foo \t. \t\n bar");
+
+      try
+      {
+         final File tempFile = File.createTempFile("pc-serialized", null, new File("/tmp"));
+         tempFile.deleteOnExit();
+         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tempFile.getName()));
+         out.writeObject(context);
+         out.close();
+
+         final ObjectInputStream in = new ObjectInputStream(new FileInputStream(tempFile.getName()));
+         final Object fromSerialization = in.readObject();
+
+         assertEquals(context, fromSerialization);
+      }
+      catch (Exception ex)
+      {
+         fail(ex.getMessage());
+      }
    }
 }

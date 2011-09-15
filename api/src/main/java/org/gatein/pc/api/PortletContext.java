@@ -389,7 +389,7 @@ public class PortletContext implements Serializable
       return components;
    }
 
-   public static interface PortletContextComponents
+   public static interface PortletContextComponents extends Serializable
    {
       String getApplicationName();
 
@@ -410,14 +410,14 @@ public class PortletContext implements Serializable
       boolean isInterpreted();
    }
 
-   protected static interface Components extends PortletContextComponents
+   protected static interface Components extends PortletContextComponents, Serializable
    {
       Components createCopyWithoutInvoker();
 
       Components createCopyWithInvoker(String invoker);
    }
 
-   private static class InterpretedPortletContextComponents implements Components
+   private static class InterpretedPortletContextComponents implements Components, Serializable
    {
       private final String applicationName;
       private final String portletName;
@@ -499,7 +499,7 @@ public class PortletContext implements Serializable
       }
    }
 
-   private static class UninterpretedPortletContextComponents implements Components
+   private static class UninterpretedPortletContextComponents implements Components, Serializable
    {
       private static final String ERROR = "This PortletContext was not intepreted, only the portlet name is available!";
       private final String portletName;
