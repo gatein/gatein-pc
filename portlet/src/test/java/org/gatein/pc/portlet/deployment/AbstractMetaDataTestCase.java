@@ -40,22 +40,17 @@ import org.xml.sax.SAXException;
 public abstract class AbstractMetaDataTestCase extends TestCase
 {
 
-   /** Test parameter for using xml binding annotation. */
-   public static final String ANNOTATION_BINDING = "annotation";
-
-   /** Annotation or ObjectModelFactory parsing. */
-   private String parser = ANNOTATION_BINDING;
-
-   protected PortletApplication20MetaData _unmarshall10(String file) throws SAXException, IOException
+   protected PortletApplication20MetaData unmarshall(String file) throws SAXException, IOException
    {
-      return _unmarshall10(file, false);
+      return unmarshall(file, false);
    }
 
-   protected PortletApplication20MetaData _unmarshall10(String file, boolean fail) throws SAXException, IOException
+   protected PortletApplication20MetaData unmarshall(String file, boolean fail) throws SAXException, IOException
    {
       try
       {
          PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
+         builder.setSchemaValidation(true);
          String path = getPath(file);
          URL url = new URL(path);
          InputStream in = url.openStream();

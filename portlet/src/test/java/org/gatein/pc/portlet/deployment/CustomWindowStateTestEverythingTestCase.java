@@ -41,7 +41,7 @@ public class CustomWindowStateTestEverythingTestCase extends AbstractMetaDataTes
 
          String xmlFile = "metadata/customWindowState/portlet1.xml";
 
-         PortletApplication10MetaData md = _unmarshall10(xmlFile);
+         PortletApplication10MetaData md = unmarshall(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
          assertEquals("1.0", md.getVersion());
@@ -71,7 +71,7 @@ public class CustomWindowStateTestEverythingTestCase extends AbstractMetaDataTes
 
          String xmlFile = "metadata/customWindowState/portlet2.xml";
 
-         PortletApplication20MetaData md = _unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());

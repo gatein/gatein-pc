@@ -39,7 +39,7 @@ public class RenderParameterTestEverythingTestCase extends AbstractMetaDataTestC
 
          String xmlFile = "metadata/renderParameter/portlet2.xml";
 
-         PortletApplication20MetaData md = _unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());

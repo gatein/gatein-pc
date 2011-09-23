@@ -21,11 +21,15 @@ package org.gatein.pc.portlet.impl.deployment.staxnav;
 
 import org.gatein.common.i18n.LocaleFormat;
 import org.gatein.common.i18n.LocalizedString;
+import org.gatein.common.io.IOTools;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.ConversionException;
 import org.gatein.pc.api.LifeCyclePhase;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.TransportGuarantee;
 import org.gatein.pc.api.WindowState;
+import org.gatein.pc.portlet.impl.deployment.xml.XSD;
 import org.gatein.pc.portlet.impl.metadata.CustomPortletModeMetaData;
 import org.gatein.pc.portlet.impl.metadata.CustomWindowStateMetaData;
 import org.gatein.pc.portlet.impl.metadata.ListenerMetaData;
@@ -60,6 +64,9 @@ import org.staxnav.ValueType;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
@@ -79,12 +86,28 @@ import static org.gatein.pc.portlet.impl.metadata.PortletMetaDataConstants.DEFAU
 public class PortletApplicationMetaDataBuilder
 {
 
+   /** . */
+   private static final Logger log = LoggerFactory.getLogger(PortletApplicationMetaDataBuilder.class);
+
+   /** . */
+   private static final QName XML_LANG = new QName("http://www.w3.org/XML/1998/namespace", "lang");
+
+   /** . */
+   private static final String PORTLET_1_0 = "http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd";
+
+   /** . */
+   private static final String PORTLET_2_0 = "http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd";
+
+   /** . */
    private static final EnumSet<Element> NAME_OR_QNAME = EnumSet.of(Element.name, Element.qname);
 
+   /** . */
    private static final ValueType<PortletCacheScopeEnum> PORTLET_CACHE_SCOPE = ValueType.get(PortletCacheScopeEnum.class);
 
+   /** . */
    private static final ValueType<TransportGuarantee> TRANSPORT_GUARANTEE = ValueType.get(TransportGuarantee.class);
 
+   /** . */
    private static final ValueType<LifeCyclePhase> LIFE_CYCLE = new ValueType<LifeCyclePhase>()
    {
       @Override
@@ -101,115 +124,86 @@ public class PortletApplicationMetaDataBuilder
       }
    };
 
-   private static final QName XML_LANG = new QName("http://www.w3.org/XML/1998/namespace", "lang");
+   /** . */
+   private boolean schemaValidation;
 
-   private static final String PORTLET_1_0 = "http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd";
-   private static final String PORTLET_2_0 = "http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd";
+   /** . */
+   private XMLInputFactory inputFactory;
 
-   private LocalizedString readLocalizedString(StaxNavigator<Element> nav, Element element) throws ConversionException
+   public PortletApplicationMetaDataBuilder()
    {
-      Map<Locale, String> descriptions = new LinkedHashMap<Locale, String>();
-      while (nav.next(element))
-      {
-         String lang = nav.getAttribute(XML_LANG);
-         String description = nav.getContent();
-         Locale locale = LocaleFormat.DEFAULT.getLocale(lang == null ? DEFAULT_LOCALE : lang);
-         descriptions.put(locale, description);
-      }
-      if (descriptions.size() > 0)
-      {
-         return new LocalizedString(descriptions, new Locale(DEFAULT_LOCALE));
-      }
-      else
-      {
-         return null;
-      }
+      this(XMLInputFactory.newInstance(), false);
    }
 
-   private QName readQName(StaxNavigator<Element> nav)
+   public PortletApplicationMetaDataBuilder(XMLInputFactory inputFactory, boolean schemaValidation) throws NullPointerException
    {
-      String val = nav.getContent();
-      int pos = val.indexOf(':');
-      if (pos == -1)
+      if (inputFactory == null)
       {
-         return new QName(val);
+         throw new NullPointerException("No null xml input factory allowed");
       }
-      else
-      {
-         String prefix = val.substring(0, pos);
-         String localPart = val.substring(pos + 1);
-         String uri = nav.getNamespaceByPrefix(prefix);
-         if (uri == null)
-         {
-            throw new UnsupportedOperationException("todo");
-         }
-         else
-         {
-            return new QName(uri, localPart, prefix);
-         }
-      }
+
+      //
+      this.inputFactory = inputFactory;
+      this.schemaValidation = schemaValidation;
    }
 
-   private Iterable<InitParamMetaData> readInitParams(StaxNavigator<Element> nav) throws ConversionException
+   public boolean getSchemaValidation()
    {
-      List<InitParamMetaData> list = Collections.emptyList();
-      while (nav.next(Element.init_param))
-      {
-         InitParamMetaData initParamMD = new InitParamMetaData();
-         initParamMD.setId(nav.getAttribute("id"));
-         initParamMD.setDescription(readLocalizedString(nav, Element.description));
-         initParamMD.setName(getContent(nav, Element.name));
-         initParamMD.setValue(getContent(nav, Element.value));
-         if (list.isEmpty())
-         {
-            list = new ArrayList<InitParamMetaData>();
-         }
-         list.add(initParamMD);
-      }
-      return list;
+      return schemaValidation;
    }
 
-   private String getContent(StaxNavigator<Element> nav, Element element)
+   public void setSchemaValidation(boolean schemaValidation)
    {
-      if (nav.next(element))
-      {
-         return nav.getContent();
-      }
-      else
-      {
-         throw new StaxNavException(nav.getLocation(), "Was expecting elemnt " + element + " to be present");
-      }
+      this.schemaValidation = schemaValidation;
    }
 
    public PortletApplication20MetaData build(InputStream is) throws Exception
    {
 
+      // We will need to read the input stream twice
+      byte[] bytes = null;
+      if (schemaValidation)
+      {
+         bytes = IOTools.getBytes(is);
+         is = new ByteArrayInputStream(bytes);
+      }
+
       PortletApplication20MetaData md = new PortletApplication20MetaData();
 
-      XMLInputFactory factory = XMLInputFactory.newInstance();
-      factory.setProperty("javax.xml.stream.isCoalescing", true);
-      XMLStreamReader stream = factory.createXMLStreamReader(is);
+      //
+      inputFactory.setProperty("javax.xml.stream.isCoalescing", true);
+      XMLStreamReader stream = inputFactory.createXMLStreamReader(is);
       StaxNavigator<Element> nav = StaxNavigatorFactory.create(new Naming.Enumerated.Simple<Element>(Element.class, null), stream);
-      
+
+      // We want to trim content (mandated by the spec)
       nav.setTrimContent(true);
 
-      // For now we do it this way
-      // but it's not correct
-      String defaultNS = nav.getNamespaceByPrefix("");
+      // Get the root element qname
+      QName qname = nav.getQName();
+      String rootNS = qname.getNamespaceURI();
+
+      // Determine the correct version to parse
       int version;
-      if (PORTLET_1_0.equals(defaultNS))
+      if (PORTLET_1_0.equals(rootNS))
       {
          md.setVersion("1.0");
          version = 1;
       }
-      else if (PORTLET_2_0.equals(defaultNS))
+      else if (PORTLET_2_0.equals(rootNS))
       {
          md.setVersion("2.0");
          version = 2;
       }
       else
       {
-         throw new UnsupportedOperationException();
+         throw new StaxNavException("Illegal portlet xml namespace " + rootNS);
+      }
+
+      // Perform schema validation if required
+      if (schemaValidation)
+      {
+         XSD xsd = version == 1 ? XSD.PORTLET_1_0 : XSD.PORTLET_2_0;
+         xsd.validate(new StreamSource(new ByteArrayInputStream(bytes)));
       }
 
       //
@@ -573,5 +567,80 @@ public class PortletApplicationMetaDataBuilder
 
       //
       return md;
+   }
+
+   private LocalizedString readLocalizedString(StaxNavigator<Element> nav, Element element) throws ConversionException
+   {
+      Map<Locale, String> descriptions = new LinkedHashMap<Locale, String>();
+      while (nav.next(element))
+      {
+         String lang = nav.getAttribute(XML_LANG);
+         String description = nav.getContent();
+         Locale locale = LocaleFormat.DEFAULT.getLocale(lang == null ? DEFAULT_LOCALE : lang);
+         descriptions.put(locale, description);
+      }
+      if (descriptions.size() > 0)
+      {
+         return new LocalizedString(descriptions, new Locale(DEFAULT_LOCALE));
+      }
+      else
+      {
+         return null;
+      }
+   }
+
+   private QName readQName(StaxNavigator<Element> nav)
+   {
+      String val = nav.getContent();
+      int pos = val.indexOf(':');
+      if (pos == -1)
+      {
+         return new QName(val);
+      }
+      else
+      {
+         String prefix = val.substring(0, pos);
+         String localPart = val.substring(pos + 1);
+         String uri = nav.getNamespaceByPrefix(prefix);
+         if (uri == null)
+         {
+            throw new UnsupportedOperationException("todo");
+         }
+         else
+         {
+            return new QName(uri, localPart, prefix);
+         }
+      }
+   }
+
+   private Iterable<InitParamMetaData> readInitParams(StaxNavigator<Element> nav) throws ConversionException
+   {
+      List<InitParamMetaData> list = Collections.emptyList();
+      while (nav.next(Element.init_param))
+      {
+         InitParamMetaData initParamMD = new InitParamMetaData();
+         initParamMD.setId(nav.getAttribute("id"));
+         initParamMD.setDescription(readLocalizedString(nav, Element.description));
+         initParamMD.setName(getContent(nav, Element.name));
+         initParamMD.setValue(getContent(nav, Element.value));
+         if (list.isEmpty())
+         {
+            list = new ArrayList<InitParamMetaData>();
+         }
+         list.add(initParamMD);
+      }
+      return list;
+   }
+
+   private String getContent(StaxNavigator<Element> nav, Element element)
+   {
+      if (nav.next(element))
+      {
+         return nav.getContent();
+      }
+      else
+      {
+         throw new StaxNavException(nav.getLocation(), "Was expecting elemnt " + element + " to be present");
+      }
    }
 }

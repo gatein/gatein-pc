@@ -38,7 +38,7 @@ public class FilterTestEverythingTestCase extends AbstractMetaDataTestCase
 
    public void test01() throws Exception
    {
-      _unmarshall10("metadata/filter/portlet-filter1.xml", true);
+      unmarshall("metadata/filter/portlet-filter1.xml", true);
    }
 
    public void test02()
@@ -47,7 +47,7 @@ public class FilterTestEverythingTestCase extends AbstractMetaDataTestCase
       {
          String xmlFile = "metadata/filter/portlet-filter2.xml";
 
-         PortletApplication20MetaData md = _unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
 

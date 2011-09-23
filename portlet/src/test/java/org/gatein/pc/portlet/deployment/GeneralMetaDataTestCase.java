@@ -41,7 +41,7 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication10MetaData md = _unmarshall10("metadata/general/portlet1.xml");
+         PortletApplication10MetaData md = unmarshall("metadata/general/portlet1.xml");
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
          assertEquals("1.0", md.getVersion());
@@ -56,7 +56,7 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication20MetaData md = _unmarshall10("metadata/general/portlet2.xml");
+         PortletApplication20MetaData md = unmarshall("metadata/general/portlet2.xml");
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -71,7 +71,7 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication20MetaData md = _unmarshall10("metadata/general/portlet2-jsr286.xml");
+         PortletApplication20MetaData md = unmarshall("metadata/general/portlet2-jsr286.xml");
          assertEquals("2.0", md.getVersion());
          assertTrue(md instanceof PortletApplication20MetaData);
 
@@ -111,7 +111,7 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication10MetaData md = _unmarshall10("metadata/general/portlet-app_1_0.xml");
+         PortletApplication10MetaData md = unmarshall("metadata/general/portlet-app_1_0.xml");
 
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication10MetaData);
@@ -129,7 +129,7 @@ public class GeneralMetaDataTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication20MetaData md = _unmarshall10("metadata/general/portlet-app_2_0.xml");
+         PortletApplication20MetaData md = unmarshall("metadata/general/portlet-app_2_0.xml");
          assertEquals("2.0", md.getVersion());
          assertTrue(md instanceof PortletApplication20MetaData);
       }

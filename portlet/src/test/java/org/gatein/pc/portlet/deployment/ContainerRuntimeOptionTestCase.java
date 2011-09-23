@@ -36,7 +36,7 @@ public class ContainerRuntimeOptionTestCase extends AbstractMetaDataTestCase
 
    public void test021() throws Exception
    {
-      PortletApplication20MetaData md = _unmarshall10("metadata/runtimeoption/portlet.xml");
+      PortletApplication20MetaData md = unmarshall("metadata/runtimeoption/portlet.xml");
       PortletMetaData portlet = md.getPortlet("portlet-name");
       assertNotNull(portlet);
       Map<String, ContainerRuntimeMetaData> m = portlet.getContainerRuntimeOptions();

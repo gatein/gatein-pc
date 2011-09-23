@@ -35,7 +35,7 @@ public class ListenerTestCase extends AbstractMetaDataTestCase
    {
       try
       {
-         PortletApplication20MetaData md = _unmarshall10("metadata/listener/portlet2.xml");
+         PortletApplication20MetaData md = unmarshall("metadata/listener/portlet2.xml");
          List<ListenerMetaData> listeners = md.getListeners();
          assertNotNull(listeners);
          assertEquals(1, listeners.size());

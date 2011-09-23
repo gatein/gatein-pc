@@ -46,7 +46,7 @@ public class EventTestEverythingTestCase extends AbstractMetaDataTestCase
 
          String xmlFile = "metadata/event/portlet-event1.xml";
 
-         _unmarshall10(xmlFile);
+         unmarshall(xmlFile);
          fail();
       }
       catch (Exception e)
@@ -62,7 +62,7 @@ public class EventTestEverythingTestCase extends AbstractMetaDataTestCase
 
          String xmlFile = "metadata/event/portlet-event2.xml";
 
-         PortletApplication20MetaData md = _unmarshall10(xmlFile);
+         PortletApplication20MetaData md = unmarshall(xmlFile);
          assertNotNull(md);
          assertTrue(md instanceof PortletApplication20MetaData);
          assertEquals("2.0", md.getVersion());
@@ -124,6 +124,6 @@ public class EventTestEverythingTestCase extends AbstractMetaDataTestCase
    {
       // "Should fail: name and qname defined!"
       String xmlFile = "metadata/event/portlet-event2-fail.xml";
-      _unmarshall10(xmlFile, true);
+      unmarshall(xmlFile, true);
    }
 }

@@ -50,6 +50,7 @@ import org.gatein.wci.WebAppListener;
 import org.staxnav.ValueType;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -253,13 +254,14 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
                in = IOTools.safeBufferedWrapper(url.openStream());
 
                //
-               ValueType vt = null;
-
-               //
                PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
 
                //
                return builder.build(in);
+            }
+            catch (Exception e)
+            {
+               log.error("Cannot read portlet.xml " + url, e);
             }
             finally
             {
@@ -267,9 +269,9 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
             }
          }
       }
-      catch (Exception e)
+      catch (MalformedURLException e)
       {
-         log.error("Cannot read portlet.xml", e);
+         log.error("Could not read portlet deployment descriptor for application " + webApp.getContextPath());
       }
       return null;
    }

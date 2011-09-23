@@ -35,7 +35,7 @@
       <preferences-validator>preferences-validator</preferences-validator>
     </portlet-preferences>
     <security-role-ref id="id">
-      <description xml:lang="">description</description>
+      <description xml:lang="en">description</description>
       <role-name>NMTOKEN</role-name>
       <role-link>role-link</role-link>
     </security-role-ref>
@@ -58,7 +58,7 @@
       <portlet-name>portlet-name</portlet-name>
     </portlet-collection>
     <user-data-constraint id="">
-      <description xml:lang="">description</description>
+      <description xml:lang="en">description</description>
       <transport-guarantee>NONE</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
