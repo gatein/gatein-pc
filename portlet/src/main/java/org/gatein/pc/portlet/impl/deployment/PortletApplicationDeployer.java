@@ -22,11 +22,10 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.deployment;
 
-import org.gatein.common.logging.Logger;
 import org.gatein.common.io.IOTools;
+import org.gatein.common.logging.Logger;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvoker;
-import org.gatein.pc.portlet.impl.deployment.staxnav.PortletApplicationMetaDataBuilder;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
@@ -40,6 +39,7 @@ import org.gatein.pc.portlet.container.managed.ManagedPortletApplication;
 import org.gatein.pc.portlet.container.managed.PortletApplicationRegistry;
 import org.gatein.pc.portlet.impl.container.PortletApplicationLifeCycle;
 import org.gatein.pc.portlet.impl.container.PortletContainerLifeCycle;
+import org.gatein.pc.portlet.impl.deployment.staxnav.PortletApplicationMetaDataBuilder;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.wci.ServletContainer;
 import org.gatein.wci.ServletContainerFactory;
@@ -47,7 +47,6 @@ import org.gatein.wci.WebApp;
 import org.gatein.wci.WebAppEvent;
 import org.gatein.wci.WebAppLifeCycleEvent;
 import org.gatein.wci.WebAppListener;
-import org.staxnav.ValueType;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -88,6 +87,18 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
 
    /** . */
    private ManagedObjectRegistryEventBroadcaster broadcaster;
+
+   private boolean schemaValidated;
+
+   public boolean isSchemaValidated()
+   {
+      return schemaValidated;
+   }
+
+   public void setSchemaValidated(boolean schemaValidated)
+   {
+      this.schemaValidated = schemaValidated;
+   }
 
    public PortletApplicationRegistry getRegistry()
    {
@@ -255,6 +266,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
 
                //
                PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
+               builder.setSchemaValidation(schemaValidated);
 
                //
                return builder.build(in);
