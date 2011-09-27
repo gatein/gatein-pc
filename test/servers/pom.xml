@@ -232,22 +232,19 @@
 
    </build>
 
-   <!-- By default we build those -->
-   <modules>
-      <module>tomcat6</module>
-      <module>tomcat7</module>
-      <module>jboss51</module>
-      <module>jboss6</module>
-      <module>jetty6</module>
-   </modules>
-
    <profiles>
 
       <!-- ***************************************************************** -->
       <!-- * Server profiles                                               * -->
       <!-- ***************************************************************** -->
+
       <profile>
-         <id>release</id>
+         <id>default</id>
+         <activation>
+            <property>
+               <name>!gatein.dev</name>
+            </property>
+         </activation>
          <modules>
             <module>tomcat6</module>
             <module>tomcat7</module>
