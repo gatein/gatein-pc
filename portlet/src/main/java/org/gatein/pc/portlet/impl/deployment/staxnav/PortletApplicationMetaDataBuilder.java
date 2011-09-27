@@ -439,7 +439,7 @@ public class PortletApplicationMetaDataBuilder
       }
 
       //
-      if (nav.find(Element.resource_bundle))
+      if (nav.sibling(Element.resource_bundle))
       {
          md.setResourceBundle(nav.getContent());
          nav.next();

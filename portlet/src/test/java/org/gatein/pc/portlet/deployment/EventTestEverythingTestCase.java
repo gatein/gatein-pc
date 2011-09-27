@@ -126,4 +126,26 @@ public class EventTestEverythingTestCase extends AbstractMetaDataTestCase
       String xmlFile = "metadata/event/portlet-event2-fail.xml";
       unmarshall(xmlFile, true);
    }
+
+   public void testFoo() throws Exception
+   {
+      String xmlFile = "metadata/event/portlet-event-resource-bundle.xml";
+      PortletApplication20MetaData md = unmarshall(xmlFile);
+
+      //
+      assertNotNull(md);
+      PortletMetaData portletMD = md.getPortlet("Portlet");
+      assertNotNull(portletMD);
+      assertEquals("bundle", portletMD.getResourceBundle());
+
+      //
+      assertEquals(null, md.getResourceBundle());
+      List<EventDefinitionMetaData> events = md.getEvents();
+      assertNotNull(events);
+      assertEquals(1, events.size());
+      EventDefinitionMetaData event = events.get(0);
+      assertNotNull(event);
+      assertEquals("event", event.getName());
+      assertEquals("org.jboss.portal.event.invoke.refill.beer", event.getValueType());
+   }
 }
