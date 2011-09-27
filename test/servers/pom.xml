@@ -241,18 +241,10 @@
       <profile>
          <id>default</id>
          <activation>
-            <activeByDefault>true</activeByDefault>
+            <property>
+               <name>!gatein.dev</name>
+            </property>
          </activation>
-         <modules>
-            <module>tomcat6</module>
-            <module>tomcat7</module>
-            <module>jboss51</module>
-            <module>jboss6</module>
-            <module>jetty6</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>release</id>
          <modules>
             <module>tomcat6</module>
             <module>tomcat7</module>
