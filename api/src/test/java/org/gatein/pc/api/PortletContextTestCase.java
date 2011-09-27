@@ -23,13 +23,9 @@
 
 package org.gatein.pc.api;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import org.gatein.common.io.IOTools;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -458,20 +454,15 @@ public class PortletContextTestCase extends TestCase
 
       try
       {
-         final File tempFile = File.createTempFile("pc-serialized", null, new File("/tmp"));
-         tempFile.deleteOnExit();
-         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tempFile.getName()));
-         out.writeObject(context);
-         out.close();
-
-         final ObjectInputStream in = new ObjectInputStream(new FileInputStream(tempFile.getName()));
-         final Object fromSerialization = in.readObject();
-
+         final Object fromSerialization = IOTools.clone(context);
+         assertNotSame(context, fromSerialization);
          assertEquals(context, fromSerialization);
       }
       catch (Exception ex)
       {
-         fail(ex.getMessage());
+         AssertionFailedError afe = new AssertionFailedError();
+         afe.initCause(ex);
+         throw afe;
       }
    }
 }
