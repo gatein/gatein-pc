@@ -1,5 +1,5 @@
-<!-- e754d4e043e2e9e8a4c136bacda890ad --> 
 <?xml version="1.0"?>
+<!-- e754d4e043e2e9e8a4c136bacda890ad -->
 <project name="portlet-integration-test" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
   <path id="maven-ant-tasks.classpath" path="${maven.dependency.org.apache.maven.maven-ant-tasks.jar.path}"/>
