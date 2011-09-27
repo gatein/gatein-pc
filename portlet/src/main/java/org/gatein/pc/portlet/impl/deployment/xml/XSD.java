@@ -87,7 +87,7 @@ public class XSD
                      try
                      {
                         InputStream in = XSD.class.getResourceAsStream(resolvedName);
-                        System.out.println("Resolved systemId=" + systemId);
+                        log.debug("Resolved systemId=" + systemId);
                         DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
                         DOMImplementationLS ls = (DOMImplementationLS)registry.getDOMImplementation("LS");
                         LSInput input = ls.createLSInput();
