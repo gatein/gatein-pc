@@ -232,26 +232,22 @@
 
    </build>
 
+   <!-- By default we build those -->
+   <modules>
+      <module>tomcat6</module>
+      <module>tomcat7</module>
+      <module>jboss51</module>
+      <module>jboss6</module>
+      <module>jetty6</module>
+   </modules>
+
    <profiles>
 
       <!-- ***************************************************************** -->
       <!-- * Server profiles                                               * -->
       <!-- ***************************************************************** -->
       <profile>
-         <id>default-servers</id>
-         <activation>
-            <activeByDefault>true</activeByDefault>
-         </activation>
-         <modules>
-            <module>tomcat6</module>
-            <module>tomcat7</module>
-            <module>jboss51</module>
-            <module>jboss6</module>
-            <module>jetty6</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>all-servers</id>
+         <id>release</id>
          <modules>
             <module>tomcat6</module>
             <module>tomcat7</module>
