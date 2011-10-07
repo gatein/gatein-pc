@@ -191,6 +191,13 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
 
          final FederatedPortletInvoker federated = getFederatedInvoker(invokerId);
 
+         // skip the invoker if it isn't active
+         if(!federated.isActive())
+         {
+            log.info("PortletInvoker with id: " + invokerId + " was skipped because it isn't active.");
+            continue;
+         }
+
          try
          {
             Set<Portlet> offeredPortlets = federated.getPortlets();
@@ -303,6 +310,11 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
    {
       PortletInvoker federated = getFederatedPortletInvokerFor(compoundPortletContext);
       return federated.importPortlet(stateType, compoundPortletContext);
+   }
+
+   public boolean isActive()
+   {
+      return true;
    }
 
    public synchronized void setPortletInvokerResolver(PortletInvokerResolver portletResolver)

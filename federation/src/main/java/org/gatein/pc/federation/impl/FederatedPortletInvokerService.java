@@ -75,6 +75,11 @@ public class FederatedPortletInvokerService implements FederatedPortletInvoker
       return portletInvoker;
    }
 
+   public boolean isActive()
+   {
+      return portletInvoker.isActive();
+   }
+
    public String getId()
    {
       return id;

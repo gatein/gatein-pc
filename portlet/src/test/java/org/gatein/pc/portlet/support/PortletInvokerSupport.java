@@ -232,4 +232,9 @@ public class PortletInvokerSupport implements PortletInvoker
    {
       throw new UnsupportedOperationException();
    }
+
+   public boolean isActive()
+   {
+      return true;
+   }
 }

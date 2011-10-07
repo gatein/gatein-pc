@@ -41,4 +41,10 @@ public class ContainerPortletDispatcher extends PortletInvokerInterceptor
       //
       return container.dispatch(invocation);
    }
+
+   @Override
+   public boolean isActive()
+   {
+      return true; // todo: should it be smarter than this? i.e. check if the PortletContainer is available or not?
+   }
 }

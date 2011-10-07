@@ -149,4 +149,9 @@ public class PortletInvokerInterceptor implements PortletInvoker
    {
       return safeGetNext().importPortlet(stateType, originalPortletContext);
    }
+
+   public boolean isActive()
+   {
+      return safeGetNext().isActive();
+   }
 }

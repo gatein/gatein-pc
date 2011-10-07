@@ -258,5 +258,10 @@ public class FederatingPortletInvokerTestCase extends TestCase
       {
          return null;
       }
+
+      public boolean isActive()
+      {
+         return true;
+      }
    }
 }

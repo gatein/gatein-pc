@@ -49,8 +49,10 @@ public interface PortletInvoker
    Set<Portlet> getPortlets() throws PortletInvokerException;
 
    /**
-    * Get information about a specific portlet. Note that this PortletInvoker can know about more portlets than returned
-    * by {@link #getPortlets()}. In particular, cloned portlets wouldn't necessarily be exposed to getPortlets and still
+    * Get information about a specific portlet. Note that this PortletInvoker can know about more portlets than
+    * returned
+    * by {@link #getPortlets()}. In particular, cloned portlets wouldn't necessarily be exposed to getPortlets and
+    * still
     * be known by this PortletInvoker i.e. there exists PortletContexts <code>pc</code> as follows: <p> <code> assert
     * getPortlet(pc) != null && !getPortlets().contains(portlet);<br/> </code> </p>
     *
@@ -161,4 +163,11 @@ public interface PortletInvoker
     * @throws PortletInvokerException
     */
    PortletContext importPortlet(PortletStateType stateType, PortletContext contextToImport) throws PortletInvokerException;
+
+   /**
+    * Returns whether this portlet invoker is active and can respond to requests.
+    *
+    * @return <code>true</code> if this portlet invoker can respond to requests, <code>false</code> otherwise
+    */
+   boolean isActive();
 }
