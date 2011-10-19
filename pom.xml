@@ -56,7 +56,7 @@
 
    <properties>
       <version.gatein.common>2.0.4-GA</version.gatein.common>
-      <version.gatein.wci>2.1.0-Beta06</version.gatein.wci>
+      <version.gatein.wci>2.1.0-GA</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
