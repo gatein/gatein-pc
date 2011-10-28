@@ -320,7 +320,7 @@ public class PortletContext implements Serializable
    @Deprecated
    public static StatefulPortletContext<byte[]> createStatefulPortletContext(String id, byte[] state)
    {
-      return new StatefulPortletContext<byte[]>(id, PortletStateType.OPAQUE, state);
+      return new StatefulPortletContext<byte[]>(id, PortletStateType.OPAQUE, state, true);
    }
 
    /**
@@ -348,7 +348,7 @@ public class PortletContext implements Serializable
    {
       if (state != null && state.length > 0)
       {
-         return new StatefulPortletContext<byte[]>(portletId, PortletStateType.OPAQUE, state);
+         return new StatefulPortletContext<byte[]>(portletId, PortletStateType.OPAQUE, state, interpret);
       }
       else
       {

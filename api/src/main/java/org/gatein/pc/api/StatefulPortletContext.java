@@ -37,7 +37,7 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
 
    public static <S extends Serializable> StatefulPortletContext<S> create(String id, StatefulPortletContext<S> spc)
    {
-      return new StatefulPortletContext<S>(id, spc.type, spc.state);
+      return new StatefulPortletContext<S>(id, spc.type, spc.state, true);
    }
 
    static <S extends Serializable> StatefulPortletContext<S> create(Components components, StatefulPortletContext<S> spc)
@@ -45,12 +45,9 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
       return new StatefulPortletContext<S>(components, spc.type, spc.state);
    }
 
-   public static <S extends Serializable> StatefulPortletContext<S> create(
-      String id,
-      PortletStateType<S> type,
-      S state)
+   public static <S extends Serializable> StatefulPortletContext<S> create(String id, PortletStateType<S> type, S state)
    {
-      return new StatefulPortletContext<S>(id, type, state);
+      return new StatefulPortletContext<S>(id, type, state, true);
    }
 
    /** . */
@@ -59,9 +56,9 @@ public class StatefulPortletContext<S extends Serializable> extends PortletConte
    /** . */
    private final PortletStateType<S> type;
 
-   StatefulPortletContext(String id, PortletStateType<S> type, S state) throws IllegalArgumentException
+   StatefulPortletContext(String id, PortletStateType<S> type, S state, boolean interpret) throws IllegalArgumentException
    {
-      super(id);
+      super(id, interpret);
 
       ParameterValidation.throwIllegalArgExceptionIfNull(type, "Portlet type");
       ParameterValidation.throwIllegalArgExceptionIfNull(state, "Portlet state");
