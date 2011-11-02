@@ -203,8 +203,29 @@
 
   <build>
 
+    <resources>
+       <resource>
+          <directory>src/main/resources</directory>
+          <filtering>true</filtering>
+       </resource>
+    </resources>
+
     <pluginManagement>
       <plugins>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-resources</id>
+              <configuration>
+                <useDefaultDelimiters>false</useDefaultDelimiters>
+                <delimiters>
+                  <delimiter>@</delimiter>
+                </delimiters>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>

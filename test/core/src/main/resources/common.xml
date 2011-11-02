@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- @version@ -->
 <project name="portlet-integration-test" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
   <path id="maven-ant-tasks.classpath" path="${maven.dependency.org.apache.maven.maven-ant-tasks.jar.path}"/>
