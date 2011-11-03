@@ -63,7 +63,7 @@ public class GoogleClippingPortlet extends GenericPortlet
     * should result in the expected result.
     */
    private static final String DEFAULT_QUERY = "http://www.google.com/search?gl=US&hl=en&q=";
-   private static final String DEFAULT_BEG = "<div id=res>";
+   private static final String DEFAULT_BEG = "<li class=\"g\"";
    private static final String DEFAULT_ZIP = "94102";
    private static final String END_TABLE = "</table>";
    private static final String BEG_TABLE = "<table";
@@ -78,7 +78,7 @@ public class GoogleClippingPortlet extends GenericPortlet
       URL url = new URL(query);
 
       URLConnection connection = url.openConnection();
-      connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+      connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)");
 
       BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
       String html = new String(getBytes(in, 16384), "UTF-8");

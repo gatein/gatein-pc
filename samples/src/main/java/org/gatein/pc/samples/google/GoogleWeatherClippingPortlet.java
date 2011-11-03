@@ -43,6 +43,7 @@ public class GoogleWeatherClippingPortlet extends GoogleClippingPortlet
          endIndex = html.indexOf(A_END, begIndex);
          html = html.substring(0, begIndex) + html.substring(endIndex + A_END.length());
       }
+      html = html.replaceAll("src=\"\\/\\/", "src=\"http:\\/\\/");
 
       return super.postProcessHTML(html);
    }

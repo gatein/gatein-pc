@@ -50,7 +50,7 @@
          <preference>
             <!-- Query used to retrieve data -->
             <name>query</name>
-            <value>http://www.google.com/search?gl=US&amp;hl=en&amp;q=</value>
+            <value>http://www.google.com/search?gl=US&amp;hl=en&amp;q=map+</value>
             <read-only>false</read-only>
          </preference>
          <preference>
@@ -59,7 +59,7 @@
             finds after this String.
              -->
             <name>beginningString</name>
-            <value><![CDATA[<div id=res]]></value>
+            <value><![CDATA[<li class="g"]]></value>
             <read-only>false</read-only>
          </preference>
       </portlet-preferences>
@@ -103,7 +103,7 @@
             finds after this String.
              -->
             <name>beginningString</name>
-            <value><![CDATA[<div id=res]]></value>
+            <value><![CDATA[<li class="g"]]></value>
             <read-only>false</read-only>
          </preference>
       </portlet-preferences>
