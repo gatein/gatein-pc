@@ -276,7 +276,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>src/main/resources/common.xml</file>
+                  <file>${project.build.outputDirectory}/common.xml</file>
                   <type>xml</type>
                 </artifact>
               </artifacts>
