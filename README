@@ -1,0 +1,3 @@
+GateIn Portlet Container
+
+GateIn Portlet Container is the next generation portlet container on which GateIn Portal, and the Enterprise Portal Platform are based. It provides a standard-compliant implementation of the JSR-286 Portlet 2.0 specification. It has been developed with reusability in mind so that advanced users, who don't require a full-fledged portal, can leverage the portlet management services it provides in their own applications. GateIn Portlet Container is available through the business-friendly LGPL open source license.
