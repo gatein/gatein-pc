@@ -10,7 +10,7 @@
    <name>GateIn - Portlet Container (test)</name>
 
    <properties>
-      <version.jboss.unit>1.2.3</version.jboss.unit>
+      <version.jboss.unit>1.2.4</version.jboss.unit>
    </properties>
 
    <dependencyManagement>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="org.gatein.wci.integration-tests.shared">
+   <resources>
+      <resource-root path="common-common-${version.gatein.common}.jar"/>
+      <resource-root path="common-logging-${version.gatein.common}.jar"/>
+      <resource-root path="slf4j-api-${version.slf4j}.jar"/>
+      <resource-root path="slf4j-simple-${version.slf4j}.jar"/>
+      <resource-root path="wci-jboss7-${version.wci}.jar"/>
+      <resource-root path="wci-wci-${version.wci}.jar"/>
+      <resource-root path="pc-test-core-${version.pc}.jar"/>
+      <resource-root path="pc-api-${version.pc}.jar"/>
+      <resource-root path="pc-controller-${version.pc}.jar"/>
+      <resource-root path="pc-portlet-${version.pc}.jar"/>
+      <resource-root path="jboss-unit-${version.jbossunit}.jar"/>
+      <resource-root path="jboss-unit-remote-${version.jbossunit}.jar"/>
+      <resource-root path="jboss-remoting-${version.jboss.remoting}.jar"/>
+      <resource-root path="portal-test-${version.jbossunit}.jar"/>
+      <resource-root path="portal-test-generic-${version.jbossunit}.jar"/>
+      <resource-root path="portlet-api-${version.portlet.api}.jar"/>
+      <resource-root path="ccpp-${version.ccpp}.jar"/>
+      <resource-root path="jboss-common-core-${version.jboss.common}.jar"/>
+      <resource-root path="concurrent-${version.oswego.concurrent}.jar"/>
+      <resource-root path="staxnav.core-${version.staxnav}.jar"/>
+      <resource-root path="jboss-serialization-${version.jboss.serialization}.jar"/>
+   </resources>
+
+   <dependencies>
+      <module name="javax.api" />
+      <module name="javax.servlet.api" />
+      <module name="javax.servlet.jsp.api" />
+      <module name="org.jboss.logging" />
+      <module name="org.jboss.as.web" />
+      <module name="org.jboss.msc" />
+      <module name="org.apache.xerces" services="export" export="true"/>
+      <module name="com.sun.xml.bind" services="export" export="true" />
+      <module name="javax.xml.bind.api" />
+   </dependencies>
+</module>

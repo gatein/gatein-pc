@@ -42,22 +42,27 @@
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit</artifactId>
+         <version>${version.jboss.unit}</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-remote</artifactId>
+         <version>${version.jboss.unit}</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>jboss-unit-tooling-ant</artifactId>
+         <version>${version.jboss.unit}</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>portal-test</artifactId>
+         <version>${version.jboss.unit}</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.unit</groupId>
          <artifactId>portal-test-generic</artifactId>
+         <version>${version.jboss.unit}</version>
       </dependency>
 
       <dependency>
@@ -167,6 +172,11 @@
                   </dependency>
                   <dependency>
                      <groupId>org.codehaus.cargo</groupId>
+                     <artifactId>cargo-core-uberjar</artifactId>
+                     <version>${version.cargo}</version>
+                  </dependency>
+                  <dependency>
+                     <groupId>org.codehaus.cargo</groupId>
                      <artifactId>cargo-ant</artifactId>
                      <version>${version.cargo}</version>
                      <exclusions>
@@ -251,11 +261,18 @@
             <module>jboss42</module>
             <module>jboss51</module>
             <module>jboss6</module>
+            <module>jboss7</module>
             <module>jetty6</module>
          </modules>
       </profile>
       <profile>
          <id>tomcat</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>tomcat</value>
+            </property>
+         </activation>
          <modules>
             <module>tomcat6</module>
             <module>tomcat7</module>
@@ -263,44 +280,99 @@
       </profile>
       <profile>
          <id>tomcat6</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>tomcat6</value>
+            </property>
+         </activation>
          <modules>
             <module>tomcat6</module>
          </modules>
       </profile>
       <profile>
          <id>tomcat7</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>tomcat7</value>
+            </property>
+         </activation>
          <modules>
             <module>tomcat7</module>
          </modules>
       </profile>
       <profile>
          <id>jboss42</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>jboss42</value>
+            </property>
+         </activation>
          <modules>
             <module>jboss42</module>
          </modules>
       </profile>
       <profile>
          <id>jboss51</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>jboss51</value>
+            </property>
+         </activation>
          <modules>
             <module>jboss51</module>
          </modules>
       </profile>
       <profile>
          <id>jboss6</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>jboss6</value>
+            </property>
+         </activation>
          <modules>
            <module>jboss6</module>
          </modules>
       </profile>
       <profile>
+         <id>jboss7</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>jboss7</value>
+            </property>
+         </activation>
+         <modules>
+            <module>jboss7</module>
+         </modules>
+      </profile>
+      <profile>
          <id>jboss</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>jboss</value>
+            </property>
+         </activation>
          <modules>
             <module>jboss42</module>
             <module>jboss51</module>
             <module>jboss6</module>
+            <module>jboss7</module>
          </modules>
       </profile>
       <profile>
          <id>jetty</id>
+         <activation>
+            <property>
+               <name>gatein.dev</name>
+               <value>jetty</value>
+            </property>
+         </activation>
          <modules>
             <module>jetty6</module>
          </modules>

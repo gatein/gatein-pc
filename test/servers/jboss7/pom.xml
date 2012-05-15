@@ -1,0 +1,161 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.gatein.pc</groupId>
+      <artifactId>pc-test-servers</artifactId>
+      <version>2.3.2-GA-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>pc-test-jboss7</artifactId>
+   <packaging>jar</packaging>
+   <name>GateIn - Portlet Container (test - servers - JBoss 7)</name>
+
+   <properties>
+      <!-- Recent cargo version with AS7 support -->
+      <version.cargo>1.2.1</version.cargo>
+      <version.org.slf4j>1.5.8</version.org.slf4j>
+      <version.jboss.mc.kernel>2.0.9.GA</version.jboss.mc.kernel>
+      <version.jboss.reflect>2.0.2.GA</version.jboss.reflect>
+      <version.jboss.common>2.2.9.GA</version.jboss.common>
+      <version.jboss.serialization>1.0.3.GA</version.jboss.serialization>
+      <version.jboss.logging>2.0.5.GA</version.jboss.logging>
+      <version.portlet.api>2.0</version.portlet.api>
+      <version.ccpp>1.0</version.ccpp>
+      <version.jboss.remoting>2.5.0.GA</version.jboss.remoting>
+      <version.oswego.concurrent>1.3.4</version.oswego.concurrent>
+      <version.staxnav>0.9.6</version.staxnav>
+   </properties>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-jboss7</artifactId>
+      </dependency>
+
+      <!-- Exclude xalan from test classpath used to run JBossUnit
+           - it causes exceptions at report generation phase
+        -->
+      <dependency>
+         <groupId>org.codehaus.cargo</groupId>
+         <artifactId>cargo-core-uberjar</artifactId>
+         <version>${version.cargo}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>xalan</groupId>
+               <artifactId>xalan</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+
+      <!-- JBOSS MICROCONAINER DEPENDENCIES -->
+      <dependency>
+         <groupId>org.jboss.microcontainer</groupId>
+         <artifactId>jboss-kernel</artifactId>
+         <version>${version.jboss.mc.kernel}</version>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>org.jboss.logging</groupId>
+               <artifactId>jboss-logging-spi</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.microcontainer</groupId>
+         <artifactId>jboss-dependency</artifactId>
+         <version>${version.jboss.mc.kernel}</version>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>org.jboss.logging</groupId>
+               <artifactId>jboss-logging-spi</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss</groupId>
+         <artifactId>jboss-reflect</artifactId>
+         <version>${version.jboss.reflect}</version>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>org.jboss.logging</groupId>
+               <artifactId>jboss-logging-spi</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss</groupId>
+         <artifactId>jboss-common-core</artifactId>
+         <version>${version.jboss.common}</version>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>jboss</groupId>
+               <artifactId>jboss-common-logging-spi</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.jboss.logging</groupId>
+               <artifactId>jboss-logging-spi</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>jboss</groupId>
+         <artifactId>jboss-serialization</artifactId>
+         <version>${version.jboss.serialization}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.logging</groupId>
+         <artifactId>jboss-logging</artifactId>
+         <version>3.1.0.GA</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>concurrent</groupId>
+         <artifactId>concurrent</artifactId>
+         <version>${version.oswego.concurrent}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.codehaus.cargo</groupId>
+         <artifactId>cargo-core-tools-jboss-deployer-7</artifactId>
+         <version>${version.cargo}</version>
+         <scope>test</scope>
+      </dependency>
+
+      <!-- JBoss Deployer -->
+      <dependency>
+         <groupId>org.jboss.as</groupId>
+         <artifactId>jboss-as-controller-client</artifactId>
+         <version>7.1.1.Final</version>
+         <scope>test</scope>
+      </dependency>
+
+   </dependencies>
+
+   <!-- Skip jboss7 tests by default. To run them use:
+
+           mvn install -Dgatein.dev=jboss7
+   -->
+   <profiles>
+      <profile>
+      <id>jboss7</id>
+      <activation>
+         <property>
+            <name>gatein.dev</name>
+            <value>jboss7</value>
+         </property>
+      </activation>
+      <build>
+         <plugins>
+            <plugin>
+               <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+         </plugins>
+      </build>
+      </profile>
+   </profiles>
+
+</project>
