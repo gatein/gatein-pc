@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<project name="jboss-7-integration-test" default="tests">
+
+   <import file="${org.gatein.pc:pc-test-core:xml}"/>
+
+   <!-- SYSTEM PROPERTIES -->
+   <property environment="env"/>
+   <property name="test.cargo.home" value="${env.JBOSS_7_1_1_HOME}"/>
+
+   <scriptdef name="fixwars" language="javascript">
+      <element name="targets" type="fileset"/>
+      <element name="content" type="fileset"/>
+      <![CDATA[
+  importClass(java.io.File);
+  importClass(org.apache.tools.ant.types.FileSet);
+  var targets = elements.get("targets");
+  var patchSets = elements.get("content");
+  var i, j, k, fileset, scanner, files, basedir, name, file, zip;
+
+  for (i = 0; i < targets.size(); i++) {
+     fileset = targets.get(i);
+     scanner = fileset.getDirectoryScanner(project);
+     scanner.scan();
+     files = scanner.getIncludedFiles();
+
+     for (j = 0; j < files.length; j++) {
+        basedir  = fileset.getDir(project);
+        name = files[j];
+        file = new File(basedir, name);
+
+        zip = self.project.createTask("zip");
+        zip.setUpdate(true);
+        zip.setDestFile(file);
+        for (k = 0; k < patchSets.size(); k++) {
+           zip.addFileset(patchSets.get(k));
+        }
+        zip.execute();
+     }
+  }
+]]>
+   </scriptdef>
+
+
+   <!-- properties unique per app server -->
+   <property name="test.server.name" value="JBoss"/>
+   <property name="test.server.version" value="7"/>
+   <property name="test.remote.server.name" value="RemoteJBoss_7_1"/>
+   <property name="cargo.container.id" value="jboss71x"/>
+
+   <path id="JBoss-7">
+      <path refid="portal-common"/>
+      <path refid="portal-web"/>
+      <path refid="portal-portlet"/>
+      <path location="${org.jboss:jboss-common-core:jar}"/>
+   </path>
+
+   <path id="JBoss-7-shared">
+      <path refid="staxnav"/>
+      <path refid="portal-common-shared"/>
+      <path refid="portal-web-shared"/>
+      <path refid="portal-portlet-shared"/>
+      <path refid="jboss-unit-shared"/>
+      <path location="${javax.ccpp:ccpp:jar}"/>
+      <path location="${org.gatein.wci:wci-jboss7:jar}"/>
+   </path>
+
+   <path id="extra-libs">
+      <path location="${org.gatein.pc:pc-test-core:jar}"/>
+
+      <path location="${jboss:jboss-serialization:jar}"/>
+      <path location="${org.jboss:jboss-common-core:jar}"/>
+      <path location="${concurrent:concurrent:jar}"/>
+   </path>
+
+   <target name="tests" unless="maven.test.skip">
+
+      <property environment="env"/>
+
+      <!--If properties are not in command line check if they are set in env-->
+      <condition property="JBOSS_7_1_1_HOME" value="${env.JBOSS_7_1_1_HOME}">
+         <and>
+            <isset property="env.JBOSS_7_1_1_HOME"/>
+            <not>
+               <isset property="JBOSS_7_1_1_HOME"/>
+            </not>
+         </and>
+      </condition>
+      <echo message="JBOSS_7_1_1_HOME: ${JBOSS_7_1_1_HOME}"/>
+      <fail message="Please set the environment variable JBOSS_7_1_1_HOME">
+         <condition>
+            <and>
+               <not>
+                  <isset property="JBOSS_7_1_1_HOME"/>
+               </not>
+            </and>
+         </condition>
+      </fail>
+
+      <antcall target="tests.common"/>
+   </target>
+
+   <target name="init.shared.dependencies">
+      <!-- test if AS7 modules directory exists -->
+      <available file="${test.cargo.home}/modules" property="jbas7.modules.exists" />
+      <fail unless="jbas7.modules.exists" message="The specified JBOSS_7_1_1_HOME doesn't seem to exist (${JBOSS_7_1_1_HOME})" />
+
+      <!-- delete any existing org/gatein/wci/integration-tests/shared -->
+      <delete dir="${test.cargo.home}/modules/org/gatein/wci/integration-tests/shared" />
+
+      <!-- (re)create org/gatein/wci/integration-tests/shared/main -->
+      <mkdir dir="${test.cargo.home}/modules/org/gatein/wci/integration-tests/shared/main" />
+
+      <!-- Generate jboss modules resources from the files in the directory -->
+      <scriptdef name="resources-builder" language="javascript">
+         <element name="files" type="path"/>
+         <![CDATA[
+         var files = elements.get("files");
+         var separator = java.lang.System.getProperty('file.separator');
+         var l = files.get(0).list();
+         var out = "";
+         for (var i = 0;i < l.length;i++) {
+           var path = l[i];
+           var index = path.lastIndexOf(separator);
+           var name = path.substring(index + 1);
+           out += '<resource-root path="' + name + '"/>\n';
+         }
+         self.project.setProperty('resources', out);
+         ]]></scriptdef>
+      <resources-builder>
+         <files>
+            <path refid="JBoss-7"/>
+            <path refid="JBoss-7-shared"/>
+            <path refid="extra-libs"/>
+         </files>
+      </resources-builder>
+
+      <!-- copy integration-tests/shared module.xml with filtering -->
+      <copy file="src/test/resources/modules/shared/module.xml" todir="${test.cargo.home}/modules/org/gatein/wci/integration-tests/shared/main">
+         <filterset begintoken="$${" endtoken="}">
+            <filter token="resources" value="${resources}"/>
+         </filterset>
+      </copy>
+
+      <!-- copy jars -->
+      <copy flatten="true" todir="${test.cargo.home}/modules/org/gatein/wci/integration-tests/shared/main">
+         <path refid="JBoss-7"/>
+         <path refid="JBoss-7-shared"/>
+         <path refid="extra-libs"/>
+      </copy>
+
+      <!-- Add jboss-deployment-structure.xml to all the wars -->
+      <fixwars>
+         <targets id="test-wars" dir="${test.temp.lib}">
+            <include name="*.war"/>
+         </targets>
+         <content id="patch.files" dir="src/test/resources/war-patch/all-wars">
+         </content>
+      </fixwars>
+
+      <!-- Fix cookie path in test-jsr168-ext-session.war to allow cross context sessions -->
+      <!--fixwars>
+         <targets id="test-wars" dir="${test.temp.lib}">
+            <include name="test-jsr168-ext-session.war"/>
+         </targets>
+         <content id="patch.files" dir="src/test/resources/war-patch/ext-session-war">
+         </content>
+      </fixwars-->
+
+      <!-- Fix cookie path in test-jsr168-tck-portletsession.war to allow cross context sessions -->
+      <!--fixwars>
+         <targets id="test-wars" dir="${test.temp.lib}">
+            <include name="test-jsr168-tck-portletsession.war"/>
+         </targets>
+         <content id="patch.files" dir="src/test/resources/war-patch/tck-portletsession-war">
+         </content>
+      </fixwars-->
+
+
+      <!-- Create jboss-as-integration.jar -->
+      <zip destfile="${target}/test-classes/portlet-test-war/WEB-INF/lib/jboss-as-integration.jar">
+         <fileset dir="${target}/test-classes/integration"/>
+      </zip>
+
+      <!-- Add jboss-as-integration.jar to portlet-test.war -->
+      <fixwars>
+         <targets id="portlet-test-war" dir="${test.temp.lib}/${test.server.name}-${test.server.version}">
+            <include name="portlet-test.war"/>
+         </targets>
+         <content id="patch.files" dir="${target}/test-classes/portlet-test-war">
+         </content>
+      </fixwars>
+
+   </target>
+
+   <target name="cargo.start" depends="cargo.setup,init.shared.dependencies">
+      <taskdef resource="cargo.tasks">
+         <classpath>
+            <pathelement path="plugin_classpath"/>
+         </classpath>
+      </taskdef>
+
+      <cargo
+              containerId="jboss71x"
+              home="${test.cargo.home}"
+              output="${cargo.log.dir}/cargo.${test.server.name}-${test.server.version}.server.log"
+              log="${cargo.log.dir}/cargo.${test.server.name}-${test.server.version}.start.log"
+              action="start"
+              wait="${cargo.wait}">
+
+         <configuration home="${test.cargo.dir}">
+            <property name="cargo.servlet.port" value="8080"/>
+            <property name="cargo.logging" value="high"/>
+            <property name="cargo.jvmargs" value="-Duser.language=en ${cargo.debug}"/>
+            <deployable type="war" file="${test.temp.lib}/JBoss-7/portlet-test.war"/>
+         </configuration>
+      </cargo>
+   </target>
+
+   <target name="cargo.stop" depends="cargo.setup">
+      <cargo
+              containerId="jboss71x"
+              home="${test.cargo.home}"
+              log="${cargo.log.dir}/cargo.${test.server.name}-${test.server.version}.shutdown.log"
+              action="stop">
+         <configuration home="${test.cargo.dir}"/>
+      </cargo>
+   </target>
+</project>

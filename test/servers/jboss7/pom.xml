@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <groupId>org.gatein.pc</groupId>
+      <artifactId>pc-test-servers</artifactId>
+      <version>2.3.2-GA-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>pc-test-jboss7</artifactId>
+   <packaging>jar</packaging>
+   <name>GateIn - Portlet Container (test - servers - JBoss 7)</name>
+
+   <properties>
+      <!-- Recent cargo version with AS7 support -->
+      <version.cargo>1.2.1</version.cargo>
+   </properties>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>org.gatein.wci</groupId>
+         <artifactId>wci-jboss7</artifactId>
+      </dependency>
+
+      <!-- Exclude xalan from test classpath used to run JBossUnit
+           - it causes exceptions at report generation phase
+        -->
+      <dependency>
+         <groupId>org.codehaus.cargo</groupId>
+         <artifactId>cargo-core-uberjar</artifactId>
+         <version>${version.cargo}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>xalan</groupId>
+               <artifactId>xalan</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+
+      <dependency>
+         <groupId>org.codehaus.cargo</groupId>
+         <artifactId>cargo-core-tools-jboss-deployer-7</artifactId>
+         <version>${version.cargo}</version>
+         <scope>test</scope>
+      </dependency>
+
+      <!-- JBoss Deployer -->
+      <dependency>
+         <groupId>org.jboss.as</groupId>
+         <artifactId>jboss-as-controller-client</artifactId>
+         <version>7.1.1.Final</version>
+         <scope>test</scope>
+      </dependency>
+
+   </dependencies>
+
+   <!-- Skip jboss7 tests by default. To run them use:
+
+           mvn install -Dgatein.dev=jboss7
+   -->
+   <profiles>
+      <profile>
+      <id>jboss7</id>
+      <activation>
+         <property>
+            <name>gatein.dev</name>
+            <value>jboss7</value>
+         </property>
+      </activation>
+      <build>
+         <plugins>
+            <plugin>
+               <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+         </plugins>
+      </build>
+      </profile>
+   </profiles>
+
+</project>
