@@ -62,11 +62,6 @@
       <path refid="jboss-unit-shared"/>
       <path location="${javax.ccpp:ccpp:jar}"/>
       <path location="${org.gatein.wci:wci-jboss7:jar}"/>
-
-      <path location="${org.jboss.microcontainer:jboss-kernel:jar}" />
-      <path location="${org.jboss.microcontainer:jboss-dependency:jar}" />
-      <path location="${org.jboss:jboss-reflect:jar}" />
-      <path location="${org.jboss:jboss-common-core:jar}" />
    </path>
 
    <path id="extra-libs">
@@ -115,21 +110,34 @@
       <!-- (re)create org/gatein/wci/integration-tests/shared/main -->
       <mkdir dir="${test.cargo.home}/modules/org/gatein/wci/integration-tests/shared/main" />
 
+      <!-- Generate jboss modules resources from the files in the directory -->
+      <scriptdef name="resources-builder" language="javascript">
+         <element name="files" type="path"/>
+         <![CDATA[
+         var files = elements.get("files");
+         var separator = java.lang.System.getProperty('file.separator');
+         var l = files.get(0).list();
+         var out = "";
+         for (var i = 0;i < l.length;i++) {
+           var path = l[i];
+           var index = path.lastIndexOf(separator);
+           var name = path.substring(index + 1);
+           out += '<resource-root path="' + name + '"/>\n';
+         }
+         self.project.setProperty('resources', out);
+         ]]></scriptdef>
+      <resources-builder>
+         <files>
+            <path refid="JBoss-7"/>
+            <path refid="JBoss-7-shared"/>
+            <path refid="extra-libs"/>
+         </files>
+      </resources-builder>
+
       <!-- copy integration-tests/shared module.xml with filtering -->
       <copy file="src/test/resources/modules/shared/module.xml" todir="${test.cargo.home}/modules/org/gatein/wci/integration-tests/shared/main">
          <filterset begintoken="$${" endtoken="}">
-            <filter token="version.gatein.common" value="${version.gatein.common}"/>
-            <filter token="version.slf4j" value="${version.org.slf4j}"/>
-            <filter token="version.wci" value="${version.gatein.wci}"/>
-            <filter token="version.pc" value="${project.version}"/>
-            <filter token="version.jbossunit" value="${version.jboss.unit}"/>
-            <filter token="version.portlet.api" value="${version.portlet.api}"/>
-            <filter token="version.ccpp" value="${version.ccpp}"/>
-            <filter token="version.jboss.remoting" value="${version.jboss.remoting}"/>
-            <filter token="version.jboss.common" value="${version.jboss.common}"/>
-            <filter token="version.jboss.serialization" value="${version.jboss.serialization}"/>
-            <filter token="version.oswego.concurrent" value="${version.oswego.concurrent}"/>
-            <filter token="version.staxnav" value="${version.staxnav}"/>
+            <filter token="resources" value="${resources}"/>
          </filterset>
       </copy>
 

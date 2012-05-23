@@ -12,17 +12,6 @@
    <properties>
       <!-- Recent cargo version with AS7 support -->
       <version.cargo>1.2.1</version.cargo>
-      <version.org.slf4j>1.5.8</version.org.slf4j>
-      <version.jboss.mc.kernel>2.0.9.GA</version.jboss.mc.kernel>
-      <version.jboss.reflect>2.0.2.GA</version.jboss.reflect>
-      <version.jboss.common>2.2.9.GA</version.jboss.common>
-      <version.jboss.serialization>1.0.3.GA</version.jboss.serialization>
-      <version.jboss.logging>2.0.5.GA</version.jboss.logging>
-      <version.portlet.api>2.0</version.portlet.api>
-      <version.ccpp>1.0</version.ccpp>
-      <version.jboss.remoting>2.5.0.GA</version.jboss.remoting>
-      <version.oswego.concurrent>1.3.4</version.oswego.concurrent>
-      <version.staxnav>0.9.6</version.staxnav>
    </properties>
 
    <dependencies>
@@ -47,77 +36,6 @@
          </exclusions>
       </dependency>
 
-      <!-- JBOSS MICROCONAINER DEPENDENCIES -->
-      <dependency>
-         <groupId>org.jboss.microcontainer</groupId>
-         <artifactId>jboss-kernel</artifactId>
-         <version>${version.jboss.mc.kernel}</version>
-         <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>org.jboss.logging</groupId>
-               <artifactId>jboss-logging-spi</artifactId>
-            </exclusion>
-         </exclusions>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.microcontainer</groupId>
-         <artifactId>jboss-dependency</artifactId>
-         <version>${version.jboss.mc.kernel}</version>
-         <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>org.jboss.logging</groupId>
-               <artifactId>jboss-logging-spi</artifactId>
-            </exclusion>
-         </exclusions>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss</groupId>
-         <artifactId>jboss-reflect</artifactId>
-         <version>${version.jboss.reflect}</version>
-         <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>org.jboss.logging</groupId>
-               <artifactId>jboss-logging-spi</artifactId>
-            </exclusion>
-         </exclusions>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss</groupId>
-         <artifactId>jboss-common-core</artifactId>
-         <version>${version.jboss.common}</version>
-         <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>jboss</groupId>
-               <artifactId>jboss-common-logging-spi</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>org.jboss.logging</groupId>
-               <artifactId>jboss-logging-spi</artifactId>
-            </exclusion>
-         </exclusions>
-      </dependency>
-      <dependency>
-         <groupId>jboss</groupId>
-         <artifactId>jboss-serialization</artifactId>
-         <version>${version.jboss.serialization}</version>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging</artifactId>
-         <version>3.1.0.GA</version>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>concurrent</groupId>
-         <artifactId>concurrent</artifactId>
-         <version>${version.oswego.concurrent}</version>
-         <scope>test</scope>
-      </dependency>
       <dependency>
          <groupId>org.codehaus.cargo</groupId>
          <artifactId>cargo-core-tools-jboss-deployer-7</artifactId>
