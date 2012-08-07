@@ -26,7 +26,7 @@ package org.gatein.pc.portlet.container.managed;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class ManagedObjectLifeCycleEvent extends ManagedObjectEvent
+public final class ManagedObjectLifeCycleEvent extends ManagedObjectEvent
 {
 
    /** . */
@@ -43,5 +43,11 @@ public class ManagedObjectLifeCycleEvent extends ManagedObjectEvent
    public LifeCycleStatus getStatus()
    {
       return status;
+   }
+
+   @Override
+   public String toString()
+   {
+      return getClass().getSimpleName() + "[status=" + status + ",managed=" + managedObject + "]";
    }
 }

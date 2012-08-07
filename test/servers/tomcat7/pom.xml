@@ -2,28 +2,75 @@
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-test-servers</artifactId>
-      <version>2.3.3-GA-SNAPSHOT</version>
+      <version>2.4.0.Alpha01</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <artifactId>pc-test-tomcat7</artifactId>
+   <artifactId>pc-test-servers-tomcat7</artifactId>
    <packaging>jar</packaging>
-   <name>GateIn - Portlet Container (test - servers - Tomcat 7)</name>
+   <name>GateIn - Portlet Container (test - Tomcat7)</name>
 
    <dependencies>
 
+      <!-- Arquillian container -->
       <dependency>
-         <groupId>org.gatein.wci</groupId>
-         <artifactId>wci-tomcat7</artifactId>
+        <groupId>org.jboss.arquillian.container</groupId>
+        <artifactId>arquillian-tomcat-embedded-7</artifactId>
+        <version>1.0.0.CR3</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>7.0.19</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-jasper</artifactId>
+        <version>7.0.19</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-logging-juli</artifactId>
+        <version>7.0.19</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jdt.core.compiler</groupId>
+        <artifactId>ecj</artifactId>
+        <version>3.7</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet.jsp</groupId>
+        <artifactId>jsp-api</artifactId>
+        <version>2.2</version>
       </dependency>
 
    </dependencies>
 
-   <build>
+  <build>
+
+
+    <!-- -->
+    <pluginManagement>
       <plugins>
-         <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-         </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-test</id>
+              <configuration>
+                <useSystemClassLoader>true</useSystemClassLoader>
+                <includes>
+                  <include>**/*WarTestCase.java</include>
+                </includes>
+                <excludes>
+                  <exclude>**/EventPayloadBetweenApplicationsWarTestCase.java</exclude>
+                </excludes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
-   </build>
+    </pluginManagement>
+  </build>
 
 </project>

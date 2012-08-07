@@ -22,10 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.test.unit;
 
-import org.jboss.portal.test.framework.server.NodeId;
-import org.gatein.pc.test.unit.JoinPointType;
-import org.gatein.pc.test.unit.JoinPoint;
-
+import javax.servlet.ServletContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -40,44 +37,49 @@ import java.util.HashSet;
 public class PortletTestCase
 {
 
+   /** The test case name. */
+   private final String name;
+
+   /** . */
+   private final ServletContext context;
+
    /** . */
    private final Map<Key, TestAction> bindings;
 
-   /** . */
-   private final Set<String> parameters;
-
-   public PortletTestCase()
+   public PortletTestCase(String name, ServletContext context)
    {
+      if (name == null)
+      {
+         throw new IllegalArgumentException("Test case name must be provided");
+      }
+
+      //
+      this.name = name;
+      this.context = context;
       this.bindings = new HashMap<Key, TestAction>();
-      this.parameters = new HashSet<String>();
    }
 
-   public void addParameter(String parameterName)
+   public String getName()
    {
-      parameters.add(parameterName);
+      return name;
+   }
+
+   public ServletContext getContext()
+   {
+      return context;
    }
 
    public void bindAction(JoinPoint joinPoint, TestAction action)
    {
-      bindAction(NodeId.DEFAULT, joinPoint, action);
-   }
-
-   public void bindAction(NodeId nodeId, JoinPoint joinPoint, TestAction action)
-   {
-      internalBind(null, nodeId, joinPoint, action);
+      internalBind(null, joinPoint, action);
    }
 
    public void bindAction(int requestCount, JoinPoint joinPoint, TestAction action)
    {
-      bindAction(requestCount, NodeId.DEFAULT, joinPoint, action);
+      internalBind(requestCount, joinPoint, action);
    }
 
-   public void bindAction(int requestCount, NodeId nodeId, JoinPoint joinPoint, TestAction action)
-   {
-      internalBind(requestCount, nodeId, joinPoint, action);
-   }
-
-   private void internalBind(Integer count, NodeId nodeId, JoinPoint joinPoint, TestAction action)
+   private void internalBind(Integer count, JoinPoint joinPoint, TestAction action)
    {
       if (action == null)
       {
@@ -85,28 +87,23 @@ public class PortletTestCase
       }
 
       // Check any global binding first
-      if (bindings.containsKey(new Key(nodeId, joinPoint)))
+      if (bindings.containsKey(new Key(joinPoint)))
       {
          throw new IllegalStateException("Action for this joinpoint already defined globally");
       }
 
       //
-      Key key = new Key(count, nodeId, joinPoint);
+      Key key = new Key(count, joinPoint);
 
       //
       if (bindings.containsKey(key))
       {
-         throw new IllegalStateException("Action for this joinpoint already defined in provided request count");
+         throw new IllegalStateException("Action " + key + " for this joinpoint already defined in provided request count");
       }
       else
       {
          bindings.put(key, action);
       }
-   }
-
-   public TestAction getAction(int count, JoinPoint joinPoint)
-   {
-      return getAction(count, NodeId.DEFAULT, joinPoint);
    }
 
    public String getActorId(int count, JoinPointType joinPointType)
@@ -137,15 +134,15 @@ public class PortletTestCase
       return joinPoints;
    }
 
-   public TestAction getAction(int count, NodeId nodeId, JoinPoint joinPoint)
+   public TestAction getAction(int count, JoinPoint joinPoint)
    {
       // Try a timed action
-      TestAction action = bindings.get(new Key(count, nodeId, joinPoint));
+      TestAction action = bindings.get(new Key(count, joinPoint));
 
       // Try a global action
       if (action == null)
       {
-         action = bindings.get(new Key(nodeId, joinPoint));
+         action = bindings.get(new Key(joinPoint));
       }
 
       //
@@ -159,32 +156,24 @@ public class PortletTestCase
       private final Integer count;
 
       /** . */
-      private final NodeId nodeId;
-
-      /** . */
       private final JoinPoint joinPoint;
 
-      public Key(NodeId nodeId, JoinPoint joinPoint)
+      public Key(JoinPoint joinPoint)
       {
-         this(null, nodeId, joinPoint);
+         this(null, joinPoint);
       }
 
-      public Key(Integer count, NodeId nodeId, JoinPoint joinPoint)
+      public Key(Integer count, JoinPoint joinPoint)
       {
          if (count != null && count < 0)
          {
-            throw new IllegalArgumentException("Count value must be positive");
-         }
-         if (nodeId == null)
-         {
-            throw new IllegalArgumentException("No node id provided");
+            throw new IllegalArgumentException("Count value must be positive was " + count);
          }
          if (joinPoint == null)
          {
             throw new IllegalArgumentException("Joinpoint can't be null");
          }
          this.count = count;
-         this.nodeId = nodeId;
          this.joinPoint = joinPoint;
       }
 
@@ -197,7 +186,7 @@ public class PortletTestCase
          if (o instanceof Key)
          {
             Key that = (Key)o;
-            return (this.count == null ? that.count == null : this.count == that.count) && this.joinPoint.equals(that.joinPoint) && this.nodeId.equals(that.nodeId);
+            return (this.count == null ? that.count == null : this.count.equals(that.count)) && this.joinPoint.equals(that.joinPoint);
          }
          return false;
       }
@@ -206,9 +195,14 @@ public class PortletTestCase
       {
          int result;
          result = count != null ? count : 0;
-         result = 29 * result + nodeId.hashCode();
          result = 29 * result + joinPoint.hashCode();
          return result;
+      }
+
+      @Override
+      public String toString()
+      {
+         return getClass().getSimpleName() + "[count=" + count + ",jointPoint=" + joinPoint + "]";
       }
    }
 }

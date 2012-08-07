@@ -22,16 +22,16 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr168.tck.portletinterface.spec;
 
-import org.gatein.pc.test.unit.base.AbstractTestGenericPortlet;
+import org.gatein.pc.test.unit.web.AbstractTestGenericPortlet;
 import org.gatein.pc.test.unit.PortletTestContext;
 import org.gatein.pc.test.unit.annotations.TestActor;
-import org.jboss.unit.remote.driver.handler.http.response.InvokeGetResponse;
-import org.jboss.unit.driver.DriverResponse;
-import org.jboss.unit.driver.response.EndTestResponse;
-import org.jboss.unit.driver.response.FailureResponse;
-import org.jboss.unit.Failure;
+import org.gatein.pc.test.unit.protocol.response.Response;
+import org.gatein.pc.test.unit.protocol.response.InvokeGetResponse;
+import org.gatein.pc.test.unit.protocol.response.EndTestResponse;
+import org.gatein.pc.test.unit.protocol.response.FailureResponse;
+import org.gatein.pc.test.unit.Failure;
 
-import static org.jboss.unit.api.Assert.*;
+import static org.gatein.pc.test.unit.Assert.*;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
@@ -80,7 +80,7 @@ public class MinimizedStateDontRenderPortlet extends AbstractTestGenericPortlet
       rendered = null;
    }
 
-   protected DriverResponse postRender(RenderRequest req, RenderResponse resp, PortletTestContext context) throws PortletException, IOException
+   protected Response postRender(RenderRequest req, RenderResponse resp, PortletTestContext context) throws PortletException, IOException
    {
       switch(context.getRequestCount())
       {

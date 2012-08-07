@@ -100,7 +100,7 @@ public class PortletFilterLifeCycle extends LifeCycle implements ManagedPortletF
 
    public String toString()
    {
-      return "PortletFilterLifeCycle[" + portletFilter.getId() + "]";
+      return getClass().getSimpleName() + "[" + portletFilter.getId() + "]";
    }
 
    public PortletFilter getPortletFilter()

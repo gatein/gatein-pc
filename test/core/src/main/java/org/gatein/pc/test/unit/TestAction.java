@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static org.jboss.unit.api.Assert.*;
+import static org.gatein.pc.test.unit.Assert.*;
 
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.Tools;

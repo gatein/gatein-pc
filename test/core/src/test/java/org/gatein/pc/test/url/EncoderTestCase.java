@@ -25,6 +25,8 @@ package org.gatein.pc.test.url;
 import junit.framework.TestCase;
 import org.gatein.common.util.ParameterMap;
 
+import java.util.Arrays;
+
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
@@ -37,6 +39,10 @@ public class EncoderTestCase extends TestCase
    public void setUp() throws Exception
    {
       tester = new Tester();
+   }
+
+   private static void assertEquals(String[] expected, String[] actual) {
+      assertEquals(Arrays.asList(expected), Arrays.asList(actual));
    }
 
    public void testEncodeNoMeta()

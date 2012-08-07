@@ -44,6 +44,7 @@ public class ValidationStoresValidator implements PreferencesValidator
 
    public void validate(PortletPreferences preferences) throws ValidatorException
    {
+      System.out.println("--> " + getClass().getClassLoader());
       validateInvoked.set(Boolean.TRUE);
    }
 

@@ -24,9 +24,9 @@ package org.gatein.pc.portlet.impl.jsr168;
 
 import org.gatein.common.util.EmptyResourceBundle;
 import org.gatein.common.i18n.ParentChildResourceBundle;
-import org.gatein.common.i18n.ResourceBundleManager;
 import org.gatein.common.i18n.ResourceBundleFactory;
 import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
+import org.gatein.pc.portlet.impl.info.ResourceBundleManager;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

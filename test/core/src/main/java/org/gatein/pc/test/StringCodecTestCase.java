@@ -22,8 +22,9 @@
  ******************************************************************************/
 package org.gatein.pc.test;
 
-import static org.jboss.unit.api.Assert.assertEquals;
-import org.jboss.unit.api.pojo.annotations.Test;
+import org.junit.Test;
+
+import static org.gatein.pc.test.unit.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>

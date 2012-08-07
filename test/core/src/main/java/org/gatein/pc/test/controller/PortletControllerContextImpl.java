@@ -36,9 +36,14 @@ import org.gatein.pc.controller.state.PortletPageNavigationalState;
 import org.gatein.pc.controller.state.PortletPageNavigationalStateSerialization;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.portlet.impl.spi.AbstractServerContext;
+import org.gatein.pc.test.unit.PortletTestServlet;
 import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.io.Serialization;
+import org.gatein.wci.RequestDispatchCallback;
+import org.gatein.wci.ServletContainer;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,6 +98,31 @@ import java.util.Collection;
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
    {
+
+      // Override ServerContext
+      invocation.setServerContext(new AbstractServerContext(
+         getClientRequest(), getClientResponse()
+      ) {
+         @Override
+         public Object dispatch(ServletContainer servletContainer, ServletContext targetServletContext, RequestDispatchCallback callback, Object handback) throws Exception
+         {
+            RequestDispatcher dispatcher = targetServletContext.getRequestDispatcher("/portlet");
+            PortletTestServlet.callback.set(callback);
+            PortletTestServlet.payload.set(handback);
+            try
+            {
+               dispatcher.include(getClientRequest(), getClientResponse());
+               return PortletTestServlet.payload.get();
+            }
+            finally
+            {
+               PortletTestServlet.callback.set(null);
+               PortletTestServlet.payload.set(null);
+            }
+         }
+      });
+
+      //
       return portletInvoker.invoke(invocation);
    }
 

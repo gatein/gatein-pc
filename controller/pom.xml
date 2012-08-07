@@ -2,7 +2,7 @@
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
-      <version>2.3.3-GA-SNAPSHOT</version>
+      <version>2.4.0.Alpha01</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-controller</artifactId>
@@ -10,14 +10,26 @@
    <name>GateIn - Portlet Container (controller)</name>
 
    <dependencies>
+
       <!-- Internal dependencies -->
       <dependency>
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-portlet</artifactId>
       </dependency>
 
-      <!-- Dependencies for tests -->
+      <!-- -->
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>javax.servlet-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
 
+      <!-- Dependencies for tests -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
+         <scope>test</scope>
+      </dependency>
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>

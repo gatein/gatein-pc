@@ -47,17 +47,8 @@ public class DispatchingFilter implements Filter
 
    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException
    {
-
-      System.out.println("In the CHAIN " + cfg.getFilterName());
-      System.out.println("In the CHAIN " + cfg.getFilterName());
-      System.out.println("In the CHAIN " + cfg.getFilterName());
-      System.out.println("In the CHAIN " + cfg.getFilterName());
-      System.out.println("In the CHAIN " + cfg.getFilterName());
-      System.out.println("In the CHAIN " + cfg.getFilterName());
-
-      RequestDispatcher rd = req.getRequestDispatcher("/dispatchedFromFilter.jsp");
+      RequestDispatcher rd = req.getRequestDispatcher("/DispatchedFromFilter");
       rd.include(req, resp);
-
    }
 
    public void destroy()

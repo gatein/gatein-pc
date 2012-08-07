@@ -48,7 +48,7 @@ public class InlineBundle extends ListResourceBundle
 
    public InlineBundle(ContainerPortletInfo portletInfo)
    {
-      log.debug("Creates the parent bundle");
+//      log.debug("Creates the parent bundle");
 
       //
       List<Object> list = new ArrayList<Object>(3);

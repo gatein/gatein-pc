@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr168.tck.portletsession;
 
-import static org.jboss.unit.api.Assert.*;
+import static org.gatein.pc.test.unit.Assert.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

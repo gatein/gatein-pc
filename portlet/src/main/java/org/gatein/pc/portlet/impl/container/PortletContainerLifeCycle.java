@@ -98,7 +98,7 @@ public class PortletContainerLifeCycle extends LifeCycle implements ManagedPortl
 
    public String toString()
    {
-      return "PortletContainerLifeCycle[" + portletContainer.getId() + "]";
+      return getClass().getSimpleName() + "[" + portletContainer.getId() + "]";
    }
 
    public PortletContainer getPortletContainer()

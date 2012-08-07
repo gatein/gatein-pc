@@ -1,8 +1,9 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-test</artifactId>
-      <version>2.3.3-GA-SNAPSHOT</version>
+      <version>2.4.0.Alpha01</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-test-servers</artifactId>
@@ -11,234 +12,77 @@
 
    <dependencies>
 
-      <dependency>
-         <groupId>org.gatein.common</groupId>
-         <artifactId>common-logging</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>org.gatein.wci</groupId>
-         <artifactId>wci-wci</artifactId>
-      </dependency>
-
+      <!-- -->
       <dependency>
          <groupId>org.gatein.pc</groupId>
-         <artifactId>pc-controller</artifactId>
+         <artifactId>pc-test-core</artifactId>
       </dependency>
       <dependency>
          <groupId>org.gatein.pc</groupId>
-         <artifactId>pc-portlet</artifactId>
+         <artifactId>pc-test-core</artifactId>
+         <type>test-jar</type>
+         <classifier>test-sources</classifier>
       </dependency>
-      <dependency>
-         <groupId>org.gatein.pc</groupId>
-         <artifactId>pc-api</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>log4j</groupId>
-         <artifactId>log4j</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.unit</groupId>
-         <artifactId>jboss-unit</artifactId>
-         <version>${version.jboss.unit}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.unit</groupId>
-         <artifactId>jboss-unit-remote</artifactId>
-         <version>${version.jboss.unit}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.unit</groupId>
-         <artifactId>jboss-unit-tooling-ant</artifactId>
-         <version>${version.jboss.unit}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.unit</groupId>
-         <artifactId>portal-test</artifactId>
-         <version>${version.jboss.unit}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.unit</groupId>
-         <artifactId>portal-test-generic</artifactId>
-         <version>${version.jboss.unit}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.jboss.remoting</groupId>
-        <artifactId>jboss-remoting</artifactId>
-      </dependency>
-
-      <dependency>
-        <groupId>concurrent</groupId>
-        <artifactId>concurrent</artifactId>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>jboss</groupId>
-        <artifactId>jboss-serialization</artifactId>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.jboss.logging</groupId>
-        <artifactId>jboss-logging-jdk</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.logging</groupId>
-        <artifactId>jboss-logging-log4j</artifactId>
-      </dependency>
-
-      <dependency>
-        <groupId>commons-logging</groupId>
-        <artifactId>commons-logging</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>commons-httpclient</groupId>
-        <artifactId>commons-httpclient</artifactId>
-      </dependency>
-
-      <dependency>
-        <groupId>javax.ccpp</groupId>
-        <artifactId>ccpp</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>javax.portlet</groupId>
-        <artifactId>portlet-api</artifactId>
-      </dependency>
-
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-test-core</artifactId>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-test-core</artifactId>
-        <type>test-jar</type>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gatein.pc</groupId>
-        <artifactId>pc-test-core</artifactId>
-        <type>xml</type>
-      </dependency>
-
-      <!-- JSTL for Tomcat -->
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>taglibs</groupId>
-        <artifactId>standard</artifactId>
-      </dependency>
-
-      <dependency>
-        <groupId>commons-discovery</groupId>
-        <artifactId>commons-discovery</artifactId>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-core-uberjar</artifactId>
-      </dependency>
-
-     <dependency>
-       <groupId>org.apache.maven</groupId>
-       <artifactId>maven-ant-tasks</artifactId>
-     </dependency>
 
    </dependencies>
 
    <build>
 
-      <pluginManagement>
-         <plugins>
-            <plugin>
-               <artifactId>maven-antrun-plugin</artifactId>
-               <version>1.5</version>
-               <dependencies>
-                  <dependency>
-                     <groupId>org.jboss.unit</groupId>
-                     <artifactId>jboss-unit-tooling-ant</artifactId>
-                     <version>${version.jboss.unit}</version>
-                  </dependency>
-                  <dependency>
-                     <groupId>org.jboss.unit</groupId>
-                     <artifactId>jboss-unit</artifactId>
-                     <version>${version.jboss.unit}</version>
-                  </dependency>
-                  <dependency>
-                     <groupId>org.codehaus.cargo</groupId>
-                     <artifactId>cargo-core-uberjar</artifactId>
-                     <version>${version.cargo}</version>
-                  </dependency>
-                  <dependency>
-                     <groupId>org.codehaus.cargo</groupId>
-                     <artifactId>cargo-ant</artifactId>
-                     <version>${version.cargo}</version>
-                     <exclusions>
-                        <exclusion>
-                           <groupId>ant</groupId>
-                           <artifactId>ant</artifactId>
-                        </exclusion>
-                     </exclusions>
-                  </dependency>
-                  <dependency>
-                    <groupId>org.jdom</groupId>
-                    <artifactId>jdom</artifactId>
-                    <version>1.1</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>dom4j</groupId>
-                    <artifactId>dom4j</artifactId>
-                    <version>1.6.1</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>jaxen</groupId>
-                    <artifactId>jaxen</artifactId>
-                    <version>1.1.1</version>
-                  </dependency>
-               </dependencies>
-               <executions>
-                  <execution>
-                     <id>test</id>
-                     <phase>test</phase>
-                     <configuration>
-                        <tasks>
+     <!-- -->
+     <testSourceDirectory>${project.build.directory}/src/test/java</testSourceDirectory>
+     <testResources>
+       <testResource>
+         <directory>${project.build.directory}/src/test/resources</directory>
+       </testResource>
+     </testResources>
 
-                           <property name="compile_classpath" refid="maven.compile.classpath" />
-                           <property name="runtime_classpath" refid="maven.runtime.classpath" />
-                           <property name="test_classpath" refid="maven.test.classpath" />
-                           <property name="plugin_classpath" refid="maven.plugin.classpath" />
-                           <property name="project.version" value="${project.version}" />
-                           <property name="basedir" value="${basedir}" />
-
-                           <condition property="cargo.debug" value="${test.cargo.debug}">
-                              <isset property="test.cargo.debug" />
-                           </condition>
-                           <condition property="cargo.debug" value="">
-                             <not>
-                               <isset property="test.cargo.debug" />
-                             </not>
-                           </condition>
-
-                           <ant antfile="${basedir}/src/test/build.xml" inheritRefs="true">
-                              <target name="tests" />
-                           </ant>
-
-                        </tasks>
-                     </configuration>
-                     <goals>
-                        <goal>run</goal>
-                     </goals>
-                  </execution>
-               </executions>
-            </plugin>
-         </plugins>
-      </pluginManagement>
+     <!-- -->
+     <plugins>
+       <plugin>
+         <artifactId>maven-dependency-plugin</artifactId>
+         <executions>
+           <!-- Unpack test sources -->
+           <execution>
+             <id>unpack-test-sources</id>
+             <configuration>
+               <artifactItems>
+                 <artifactItem>
+                   <groupId>org.gatein.pc</groupId>
+                   <artifactId>pc-test-core</artifactId>
+                   <type>test-jar</type>
+                   <classifier>test-sources</classifier>
+                 </artifactItem>
+               </artifactItems>
+               <includes>**/*.java</includes>
+               <outputDirectory>${project.build.directory}/src/test/java</outputDirectory>
+             </configuration>
+             <goals>
+               <goal>unpack</goal>
+             </goals>
+             <phase>generate-test-sources</phase>
+           </execution>
+           <!-- Unpack test resources -->
+           <execution>
+             <id>unpack-test-resources</id>
+             <configuration>
+               <artifactItems>
+                 <artifactItem>
+                   <groupId>org.gatein.pc</groupId>
+                   <artifactId>pc-test-core</artifactId>
+                   <type>test-jar</type>
+                 </artifactItem>
+               </artifactItems>
+               <excludes>**/*.class</excludes>
+               <outputDirectory>${project.build.directory}/src/test/resources</outputDirectory>
+             </configuration>
+             <goals>
+               <goal>unpack</goal>
+             </goals>
+             <phase>generate-test-resources</phase>
+           </execution>
+         </executions>
+       </plugin>
+     </plugins>
 
    </build>
 
@@ -247,7 +91,6 @@
       <!-- ***************************************************************** -->
       <!-- * Server profiles                                               * -->
       <!-- ***************************************************************** -->
-
       <profile>
          <id>default</id>
          <activation>
@@ -256,13 +99,10 @@
             </property>
          </activation>
          <modules>
-            <module>tomcat6</module>
             <module>tomcat7</module>
-            <module>jboss42</module>
-            <module>jboss51</module>
-            <module>jboss6</module>
             <module>jboss7</module>
-            <module>jetty6</module>
+            <module>glassfish3</module>
+            <module>jetty7</module>
          </modules>
       </profile>
       <profile>
@@ -274,182 +114,46 @@
             </property>
          </activation>
          <modules>
-            <module>tomcat6</module>
             <module>tomcat7</module>
          </modules>
       </profile>
-      <profile>
-         <id>tomcat6</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>tomcat6</value>
-            </property>
-         </activation>
-         <modules>
-            <module>tomcat6</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>tomcat7</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>tomcat7</value>
-            </property>
-         </activation>
-         <modules>
-            <module>tomcat7</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>jboss42</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>jboss42</value>
-            </property>
-         </activation>
-         <modules>
-            <module>jboss42</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>jboss51</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>jboss51</value>
-            </property>
-         </activation>
-         <modules>
-            <module>jboss51</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>jboss6</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>jboss6</value>
-            </property>
-         </activation>
-         <modules>
-           <module>jboss6</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>jboss7</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>jboss7</value>
-            </property>
-         </activation>
-         <modules>
-            <module>jboss7</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>jboss</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>jboss</value>
-            </property>
-         </activation>
-         <modules>
-            <module>jboss42</module>
-            <module>jboss51</module>
-            <module>jboss6</module>
-            <module>jboss7</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>jetty</id>
-         <activation>
-            <property>
-               <name>gatein.dev</name>
-               <value>jetty</value>
-            </property>
-         </activation>
-         <modules>
-            <module>jetty6</module>
-         </modules>
-      </profile>
+           <profile>
+              <id>glasshfish</id>
+              <activation>
+                 <property>
+                    <name>gatein.dev</name>
+                    <value>glasshfish</value>
+                 </property>
+              </activation>
+              <modules>
+                 <module>glassfish3</module>
+              </modules>
+           </profile>
+           <profile>
+              <id>jboss</id>
+              <activation>
+                 <property>
+                    <name>gatein.dev</name>
+                    <value>jboss</value>
+                 </property>
+              </activation>
+              <modules>
+                 <module>jboss7</module>
+              </modules>
+           </profile>
+           <profile>
+              <id>jetty</id>
+              <activation>
+                 <property>
+                    <name>gatein.dev</name>
+                    <value>jetty</value>
+                 </property>
+              </activation>
+              <modules>
+                 <module>jetty7</module>
+              </modules>
+           </profile>
 
-
-      <!-- ***************************************************************** -->
-      <!-- * APT related stuff                                             * -->
-      <!-- ***************************************************************** -->
-      <profile>
-         <id>apt</id>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.apache.myfaces.tobago</groupId>
-                  <artifactId>maven-apt-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <phase>package</phase>
-                        <configuration>
-                           <factory>org.gatein.pc.test.unit.reports.TestCaseAPF</factory>
-                           <force>true</force>
-                           <target>1.5</target>
-                           <nocompile>true</nocompile>
-                           <showWarnings>true</showWarnings>
-                        </configuration>
-                        <goals>
-                           <goal>testExecute</goal>
-                        </goals>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-         <dependencies>
-            <dependency>
-               <groupId>sun.jdk</groupId>
-               <artifactId>tools</artifactId>
-               <version>1.5.0</version>
-               <scope>system</scope>
-               <systemPath>${java.home}/../lib/tools.jar</systemPath>
-            </dependency>
-         </dependencies>
-      </profile>
-      <!--On MacOSX the tools.jar should be already in the classpath-->
-      <profile>
-         <id>apt-mac</id>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.apache.myfaces.tobago</groupId>
-                  <artifactId>maven-apt-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <phase>package</phase>
-                        <configuration>
-                           <factory>org.gatein.pc.test.unit.reports.TestCaseAPF</factory>
-                           <force>true</force>
-                           <target>1.5</target>
-                           <nocompile>true</nocompile>
-                           <showWarnings>true</showWarnings>
-                        </configuration>
-                        <goals>
-                           <goal>testExecute</goal>
-                        </goals>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <id>cargo.debug</id>
-         <properties>
-            <test.cargo.debug>-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000</test.cargo.debug>
-         </properties>
-      </profile>
    </profiles>
 
 </project>

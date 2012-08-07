@@ -550,7 +550,8 @@ public abstract class DispatchedHttpServletRequest extends HttpServletRequestWra
 
    public final RequestDispatcher getRequestDispatcher(String s)
    {
-      return new DispatchtedRequestDispatcher(dreq.getRequestDispatcher(s), s);
+      // JULIEN : todo this is wrong : it should return null if nothing could be resolved
+      return new DispatchedRequestDispatcher(dreq.getRequestDispatcher(s), s);
    }
 
    public final boolean isUserInRole(String s)

@@ -24,7 +24,6 @@ package org.gatein.pc.portlet.impl.info;
 
 import org.gatein.common.i18n.LocaleFormat;
 import org.gatein.common.i18n.LocalizedString;
-import org.gatein.common.i18n.ResourceBundleManager;
 import org.gatein.common.logging.Logger;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.reflect.NoSuchClassException;
@@ -176,7 +175,7 @@ public class ContainerInfoBuilder
    private final Map<org.gatein.pc.api.WindowState, ContainerWindowStateInfo> customWindowStates;
 
    /** . */
-   private final Logger log = LoggerFactory.getLogger(ContainerInfoBuilder.class);
+//   private final Logger log = LoggerFactory.getLogger(ContainerInfoBuilder.class);
 
    public ContainerInfoBuilder(
       String portletApplicationId,
@@ -358,7 +357,7 @@ public class ContainerInfoBuilder
          catch (ConversionException e)
          {
             // FIXME -- basic for now
-            log.error("Could not convert supported locale (" + supportedLocaleMD.getLocale() + ") for portlet: " + portletMD.getPortletName(), e);
+//            log.error("Could not convert supported locale (" + supportedLocaleMD.getLocale() + ") for portlet: " + portletMD.getPortletName(), e);
          }
 
       }
@@ -402,7 +401,7 @@ public class ContainerInfoBuilder
             }
             catch (NoSuchClassException e)
             {
-               log.error("Cannot load event class " + e.getClassName(), e);
+//               log.error("Cannot load event class " + e.getClassName(), e);
             }
          }
 
@@ -794,8 +793,8 @@ public class ContainerInfoBuilder
          }
          else
          {
-            log.error("Portlet " + portletMD.getPortletName() + " references the event " + name + " that is not " +
-               "declared at the application level");
+//            log.error("Portlet " + portletMD.getPortletName() + " references the event " + name + " that is not " +
+//               "declared at the application level");
          }
       }
 
@@ -812,8 +811,8 @@ public class ContainerInfoBuilder
          }
          else
          {
-            log.error("Portlet " + portletMD.getPortletName() + " references the event " + name + " that is not " +
-               "declared at the application level");
+//            log.error("Portlet " + portletMD.getPortletName() + " references the event " + name + " that is not " +
+//               "declared at the application level");
          }
       }
 
@@ -873,7 +872,7 @@ public class ContainerInfoBuilder
          catch (ConversionException e)
          {
             // FIXME -- basic for now
-            log.error("Could not convert supported locale (" + supportedLocaleMD.getLocale() + ") for portlet: " + portletMD.getPortletName(), e);
+//            log.error("Could not convert supported locale (" + supportedLocaleMD.getLocale() + ") for portlet: " + portletMD.getPortletName(), e);
          }
       }
 

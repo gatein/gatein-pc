@@ -22,12 +22,12 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168.api;
 
-import org.gatein.common.i18n.ResourceBundleManager;
 import org.gatein.common.util.ParameterMap;
 import org.gatein.pc.portlet.impl.info.ContainerParameterInfo;
 import org.gatein.pc.portlet.impl.info.ContainerPortletApplicationInfo;
 import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
 import org.gatein.pc.api.info.RuntimeOptionInfo;
+import org.gatein.pc.portlet.impl.info.ResourceBundleManager;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;

@@ -39,9 +39,8 @@ import org.gatein.pc.test.TestPortletApplicationDeployer;
 import org.gatein.wci.ServletContainer;
 import org.gatein.wci.ServletContainerFactory;
 import org.gatein.wci.impl.DefaultServletContainerFactory;
-import org.jboss.portal.test.framework.impl.generic.server.GenericServiceExporter;
-import org.jboss.unit.remote.driver.RemoteTestDriverServer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -56,19 +55,19 @@ public class ServletContextBootstrap implements ServletContextListener
    private TestPortletApplicationDeployer portletApplicationDeployer;
 
    /** . */
-   private GenericServiceExporter testDriverServerExporter;
-
-   /** . */
    private PortletInvokerInterceptor consumerPortletInvoker;
 
-   public void contextInitialized(ServletContextEvent sce)
+   public void contextInitialized(final ServletContextEvent sce)
    {
+      final ServletContext ctx = sce.getServletContext();
+
+      //
       try
       {
          boostrap();
 
          //
-         sce.getServletContext().setAttribute("ConsumerPortletInvoker", consumerPortletInvoker);
+         ctx.setAttribute("ConsumerPortletInvoker", consumerPortletInvoker);
       }
       catch (Exception e)
       {
@@ -138,19 +137,9 @@ public class ServletContextBootstrap implements ServletContextListener
       // The servlet container obtained from the servlet container factory
       ServletContainer servletContainer = servletContainerFactory.getServletContainer();
 
-      // Remote test driver server
-      RemoteTestDriverServer testDriverServer = new RemoteTestDriverServer();
-
-      // Generic service exporter
-      GenericServiceExporter testDriverServerExporter = new GenericServiceExporter(
-         "socket://localhost:5400",
-         testDriverServer,
-         "org.jboss.unit.remote.driver.RemoteTestDriver");
-
       //
       TestPortletApplicationDeployer portletApplicationDeployer = new TestPortletApplicationDeployer();
       portletApplicationDeployer.setServletContainerFactory(servletContainerFactory);
-      portletApplicationDeployer.setDriver(testDriverServer);
       portletApplicationDeployer.setContainerPortletInvoker(containerPortletInvoker);
 
       // Instantiated
@@ -166,21 +155,11 @@ public class ServletContextBootstrap implements ServletContextListener
       //
       portletApplicationDeployer.start();
       this.portletApplicationDeployer = portletApplicationDeployer;
-
-      //
-      testDriverServerExporter.start();
-      this.testDriverServerExporter = testDriverServerExporter;
    }
 
    public void contextDestroyed(ServletContextEvent sce)
    {
       sce.getServletContext().setAttribute("ConsumerPortletInvoker", null);
-
-      //
-      if (testDriverServerExporter != null)
-      {
-         testDriverServerExporter.stop();
-      }
 
       //
       if (portletApplicationDeployer != null)

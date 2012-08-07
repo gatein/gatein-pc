@@ -40,7 +40,7 @@ public abstract class LifeCycle implements ManagedObject
 {
 
    /** . */
-   private Logger log = LoggerFactory.getLogger(LifeCycle.class);
+//   private Logger log = LoggerFactory.getLogger(LifeCycle.class);
 
    /** . */
    private LifeCycleStatus status = LifeCycleStatus.STOPPED;
@@ -99,11 +99,11 @@ public abstract class LifeCycle implements ManagedObject
             }
             catch (Exception e)
             {
-               log.error("Cannot start object", e);
+//               log.error("Cannot start object", e);
             }
             catch (Error e)
             {
-               log.error("Cannot start object", e);
+//               log.error("Cannot start object", e);
             }
             finally
             {
@@ -165,11 +165,11 @@ public abstract class LifeCycle implements ManagedObject
             }
             catch (Exception e)
             {
-               log.error("Error during object stop", e);
+//               log.error("Error during object stop", e);
             }
             catch (Error e)
             {
-               log.error("Error during object stop", e);
+//               log.error("Error during object stop", e);
             }
             finally
             {

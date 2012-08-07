@@ -33,7 +33,7 @@
 
    <groupId>org.gatein.pc</groupId>
    <artifactId>pc-parent</artifactId>
-   <version>2.3.3-GA-SNAPSHOT</version>
+   <version>2.4.0.Alpha01</version>
    <packaging>pom</packaging>
 
    <name>GateIn - Portlet Container</name>
@@ -55,24 +55,14 @@
    </scm>
 
    <properties>
-      <version.gatein.common>2.0.4-GA</version.gatein.common>
-      <version.gatein.wci>2.2.0-Beta01</version.gatein.wci>
+      <version.gatein.common>2.1.0.Alpha01</version.gatein.common>
+      <version.gatein.wci>2.3.0.Alpha01-SNAPSHOT</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
       <version.discovery>0.4</version.discovery>
-      <version.servlet>2.5</version.servlet>
-      <version.junit>4.6</version.junit>
-
-      <!-- used in test module by maven-antrun-extended-plugin -->
-      <version.cargo>1.0.3</version.cargo>
-      <version.cargo.jetty.deployer>1.0.1</version.cargo.jetty.deployer>
-      <version.cargo.jboss5.deployer>5.1.0.SP1</version.cargo.jboss5.deployer>
-
-      <!-- This needs to be removed after gatein-dep is fixed. -->
-      <!-- Currently it forces 2.0.5.GA for groupId "jboss" and this is not present in the repo -->
-      <version.jboss.logging>2.0.5.GA</version.jboss.logging>
-      <version.jboss.unit>1.2.4</version.jboss.unit>
+      <version.servlet>3.0.1</version.servlet>
+      <version.junit>4.8.2</version.junit>
 
       <!-- maven-release-plugin -->
       <useReleaseProfile>false</useReleaseProfile>
@@ -80,7 +70,7 @@
       <version.release.plugin>2.2.1</version.release.plugin>
       <pushChanges>false</pushChanges>
       <autoVersionSubmodules>true</autoVersionSubmodules>
-      
+
       <!-- buildnumber-maven-plugin : needs 1.0 for git -->
       <version.buildnumber.plugin>1.0</version.buildnumber.plugin>
    </properties>
@@ -122,7 +112,7 @@
          <dependency>
             <groupId>org.gatein</groupId>
             <artifactId>gatein-dep</artifactId>
-            <version>1.1.0-GA</version>
+            <version>1.2.0.Alpha01</version>
             <type>pom</type>
             <scope>import</scope>
          </dependency>
@@ -138,12 +128,20 @@
             <groupId>org.gatein.common</groupId>
             <artifactId>common-logging</artifactId>
             <version>${version.gatein.common}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.gatein.common</groupId>
-            <artifactId>common-mc</artifactId>
-            <version>${version.gatein.common}</version>
+            <exclusions>
+               <exclusion>
+                  <groupId>jboss</groupId>
+                  <artifactId>jboss-logging-spi</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>jboss</groupId>
+                  <artifactId>jboss-common-logging-spi</artifactId>
+               </exclusion>
+               <exclusion>
+                  <groupId>org.jboss.logging</groupId>
+                  <artifactId>jboss-logging-spi</artifactId>
+               </exclusion>
+            </exclusions>
          </dependency>
 
          <dependency>
@@ -190,38 +188,19 @@
            <groupId>org.gatein.pc</groupId>
            <artifactId>pc-test-core</artifactId>
            <version>${project.version}</version>
-           <type>xml</type>
+           <type>test-jar</type>
+           <classifier>test-sources</classifier>
          </dependency>
 
+         <dependency>
+            <groupId>org.gatein.pc</groupId>
+            <artifactId>pc-test-servers-jboss7-dependencies</artifactId>
+            <version>${project.version}</version>
+         </dependency>
 
          <dependency>
             <groupId>org.gatein.wci</groupId>
             <artifactId>wci-wci</artifactId>
-            <version>${version.gatein.wci}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.gatein.wci</groupId>
-            <artifactId>wci-tomcat6</artifactId>
-            <version>${version.gatein.wci}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.gatein.wci</groupId>
-            <artifactId>wci-tomcat7</artifactId>
-            <version>${version.gatein.wci}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.gatein.wci</groupId>
-            <artifactId>wci-jboss6</artifactId>
-            <version>${version.gatein.wci}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.gatein.wci</groupId>
-            <artifactId>wci-jboss7</artifactId>
-            <version>${version.gatein.wci}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.gatein.wci</groupId>
-            <artifactId>wci-jetty</artifactId>
             <version>${version.gatein.wci}</version>
          </dependency>
 
@@ -232,7 +211,7 @@
          </dependency>
          <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${version.servlet}</version>
          </dependency>
          <dependency>
@@ -250,59 +229,48 @@
             <artifactId>staxnav.core</artifactId>
             <version>0.9.6</version>
          </dependency>
-
-         <dependency>
-            <groupId>org.codehaus.cargo</groupId>
-            <artifactId>cargo-jetty-deployer</artifactId>
-            <type>war</type>
-            <version>${version.cargo.jetty.deployer}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.integration</groupId>
-            <artifactId>jboss-profileservice-spi</artifactId>
-            <version>${version.cargo.jboss5.deployer}</version>
-         </dependency>
-         <dependency>
-           <groupId>org.codehaus.cargo</groupId>
-           <artifactId>cargo-core-uberjar</artifactId>
-           <version>${version.cargo}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>commons-discovery</groupId>
-            <artifactId>commons-discovery</artifactId>
-            <version>${version.discovery}</version>
-         </dependency>
-
-         <!-- This needs to be removed after gatein-dep is fixed. -->
-         <!-- Currently it forces 2.0.5.GA for groupId "jboss" and this is not present in the repo -->
-         <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging-jdk</artifactId>
-            <version>${version.jboss.logging}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging-log4j</artifactId>
-            <version>${version.jboss.logging}</version>
-         </dependency>
-
          <dependency>
             <groupId>org.apache.portals.bridges</groupId>
             <artifactId>portals-bridges-common</artifactId>
             <version>${version.apache.portals.bridges}</version>
          </dependency>
-
-         <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-ant-tasks</artifactId>
-            <version>2.1.1</version>
-         </dependency>
-
          <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
+         </dependency>
+
+         <!-- Dependencies induced by the upgrade of gatein-dep -->
+         <!-- Should be aligned with : https://github.com/jbossas/jboss-as/blob/7.1/pom.xml -->
+         <dependency>
+           <groupId>javax.portlet</groupId>
+           <artifactId>portlet-api</artifactId>
+           <version>2.0</version>
+         </dependency>
+         <dependency>
+           <groupId>javax.servlet.jsp</groupId>
+           <artifactId>jsp-api</artifactId>
+           <version>2.1</version>
+         </dependency>
+         <dependency>
+           <groupId>sun-jaxb</groupId>
+           <artifactId>jaxb-api</artifactId>
+           <version>2.1.4</version>
+         </dependency>
+         <dependency>
+           <groupId>javax.ccpp</groupId>
+           <artifactId>ccpp</artifactId>
+           <version>1.0</version>
+         </dependency>
+         <dependency>
+           <groupId>log4j</groupId>
+           <artifactId>log4j</artifactId>
+           <version>1.2.16</version>
+         </dependency>
+         <dependency>
+           <groupId>commons-logging</groupId>
+           <artifactId>commons-logging</artifactId>
+           <version>1.1.1</version>
          </dependency>
 
       </dependencies>
@@ -310,132 +278,20 @@
 
    <dependencies>
 
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-simple</artifactId>
-         <scope>test</scope>
-      </dependency>
+     <!-- THIS MUST BE EMPTY (cf test/servers/jboss7/dependencies) -->
 
    </dependencies>
 
-   <build>
-
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-               <archive>
-                  <manifest>
-                     <addClasspath>false</addClasspath>
-                  </manifest>
-               </archive>
-            </configuration>
-         </plugin>
-      </plugins>
-      <pluginManagement>
-         <plugins>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-jar-plugin</artifactId>
-               <version>2.2</version>
-            </plugin>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-source-plugin</artifactId>
-               <version>2.1.2</version>
-            </plugin>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-surefire-plugin</artifactId>
-               <version>2.3.1</version>
-               <configuration>
-                  <excludes>
-                     <exclude>**/*Test.java</exclude>
-                  </excludes>
-               </configuration>
-            </plugin>
-            <plugin>
-               <artifactId>maven-antrun-plugin</artifactId>
-               <version>1.6</version>
-            </plugin>
-            <plugin>
-               <artifactId>maven-assembly-plugin</artifactId>
-               <version>2.2</version>
-               <executions>
-                  <execution>
-                     <id>make-assembly</id>
-                     <phase>package</phase>
-                     <goals>
-                        <goal>single</goal>
-                     </goals>
-                  </execution>
-               </executions>
-            </plugin>
-         </plugins>
-      </pluginManagement>
-   </build>
-
-   <profiles>
-      <profile>
-         <id>default</id>
-         <modules>
-            <module>api</module>
-            <module>jsr168api</module>
-            <module>portlet</module>
-            <module>controller</module>
-            <module>bridge</module>
-            <module>federation</module>
-            <module>management</module>
-            <module>test</module>
-            <module>portal</module>
-            <module>samples</module>
-            <module>docs</module>
-         </modules>
-         <activation>
-            <activeByDefault>true</activeByDefault>
-         </activation>
-      </profile>
-      <profile>
-         <id>docs</id>
-         <modules>
-            <module>docs</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>test</id>
-         <modules>
-            <module>api</module>
-            <module>portlet</module>
-            <module>controller</module>
-            <module>test</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>portal</id>
-         <modules>
-            <module>api</module>
-            <module>portlet</module>
-            <module>controller</module>
-            <module>portal</module>
-            <module>samples</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>release</id>
-         <modules>
-            <module>api</module>
-            <module>jsr168api</module>
-            <module>portlet</module>
-            <module>controller</module>
-            <module>bridge</module>
-            <module>federation</module>
-            <module>management</module>
-            <module>portal</module>
-            <module>samples</module>
-            <module>docs</module>
-         </modules>
-      </profile>
-   </profiles>
+   <modules>
+      <module>api</module>
+      <module>jsr168api</module>
+      <module>portlet</module>
+      <module>controller</module>
+      <module>test</module>
+      <module>bridge</module>
+      <module>federation</module>
+      <module>management</module>
+      <module>samples</module>
+   </modules>
 
 </project>

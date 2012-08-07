@@ -50,7 +50,7 @@ public class PortletApplicationDeployment
 {
 
    /** . */
-   private final Logger log;
+   // private final Logger log;
 
    /** . */
    private final WebApp webApp;
@@ -72,7 +72,7 @@ public class PortletApplicationDeployment
       this.listener = listener;
       this.webApp = webApp;
       this.metaData = metaData;
-      this.log = LoggerFactory.getLogger(PortletApplicationDeployment.class + "." + webApp.getContextPath().replace('.', '_'));
+      // this.log = LoggerFactory.getLogger(PortletApplicationDeployment.class + "." + webApp.getContextPath().replace('.', '_'));
    }
 
    public PortletApplicationLifeCycle getPortletApplicationLifeCycle()
@@ -83,7 +83,7 @@ public class PortletApplicationDeployment
    void install()
    {
 
-      log.debug("Starting installation");
+      // log.debug("Starting installation");
 
       //
       ContainerInfoBuilderContext builderContext = new ContainerInfoBuilderContextImpl(metaData, webApp);
@@ -158,12 +158,12 @@ public class PortletApplicationDeployment
 
    void uninstall()
    {
-      log.debug("Uninstalling");
+      // log.debug("Uninstalling");
 
       //
       portletApplicationLifeCycle.managedStop();
 
       //
-      log.debug("Uninstalled");
+      // log.debug("Uninstalled");
    }
 }

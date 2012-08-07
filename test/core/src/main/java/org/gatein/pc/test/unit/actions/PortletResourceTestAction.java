@@ -26,9 +26,9 @@ import org.gatein.pc.test.unit.TestAction;
 import org.gatein.pc.test.unit.PortletTestContext;
 import org.gatein.common.NotYetImplemented;
 import org.gatein.common.io.IOTools;
-import org.jboss.unit.driver.DriverResponse;
-import org.jboss.unit.driver.response.FailureResponse;
-import org.jboss.unit.Failure;
+import org.gatein.pc.test.unit.protocol.response.Response;
+import org.gatein.pc.test.unit.protocol.response.FailureResponse;
+import org.gatein.pc.test.unit.Failure;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -67,7 +67,7 @@ public abstract class PortletResourceTestAction extends TestAction
       this(true);
    }
 
-   public final DriverResponse execute(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
+   public final Response execute(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
    {
       // We attempty to do it
       boolean sendResponse = false;
@@ -75,7 +75,7 @@ public abstract class PortletResourceTestAction extends TestAction
       //
       try
       {
-         DriverResponse driverResponse = runWithRuntimeException(portlet, request, response, context);
+         Response driverResponse = runWithRuntimeException(portlet, request, response, context);
          sendResponse = attemptToSendResponse;
          return driverResponse;
       }
@@ -127,7 +127,7 @@ public abstract class PortletResourceTestAction extends TestAction
       }
    }
 
-   protected DriverResponse runWithRuntimeException(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
+   protected Response runWithRuntimeException(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
    {
       try
       {
@@ -147,7 +147,7 @@ public abstract class PortletResourceTestAction extends TestAction
       }
    }
 
-   protected DriverResponse run(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
+   protected Response run(Portlet portlet, ResourceRequest request, ResourceResponse response, PortletTestContext context) throws PortletException, IOException
    {
       throw new NotYetImplemented();
    }

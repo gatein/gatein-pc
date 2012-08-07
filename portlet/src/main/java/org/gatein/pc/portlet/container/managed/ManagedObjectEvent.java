@@ -26,11 +26,11 @@ package org.gatein.pc.portlet.container.managed;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class ManagedObjectEvent extends ManagedObjectRegistryEvent
+public abstract class ManagedObjectEvent extends ManagedObjectRegistryEvent
 {
 
    /** . */
-   private final ManagedObject managedObject;
+   protected final ManagedObject managedObject;
 
    public ManagedObjectEvent(ManagedObject managedObject)
    {

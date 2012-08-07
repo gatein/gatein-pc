@@ -25,9 +25,9 @@ package org.gatein.pc.test.unit.actions;
 import org.gatein.pc.test.unit.TestAction;
 import org.gatein.pc.test.unit.PortletTestContext;
 import org.gatein.common.NotYetImplemented;
-import org.jboss.unit.driver.DriverResponse;
-import org.jboss.unit.driver.response.FailureResponse;
-import org.jboss.unit.Failure;
+import org.gatein.pc.test.unit.protocol.response.Response;
+import org.gatein.pc.test.unit.protocol.response.FailureResponse;
+import org.gatein.pc.test.unit.Failure;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -41,12 +41,12 @@ import java.io.IOException;
  */
 public abstract class ServletServiceTestAction extends TestAction
 {
-   protected DriverResponse run(Servlet servlet, HttpServletRequest request, HttpServletResponse response, PortletTestContext context) throws ServletException, IOException
+   protected Response run(Servlet servlet, HttpServletRequest request, HttpServletResponse response, PortletTestContext context) throws ServletException, IOException
    {
       throw new NotYetImplemented();
    }
 
-   public DriverResponse execute(Servlet servlet, HttpServletRequest request, HttpServletResponse response, PortletTestContext context) throws ServletException, IOException
+   public Response execute(Servlet servlet, HttpServletRequest request, HttpServletResponse response, PortletTestContext context) throws ServletException, IOException
    {
       try
       {

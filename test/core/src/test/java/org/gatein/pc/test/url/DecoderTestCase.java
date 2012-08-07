@@ -26,6 +26,7 @@ import junit.framework.TestCase;
 import org.gatein.common.util.ParameterMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -343,7 +344,7 @@ public class DecoderTestCase extends TestCase
             public void doAssert()
             {
                assertFalse(failed);
-               assertEquals(values, actualParameters.getValues(name));
+               assertEquals(Arrays.asList(values), Arrays.asList(actualParameters.getValues(name)));
             }
          });
          return this;
@@ -367,7 +368,7 @@ public class DecoderTestCase extends TestCase
             public void doAssert()
             {
                assertFalse(failed);
-               assertEquals(values, metaParameters.getValues(name));
+               assertEquals(Arrays.asList(values), Arrays.asList(metaParameters.getValues(name)));
             }
          });
          return this;

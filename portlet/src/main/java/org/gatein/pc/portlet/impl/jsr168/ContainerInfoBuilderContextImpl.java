@@ -22,12 +22,12 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168;
 
+import org.gatein.pc.portlet.impl.info.ResourceBundleManager;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.PortletMetaData;
 import org.gatein.pc.portlet.impl.info.ContainerInfoBuilderContext;
 import org.gatein.wci.WebApp;
-import org.gatein.common.i18n.ResourceBundleManager;
 import org.gatein.common.i18n.ResourceBundleFactory;
 import org.gatein.common.reflect.NoSuchClassException;
 

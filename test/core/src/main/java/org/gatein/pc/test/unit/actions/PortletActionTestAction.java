@@ -25,9 +25,9 @@ package org.gatein.pc.test.unit.actions;
 import org.gatein.pc.test.unit.PortletTestContext;
 import org.gatein.pc.test.unit.TestAction;
 import org.gatein.common.NotYetImplemented;
-import org.jboss.unit.driver.DriverResponse;
-import org.jboss.unit.driver.response.FailureResponse;
-import org.jboss.unit.Failure;
+import org.gatein.pc.test.unit.protocol.response.Response;
+import org.gatein.pc.test.unit.protocol.response.FailureResponse;
+import org.gatein.pc.test.unit.Failure;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -42,7 +42,7 @@ import java.io.IOException;
 public abstract class PortletActionTestAction extends TestAction
 {
 
-   public final DriverResponse execute(Portlet portlet, ActionRequest request, ActionResponse response, PortletTestContext context) throws PortletException, IOException
+   public final Response execute(Portlet portlet, ActionRequest request, ActionResponse response, PortletTestContext context) throws PortletException, IOException
    {
       try
       {

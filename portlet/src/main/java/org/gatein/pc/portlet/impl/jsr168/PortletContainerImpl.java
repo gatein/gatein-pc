@@ -24,7 +24,6 @@ package org.gatein.pc.portlet.impl.jsr168;
 
 import org.gatein.common.logging.Logger;
 import org.gatein.common.concurrent.Valve;
-import org.gatein.common.i18n.ResourceBundleManager;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.invocation.ActionInvocation;
@@ -44,6 +43,7 @@ import org.gatein.pc.portlet.container.PortletInitializationException;
 import org.gatein.pc.portlet.container.object.PortletContainerObject;
 import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
 import org.gatein.pc.portlet.impl.info.ContainerPreferencesInfo;
+import org.gatein.pc.portlet.impl.info.ResourceBundleManager;
 import org.gatein.pc.portlet.impl.jsr168.api.ActionRequestImpl;
 import org.gatein.pc.portlet.impl.jsr168.api.ActionResponseImpl;
 import org.gatein.pc.portlet.impl.jsr168.api.EventRequestImpl;
@@ -215,14 +215,21 @@ public class PortletContainerImpl implements PortletContainerObject
          {
             try
             {
-               ClassLoader loader = application.getContext().getClassLoader();
-
-               //
                if (validatorClassName != null)
                {
                   // Load the class
-                  Class preferencesValidatorClass = loader.loadClass(validatorClassName);
-                  preferencesValidator = (PreferencesValidator)preferencesValidatorClass.newInstance();
+                  ClassLoader loader = application.getContext().getClassLoader();
+                  ClassLoader old = Thread.currentThread().getContextClassLoader();
+                  try
+                  {
+                     Thread.currentThread().setContextClassLoader(loader);
+                     Class preferencesValidatorClass = loader.loadClass(validatorClassName);
+                     preferencesValidator = (PreferencesValidator)preferencesValidatorClass.newInstance();
+                  }
+                  finally
+                  {
+                     Thread.currentThread().setContextClassLoader(old);
+                  }
                }
             }
             catch (ClassNotFoundException e)
@@ -249,13 +256,13 @@ public class PortletContainerImpl implements PortletContainerObject
       // Finally initialize the porlet instance
       try
       {
-         log.debug("Loading portlet class " + className);
+//         log.debug("Loading portlet class " + className);
          Class portletClass = application.getContext().getClassLoader().loadClass(className);
-         log.debug("Creating portlet object " + className);
+//         log.debug("Creating portlet object " + className);
          Portlet portlet = (Portlet)portletClass.newInstance();
-         log.debug("Created portlet object " + className);
+//         log.debug("Created portlet object " + className);
          initPortlet(portlet, config);
-         log.debug("Initialized portlet object " + className);
+//         log.debug("Initialized portlet object " + className);
 
          // We are safe, update state
          this.portlet = portlet;

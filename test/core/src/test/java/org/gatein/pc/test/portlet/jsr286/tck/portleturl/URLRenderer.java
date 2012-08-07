@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr286.tck.portleturl;
 
-import static org.jboss.unit.api.Assert.createFailure;
+import static org.gatein.pc.test.unit.Assert.createFailure;
 
 import javax.portlet.BaseURL;
 import java.io.StringWriter;

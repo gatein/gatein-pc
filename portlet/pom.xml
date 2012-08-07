@@ -2,7 +2,7 @@
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
-      <version>2.3.3-GA-SNAPSHOT</version>
+      <version>2.4.0.Alpha01</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>pc-portlet</artifactId>
@@ -17,6 +17,7 @@
       <dependency>
          <groupId>javax.portlet</groupId>
          <artifactId>portlet-api</artifactId>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.gatein.wci</groupId>
@@ -25,6 +26,7 @@
       <dependency>
          <groupId>javax.servlet.jsp</groupId>
          <artifactId>jsp-api</artifactId>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>sun-jaxb</groupId>
@@ -34,10 +36,17 @@
       <dependency>
          <groupId>javax.ccpp</groupId>
          <artifactId>ccpp</artifactId>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.staxnav</groupId>
          <artifactId>staxnav.core</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>junit</groupId>

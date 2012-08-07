@@ -23,8 +23,6 @@
 package org.gatein.pc.portlet.impl.deployment;
 
 import org.gatein.common.io.IOTools;
-import org.gatein.common.logging.Logger;
-import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.container.PortletContainer;
@@ -63,7 +61,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
 {
 
    /** . */
-   private Logger log = LoggerFactory.getLogger(PortletApplicationDeployer.class);
+   // private Logger log = LoggerFactory.getLogger(PortletApplicationDeployer.class);
 
    /** . */
    private PortletApplicationRegistry registry;
@@ -164,20 +162,20 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
          switch (lifeCycleEvent.getType())
          {
             case WebAppLifeCycleEvent.ADDED:
-               log.debug("Going to install war file" + cp);
+               // log.debug("Going to install war file" + cp);
                add(event.getWebApp());
-               log.debug("Installed war file" + cp);
+               // log.debug("Installed war file" + cp);
                break;
             case WebAppLifeCycleEvent.REMOVED:
                try
                {
-                  log.debug("Going to uninstall war file" + cp);
+                  // log.debug("Going to uninstall war file" + cp);
                   remove(event.getWebApp());
-                  log.debug("Uninstalled war file" + cp);
+                  // log.debug("Uninstalled war file" + cp);
                }
                catch (Throwable e)
                {
-                  log.error("Uninstalled war file " + cp + " with an error", e);
+                  // log.error("Uninstalled war file " + cp + " with an error", e);
                }
                break;
          }
@@ -273,7 +271,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
             }
             catch (Exception e)
             {
-               log.error("Cannot read portlet.xml " + url, e);
+               // log.error("Cannot read portlet.xml " + url, e);
             }
             finally
             {
@@ -283,7 +281,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
       }
       catch (MalformedURLException e)
       {
-         log.error("Could not read portlet deployment descriptor for application " + webApp.getContextPath());
+         // log.error("Could not read portlet deployment descriptor for application " + webApp.getContextPath());
       }
       return null;
    }

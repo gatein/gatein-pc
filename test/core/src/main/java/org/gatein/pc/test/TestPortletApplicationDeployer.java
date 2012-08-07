@@ -25,6 +25,10 @@ package org.gatein.pc.test;
 
 import org.gatein.wci.WebApp;
 import org.gatein.pc.portlet.impl.deployment.PortletApplicationDeployer;
+import org.gatein.wci.WebAppLifeCycleEvent;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -32,25 +36,88 @@ import org.gatein.pc.portlet.impl.deployment.PortletApplicationDeployer;
  */
 public class TestPortletApplicationDeployer extends PortletApplicationDeployer
 {
-   /** . */
-   private Object driver;
 
-   public Object getDriver()
+   /** Keep track of deployers. */
+   private static final ArrayList<TestPortletApplicationDeployer> deployers = new ArrayList<TestPortletApplicationDeployer>();
+
+   /** . */
+   private static final HashSet<WebApp> deployments = new HashSet<WebApp>();
+
+   public static void deploy(WebApp deployment)
    {
-      return driver;
+      if (deployments.add(deployment))
+      {
+         synchronized (deployers)
+         {
+            for (TestPortletApplicationDeployer deployer : deployers)
+            {
+               deployer.doDeploy(deployment);
+            }
+         }
+      }
    }
 
-   public void setDriver(Object driver)
+   public synchronized static void undeploy(WebApp deployment)
    {
-      this.driver = driver;
+      if (deployments.remove(deployment))
+      {
+         synchronized (deployers)
+         {
+            for (TestPortletApplicationDeployer deployer : deployers)
+            {
+               deployer.doUndeploy(deployment);
+            }
+         }
+      }
+   }
+
+   public TestPortletApplicationDeployer()
+   {
+   }
+
+   private void doDeploy(WebApp deployment)
+   {
+      onEvent(new WebAppLifeCycleEvent(deployment, WebAppLifeCycleEvent.ADDED));
+   }
+
+   private void doUndeploy(WebApp deployment)
+   {
+      onEvent(new WebAppLifeCycleEvent(deployment, WebAppLifeCycleEvent.REMOVED));
    }
 
    @Override
-   protected void add(WebApp webApp)
+   public void start()
    {
-      // Set the driver for the web app
-      webApp.getServletContext().setAttribute("TestDriverServer", driver);
+      synchronized (deployers)
+      {
+         super.start();
 
-      super.add(webApp);
+         //
+         for (WebApp deployment : deployments)
+         {
+            doDeploy(deployment);
+         }
+
+         //
+         deployers.add(this);
+      }
+   }
+
+   @Override
+   public void stop()
+   {
+      synchronized (deployers)
+      {
+         deployers.remove(this);
+
+         //
+         for (WebApp deployment : deployments)
+         {
+            doUndeploy(deployment);
+         }
+
+         //
+         super.stop();
+      }
    }
 }

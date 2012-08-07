@@ -402,7 +402,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
 
    public String toString()
    {
-      return "PortletApplicationLifeCycle[" + portletApplication.getId() + "]";
+      return getClass().getSimpleName() + "[" + portletApplication.getId() + "]";
    }
 
    public PortletApplication getPortletApplication()

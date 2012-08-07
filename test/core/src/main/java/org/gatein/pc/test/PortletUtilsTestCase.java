@@ -24,7 +24,7 @@
 package org.gatein.pc.test;
 
 import org.gatein.pc.portlet.impl.jsr168.PortletUtils;
-import static org.jboss.unit.api.Assert.assertEquals;
+import static org.gatein.pc.test.unit.Assert.assertEquals;
 
 public class PortletUtilsTestCase
 {

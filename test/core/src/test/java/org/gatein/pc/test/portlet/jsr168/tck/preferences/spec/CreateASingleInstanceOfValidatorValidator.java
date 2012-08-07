@@ -25,6 +25,8 @@ package org.gatein.pc.test.portlet.jsr168.tck.preferences.spec;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PreferencesValidator;
 import javax.portlet.ValidatorException;
+import java.util.WeakHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -34,19 +36,27 @@ import javax.portlet.ValidatorException;
 public class CreateASingleInstanceOfValidatorValidator implements PreferencesValidator
 {
 
-
-   private static int createdCount = 0;
+   /** . */
+   private static WeakHashMap<ClassLoader, AtomicInteger> counters = new WeakHashMap<ClassLoader, AtomicInteger>();
 
    public static int getCreatedCount()
    {
-      return createdCount;
+      ClassLoader key = Thread.currentThread().getContextClassLoader();
+      AtomicInteger counter = counters.get(key);
+      return counter != null ? counter.get() : 0;
    }
 
    public CreateASingleInstanceOfValidatorValidator()
    {
       synchronized (CreateASingleInstanceOfValidatorValidator.class)
       {
-         createdCount++;
+         ClassLoader key = Thread.currentThread().getContextClassLoader();
+         AtomicInteger counter = counters.get(key);
+         if (counter == null)
+         {
+            counters.put(key, counter = new AtomicInteger());
+         }
+         counter.incrementAndGet();
       }
    }
 

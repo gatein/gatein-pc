@@ -29,6 +29,8 @@ import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
 import javax.portlet.PortletException;
 import javax.portlet.Event;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import java.io.IOException;
 
 /**
@@ -53,5 +55,11 @@ public class CommonPayloadEventPortlet extends GenericPortlet
             resp.setEvent("CommonPong", newPayload);
          }
       }
+   }
+
+   @Override
+   public void render(RenderRequest request, RenderResponse response) throws PortletException, IOException
+   {
+      // Nothing special to do
    }
 }

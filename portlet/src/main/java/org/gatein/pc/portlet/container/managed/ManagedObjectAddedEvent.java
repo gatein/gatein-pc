@@ -26,10 +26,16 @@ package org.gatein.pc.portlet.container.managed;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class ManagedObjectAddedEvent extends ManagedObjectEvent
+public final class ManagedObjectAddedEvent extends ManagedObjectEvent
 {
    public ManagedObjectAddedEvent(ManagedObject managedObject)
    {
       super(managedObject);
+   }
+
+   @Override
+   public String toString()
+   {
+      return getClass().getSimpleName() + "[managed=" + managedObject + "]";
    }
 }

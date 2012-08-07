@@ -22,7 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.info;
 
-import org.gatein.common.i18n.ResourceBundleManager;
 import org.gatein.common.reflect.NoSuchClassException;
 import org.gatein.pc.portlet.impl.metadata.portlet.PortletMetaData;
 

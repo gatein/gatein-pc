@@ -22,14 +22,11 @@
  ******************************************************************************/
 package org.gatein.pc.test.unit;
 
-import org.jboss.portal.test.framework.server.NodeId;
+import org.apache.commons.httpclient.Header;
 import org.gatein.common.NotYetImplemented;
-import org.gatein.pc.test.unit.JoinPointType;
-import org.jboss.unit.driver.DriverResponse;
-import org.jboss.unit.driver.response.FailureResponse;
-import org.jboss.unit.remote.RequestContext;
-import org.jboss.unit.remote.ResponseContext;
-import org.jboss.unit.remote.http.HttpHeaders;
+import org.gatein.pc.test.unit.protocol.DriverContext;
+import org.gatein.pc.test.unit.protocol.response.Response;
+import org.gatein.pc.test.unit.protocol.response.FailureResponse;
 
 import java.net.MalformedURLException;
 import java.io.Serializable;
@@ -55,20 +52,17 @@ public class PortletTestContext
    final Set<JoinPoint> invoked;
 
    /** . */
-   RequestContext requestContext;
+   final DriverContext driverContext;
 
-   /** . */
-   ResponseContext responseContext;
-
-   public PortletTestContext(String testName, PortletTestCase portletTestCase, RequestContext requestContext)
+   public PortletTestContext(String testName, PortletTestCase portletTestCase, DriverContext driverContext)
    {
-      if (requestContext == null)
+      if (driverContext == null)
       {
          throw new IllegalArgumentException("No request context to wrap");
       }
       this.testName = testName;
       this.portletTestCase = portletTestCase;
-      this.requestContext = requestContext;
+      this.driverContext = driverContext;
       this.invoked = new HashSet<JoinPoint>();
    }
 
@@ -120,18 +114,12 @@ public class PortletTestContext
 
    public String getActorId(JoinPointType joinPointType)
    {
-      return portletTestCase.getActorId(requestContext.getRequestCount(), joinPointType);
+      return portletTestCase.getActorId(driverContext.getRequestCount(), joinPointType);
    }
 
-   // We don't expose it as it is can be used in a wrong manner, rather use update response method
-   private void setResponse(DriverResponse response)
+   public Response getResponse()
    {
-      responseContext = new ResponseContext(response, new HashMap<String, Serializable>());
-   }
-
-   public DriverResponse getResponse()
-   {
-      return responseContext != null ? responseContext.getResponse() : null;
+      return driverContext.getResponse();
    }
 
    /**
@@ -142,14 +130,14 @@ public class PortletTestContext
     *
     * @param response the new response
     */
-   public void updateResponse(DriverResponse response)
+   public void updateResponse(Response response)
    {
       if (response == null)
       {
          throw new IllegalArgumentException();
       }
 
-      DriverResponse existingResponse = getResponse();
+      Response existingResponse = driverContext.getResponse();
 
       //
       if (existingResponse instanceof FailureResponse)
@@ -159,33 +147,23 @@ public class PortletTestContext
       else if (response instanceof FailureResponse || existingResponse == null)
       {
          // We have a failure response and the context contains no response or a non failure response
-         setResponse(response);
+         driverContext.setResponse(response);
       }
    }
 
    public int getRequestCount()
    {
-      return requestContext.getRequestCount();
+      return driverContext.getRequestCount();
    }
 
-   public String rewriteURLForNode(String url, NodeId nodeId) throws MalformedURLException
+   public String rewriteURLForNode(String url/*, NodeId nodeId*/) throws MalformedURLException
    {
-//      return testContext.rewriteURLForNode(url, nodeId);
       throw new NotYetImplemented("todo");
-   }
-
-   public String getParameter(String parameterName)
-   {
-      if (parameterName == null)
-      {
-         throw new IllegalArgumentException();
-      }
-      return requestContext.getParametrization().get(parameterName);
    }
 
    public Map<String, Serializable> getPayload()
    {
-      return requestContext.getPayload();
+      return driverContext.getPayload();
    }
 
    public byte[] getResponseBody()
@@ -193,8 +171,8 @@ public class PortletTestContext
       return (byte[])getPayload().get("http.response.body");
    }
 
-   public HttpHeaders getResponseHeaders()
+   public HashMap<String, Header> getResponseHeaders()
    {
-      return (HttpHeaders)getPayload().get("http.response.headers");
+      return (HashMap<String, Header>)getPayload().get("http.response.headers");
    }
 }

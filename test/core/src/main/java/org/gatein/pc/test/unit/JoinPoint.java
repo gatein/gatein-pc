@@ -85,7 +85,7 @@ public class JoinPoint
 
    public String toString()
    {
-      return actorId + "_" + type;
+      return getClass().getSimpleName() + "[actor=" + actorId + ",type=" + type + "]";
    }
 
    public static JoinPoint createJoinPoint(Class annotatedClass, JoinPointType type)

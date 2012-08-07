@@ -23,7 +23,7 @@
 package org.gatein.pc.test.portlet.jsr168.tck.portletmode.spec;
 
 import org.gatein.pc.test.unit.JoinPoint;
-import org.gatein.pc.test.unit.base.AbstractUniversalTestPortlet;
+import org.gatein.pc.test.unit.web.AbstractUniversalTestPortlet;
 import org.gatein.pc.test.unit.JoinPointType;
 import org.gatein.pc.test.unit.annotations.TestActor;
 

@@ -43,4 +43,18 @@ public @interface TestCase
     * The different assertions covered by this test case.
     */
    Assertion[] value() default {};
+
+   /**
+    * The enabled/disabled status of the test case.
+    *
+    * @return true if the test case should be executed
+    */
+   boolean enabled() default true;
+
+   /**
+    * Additional deployments
+    *
+    * @return a list of additional web application to deploy
+    */
+   Archive[] deployments() default {};
 }

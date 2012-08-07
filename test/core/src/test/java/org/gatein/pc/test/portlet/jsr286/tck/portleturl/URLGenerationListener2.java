@@ -28,7 +28,7 @@ import javax.portlet.PortletURLGenerationListener;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class URLGenerationListener2 extends URLGenerationListener
+public class URLGenerationListener2 extends AbstractURLGenerationListener
 {
 
    /** . */

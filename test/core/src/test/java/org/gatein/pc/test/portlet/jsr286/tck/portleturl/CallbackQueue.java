@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr286.tck.portleturl;
 
-import org.jboss.unit.api.Assert;
+import org.gatein.pc.test.unit.Assert;
 
 import javax.portlet.PortletURLGenerationListener;
 import javax.portlet.PortletURL;

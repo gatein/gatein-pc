@@ -37,8 +37,10 @@ import org.gatein.pc.controller.request.PortletResourceRequest;
 import org.gatein.pc.controller.state.PortletPageNavigationalState;
 import org.gatein.pc.controller.state.PortletWindowNavigationalState;
 import org.gatein.wci.Body;
-import org.gatein.wci.WebRequest;
+import org.gatein.wci.util.RequestDecoder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -66,9 +68,10 @@ public class ControllerRequestFactory
     * @param req the web request
     * @return the decoded controller request
     */
-   public ControllerRequest decode(WebRequest req)
+   public ControllerRequest decode(HttpServletRequest req) throws UnsupportedEncodingException
    {
-      return decode(req.getQueryParameterMap(), req.getBody());
+      RequestDecoder decoder = new RequestDecoder(req);
+      return decode(decoder.getQueryParameters(), decoder.getBody());
    }
 
    /**
