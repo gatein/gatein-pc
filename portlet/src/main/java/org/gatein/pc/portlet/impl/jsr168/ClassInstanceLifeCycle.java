@@ -70,6 +70,8 @@ public class ClassInstanceLifeCycle<T>
    public void create() throws PortletInitializationException
    {
       T instance;
+
+      final ClassLoader previousLoader = Thread.currentThread().getContextClassLoader();
       try
       {
          Class clazz = classLoader.loadClass(className);
@@ -77,6 +79,8 @@ public class ClassInstanceLifeCycle<T>
          {
             Class<? extends T> castedClass = clazz.asSubclass(expectedClass);
             Constructor<? extends T> ctor = castedClass.getConstructor();
+
+            Thread.currentThread().setContextClassLoader(classLoader);
             instance = ctor.newInstance();
          }
          else
@@ -115,9 +119,13 @@ public class ClassInstanceLifeCycle<T>
          String msg = "Cannot create " + type + " with class " + className + " because of an error";
          throw new PortletInitializationException(msg, e);
       }
+      finally
+      {
+         Thread.currentThread().setContextClassLoader(previousLoader);
+      }
 
       //
-      final ClassLoader previousLoader = Thread.currentThread().getContextClassLoader();
+
       try
       {
          Thread.currentThread().setContextClassLoader(classLoader);

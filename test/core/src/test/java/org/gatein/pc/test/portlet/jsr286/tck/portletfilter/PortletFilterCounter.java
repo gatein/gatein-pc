@@ -22,6 +22,9 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr286.tck.portletfilter;
 
+import java.util.WeakHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.gatein.pc.test.portlet.jsr286.common.AbstractRenderFilter;
 
 /**
@@ -32,21 +35,26 @@ public class PortletFilterCounter extends AbstractRenderFilter
 {
 
    /** . */
-   private static int counter;
+   private static WeakHashMap<ClassLoader, AtomicInteger> counters = new WeakHashMap<ClassLoader, AtomicInteger>();
 
    public static int getCounter()
    {
-      synchronized (PortletFilterCounter.class)
-      {
-         return counter;
-      }
+      ClassLoader key = Thread.currentThread().getContextClassLoader();
+      AtomicInteger counter = counters.get(key);
+      return counter != null ? counter.get() : 0;
    }
 
    public PortletFilterCounter()
    {
       synchronized (PortletFilterCounter.class)
       {
-         counter++;
+         ClassLoader key = Thread.currentThread().getContextClassLoader();
+         AtomicInteger counter = counters.get(key);
+         if (counter == null)
+         {
+            counters.put(key, counter = new AtomicInteger());
+         }
+         counter.incrementAndGet();
       }
    }
 }

@@ -4,7 +4,7 @@
       <!-- THIS POM DEPENDS ON pc-parent FOR A SPECIFIC PURPOSE (to only get the dependency management) -->
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
-      <version>2.4.0.Alpha01</version>
+      <version>2.4.0.Alpha01-SNAPSHOT</version>
       <relativePath>../../../../pom.xml</relativePath>
    </parent>
    <modelVersion>4.0.0</modelVersion>
