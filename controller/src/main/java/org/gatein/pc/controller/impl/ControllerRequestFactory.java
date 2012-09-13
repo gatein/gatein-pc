@@ -30,14 +30,14 @@ import org.gatein.common.util.MapAdapters;
 import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.WindowState;
 import org.gatein.pc.api.cache.CacheLevel;
+import org.gatein.pc.controller.Body;
+import org.gatein.pc.controller.RequestDecoder;
 import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.controller.request.PortletActionRequest;
 import org.gatein.pc.controller.request.PortletRenderRequest;
 import org.gatein.pc.controller.request.PortletResourceRequest;
 import org.gatein.pc.controller.state.PortletPageNavigationalState;
 import org.gatein.pc.controller.state.PortletWindowNavigationalState;
-import org.gatein.wci.Body;
-import org.gatein.wci.util.RequestDecoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;

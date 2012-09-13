@@ -38,7 +38,6 @@ import org.gatein.pc.portlet.state.producer.ProducerPortletInvoker;
 import org.gatein.pc.test.TestPortletApplicationDeployer;
 import org.gatein.wci.ServletContainer;
 import org.gatein.wci.ServletContainerFactory;
-import org.gatein.wci.impl.DefaultServletContainerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -95,7 +94,7 @@ public class ServletContextBootstrap implements ServletContextListener
       StateConverterV0 producerStateConverter = new StateConverterV0();
 
       // The servlet container factory
-      ServletContainerFactory servletContainerFactory = DefaultServletContainerFactory.getInstance();
+      ServletContainerFactory servletContainerFactory = ServletContainerFactory.instance;
 
       // Container stack
       ContainerPortletDispatcher portletContainerDispatcher = new ContainerPortletDispatcher();

@@ -34,7 +34,6 @@ import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
 import org.gatein.pc.controller.impl.event.EventControllerContextImpl;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.invocation.PortletInvocation;
-import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.io.Serialization;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +64,7 @@ public class TCKPortletControllerContext extends AbstractPortletControllerContex
    public TCKPortletControllerContext(
       HttpServletRequest req,
       HttpServletResponse resp,
-      ServletContext servletContext) throws IllegalRequestException, IOException
+      ServletContext servletContext) throws IOException
    {
       super(req, resp);
 

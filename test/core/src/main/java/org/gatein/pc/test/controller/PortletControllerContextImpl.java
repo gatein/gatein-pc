@@ -38,7 +38,6 @@ import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.portlet.impl.spi.AbstractServerContext;
 import org.gatein.pc.test.unit.PortletTestServlet;
-import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.io.Serialization;
 import org.gatein.wci.RequestDispatchCallback;
 import org.gatein.wci.ServletContainer;
@@ -70,7 +69,7 @@ import java.util.Collection;
    private final Serialization<PortletPageNavigationalState> serialization;
 
    public PortletControllerContextImpl(HttpServletRequest req, HttpServletResponse resp, ServletContext servletContext)
-      throws IllegalRequestException, IOException, ClassNotFoundException
+      throws IOException, ClassNotFoundException
    {
       super(req, resp);
 

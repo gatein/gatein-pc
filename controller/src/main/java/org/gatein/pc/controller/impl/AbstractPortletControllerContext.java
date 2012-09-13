@@ -48,7 +48,6 @@ import org.gatein.pc.api.invocation.RenderInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.spi.PortletInvocationContext;
 import org.gatein.pc.api.spi.PortalContext;
-import org.gatein.wci.IllegalRequestException;
 import org.gatein.common.logging.Logger;
 
 import javax.servlet.http.Cookie;
@@ -88,7 +87,7 @@ public abstract class AbstractPortletControllerContext implements PortletControl
 
    public AbstractPortletControllerContext(HttpServletRequest req, HttpServletResponse resp
    )
-      throws IllegalRequestException, IOException
+      throws IOException
    {
       this.req = req;
       this.resp = resp;

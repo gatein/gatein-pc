@@ -55,8 +55,8 @@
    </scm>
 
    <properties>
-      <version.gatein.common>2.1.0.Alpha01</version.gatein.common>
-      <version.gatein.wci>2.3.0.Alpha01-SNAPSHOT</version.gatein.wci>
+      <version.gatein.common>2.1.0.Alpha02</version.gatein.common>
+      <version.gatein.wci>2.3.0.Alpha01</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
@@ -112,7 +112,7 @@
          <dependency>
             <groupId>org.gatein</groupId>
             <artifactId>gatein-dep</artifactId>
-            <version>1.2.0.Alpha01</version>
+            <version>1.2.0.Alpha03</version>
             <type>pom</type>
             <scope>import</scope>
          </dependency>
@@ -246,6 +246,12 @@
            <groupId>javax.portlet</groupId>
            <artifactId>portlet-api</artifactId>
            <version>2.0</version>
+           <exclusions>
+             <exclusion>
+               <groupId>javax.servlet</groupId>
+               <artifactId>servlet-api</artifactId>
+             </exclusion>
+           </exclusions>
          </dependency>
          <dependency>
            <groupId>javax.servlet.jsp</groupId>

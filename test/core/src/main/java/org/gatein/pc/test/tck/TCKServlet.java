@@ -32,11 +32,11 @@ import org.gatein.pc.controller.response.ControllerResponse;
 import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.api.invocation.response.ResponseProperties;
 import org.gatein.pc.api.Portlet;
-import org.gatein.wci.WebRequest;
-import org.gatein.wci.WebResponse;
-import org.gatein.wci.endpoint.EndPointServlet;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
@@ -46,13 +46,13 @@ import java.util.LinkedHashSet;
  * @author <a href="mailto:boleslaw dot dawidowicz at redhat anotherdot com">Boleslaw Dawidowicz</a>
  * @version : 0.1 $
  */
-public class TCKServlet extends EndPointServlet
+public class TCKServlet extends HttpServlet
 {
 
    /** . */
    public static String TCK_PORTLET_NAME = "portletName";
 
-   protected void service(WebRequest req, WebResponse resp) throws ServletException, IOException
+   protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
    {
       try
       {
@@ -76,7 +76,7 @@ public class TCKServlet extends EndPointServlet
       }
    }
 
-   protected void _service(WebRequest req, WebResponse resp) throws Exception
+   protected void _service(HttpServletRequest req, HttpServletResponse resp) throws Exception
    {
       TCKPortletControllerContext context = new TCKPortletControllerContext(req, resp, getServletContext());
 
