@@ -66,7 +66,7 @@ public abstract class AbstractEarTestCase
       // AS ONLY JBOSS7 TESTING USES EAR
       ear.addAsLibraries(DependencyResolvers.
          use(MavenDependencyResolver.class).
-         loadEffectivePom("target/META-INF/maven/org.gatein.pc/pc-test-servers-jboss7-dependencies/pom.xml").importAllDependencies().
+         loadEffectivePom("../dependencies/pom.xml").importAllDependencies().
          resolveAsFiles());
 
       //

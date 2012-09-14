@@ -14,4 +14,8 @@
       <module>servers</module>
    </modules>
 
+   <dependencies>
+     <!-- THIS MUST BE EMPTY (cf test/servers/jboss7/dependencies) -->
+   </dependencies>
+
 </project>

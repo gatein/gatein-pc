@@ -11,19 +11,7 @@
    <name>GateIn - Portlet Container (test - servers)</name>
 
    <dependencies>
-
-      <!-- -->
-      <dependency>
-         <groupId>org.gatein.pc</groupId>
-         <artifactId>pc-test-core</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.gatein.pc</groupId>
-         <artifactId>pc-test-core</artifactId>
-         <type>test-jar</type>
-         <classifier>test-sources</classifier>
-      </dependency>
-
+     <!-- THIS MUST BE EMPTY (cf test/servers/jboss7/dependencies) -->
    </dependencies>
 
    <build>

@@ -11,7 +11,19 @@
 
    <dependencies>
 
-      <!-- Arquillian container -->
+       <!-- -->
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-test-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.gatein.pc</groupId>
+         <artifactId>pc-test-core</artifactId>
+         <type>test-jar</type>
+         <classifier>test-sources</classifier>
+      </dependency>
+
+     <!-- Arquillian container -->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
