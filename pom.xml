@@ -33,7 +33,7 @@
 
    <groupId>org.gatein.pc</groupId>
    <artifactId>pc-parent</artifactId>
-   <version>2.4.0.Alpha02-SNAPSHOT</version>
+   <version>2.4.0.Alpha02</version>
    <packaging>pom</packaging>
 
    <name>GateIn - Portlet Container</name>
