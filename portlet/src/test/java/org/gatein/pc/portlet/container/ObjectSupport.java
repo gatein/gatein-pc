@@ -93,11 +93,22 @@ public class ObjectSupport
       void execute();
    }
 
-   public static Callback FAILURE_CALLBACK = new Callback()
+   public static class Failure implements Callback
    {
+
+      /** . */
+      private RuntimeException failure;
+
+      @Override
       public void execute()
       {
-         throw new RuntimeException();
+         failure = new RuntimeException();
+         throw failure;
       }
-   };
+
+      public RuntimeException getFailure()
+      {
+         return failure;
+      }
+   }
 }

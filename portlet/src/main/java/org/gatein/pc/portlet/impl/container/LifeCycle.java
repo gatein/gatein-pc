@@ -40,7 +40,10 @@ public abstract class LifeCycle implements ManagedObject
 {
 
    /** . */
-//   private Logger log = LoggerFactory.getLogger(LifeCycle.class);
+   private static final ThreadLocal<Set<Object>> faileds = new ThreadLocal<Set<Object>>();
+
+   /** . */
+   private Logger log = LoggerFactory.getLogger(LifeCycle.class);
 
    /** . */
    private LifeCycleStatus status = LifeCycleStatus.STOPPED;
@@ -48,12 +51,19 @@ public abstract class LifeCycle implements ManagedObject
    /** Cheap reentrancy detection. */
    private boolean active = false;
 
+   /** . */
+   private Throwable failure;
+
    public final LifeCycleStatus getStatus()
    {
       return status;
    }
 
-   private static final ThreadLocal<Set<Object>> faileds = new ThreadLocal<Set<Object>>();
+   @Override
+   public Throwable getFailure()
+   {
+      return failure;
+   }
 
    public synchronized final void managedStart() throws IllegalStateException
    {
@@ -62,13 +72,13 @@ public abstract class LifeCycle implements ManagedObject
          throw new IllegalStateException("Reentrancy detected");
       }
 
-      //
+      // Update state
       active = true;
+      failure = null;
 
       //
       boolean clearFaileds = false;
-
-      //
+      Throwable failure = null;
       try
       {
          if (faileds.get() == null)
@@ -99,11 +109,13 @@ public abstract class LifeCycle implements ManagedObject
             }
             catch (Exception e)
             {
-//               log.error("Cannot start object", e);
+               log.error("Cannot start object", e);
+               failure = e;
             }
             catch (Error e)
             {
-//               log.error("Cannot start object", e);
+               log.error("Cannot start object", e);
+               failure = e;
             }
             finally
             {
@@ -137,7 +149,8 @@ public abstract class LifeCycle implements ManagedObject
          }
 
          //
-         active = false;
+         this.active = false;
+         this.failure = failure;
       }
    }
 
@@ -150,6 +163,7 @@ public abstract class LifeCycle implements ManagedObject
 
       //
       active = true;
+      failure = null;
 
       //
       try
@@ -165,11 +179,11 @@ public abstract class LifeCycle implements ManagedObject
             }
             catch (Exception e)
             {
-//               log.error("Error during object stop", e);
+               log.error("Error during object stop", e);
             }
             catch (Error e)
             {
-//               log.error("Error during object stop", e);
+               log.error("Error during object stop", e);
             }
             finally
             {

@@ -51,7 +51,7 @@ public class PortletApplicationDeployment
 {
 
    /** . */
-   // private final Logger log;
+   private final Logger log;
 
    /** . */
    private final ServletContext webApp;
@@ -73,7 +73,7 @@ public class PortletApplicationDeployment
       this.listener = listener;
       this.webApp = webApp;
       this.metaData = metaData;
-      // this.log = LoggerFactory.getLogger(PortletApplicationDeployment.class + "." + webApp.getContextPath().replace('.', '_'));
+      this.log = LoggerFactory.getLogger(PortletApplicationDeployment.class + "." + webApp.getContextPath().replace('.', '_'));
    }
 
    public PortletApplicationLifeCycle getPortletApplicationLifeCycle()
@@ -84,7 +84,7 @@ public class PortletApplicationDeployment
    void install()
    {
 
-      // log.debug("Starting installation");
+      log.debug("Starting installation");
 
       //
       ContainerInfoBuilderContext builderContext = new ContainerInfoBuilderContextImpl(metaData, webApp);
@@ -94,7 +94,6 @@ public class PortletApplicationDeployment
       //
       PortletApplicationObject portletApplicationObject = new PortletApplicationImpl(builder.getApplication());
       PortletApplicationContextImpl portletApplicationContext = new PortletApplicationContextImpl(webApp);
-
 
       //
       portletApplicationLifeCycle = new PortletApplicationLifeCycle(
@@ -111,11 +110,8 @@ public class PortletApplicationDeployment
          PortletFilterObject portletFilterObject = new PortletFilterImpl(filterInfo);
          PortletFilterContextImpl portletFilterContext = new PortletFilterContextImpl();
 
-         //
-         PortletFilterLifeCycle portletFilterLifeCycle = portletApplicationLifeCycle.addPortletFilter(portletFilterContext, portletFilterObject);
-
          // Needed for the managed callbacks
-         portletFilterContext.managedPortletFilter = portletFilterLifeCycle;
+         portletFilterContext.managedPortletFilter = portletApplicationLifeCycle.addPortletFilter(portletFilterContext, portletFilterObject);
       }
 
       //
@@ -154,17 +150,17 @@ public class PortletApplicationDeployment
       portletApplicationLifeCycle.managedStart();
 
       //
-
+      log.debug("Installed");
    }
 
    void uninstall()
    {
-      // log.debug("Uninstalling");
+      log.debug("Uninstalling");
 
       //
       portletApplicationLifeCycle.managedStop();
 
       //
-      // log.debug("Uninstalled");
+      log.debug("Uninstalled");
    }
 }

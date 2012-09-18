@@ -49,6 +49,15 @@ public class ValveInterceptor extends PortletInvokerInterceptor
    /** . */
    private PortletApplicationRegistry registry;
 
+   public ValveInterceptor()
+   {
+   }
+
+   public ValveInterceptor(PortletApplicationRegistry registry)
+   {
+      this.registry = registry;
+   }
+
    public PortletApplicationRegistry getPortletApplicationRegistry()
    {
       return registry;

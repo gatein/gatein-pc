@@ -73,6 +73,24 @@ public class PortletInvokerInterceptor implements PortletInvoker
       this.next.set(next);
    }
 
+   public PortletInvokerInterceptor append(PortletInvoker invoker)
+   {
+      PortletInvoker ref = next.get();
+      if (ref == null)
+      {
+         next.set(invoker);
+      }
+      else if (ref instanceof PortletInvokerInterceptor)
+      {
+         ((PortletInvokerInterceptor)ref).append(invoker);
+      }
+      else
+      {
+         throw new IllegalStateException("End reached");
+      }
+      return this;
+   }
+
    public Set<Portlet> getPortlets() throws PortletInvokerException
    {
       return safeGetNext().getPortlets();

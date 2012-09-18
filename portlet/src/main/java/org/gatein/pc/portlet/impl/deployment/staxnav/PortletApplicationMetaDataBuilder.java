@@ -29,6 +29,7 @@ import org.gatein.pc.api.LifeCyclePhase;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.TransportGuarantee;
 import org.gatein.pc.api.WindowState;
+import org.gatein.pc.portlet.impl.deployment.DeploymentException;
 import org.gatein.pc.portlet.impl.deployment.xml.XSD;
 import org.gatein.pc.portlet.impl.metadata.CustomPortletModeMetaData;
 import org.gatein.pc.portlet.impl.metadata.CustomWindowStateMetaData;
@@ -63,12 +64,14 @@ import org.staxnav.ValueType;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -157,23 +160,38 @@ public class PortletApplicationMetaDataBuilder
       this.schemaValidation = schemaValidation;
    }
 
-   public PortletApplication20MetaData build(InputStream is) throws Exception
+   public PortletApplication20MetaData build(InputStream is) throws DeploymentException
    {
 
       // We will need to read the input stream twice
       byte[] bytes = null;
       if (schemaValidation)
       {
-         bytes = IOTools.getBytes(is);
-         is = new ByteArrayInputStream(bytes);
+         try
+         {
+            bytes = IOTools.getBytes(is);
+            is = new ByteArrayInputStream(bytes);
+         }
+         catch (IOException e)
+         {
+            throw new DeploymentException("Could not read portlet.xml descriptor", e);
+         }
       }
 
       PortletApplication20MetaData md = new PortletApplication20MetaData();
 
       //
       inputFactory.setProperty("javax.xml.stream.isCoalescing", true);
-      XMLStreamReader stream = inputFactory.createXMLStreamReader(is);
-      StaxNavigator<Element> nav = StaxNavigatorFactory.create(new Naming.Enumerated.Simple<Element>(Element.class, null), stream);
+      StaxNavigator<Element> nav = null;
+      try
+      {
+         XMLStreamReader stream = inputFactory.createXMLStreamReader(is);
+         nav = StaxNavigatorFactory.create(new Naming.Enumerated.Simple<Element>(Element.class, null), stream);
+      }
+      catch (XMLStreamException e)
+      {
+         throw new DeploymentException("Could not create a STAX reader", e);
+      }
 
       // We want to trim content (mandated by the spec)
       nav.setTrimContent(true);
@@ -203,7 +221,14 @@ public class PortletApplicationMetaDataBuilder
       if (schemaValidation)
       {
          XSD xsd = version == 1 ? XSD.PORTLET_1_0 : XSD.PORTLET_2_0;
-         xsd.validate(new StreamSource(new ByteArrayInputStream(bytes)));
+         try
+         {
+            xsd.validate(new StreamSource(new ByteArrayInputStream(bytes)));
+         }
+         catch (Exception e)
+         {
+            throw new DeploymentException("The portlet.xml file is not valid XML", e);
+         }
       }
 
       //
@@ -450,7 +475,7 @@ public class PortletApplicationMetaDataBuilder
       {
          if (version < 2)
          {
-            throw new Exception("Cannot declare filter with " + PORTLET_1_0 + " descriptor");
+            throw new DeploymentException("Cannot declare filter with " + PORTLET_1_0 + " descriptor");
          }
          FilterMetaData filterMD = new FilterMetaData();
          filterMD.setDescription(readLocalizedString(filterNav, Element.description));
@@ -473,7 +498,7 @@ public class PortletApplicationMetaDataBuilder
       {
          if (version < 2)
          {
-            throw new Exception("Cannot declare filter mapping with " + PORTLET_1_0 + " descriptor");
+            throw new DeploymentException("Cannot declare filter mapping with " + PORTLET_1_0 + " descriptor");
          }
          FilterMappingMetaData filterMappingMD = new FilterMappingMetaData();
          filterMappingMD.setName(getContent(filterMappingNav, Element.filter_name));
@@ -487,7 +512,15 @@ public class PortletApplicationMetaDataBuilder
       //
       if (nav.find(Element.default_namespace))
       {
-         md.setDefaultNamespace(new URI(nav.getContent()));
+         String val = nav.getContent();
+         try
+         {
+            md.setDefaultNamespace(new URI(val));
+         }
+         catch (URISyntaxException e)
+         {
+            throw new DeploymentException("Invalid URI " + val, e);
+         }
          nav.next();
       }
 
@@ -569,15 +602,22 @@ public class PortletApplicationMetaDataBuilder
       return md;
    }
 
-   private LocalizedString readLocalizedString(StaxNavigator<Element> nav, Element element) throws ConversionException
+   private LocalizedString readLocalizedString(StaxNavigator<Element> nav, Element element) throws DeploymentException
    {
       Map<Locale, String> descriptions = new LinkedHashMap<Locale, String>();
       while (nav.next(element))
       {
          String lang = nav.getAttribute(XML_LANG);
          String description = nav.getContent();
-         Locale locale = LocaleFormat.DEFAULT.getLocale(lang == null ? DEFAULT_LOCALE : lang);
-         descriptions.put(locale, description);
+         try
+         {
+            Locale locale = LocaleFormat.DEFAULT.getLocale(lang == null ? DEFAULT_LOCALE : lang);
+            descriptions.put(locale, description);
+         }
+         catch (ConversionException e)
+         {
+            throw new DeploymentException("Invalid locale " + lang + "", e);
+         }
       }
       if (descriptions.size() > 0)
       {
@@ -613,7 +653,7 @@ public class PortletApplicationMetaDataBuilder
       }
    }
 
-   private Iterable<InitParamMetaData> readInitParams(StaxNavigator<Element> nav) throws ConversionException
+   private Iterable<InitParamMetaData> readInitParams(StaxNavigator<Element> nav) throws DeploymentException
    {
       List<InitParamMetaData> list = Collections.emptyList();
       while (nav.next(Element.init_param))

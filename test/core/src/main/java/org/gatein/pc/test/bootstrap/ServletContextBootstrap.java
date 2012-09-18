@@ -81,58 +81,24 @@ public class ServletContextBootstrap implements ServletContextListener
       // * WIRE PHASE *
       // **************
 
-      // The producer persistence manager
-      PortletStatePersistenceManagerService producerPersistenceManager = new PortletStatePersistenceManagerService();
-
-      // The producer state management policy
-      StateManagementPolicyService producerStateManagementPolicy = new StateManagementPolicyService();
-      producerStateManagementPolicy.setPersistLocally(true);
-
-      // The producer state converter
-      StateConverterV0 producerStateConverter = new StateConverterV0();
-
-      // Container stack
-      ContainerPortletDispatcher portletContainerDispatcher = new ContainerPortletDispatcher();
-      EventPayloadInterceptor eventPayloadInterceptor = new EventPayloadInterceptor();
-      eventPayloadInterceptor.setNext(portletContainerDispatcher);
-      RequestAttributeConversationInterceptor requestAttributeConversationInterceptor = new RequestAttributeConversationInterceptor();
-      requestAttributeConversationInterceptor.setNext(eventPayloadInterceptor);
-      CCPPInterceptor ccppInterceptor = new CCPPInterceptor();
-      ccppInterceptor.setNext(requestAttributeConversationInterceptor);
-      ProducerCacheInterceptor producerCacheInterceptor = new ProducerCacheInterceptor();
-      producerCacheInterceptor.setNext(ccppInterceptor);
-      ContextDispatcherInterceptor contextDispatcherInterceptor = new ContextDispatcherInterceptor();
-      contextDispatcherInterceptor.setNext(producerCacheInterceptor);
-      SecureTransportInterceptor secureTransportInterceptor = new SecureTransportInterceptor();
-      secureTransportInterceptor.setNext(contextDispatcherInterceptor);
-      ValveInterceptor valveInterceptor = new ValveInterceptor();
-      valveInterceptor.setNext(secureTransportInterceptor);
-
-      // The portlet container invoker
-      ContainerPortletInvoker containerPortletInvoker = new ContainerPortletInvoker();
-      containerPortletInvoker.setNext(valveInterceptor);
-
-      // The producer portlet invoker
-      ProducerPortletInvoker producerPortletInvoker = new ProducerPortletInvoker();
-      producerPortletInvoker.setNext(containerPortletInvoker);
-      producerPortletInvoker.setPersistenceManager(producerPersistenceManager);
-      producerPortletInvoker.setStateManagementPolicy(producerStateManagementPolicy);
-      producerPortletInvoker.setStateConverter(producerStateConverter);
-
-      // The consumer portlet invoker
-      PortletCustomizationInterceptor portletCustomizationInterceptor = new PortletCustomizationInterceptor();
-      portletCustomizationInterceptor.setNext(producerPortletInvoker);
-      ConsumerCacheInterceptor consumerCacheInterceptor = new ConsumerCacheInterceptor();
-      consumerCacheInterceptor.setNext(portletCustomizationInterceptor);
-      PortletInvokerInterceptor consumerPortletInvoker = new PortletInvokerInterceptor();
-      consumerPortletInvoker.setNext(consumerCacheInterceptor);
+      final ContainerPortletInvoker containerPortletInvoker = new ContainerPortletInvoker();
+      TestPortletApplicationDeployer portletApplicationDeployer = new TestPortletApplicationDeployer(containerPortletInvoker);
 
       //
-      TestPortletApplicationDeployer portletApplicationDeployer = new TestPortletApplicationDeployer();
-      portletApplicationDeployer.setContainerPortletInvoker(containerPortletInvoker);
-
-      // Instantiated
-      valveInterceptor.setPortletApplicationRegistry(portletApplicationDeployer);
+      PortletInvokerInterceptor consumerPortletInvoker = new PortletInvokerInterceptor();
+      consumerPortletInvoker.
+         append(new ConsumerCacheInterceptor()).
+         append(new PortletCustomizationInterceptor()).
+         append(new ProducerPortletInvoker(new PortletStatePersistenceManagerService(), new StateManagementPolicyService(true), new StateConverterV0())).
+         append(containerPortletInvoker).
+         append(new ValveInterceptor(portletApplicationDeployer)).
+         append(new SecureTransportInterceptor()).
+         append(new ContextDispatcherInterceptor()).
+         append(new ProducerCacheInterceptor()).
+         append(new CCPPInterceptor()).
+         append(new RequestAttributeConversationInterceptor()).
+         append(new EventPayloadInterceptor()).
+         append(new ContainerPortletDispatcher());
 
       //
       this.consumerPortletInvoker = consumerPortletInvoker;

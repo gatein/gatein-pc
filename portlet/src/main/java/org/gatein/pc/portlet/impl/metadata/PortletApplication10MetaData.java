@@ -24,6 +24,7 @@ package org.gatein.pc.portlet.impl.metadata;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -120,7 +121,7 @@ public class PortletApplication10MetaData
 
    public Collection<PortletMetaData> getPortletCollection()
    {
-      return portlets != null ? portlets.values() : null;
+      return portlets != null ? portlets.values() : Collections.<PortletMetaData>emptyList();
    }
 
    public PortletMetaData getPortlet(String portletName)

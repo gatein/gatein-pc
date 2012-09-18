@@ -34,6 +34,15 @@ public class StateManagementPolicyService implements StateManagementPolicy
    /** . */
    private boolean persistLocally;
 
+   public StateManagementPolicyService()
+   {
+   }
+
+   public StateManagementPolicyService(boolean persistLocally)
+   {
+      this.persistLocally = persistLocally;
+   }
+
    public boolean getPersistLocally()
    {
       return persistLocally;

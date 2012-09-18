@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.container;
 
+import org.gatein.pc.portlet.container.managed.ManagedObject;
 import org.gatein.pc.portlet.container.object.PortletApplicationObject;
 import org.gatein.pc.portlet.container.object.PortletContainerObject;
 import org.gatein.pc.portlet.container.object.PortletFilterObject;
@@ -35,6 +36,9 @@ import org.gatein.pc.portlet.container.PortletContainerContext;
 import org.gatein.pc.portlet.container.PortletFilterContext;
 import org.gatein.pc.portlet.container.PortletApplication;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -55,13 +59,16 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
    private final PortletApplicationObject portletApplication;
 
    /** . */
-   private final Map<String, PortletContainerLifeCycle> portletContainerLifeCycles;
+   private final ArrayList<LifeCycle> lifeCycles;
 
    /** . */
-   private final Map<String, PortletFilterLifeCycle> portletFilterLifeCycles;
+   private final LinkedHashMap<String, PortletContainerLifeCycle> portletContainerLifeCycles;
 
    /** . */
-   private final Map<PortletFilterLifeCycle, Set<PortletContainerLifeCycle>> filterToContainerDependencies;
+   private final LinkedHashMap<String, PortletFilterLifeCycle> portletFilterLifeCycles;
+
+   /** . */
+   private final LinkedHashMap<PortletFilterLifeCycle, Set<PortletContainerLifeCycle>> filterToContainerDependencies;
 
    /** Internal status to know about wiring. */
    private boolean created;
@@ -77,9 +84,10 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       this.listener = listener;
       this.portletApplicationContext = portletApplicationContext;
       this.portletApplication = portletApplication;
-      this.portletContainerLifeCycles = new HashMap<String, PortletContainerLifeCycle>();
-      this.portletFilterLifeCycles = new HashMap<String, PortletFilterLifeCycle>();
-      this.filterToContainerDependencies = new HashMap<PortletFilterLifeCycle, Set<PortletContainerLifeCycle>>();
+      this.lifeCycles = new ArrayList<LifeCycle>();
+      this.portletContainerLifeCycles = new LinkedHashMap<String, PortletContainerLifeCycle>();
+      this.portletFilterLifeCycles = new LinkedHashMap<String, PortletFilterLifeCycle>();
+      this.filterToContainerDependencies = new LinkedHashMap<PortletFilterLifeCycle, Set<PortletContainerLifeCycle>>();
    }
 
    public PortletApplicationLifeCycle(
@@ -196,13 +204,12 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       }
 
       //
-      PortletContainerLifeCycle portletContainerLifeCycle = new PortletContainerLifeCycle(this, portletContainerContext, portletContainer);
-
-      // Manage
-      portletContainerLifeCycles.put(portletContainer.getId(), portletContainerLifeCycle);
+      PortletContainerLifeCycle lifeCycle = new PortletContainerLifeCycle(this, portletContainerContext, portletContainer);
+      portletContainerLifeCycles.put(portletContainer.getId(), lifeCycle);
+      lifeCycles.add(lifeCycle);
 
       //
-      return portletContainerLifeCycle;
+      return lifeCycle;
    }
 
    public PortletFilterLifeCycle addPortletFilter(PortletFilterContext portletFilterContext, PortletFilterObject portletFilter)
@@ -223,13 +230,12 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       }
 
       //
-      PortletFilterLifeCycle portletFilterLifeCycle = new PortletFilterLifeCycle(this, portletFilterContext, portletFilter);
+      PortletFilterLifeCycle lifeCycle = new PortletFilterLifeCycle(this, portletFilterContext, portletFilter);
+      portletFilterLifeCycles.put(portletFilter.getId(), lifeCycle);
+      lifeCycles.add(lifeCycle);
 
       //
-      portletFilterLifeCycles.put(portletFilter.getId(), portletFilterLifeCycle);
-
-      //
-      return portletFilterLifeCycle;
+      return lifeCycle;
    }
 
    public void addDependency(PortletFilterLifeCycle portletFilterLifeCycle, PortletContainerLifeCycle portletContainerLifeCycle)
@@ -380,7 +386,13 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       return portletApplication.getId();
    }
 
-   public Collection<? extends PortletContainerLifeCycle> getManagedPortletContainers()
+   @Override
+   public Iterable<? extends ManagedObject> getDependencies()
+   {
+      return lifeCycles;
+   }
+
+   public Iterable<? extends PortletContainerLifeCycle> getManagedPortletContainers()
    {
       return portletContainerLifeCycles.values();
    }
@@ -390,7 +402,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       return portletContainerLifeCycles.get(portletContainerId);
    }
 
-   public Collection<? extends PortletFilterLifeCycle> getManagedPortletFilters()
+   public Iterable<? extends PortletFilterLifeCycle> getManagedPortletFilters()
    {
       return portletFilterLifeCycles.values();
    }

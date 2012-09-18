@@ -29,10 +29,33 @@ package org.gatein.pc.portlet.container.managed;
 public interface ManagedObject
 {
 
+   /**
+    * Returns the current managed object status.
+    *
+    * @return the status
+    */
    LifeCycleStatus getStatus();
 
+   /**
+    * Returns the last known failure when the managed object is in {@link LifeCycleStatus#FAILED} status,
+    * otherwise return null.
+    *
+    * @return the failure
+    */
+   Throwable getFailure();
+
+   /**
+    * Attempt to start the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
    void managedStart() throws IllegalStateException;
 
-   void managedStop();
+   /**
+    * Start the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
+   void managedStop() throws IllegalStateException;
    
 }

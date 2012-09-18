@@ -277,15 +277,19 @@ public class ContainerInfoBuilder
       {
          portletMD.setSupportedLocale(EMPTY_SUPPORTED_LOCALE_LIST);
       }
-      for (SupportsMetaData supportsMD : portletMD.getSupports())
+      List<SupportsMetaData> supports = portletMD.getSupports();
+      if (supports != null)
       {
-         if (supportsMD.getPortletModes() == null)
+         for (SupportsMetaData supportsMD : supports)
          {
-            supportsMD.setPortletModes(EMPTY_PORTLET_MODE_LIST);
-         }
-         if (supportsMD.getWindowStates() == null)
-         {
-            supportsMD.setWindowStates(EMPTY_WINDOW_STATE_LIST);
+            if (supportsMD.getPortletModes() == null)
+            {
+               supportsMD.setPortletModes(EMPTY_PORTLET_MODE_LIST);
+            }
+            if (supportsMD.getWindowStates() == null)
+            {
+               supportsMD.setWindowStates(EMPTY_WINDOW_STATE_LIST);
+            }
          }
       }
       if (portletMD.getPortletPreferences() == null)
@@ -877,51 +881,55 @@ public class ContainerInfoBuilder
       }
 
       //
-      for (SupportsMetaData supportsMD : portletMD.getSupports())
+      List<SupportsMetaData> supports = portletMD.getSupports();
+      if (supports != null)
       {
-         // Get the mime type
-         String mimeType = supportsMD.getMimeType().toLowerCase();
-
-         // Add the content type to the view mode
-         // because each content type must handle this view
-         capabilities.add(mimeType, Mode.VIEW);
-
-         // Then process each mode
-         for (PortletModeMetaData modeMD : supportsMD.getPortletModes())
+         for (SupportsMetaData supportsMD : supports)
          {
-            ContainerModeInfo mode = customModes.get(modeMD.getPortletMode());
+            // Get the mime type
+            String mimeType = supportsMD.getMimeType().toLowerCase();
 
-            //
-            if (mode != null)
+            // Add the content type to the view mode
+            // because each content type must handle this view
+            capabilities.add(mimeType, Mode.VIEW);
+
+            // Then process each mode
+            for (PortletModeMetaData modeMD : supportsMD.getPortletModes())
             {
-               capabilities.add(mimeType, mode);
+               ContainerModeInfo mode = customModes.get(modeMD.getPortletMode());
+
+               //
+               if (mode != null)
+               {
+                  capabilities.add(mimeType, mode);
+               }
+               else
+               {
+                  capabilities.add(mimeType, modeMD.getPortletMode());
+               }
             }
-            else
+
+            // then process window states
+            for (WindowStateMetaData windowStateMD : supportsMD.getWindowStates())
             {
-               capabilities.add(mimeType, modeMD.getPortletMode());
+               ContainerWindowStateInfo windowStateInfo = customWindowStates.get(windowStateMD.getWindowState());
+
+               //
+               if (windowStateInfo != null)
+               {
+                  capabilities.add(mimeType, windowStateInfo);
+               }
+               else
+               {
+                  capabilities.add(mimeType, windowStateMD.getWindowState());
+               }
             }
+
+            // Override those as also now they must be supported
+            capabilities.add(mimeType, org.gatein.pc.api.WindowState.NORMAL);
+            capabilities.add(mimeType, org.gatein.pc.api.WindowState.MINIMIZED);
+            capabilities.add(mimeType, org.gatein.pc.api.WindowState.MAXIMIZED);
          }
-
-         // then process window states
-         for (WindowStateMetaData windowStateMD : supportsMD.getWindowStates())
-         {
-            ContainerWindowStateInfo windowStateInfo = customWindowStates.get(windowStateMD.getWindowState());
-
-            //
-            if (windowStateInfo != null)
-            {
-               capabilities.add(mimeType, windowStateInfo);
-            }
-            else
-            {
-               capabilities.add(mimeType, windowStateMD.getWindowState());
-            }
-         }
-
-         // Override those as also now they must be supported
-         capabilities.add(mimeType, org.gatein.pc.api.WindowState.NORMAL);
-         capabilities.add(mimeType, org.gatein.pc.api.WindowState.MINIMIZED);
-         capabilities.add(mimeType, org.gatein.pc.api.WindowState.MAXIMIZED);
       }
 
       //

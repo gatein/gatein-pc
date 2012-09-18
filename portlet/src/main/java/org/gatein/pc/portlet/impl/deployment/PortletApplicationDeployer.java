@@ -23,7 +23,8 @@
 package org.gatein.pc.portlet.impl.deployment;
 
 import org.gatein.common.io.IOTools;
-import org.gatein.pc.api.PortletInvoker;
+import org.gatein.common.logging.Logger;
+import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
@@ -56,16 +57,13 @@ public class PortletApplicationDeployer implements PortletApplicationRegistry
 {
 
    /** . */
-   // private Logger log = LoggerFactory.getLogger(PortletApplicationDeployer.class);
-
-   /** . */
    private PortletApplicationRegistry registry;
 
    /** . */
-   private Map<String, PortletApplicationDeployment> deploymentMap = new HashMap<String, PortletApplicationDeployment>();
+   protected final Logger log = LoggerFactory.getLogger(PortletApplicationDeployer.class);
 
    /** . */
-   private ClassLoader classLoader;
+   private Map<String, PortletApplicationDeployment> deploymentMap = new HashMap<String, PortletApplicationDeployment>();
 
    /** . */
    private final Map<String, PortletApplicationLifeCycle> applications = new HashMap<String, PortletApplicationLifeCycle>();
@@ -74,203 +72,10 @@ public class PortletApplicationDeployer implements PortletApplicationRegistry
    private ContainerPortletInvoker containerPortletInvoker;
 
    /** . */
-   private ManagedObjectRegistryEventBroadcaster broadcaster;
+   private final ManagedObjectRegistryEventBroadcaster broadcaster;
 
+   /** . */
    private boolean schemaValidated;
-
-   public boolean isSchemaValidated()
-   {
-      return schemaValidated;
-   }
-
-   public void setSchemaValidated(boolean schemaValidated)
-   {
-      this.schemaValidated = schemaValidated;
-   }
-
-   public PortletApplicationRegistry getRegistry()
-   {
-      return registry;
-   }
-
-   public void setRegistry(PortletApplicationRegistry registry)
-   {
-      this.registry = registry;
-   }
-
-   public PortletInvoker getContainerPortletInvoker()
-   {
-      return containerPortletInvoker;
-   }
-
-   public void setContainerPortletInvoker(PortletInvoker containerPortletInvoker)
-   {
-      if (containerPortletInvoker instanceof ContainerPortletInvoker)
-      {
-         this.containerPortletInvoker = (ContainerPortletInvoker)containerPortletInvoker;
-      }
-      else
-      {
-         if (containerPortletInvoker == null)
-         {
-            return; // this method is called with null on shutdown
-         }
-         throw new IllegalArgumentException("PortletApplicationDeployer can only accept ContainerPortletInvokers!");
-      }
-   }
-
-/*
-   public void onEvent(WebAppEvent event)
-   {
-      if (event instanceof WebAppLifeCycleEvent)
-      {
-         WebAppLifeCycleEvent lifeCycleEvent = (WebAppLifeCycleEvent)event;
-         String cp = event.getWebApp().getContextPath();
-         switch (lifeCycleEvent.getType())
-         {
-            case WebAppLifeCycleEvent.ADDED:
-               // log.debug("Going to install war file" + cp);
-               add(event.getWebApp());
-               // log.debug("Installed war file" + cp);
-               break;
-            case WebAppLifeCycleEvent.REMOVED:
-               try
-               {
-                  // log.debug("Going to uninstall war file" + cp);
-                  remove(event.getWebApp());
-                  // log.debug("Uninstalled war file" + cp);
-               }
-               catch (Throwable e)
-               {
-                  // log.error("Uninstalled war file " + cp + " with an error", e);
-               }
-               break;
-         }
-      }
-   }
-*/
-
-   public final void add(ServletContext webApp)
-   {
-      //
-      PortletApplication10MetaData metaData = buildPortletApplicationMetaData(webApp);
-      if (metaData != null)
-      {
-         ClassLoader oldCL = Thread.currentThread().getContextClassLoader();
-         try
-         {
-            Thread.currentThread().setContextClassLoader(classLoader);
-            PortletApplicationDeployment deployment = new PortletApplicationDeployment(broadcaster, webApp, metaData);
-            deploymentMap.put(webApp.getContextPath(), deployment);
-            deployment.install();
-
-            //
-            PortletApplicationLifeCycle portletApplicationLifeCycle = deployment.getPortletApplicationLifeCycle();
-            applications.put(portletApplicationLifeCycle.getId(), portletApplicationLifeCycle);
-         }
-         finally
-         {
-            Thread.currentThread().setContextClassLoader(oldCL);
-         }
-      }
-   }
-
-   public final void remove(ServletContext webApp)
-   {
-      PortletApplicationDeployment deployment = deploymentMap.remove(webApp.getContextPath());
-      if (deployment != null)
-      {
-         PortletApplicationLifeCycle portletApplicationLifeCycle = deployment.getPortletApplicationLifeCycle();
-         applications.remove(portletApplicationLifeCycle.getId());
-
-         //
-         ClassLoader oldCL = Thread.currentThread().getContextClassLoader();
-         try
-         {
-            Thread.currentThread().setContextClassLoader(classLoader);
-            deployment.uninstall();
-         }
-         finally
-         {
-            Thread.currentThread().setContextClassLoader(oldCL);
-         }
-      }
-   }
-
-   public void start()
-   {
-      broadcaster = new ManagedObjectRegistryEventBroadcaster();
-      classLoader = Thread.currentThread().getContextClassLoader();
-
-      //
-      broadcaster.addListener(bridgeToInvoker);
-   }
-
-   public void stop()
-   {
-      // This should generate remove web app event and in cascade clear the registry
-      // as well as the portlet container invoker
-
-      //
-      classLoader = null;
-      broadcaster = null;
-   }
-
-   protected PortletApplication10MetaData buildPortletApplicationMetaData(ServletContext webApp)
-   {
-      try
-      {
-         URL url = webApp.getResource("/WEB-INF/portlet.xml");
-         if (url != null)
-         {
-            InputStream in = null;
-            try
-            {
-               in = IOTools.safeBufferedWrapper(url.openStream());
-
-               //
-               PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
-               builder.setSchemaValidation(schemaValidated);
-
-               //
-               return builder.build(in);
-            }
-            catch (Exception e)
-            {
-               // log.error("Cannot read portlet.xml " + url, e);
-            }
-            finally
-            {
-               IOTools.safeClose(in);
-            }
-         }
-      }
-      catch (MalformedURLException e)
-      {
-         // log.error("Could not read portlet deployment descriptor for application " + webApp.getContextPath());
-      }
-      return null;
-   }
-
-   public Collection<? extends ManagedPortletApplication> getManagedPortletApplications()
-   {
-      return applications.values();
-   }
-
-   public ManagedPortletApplication getManagedPortletApplication(String id)
-   {
-      return applications.get(id);
-   }
-
-   public void addListener(ManagedObjectRegistryEventListener listener)
-   {
-      broadcaster.addListener(listener);
-   }
-
-   public void removeListener(ManagedObjectRegistryEventListener listener)
-   {
-      broadcaster.addListener(listener);
-   }
 
    /** Bridge managed object event to add/remove portlet container in portlet container invoker. */
    private final ManagedObjectRegistryEventListener bridgeToInvoker = new ManagedObjectRegistryEventListener()
@@ -310,4 +115,171 @@ public class PortletApplicationDeployer implements PortletApplicationRegistry
          }
       }
    };
+
+   public PortletApplicationDeployer(ContainerPortletInvoker containerPortletInvoker)
+   {
+      broadcaster = new ManagedObjectRegistryEventBroadcaster();
+      broadcaster.addListener(bridgeToInvoker);
+
+      //
+      this.containerPortletInvoker = containerPortletInvoker;
+   }
+
+   public PortletApplicationDeployer()
+   {
+      this(null);
+   }
+
+   public boolean isSchemaValidated()
+   {
+      return schemaValidated;
+   }
+
+   public void setSchemaValidated(boolean schemaValidated)
+   {
+      this.schemaValidated = schemaValidated;
+   }
+
+   public ContainerPortletInvoker getContainerPortletInvoker()
+   {
+      return containerPortletInvoker;
+   }
+
+   public void setContainerPortletInvoker(ContainerPortletInvoker containerPortletInvoker)
+   {
+      this.containerPortletInvoker = containerPortletInvoker;
+   }
+
+/*
+   public void onEvent(WebAppEvent event)
+   {
+      if (event instanceof WebAppLifeCycleEvent)
+      {
+         WebAppLifeCycleEvent lifeCycleEvent = (WebAppLifeCycleEvent)event;
+         String cp = event.getWebApp().getContextPath();
+         switch (lifeCycleEvent.getType())
+         {
+            case WebAppLifeCycleEvent.ADDED:
+               log.debug("Going to install war file" + cp);
+               try
+               {
+                  add(event.getWebApp());
+                  log.debug("Installed war file" + cp);
+               }
+               catch (DeploymentException e)
+               {
+                  log.error("Could not deploy war file " + cp, e);
+               }
+               break;
+            case WebAppLifeCycleEvent.REMOVED:
+               try
+               {
+                  log.debug("Going to uninstall war file" + cp);
+                  remove(event.getWebApp());
+                  log.debug("Uninstalled war file" + cp);
+               }
+               catch (Throwable e)
+               {
+                  log.error("Uninstalled war file " + cp + " with an error", e);
+               }
+               break;
+         }
+      }
+   }
+*/
+
+   public final PortletApplicationDeployment add(ServletContext webApp) throws DeploymentException
+   {
+      //
+      PortletApplication10MetaData metaData = buildPortletApplicationMetaData(webApp);
+      if (metaData != null)
+      {
+         PortletApplicationDeployment deployment = new PortletApplicationDeployment(broadcaster, webApp, metaData);
+         deploymentMap.put(webApp.getContextPath(), deployment);
+         deployment.install();
+
+         //
+         PortletApplicationLifeCycle portletApplicationLifeCycle = deployment.getPortletApplicationLifeCycle();
+         applications.put(portletApplicationLifeCycle.getId(), portletApplicationLifeCycle);
+
+         //
+         return deployment;
+      }
+      else
+      {
+         return null;
+      }
+   }
+
+   public final void remove(ServletContext webApp)
+   {
+      PortletApplicationDeployment deployment = deploymentMap.remove(webApp.getContextPath());
+      if (deployment != null)
+      {
+         PortletApplicationLifeCycle portletApplicationLifeCycle = deployment.getPortletApplicationLifeCycle();
+         applications.remove(portletApplicationLifeCycle.getId());
+         deployment.uninstall();
+      }
+   }
+
+
+   protected PortletApplication10MetaData buildPortletApplicationMetaData(ServletContext webApp) throws DeploymentException
+   {
+      URL url;
+      try
+      {
+         url = webApp.getResource("/WEB-INF/portlet.xml");
+      }
+      catch (MalformedURLException e)
+      {
+         throw new DeploymentException("Could not read portlet.xml deployment descriptor", e);
+      }
+      if (url != null)
+      {
+         InputStream in = null;
+         try
+         {
+            in = IOTools.safeBufferedWrapper(url.openStream());
+            PortletApplicationMetaDataBuilder builder = new PortletApplicationMetaDataBuilder();
+            builder.setSchemaValidation(schemaValidated);
+            return builder.build(in);
+         }
+         catch (Exception e)
+         {
+            if (e instanceof DeploymentException)
+            {
+               throw new DeploymentException("Could not deploy " + url + ":" + e.getMessage(), e.getCause());
+            }
+            else
+            {
+               throw new DeploymentException("Unexpected exception with portlet.xml " + url, e);
+            }
+         }
+         finally
+         {
+            IOTools.safeClose(in);
+         }
+      }
+      return null;
+   }
+
+   public Collection<? extends ManagedPortletApplication> getManagedPortletApplications()
+   {
+      return applications.values();
+   }
+
+   public ManagedPortletApplication getManagedPortletApplication(String id)
+   {
+      return applications.get(id);
+   }
+
+   public void addListener(ManagedObjectRegistryEventListener listener)
+   {
+      broadcaster.addListener(listener);
+   }
+
+   public void removeListener(ManagedObjectRegistryEventListener listener)
+   {
+      broadcaster.addListener(listener);
+   }
 }

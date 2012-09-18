@@ -22,8 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container.managed;
 
-import java.util.Collection;
-
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -33,11 +31,13 @@ public interface ManagedPortletApplication extends ManagedObject
 
    String getId();
 
-   Collection<? extends ManagedPortletContainer> getManagedPortletContainers();
+   Iterable<? extends ManagedObject> getDependencies();
+
+   Iterable<? extends ManagedPortletContainer> getManagedPortletContainers();
 
    ManagedPortletContainer getManagedPortletContainer(String portletContainerId);
-   
-   Collection<? extends ManagedPortletFilter> getManagedPortletFilters();
+
+   Iterable<? extends ManagedPortletFilter> getManagedPortletFilters();
 
    ManagedPortletFilter getManagedPortletFilter(String portletFilterId);
 

@@ -24,6 +24,7 @@
 package org.gatein.pc.test;
 
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
+import org.gatein.pc.portlet.impl.deployment.DeploymentException;
 import org.gatein.pc.portlet.impl.deployment.PortletApplicationDeployer;
 
 import javax.servlet.ServletContext;
@@ -52,7 +53,14 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
          {
             for (TestPortletApplicationDeployer deployer : deployers)
             {
-               deployer.add(deployment);
+               try
+               {
+                  deployer.add(deployment);
+               }
+               catch (DeploymentException e)
+               {
+                  e.printStackTrace();
+               }
             }
          }
       }
@@ -72,21 +80,25 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
       }
    }
 
-   public TestPortletApplicationDeployer()
+   public TestPortletApplicationDeployer(ContainerPortletInvoker containerPortletInvoker)
    {
+      super(containerPortletInvoker);
    }
 
-   @Override
    public void start()
    {
       synchronized (deployers)
       {
-         super.start();
-
-         //
          for (ServletContext deployment : deployments.values())
          {
-            add(deployment);
+            try
+            {
+               add(deployment);
+            }
+            catch (DeploymentException e)
+            {
+               e.printStackTrace();
+            }
          }
 
          //
@@ -94,7 +106,6 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
       }
    }
 
-   @Override
    public void stop()
    {
       synchronized (deployers)
@@ -106,9 +117,6 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
          {
             remove(deployment);
          }
-
-         //
-         super.stop();
       }
    }
 }

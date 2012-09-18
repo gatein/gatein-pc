@@ -82,7 +82,21 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
    private StateConverter stateConverter;
 
    /** . */
-   private Logger log = LoggerFactory.getLogger(ProducerPortletInvoker.class);
+   private final Logger log = LoggerFactory.getLogger(ProducerPortletInvoker.class);
+
+   public ProducerPortletInvoker()
+   {
+   }
+
+   public ProducerPortletInvoker(
+      PortletStatePersistenceManager persistenceManager,
+      StateManagementPolicy stateManagementPolicy,
+      StateConverter stateConverter)
+   {
+      this.persistenceManager = persistenceManager;
+      this.stateManagementPolicy = stateManagementPolicy;
+      this.stateConverter = stateConverter;
+   }
 
    public PortletStatePersistenceManager getPersistenceManager()
    {
