@@ -17,10 +17,6 @@
          <artifactId>common-logging</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.gatein.wci</groupId>
-         <artifactId>wci-wci</artifactId>
-      </dependency>
-      <dependency>
          <groupId>org.gatein.pc</groupId>
          <artifactId>pc-controller</artifactId>
       </dependency>

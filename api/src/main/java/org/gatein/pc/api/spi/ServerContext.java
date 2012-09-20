@@ -22,10 +22,11 @@
  ******************************************************************************/
 package org.gatein.pc.api.spi;
 
-import org.gatein.wci.RequestDispatchCallback;
-import org.gatein.wci.ServletContainer;
-
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Defines the request context contract. It's usage is related to the Servlet Container operational
@@ -60,13 +61,27 @@ public interface ServerContext
    /**
     * Delegate to the request context the dispatching to the target servlet context using the specified spi elements.
     *
-    * @param servletContainer the servlet container spi
-    * @param targetServletContext the target servlet context
-    * @param callback the call back to be done after dispatch
-    * @param handback the hand back object to provide after dispatch to the call back
-    * @return the call back returned object
+    * @param target the target servlet context
+    * @param callable the callable
     * @throws Exception any exception
     */
-   Object dispatch(ServletContainer servletContainer, ServletContext targetServletContext, RequestDispatchCallback callback, Object handback) throws Exception;
+   void dispatch(ServletContext target, HttpServletRequest request, HttpServletResponse response, Callable callable) throws Exception;
 
+   /**
+    * The dispatch callable contract.
+    */
+   interface Callable
+   {
+
+      /**
+       * The callback
+       *
+       * @param context the servlet context
+       * @param request the servlet request
+       * @param response the servle response
+       * @throws ServletException any exception
+       */
+      void call(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+   }
 }

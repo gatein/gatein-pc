@@ -40,7 +40,8 @@ import org.gatein.pc.portlet.container.object.PortletApplicationObject;
 import org.gatein.pc.portlet.container.object.PortletContainerObject;
 import org.gatein.pc.portlet.container.object.PortletFilterObject;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
-import org.gatein.wci.WebApp;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -53,7 +54,7 @@ public class PortletApplicationDeployment
    // private final Logger log;
 
    /** . */
-   private final WebApp webApp;
+   private final ServletContext webApp;
 
    /** . */
    private final PortletApplication10MetaData metaData;
@@ -66,7 +67,7 @@ public class PortletApplicationDeployment
 
    public PortletApplicationDeployment(
       ManagedObjectRegistryEventListener listener,
-      WebApp webApp,
+      ServletContext webApp,
       PortletApplication10MetaData metaData)
    {
       this.listener = listener;

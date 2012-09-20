@@ -39,8 +39,6 @@ import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.portlet.impl.spi.AbstractServerContext;
 import org.gatein.pc.test.unit.PortletTestServlet;
 import org.gatein.common.io.Serialization;
-import org.gatein.wci.RequestDispatchCallback;
-import org.gatein.wci.ServletContainer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -53,7 +51,7 @@ import java.util.Collection;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-   public class PortletControllerContextImpl extends AbstractPortletControllerContext
+public class PortletControllerContextImpl extends AbstractPortletControllerContext
 {
 
    /** . */
@@ -102,21 +100,19 @@ import java.util.Collection;
       invocation.setServerContext(new AbstractServerContext(
          getClientRequest(), getClientResponse()
       ) {
+
          @Override
-         public Object dispatch(ServletContainer servletContainer, ServletContext targetServletContext, RequestDispatchCallback callback, Object handback) throws Exception
+         public void dispatch(ServletContext target, HttpServletRequest request, HttpServletResponse response, Callable callable) throws Exception
          {
-            RequestDispatcher dispatcher = targetServletContext.getRequestDispatcher("/portlet");
-            PortletTestServlet.callback.set(callback);
-            PortletTestServlet.payload.set(handback);
+            RequestDispatcher dispatcher = target.getRequestDispatcher("/portlet");
+            PortletTestServlet.callback.set(callable);
             try
             {
                dispatcher.include(getClientRequest(), getClientResponse());
-               return PortletTestServlet.payload.get();
             }
             finally
             {
                PortletTestServlet.callback.set(null);
-               PortletTestServlet.payload.set(null);
             }
          }
       });

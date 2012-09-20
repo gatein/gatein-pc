@@ -27,10 +27,10 @@ import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication20MetaData;
 import org.gatein.pc.portlet.impl.metadata.portlet.PortletMetaData;
 import org.gatein.pc.portlet.impl.info.ContainerInfoBuilderContext;
-import org.gatein.wci.WebApp;
 import org.gatein.common.i18n.ResourceBundleFactory;
 import org.gatein.common.reflect.NoSuchClassException;
 
+import javax.servlet.ServletContext;
 import java.util.Map;
 import java.util.HashMap;
 import java.lang.reflect.Constructor;
@@ -46,7 +46,7 @@ public class ContainerInfoBuilderContextImpl implements ContainerInfoBuilderCont
    private final PortletApplication10MetaData metaData;
 
    /** . */
-   private final WebApp webApp;
+   private final ServletContext webApp;
 
    /** . */
    private final Map<String, ResourceBundleManager> portletBundleMgrs;
@@ -57,7 +57,7 @@ public class ContainerInfoBuilderContextImpl implements ContainerInfoBuilderCont
    /** . */
    private final String applicationName;
 
-   public ContainerInfoBuilderContextImpl(PortletApplication10MetaData metaData, WebApp webApp)
+   public ContainerInfoBuilderContextImpl(PortletApplication10MetaData metaData, ServletContext webApp)
    {
       this.metaData = metaData;
       this.webApp = webApp;

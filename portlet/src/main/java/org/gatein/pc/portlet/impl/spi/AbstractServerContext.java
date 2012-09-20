@@ -23,8 +23,6 @@
 package org.gatein.pc.portlet.impl.spi;
 
 import org.gatein.pc.api.spi.ServerContext;
-import org.gatein.wci.RequestDispatchCallback;
-import org.gatein.wci.ServletContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,15 +62,14 @@ public class AbstractServerContext implements ServerContext
       return clientRequest.getServerPort();
    }
 
-   public Object dispatch(ServletContainer servletContainer, ServletContext targetServletContext, RequestDispatchCallback callback, Object handback) throws Exception
+   @Override
+   public void dispatch(ServletContext target, HttpServletRequest request, HttpServletResponse response, Callable callable) throws Exception
    {
-      return servletContainer.include(targetServletContext, clientRequest, clientResponse, callback, handback);
+      throw new UnsupportedOperationException();
    }
 
    public HttpServletResponse getResponse()
    {
       return clientResponse;
    }
-
-
 }

@@ -23,12 +23,12 @@
 
 package org.gatein.pc.test;
 
-import org.gatein.wci.WebApp;
+import org.gatein.pc.portlet.container.ContainerPortletInvoker;
 import org.gatein.pc.portlet.impl.deployment.PortletApplicationDeployer;
-import org.gatein.wci.WebAppLifeCycleEvent;
 
+import javax.servlet.ServletContext;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 
 /**
  * @author <a href="mailto:chris.laprun@jboss.com">Chris Laprun</a>
@@ -41,31 +41,32 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
    private static final ArrayList<TestPortletApplicationDeployer> deployers = new ArrayList<TestPortletApplicationDeployer>();
 
    /** . */
-   private static final HashSet<WebApp> deployments = new HashSet<WebApp>();
+   private static final HashMap<String, ServletContext> deployments = new HashMap<String, ServletContext>();
 
-   public static void deploy(WebApp deployment)
+   public static void deploy(ServletContext deployment)
    {
-      if (deployments.add(deployment))
+      if (!deployments.containsKey(deployment.getContextPath()))
       {
+         deployments.put(deployment.getContextPath(), deployment);
          synchronized (deployers)
          {
             for (TestPortletApplicationDeployer deployer : deployers)
             {
-               deployer.doDeploy(deployment);
+               deployer.add(deployment);
             }
          }
       }
    }
 
-   public synchronized static void undeploy(WebApp deployment)
+   public synchronized static void undeploy(ServletContext deployment)
    {
-      if (deployments.remove(deployment))
+      if (deployments.remove(deployment.getContextPath()) != null)
       {
          synchronized (deployers)
          {
             for (TestPortletApplicationDeployer deployer : deployers)
             {
-               deployer.doUndeploy(deployment);
+               deployer.remove(deployment);
             }
          }
       }
@@ -73,16 +74,6 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
 
    public TestPortletApplicationDeployer()
    {
-   }
-
-   private void doDeploy(WebApp deployment)
-   {
-      onEvent(new WebAppLifeCycleEvent(deployment, WebAppLifeCycleEvent.ADDED));
-   }
-
-   private void doUndeploy(WebApp deployment)
-   {
-      onEvent(new WebAppLifeCycleEvent(deployment, WebAppLifeCycleEvent.REMOVED));
    }
 
    @Override
@@ -93,9 +84,9 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
          super.start();
 
          //
-         for (WebApp deployment : deployments)
+         for (ServletContext deployment : deployments.values())
          {
-            doDeploy(deployment);
+            add(deployment);
          }
 
          //
@@ -111,9 +102,9 @@ public class TestPortletApplicationDeployer extends PortletApplicationDeployer
          deployers.remove(this);
 
          //
-         for (WebApp deployment : deployments)
+         for (ServletContext deployment : deployments.values())
          {
-            doUndeploy(deployment);
+            remove(deployment);
          }
 
          //

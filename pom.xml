@@ -56,7 +56,6 @@
 
    <properties>
       <version.gatein.common>2.1.0.Alpha04</version.gatein.common>
-      <version.gatein.wci>2.3.0.Alpha03</version.gatein.wci>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
@@ -196,12 +195,6 @@
             <groupId>org.gatein.pc</groupId>
             <artifactId>pc-test-servers-jboss7-dependencies</artifactId>
             <version>${project.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.gatein.wci</groupId>
-            <artifactId>wci-wci</artifactId>
-            <version>${version.gatein.wci}</version>
          </dependency>
 
          <dependency>

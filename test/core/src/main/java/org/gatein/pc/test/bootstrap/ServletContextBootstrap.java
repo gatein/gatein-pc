@@ -36,8 +36,6 @@ import org.gatein.pc.portlet.impl.state.StateManagementPolicyService;
 import org.gatein.pc.portlet.impl.state.producer.PortletStatePersistenceManagerService;
 import org.gatein.pc.portlet.state.producer.ProducerPortletInvoker;
 import org.gatein.pc.test.TestPortletApplicationDeployer;
-import org.gatein.wci.ServletContainer;
-import org.gatein.wci.ServletContainerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -93,9 +91,6 @@ public class ServletContextBootstrap implements ServletContextListener
       // The producer state converter
       StateConverterV0 producerStateConverter = new StateConverterV0();
 
-      // The servlet container factory
-      ServletContainerFactory servletContainerFactory = ServletContainerFactory.instance;
-
       // Container stack
       ContainerPortletDispatcher portletContainerDispatcher = new ContainerPortletDispatcher();
       EventPayloadInterceptor eventPayloadInterceptor = new EventPayloadInterceptor();
@@ -107,7 +102,6 @@ public class ServletContextBootstrap implements ServletContextListener
       ProducerCacheInterceptor producerCacheInterceptor = new ProducerCacheInterceptor();
       producerCacheInterceptor.setNext(ccppInterceptor);
       ContextDispatcherInterceptor contextDispatcherInterceptor = new ContextDispatcherInterceptor();
-      contextDispatcherInterceptor.setServletContainerFactory(servletContainerFactory);
       contextDispatcherInterceptor.setNext(producerCacheInterceptor);
       SecureTransportInterceptor secureTransportInterceptor = new SecureTransportInterceptor();
       secureTransportInterceptor.setNext(contextDispatcherInterceptor);
@@ -133,12 +127,8 @@ public class ServletContextBootstrap implements ServletContextListener
       PortletInvokerInterceptor consumerPortletInvoker = new PortletInvokerInterceptor();
       consumerPortletInvoker.setNext(consumerCacheInterceptor);
 
-      // The servlet container obtained from the servlet container factory
-      ServletContainer servletContainer = servletContainerFactory.getServletContainer();
-
       //
       TestPortletApplicationDeployer portletApplicationDeployer = new TestPortletApplicationDeployer();
-      portletApplicationDeployer.setServletContainerFactory(servletContainerFactory);
       portletApplicationDeployer.setContainerPortletInvoker(containerPortletInvoker);
 
       // Instantiated

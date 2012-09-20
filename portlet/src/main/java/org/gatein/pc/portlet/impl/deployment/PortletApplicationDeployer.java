@@ -39,13 +39,8 @@ import org.gatein.pc.portlet.impl.container.PortletApplicationLifeCycle;
 import org.gatein.pc.portlet.impl.container.PortletContainerLifeCycle;
 import org.gatein.pc.portlet.impl.deployment.staxnav.PortletApplicationMetaDataBuilder;
 import org.gatein.pc.portlet.impl.metadata.PortletApplication10MetaData;
-import org.gatein.wci.ServletContainer;
-import org.gatein.wci.ServletContainerFactory;
-import org.gatein.wci.WebApp;
-import org.gatein.wci.WebAppEvent;
-import org.gatein.wci.WebAppLifeCycleEvent;
-import org.gatein.wci.WebAppListener;
 
+import javax.servlet.ServletContext;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,7 +52,7 @@ import java.util.Map;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public class PortletApplicationDeployer implements WebAppListener, PortletApplicationRegistry
+public class PortletApplicationDeployer implements PortletApplicationRegistry
 {
 
    /** . */
@@ -65,11 +60,6 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
 
    /** . */
    private PortletApplicationRegistry registry;
-
-   /** . */
-   private ServletContainer servletContainer;
-
-   private ServletContainerFactory servletContainerFactory;
 
    /** . */
    private Map<String, PortletApplicationDeployment> deploymentMap = new HashMap<String, PortletApplicationDeployment>();
@@ -108,30 +98,6 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
       this.registry = registry;
    }
 
-   public ServletContainer getServletContainer()
-   {
-      if (servletContainer == null)
-      {
-         servletContainer = servletContainerFactory.getServletContainer();
-      }
-      return servletContainer;
-   }
-
-   public void setServletContainer(ServletContainer servletContainer)
-   {
-      throw new UnsupportedOperationException("Inject ServletContainerFactory instead!");
-   }
-
-   public ServletContainerFactory getServletContainerFactory()
-   {
-      return servletContainerFactory;
-   }
-
-   public void setServletContainerFactory(ServletContainerFactory servletContainerFactory)
-   {
-      this.servletContainerFactory = servletContainerFactory;
-   }
-
    public PortletInvoker getContainerPortletInvoker()
    {
       return containerPortletInvoker;
@@ -153,6 +119,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
       }
    }
 
+/*
    public void onEvent(WebAppEvent event)
    {
       if (event instanceof WebAppLifeCycleEvent)
@@ -181,8 +148,9 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
          }
       }
    }
+*/
 
-   protected void add(WebApp webApp)
+   public final void add(ServletContext webApp)
    {
       //
       PortletApplication10MetaData metaData = buildPortletApplicationMetaData(webApp);
@@ -207,7 +175,7 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
       }
    }
 
-   private void remove(WebApp webApp)
+   public final void remove(ServletContext webApp)
    {
       PortletApplicationDeployment deployment = deploymentMap.remove(webApp.getContextPath());
       if (deployment != null)
@@ -236,25 +204,23 @@ public class PortletApplicationDeployer implements WebAppListener, PortletApplic
 
       //
       broadcaster.addListener(bridgeToInvoker);
-      getServletContainer().addWebAppListener(this);
    }
 
    public void stop()
    {
       // This should generate remove web app event and in cascade clear the registry
       // as well as the portlet container invoker
-      getServletContainer().removeWebAppListener(this);
 
       //
       classLoader = null;
       broadcaster = null;
    }
 
-   protected PortletApplication10MetaData buildPortletApplicationMetaData(WebApp webApp)
+   protected PortletApplication10MetaData buildPortletApplicationMetaData(ServletContext webApp)
    {
       try
       {
-         URL url = webApp.getServletContext().getResource("/WEB-INF/portlet.xml");
+         URL url = webApp.getResource("/WEB-INF/portlet.xml");
          if (url != null)
          {
             InputStream in = null;

@@ -24,7 +24,6 @@ package org.gatein.pc.portlet.impl.deployment;
 
 import org.gatein.pc.portlet.container.PortletApplicationContext;
 import org.gatein.pc.portlet.container.managed.ManagedPortletApplication;
-import org.gatein.wci.WebApp;
 
 import javax.servlet.ServletContext;
 
@@ -36,18 +35,19 @@ public class PortletApplicationContextImpl implements PortletApplicationContext
 {
 
    /** . */
-   private final WebApp webApp;
+   private final ServletContext webApp;
 
+   /** . */
    ManagedPortletApplication managedPortletApplication;
 
-   public PortletApplicationContextImpl(WebApp webApp)
+   public PortletApplicationContextImpl(ServletContext webApp)
    {
       this.webApp = webApp;
    }
 
    public ServletContext getServletContext()
    {
-      return webApp.getServletContext();
+      return webApp;
    }
 
    public String getContextPath()

@@ -96,10 +96,10 @@ public abstract class PortletInvocation
    protected WindowContext windowContext;
 
    /** The dispatched request. */
-   protected HttpServletRequest dreq;
+   protected HttpServletRequest req;
 
    /** The dispatched response. */
-   protected HttpServletResponse dresp;
+   protected HttpServletResponse resp;
 
    /**
     * Create an invocation to a portlet.
@@ -135,43 +135,87 @@ public abstract class PortletInvocation
    }
 
    /**
-    * Returns the dispatched http servlet request.
+    * Returns the http servlet request.
     *
-    * @return the dispatched response
+    * @return the response
     */
-   public HttpServletResponse getDispatchedResponse()
+   public HttpServletResponse getResponse()
    {
-      return dresp;
+      return resp;
    }
 
    /**
-    * Set the dispatched http servlet request.
+    * Set the http servlet request.
+    *
+    * @param dresp the response
+    */
+   public void setResponse(HttpServletResponse dresp)
+   {
+      this.resp = dresp;
+   }
+
+   /**
+    * Returns the http servlet request.
+    *
+    * @return the dispatched response
+    * @deprecated use {@link #getResponse()}
+    */
+   public HttpServletResponse getDispatchedResponse()
+   {
+      return resp;
+   }
+
+   /**
+    * Set the http servlet request.
     *
     * @param dresp the dispatched response
+    * @deprecated use {@link #setResponse(javax.servlet.http.HttpServletResponse)}
     */
    public void setDispatchedResponse(HttpServletResponse dresp)
    {
-      this.dresp = dresp;
+      this.resp = dresp;
+   }
+
+   /**
+    * Returns the http servlet request.
+    *
+    * @return the request
+    */
+   public HttpServletRequest getRequest()
+   {
+      return req;
+   }
+
+   /**
+    * Set the http servlet request.
+    *
+    * @param dreq the request
+    */
+   public void setRequest(HttpServletRequest dreq)
+   {
+      this.req = dreq;
    }
 
    /**
     * Returns the dispatched http servlet request.
     *
     * @return the dispatched request
+    * @deprecated use {@link #getRequest()}
     */
    public HttpServletRequest getDispatchedRequest()
    {
-      return dreq;
+      return req;
    }
 
    /**
     * Set the dispatched http servlet request.
     *
     * @param dreq the dispatched request
+    * @deprecated use {@link #setRequest(javax.servlet.http.HttpServletRequest)}
     */
    public void setDispatchedRequest(HttpServletRequest dreq)
    {
-      this.dreq = dreq;
+      this.req = dreq;
    }
 
    public StateString getNavigationalState()

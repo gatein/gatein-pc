@@ -1,8 +1,7 @@
 package org.gatein.pc.test.unit;
 
+import org.gatein.pc.api.spi.ServerContext;
 import org.gatein.pc.test.TestPortletApplicationDeployer;
-import org.gatein.wci.RequestDispatchCallback;
-import org.gatein.wci.WebApp;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,9 +21,6 @@ public class PortletTestServlet extends HttpServlet
    /** . */
    private static HashMap<String, PortletTestCase> testSuite;
 
-   /** . */
-   private WebApp webApp;
-
    public static PortletTestCase getTestCase(String testName)
    {
       if (testName == null)
@@ -37,8 +33,7 @@ public class PortletTestServlet extends HttpServlet
    @Override
    public void init() throws ServletException
    {
-      final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-      final ServletContext ctx = getServletContext();
+      ServletContext ctx = getServletContext();
 
       //
       InputStream in = ctx.getResourceAsStream("/WEB-INF/suite.properties");
@@ -51,6 +46,7 @@ public class PortletTestServlet extends HttpServlet
             props.load(in);
             for (Object key : props.keySet())
             {
+               ClassLoader loader = ctx.getClassLoader();
                Class<?> clazz = loader.loadClass(key.toString());
                Constructor ctor = clazz.getConstructor(PortletTestCase.class);
                String testCaseName = clazz.getSimpleName();
@@ -62,71 +58,33 @@ public class PortletTestServlet extends HttpServlet
          }
          catch (Exception e)
          {
-            throw new RuntimeException(e);
+            throw new ServletException(e);
          }
       }
 
       //
-      webApp = new WebApp()
-      {
-         @Override
-         public ServletContext getServletContext()
-         {
-            return ctx;
-         }
-
-         @Override
-         public ClassLoader getClassLoader()
-         {
-            return loader;
-         }
-
-         @Override
-         public String getContextPath()
-         {
-            return ctx.getContextPath();
-         }
-
-         @Override
-         public boolean importFile(String parentDirRelativePath, String name, InputStream source, boolean overwrite) throws IOException
-         {
-            return false;
-         }
-
-         @Override
-         public boolean invalidateSession(String sessId)
-         {
-            return false;
-         }
-      };
-
-      //
-      TestPortletApplicationDeployer.deploy(webApp);
+      TestPortletApplicationDeployer.deploy(ctx);
    }
 
    @Override
    public void destroy()
    {
-      TestPortletApplicationDeployer.undeploy(webApp);
+      TestPortletApplicationDeployer.undeploy(getServletContext());
 
       //
       super.destroy();
    }
 
    /** . */
-   public static final ThreadLocal<RequestDispatchCallback> callback = new ThreadLocal<RequestDispatchCallback>();
-
-   /** . */
-   public static final ThreadLocal<Object> payload = new ThreadLocal<Object>();
+   public static final ThreadLocal<ServerContext.Callable> callback = new ThreadLocal<ServerContext.Callable>();
 
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
    {
-      RequestDispatchCallback cb = callback.get();
+      ServerContext.Callable cb = callback.get();
       if (cb != null)
       {
-         Object ret = cb.doCallback(getServletContext(), req, resp, payload.get());
-         payload.set(ret);
+         cb.call(getServletContext(), req, resp);
       }
    }
 }

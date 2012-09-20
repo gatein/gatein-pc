@@ -90,7 +90,6 @@
             <module>tomcat7</module>
             <module>jboss7</module>
             <module>glassfish3</module>
-            <module>jetty7</module>
          </modules>
       </profile>
       <profile>

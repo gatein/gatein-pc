@@ -25,9 +25,6 @@ package org.gatein.pc.portlet.aspects;
 import org.gatein.pc.portlet.container.PortletApplication;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.ContainerPortletInvoker;
-import org.gatein.wci.RequestDispatchCallback;
-import org.gatein.wci.ServletContainer;
-import org.gatein.wci.ServletContainerFactory;
 import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.portlet.PortletInvokerInterceptor;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -52,17 +49,8 @@ public class ContextDispatcherInterceptor extends PortletInvokerInterceptor
    /** . */
    public static final String REQ_ATT_COMPONENT_INVOCATION = "org.jboss.portal.attribute.component_invocation";
 
-   /** . */
-   private ServletContainerFactory servletContainerFactory;
-
-   public ServletContainerFactory getServletContainerFactory()
+   public ContextDispatcherInterceptor()
    {
-      return servletContainerFactory;
-   }
-
-   public void setServletContainerFactory(ServletContainerFactory servletContainerFactory)
-   {
-      this.servletContainerFactory = servletContainerFactory;
    }
 
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
@@ -71,10 +59,11 @@ public class ContextDispatcherInterceptor extends PortletInvokerInterceptor
       PortletApplication portletApplication = container.getPortletApplication();
       ServerContext reqCtx = invocation.getServerContext();
       ServletContext targetCtx = portletApplication.getContext().getServletContext();
-      ServletContainer servletContainer = servletContainerFactory.getServletContainer();
       try
       {
-         return (PortletInvocationResponse)reqCtx.dispatch(servletContainer, targetCtx, callback, invocation);
+         CallableImpl callable = new CallableImpl(invocation);
+         reqCtx.dispatch(targetCtx, invocation.getRequest(), invocation.getResponse(), callable);
+         return callable.response;
       }
       catch (Exception e)
       {
@@ -100,27 +89,34 @@ public class ContextDispatcherInterceptor extends PortletInvokerInterceptor
          //
          throw new PortletInvokerException(e);
       }
+
    }
 
-   private final RequestDispatchCallback callback = new RequestDispatchCallback()
+   private class CallableImpl implements ServerContext.Callable
    {
-      public Object doCallback(ServletContext dispatchedServletContext, HttpServletRequest req, HttpServletResponse resp, Object handback) throws ServletException, IOException
-      {
-         PortletInvocation invocation = (PortletInvocation)handback;
 
-         //
+      /** . */
+      private final PortletInvocation invocation;
+
+      /** . */
+      private PortletInvocationResponse response;
+
+      private CallableImpl(PortletInvocation invocation)
+      {
+         this.invocation = invocation;
+      }
+
+      @Override
+      public void call(ServletContext context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+      {
+         HttpServletRequest oldReq = invocation.getRequest();
+         HttpServletResponse oldResp = invocation.getResponse();
          try
          {
-
-            // Set dispatched request and response and invocation
-            invocation.setDispatchedRequest(req);
-            invocation.setDispatchedResponse(resp);
-
-            //
+            invocation.setRequest(req);
+            invocation.setResponse(resp);
             req.setAttribute(REQ_ATT_COMPONENT_INVOCATION, invocation);
-
-            //
-            return ContextDispatcherInterceptor.super.invoke(invocation);
+            response = ContextDispatcherInterceptor.super.invoke(invocation);
          }
          catch (Exception e)
          {
@@ -128,13 +124,10 @@ public class ContextDispatcherInterceptor extends PortletInvokerInterceptor
          }
          finally
          {
-            // Clear dispatched request and response
             req.setAttribute(REQ_ATT_COMPONENT_INVOCATION, null);
-
-            //
-            invocation.setDispatchedRequest(null);
-            invocation.setDispatchedResponse(null);
+            invocation.setRequest(oldReq);
+            invocation.setResponse(oldResp);
          }
       }
-   };
+   }
 }
