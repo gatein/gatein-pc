@@ -20,9 +20,8 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.controller;
+package org.gatein.pc.test.controller.unit;
 
-import org.gatein.pc.controller.Body;
 import org.gatein.common.http.QueryStringParser;
 import org.gatein.common.net.media.MediaType;
 import org.gatein.common.net.media.ContentType;
@@ -107,7 +106,7 @@ public class RequestDecoder
 
             //
             Map<String, String[]> bodyParameterMap = new HashMap<String, String[]>();
-            for (Map.Entry<String, String[]> entry : ((Map<String, String[]>)request.getParameterMap()).entrySet())
+            for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet())
             {
                // Get param name
                String paramName = entry.getKey();

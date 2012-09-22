@@ -22,8 +22,11 @@
  ******************************************************************************/
 package org.gatein.pc.controller.request;
 
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.controller.ControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 
 import javax.xml.namespace.QName;
 import java.io.Serializable;
@@ -46,8 +49,8 @@ public class PortletEventRequest extends PortletRequest
 
    public PortletEventRequest(
       String windowId,
-      PortletWindowNavigationalState windowNavigationalState,
-      PortletPageNavigationalState pageNavigationalState,
+      WindowNavigationalState windowNavigationalState,
+      PageNavigationalState pageNavigationalState,
       QName name,
       Serializable payload)
    {
@@ -66,5 +69,11 @@ public class PortletEventRequest extends PortletRequest
    public Serializable getPayload()
    {
       return payload;
+   }
+
+   @Override
+   public PortletInvocationResponse invoke(ControllerContext controllerContext) throws PortletInvokerException
+   {
+      throw new UnsupportedOperationException("Not implemented");
    }
 }

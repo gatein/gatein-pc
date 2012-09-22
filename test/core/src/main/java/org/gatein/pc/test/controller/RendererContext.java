@@ -22,8 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.test.controller;
 
-import org.gatein.pc.controller.PortletControllerContext;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.ControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -45,10 +45,10 @@ public interface RendererContext
 
    HttpServletResponse getClientResponse();
 
-   PortletControllerContext getPortletControllerContext();
+   ControllerContext getPortletControllerContext();
 
    Collection<Portlet> getPortlets();
 
-   PortletInvocationResponse render(List<Cookie> cookies, PortletPageNavigationalState pageNavigationalState, String windowId) throws PortletInvokerException;
+   PortletInvocationResponse render(List<Cookie> cookies, PageNavigationalState pageNavigationalState, String windowId) throws PortletInvokerException;
 
 }

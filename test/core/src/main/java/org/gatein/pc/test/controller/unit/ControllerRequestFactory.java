@@ -20,7 +20,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.controller.impl;
+package org.gatein.pc.test.controller.unit;
 
 import org.gatein.common.io.IOTools;
 import org.gatein.common.io.Serialization;
@@ -30,14 +30,12 @@ import org.gatein.common.util.MapAdapters;
 import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.WindowState;
 import org.gatein.pc.api.cache.CacheLevel;
-import org.gatein.pc.controller.Body;
-import org.gatein.pc.controller.RequestDecoder;
 import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.controller.request.PortletActionRequest;
 import org.gatein.pc.controller.request.PortletRenderRequest;
 import org.gatein.pc.controller.request.PortletResourceRequest;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -55,9 +53,9 @@ public class ControllerRequestFactory
 {
 
    /** . */
-   private final Serialization<PortletPageNavigationalState> serialization;
+   private final Serialization<PageNavigationalState> serialization;
 
-   public ControllerRequestFactory(Serialization<PortletPageNavigationalState> serialization)
+   public ControllerRequestFactory(Serialization<PageNavigationalState> serialization)
    {
       this.serialization = serialization;
    }
@@ -108,7 +106,7 @@ public class ControllerRequestFactory
 
       // The nav state provided with the request
       // Unmarshall portal navigational state if it is provided
-      PortletPageNavigationalState pageNavigationalState = null;
+      PageNavigationalState pageNavigationalState = null;
       String context = queryParameters.get(ControllerRequestParameterNames.PAGE_NAVIGATIONAL_STATE);
       if (context != null)
       {
@@ -142,7 +140,7 @@ public class ControllerRequestFactory
       }
 
       //
-      PortletWindowNavigationalState windowNavigationalState = new PortletWindowNavigationalState(navigationalState, mode, windowState);
+      WindowNavigationalState windowNavigationalState = new WindowNavigationalState(navigationalState, mode, windowState);
 
       //
       String phase = queryParameters.get(ControllerRequestParameterNames.LIFECYCLE_PHASE);

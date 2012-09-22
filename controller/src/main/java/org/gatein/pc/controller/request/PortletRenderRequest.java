@@ -22,8 +22,12 @@
  ******************************************************************************/
 package org.gatein.pc.controller.request;
 
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
+import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.invocation.response.UpdateNavigationalStateResponse;
+import org.gatein.pc.controller.ControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 
 import java.util.Map;
 
@@ -39,9 +43,9 @@ public class PortletRenderRequest extends PortletRequest
 
    public PortletRenderRequest(
       String windowId,
-      PortletWindowNavigationalState windowNavigationalState,
+      WindowNavigationalState windowNavigationalState,
       Map<String, String[]> publicNavigationalStateChanges,
-      PortletPageNavigationalState pageNavigationalState)
+      PageNavigationalState pageNavigationalState)
    {
       super(windowId, windowNavigationalState, pageNavigationalState);
 
@@ -52,5 +56,16 @@ public class PortletRenderRequest extends PortletRequest
    public Map<String, String[]> getPublicNavigationalStateChanges()
    {
       return publicNavigationalStateChanges;
+   }
+
+   @Override
+   public PortletInvocationResponse invoke(ControllerContext controllerContext) throws PortletInvokerException
+   {
+      UpdateNavigationalStateResponse updateNavigationalState = new UpdateNavigationalStateResponse();
+      updateNavigationalState.setMode(windowNavigationalState.getMode());
+      updateNavigationalState.setWindowState(windowNavigationalState.getWindowState());
+      updateNavigationalState.setNavigationalState(windowNavigationalState.getPortletNavigationalState());
+      updateNavigationalState.setPublicNavigationalStateUpdates(publicNavigationalStateChanges);
+      return updateNavigationalState;
    }
 }

@@ -24,10 +24,11 @@ package org.gatein.pc.controller;
 
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.controller.event.EventControllerContext;
-import org.gatein.pc.controller.event.EventPhaseContext;
-import org.gatein.pc.controller.event.PortletWindowEvent;
+import org.gatein.pc.controller.event.WindowEvent;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.common.logging.Logger;
+
+import java.util.Collections;
 
 /**
  * An help class to catch and log exceptions thrown by an event controller context.
@@ -41,14 +42,11 @@ class EventControllerContextSafeInvoker
    /** . */
    private final Logger log = LoggerFactory.getLogger(EventControllerContextSafeInvoker.class);
 
-   public boolean eventProduced(EventControllerContext controllerContext, EventPhaseContext phaseContext, PortletWindowEvent sourceEvent, PortletWindowEvent producedEvent)
+   public Iterable<WindowEvent> eventProduced(EventControllerContext controllerContext, EventPhaseContext phaseContext, WindowEvent sourceEvent, WindowEvent producedEvent)
    {
       try
       {
-         controllerContext.eventProduced(phaseContext, producedEvent, sourceEvent);
-
-         //
-         return true;
+         return controllerContext.eventProduced(phaseContext, producedEvent, sourceEvent);
       }
       catch (Exception e)
       {
@@ -56,11 +54,11 @@ class EventControllerContextSafeInvoker
             "controller context threw a runtime exception", e);
 
          //
-         return false;
+         return Collections.emptyList();
       }
    }
 
-   public boolean eventConsumed(EventControllerContext controllerContext, EventPhaseContext phaseContext, PortletWindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
+   public boolean eventConsumed(EventControllerContext controllerContext, EventPhaseContext phaseContext, WindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
    {
       try
       {
@@ -78,7 +76,7 @@ class EventControllerContextSafeInvoker
       }
    }
 
-   public boolean eventFailed(EventControllerContext controllerContext, EventPhaseContext phaseContext, PortletWindowEvent failedEvent, Throwable throwable)
+   public boolean eventFailed(EventControllerContext controllerContext, EventPhaseContext phaseContext, WindowEvent failedEvent, Throwable throwable)
    {
       try
       {
@@ -96,7 +94,7 @@ class EventControllerContextSafeInvoker
       }
    }
 
-   public boolean eventDiscarded(EventControllerContext controllerContext, EventPhaseContext phaseContext, PortletWindowEvent discardedEvent, int cause)
+   public boolean eventDiscarded(EventControllerContext controllerContext, EventPhaseContext phaseContext, WindowEvent discardedEvent, int cause)
    {
       try
       {

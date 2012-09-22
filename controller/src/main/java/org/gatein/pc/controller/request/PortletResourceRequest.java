@@ -22,9 +22,17 @@
  ******************************************************************************/
 package org.gatein.pc.controller.request;
 
+import org.gatein.common.util.ParameterMap;
+import org.gatein.pc.api.Mode;
+import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.StateString;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.api.WindowState;
+import org.gatein.pc.api.invocation.ResourceInvocation;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.spi.PortletInvocationContext;
+import org.gatein.pc.controller.ControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 import org.gatein.pc.api.cache.CacheLevel;
 
 import java.util.Map;
@@ -109,7 +117,7 @@ public class PortletResourceRequest extends ContainerRequest
       return bodyParameters;
    }
 
-   public PortletPageNavigationalState getPageNavigationalState()
+   public PageNavigationalState getPageNavigationalState()
    {
       if (scope instanceof PageScope)
       {
@@ -140,14 +148,14 @@ public class PortletResourceRequest extends ContainerRequest
    {
 
       /** . */
-      private final PortletWindowNavigationalState windowNavigationalState;
+      private final WindowNavigationalState windowNavigationalState;
 
-      public PortletScope(PortletWindowNavigationalState windowNavigationalState)
+      public PortletScope(WindowNavigationalState windowNavigationalState)
       {
          this.windowNavigationalState = windowNavigationalState;
       }
 
-      public PortletWindowNavigationalState getWindowNavigationalState()
+      public WindowNavigationalState getWindowNavigationalState()
       {
          return windowNavigationalState;
       }
@@ -162,9 +170,9 @@ public class PortletResourceRequest extends ContainerRequest
    {
 
       /** . */
-      private final PortletPageNavigationalState pageNavigationalState;
+      private final PageNavigationalState pageNavigationalState;
 
-      public PageScope(PortletWindowNavigationalState windowNavigationalState, PortletPageNavigationalState pageNavigationalState)
+      public PageScope(WindowNavigationalState windowNavigationalState, PageNavigationalState pageNavigationalState)
       {
          super(windowNavigationalState);
 
@@ -172,7 +180,7 @@ public class PortletResourceRequest extends ContainerRequest
          this.pageNavigationalState = pageNavigationalState;
       }
 
-      public PortletPageNavigationalState getPageNavigationalState()
+      public PageNavigationalState getPageNavigationalState()
       {
          return pageNavigationalState;
       }
@@ -180,6 +188,87 @@ public class PortletResourceRequest extends ContainerRequest
       public CacheLevel getCacheability()
       {
          return CacheLevel.PAGE;
+      }
+   }
+
+   @Override
+   public PortletInvocationResponse invoke(ControllerContext context) throws PortletInvokerException
+   {
+      Mode mode = null;
+      org.gatein.pc.api.WindowState windowState = null;
+      PageNavigationalState pageNavigationalState = null;
+      Map<String, String[]> publicNS = null;
+      StateString portletNS = null;
+      CacheLevel cacheability;
+
+      if (scope instanceof PortletResourceRequest.PortletScope)
+      {
+         PortletResourceRequest.PortletScope portletScope = (PortletResourceRequest.PortletScope)scope;
+         WindowNavigationalState navigationalState = portletScope.getWindowNavigationalState();
+
+         // 
+         if (navigationalState != null)
+         {
+            mode = navigationalState.getMode();
+            windowState = navigationalState.getWindowState();
+            portletNS = navigationalState.getPortletNavigationalState();
+         }
+
+         //
+         if (scope instanceof PortletResourceRequest.PageScope)
+         {
+            PortletResourceRequest.PageScope pageScope = (PortletResourceRequest.PageScope)scope;
+            pageNavigationalState = pageScope.getPageNavigationalState();
+            cacheability = CacheLevel.PAGE;
+
+            //
+            if (pageNavigationalState != null)
+            {
+               publicNS = context.getStateControllerContext().getPublicWindowNavigationalState(context, pageNavigationalState, windowId);
+            }
+         }
+         else
+         {
+            cacheability = CacheLevel.PORTLET;
+         }
+      }
+      else
+      {
+         cacheability = CacheLevel.FULL;
+      }
+
+      //
+      if (mode == null)
+      {
+         mode = Mode.VIEW;
+      }
+      if (windowState == null)
+      {
+         windowState = WindowState.NORMAL;
+      }
+
+      //
+      PortletInvocationContext portletInvocationContext = context.createPortletInvocationContext(windowId, pageNavigationalState);
+      ResourceInvocation resourceInvocation = new ResourceInvocation(portletInvocationContext);
+
+      //
+      resourceInvocation.setResourceId(resourceId);
+      resourceInvocation.setCacheLevel(cacheability);
+      resourceInvocation.setMode(mode);
+      resourceInvocation.setWindowState(windowState);
+      resourceInvocation.setNavigationalState(portletNS);
+      resourceInvocation.setPublicNavigationalState(publicNS);
+      resourceInvocation.setResourceState(resourceState);
+      resourceInvocation.setForm(bodyParameters != null ? ParameterMap.clone(bodyParameters) : null);
+
+      //
+      try
+      {
+         return context.invoke(windowId, resourceInvocation);
+      }
+      catch (PortletInvokerException e)
+      {
+         return null;
       }
    }
 }

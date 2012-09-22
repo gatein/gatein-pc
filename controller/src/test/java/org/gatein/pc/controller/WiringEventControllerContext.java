@@ -23,8 +23,7 @@
 package org.gatein.pc.controller;
 
 import org.gatein.pc.controller.event.EventControllerContext;
-import org.gatein.pc.controller.event.PortletWindowEvent;
-import org.gatein.pc.controller.event.EventPhaseContext;
+import org.gatein.pc.controller.event.WindowEvent;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 
 import javax.xml.namespace.QName;
@@ -47,31 +46,33 @@ public class WiringEventControllerContext implements EventControllerContext
    /** . */
    private final List<EventCallback> callbacks = new LinkedList<EventCallback>();
 
-   public void eventProduced(EventPhaseContext context, PortletWindowEvent producedEvent, PortletWindowEvent sourceEvent)
+   public Iterable<WindowEvent> eventProduced(EventPhaseContext context, WindowEvent producedEvent, WindowEvent sourceEvent)
    {
       List<Coordinate> dsts = wires.get(new Coordinate(producedEvent.getName(), producedEvent.getWindowId()));
 
       //
+      LinkedList<WindowEvent> toConsume = new LinkedList<WindowEvent>();
       if (dsts != null)
       {
          for (Coordinate dst : dsts)
          {
-            context.queueEvent(new PortletWindowEvent(dst.name, producedEvent.getPayload(), dst.windowId));
+            toConsume.addLast(new WindowEvent(dst.name, producedEvent.getPayload(), dst.windowId));
          }
       }
+      return toConsume;
    }
 
-   public void eventConsumed(EventPhaseContext context, PortletWindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
+   public void eventConsumed(EventPhaseContext context, WindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
    {
       callbacks.add(new EventCallback(EventCallback.EVENT_CONSUMED, consumedEvent, consumerResponse));
    }
 
-   public void eventFailed(EventPhaseContext context, PortletWindowEvent failedEvent, Throwable throwable)
+   public void eventFailed(EventPhaseContext context, WindowEvent failedEvent, Throwable throwable)
    {
       callbacks.add(new EventCallback(EventCallback.EVENT_FAILED, failedEvent, throwable));
    }
 
-   public void eventDiscarded(EventPhaseContext context, PortletWindowEvent discardedEvent, int cause)
+   public void eventDiscarded(EventPhaseContext context, WindowEvent discardedEvent, int cause)
    {
       callbacks.add(new EventCallback(EventCallback.EVENT_DISCARDED, discardedEvent, cause));
    }
@@ -118,12 +119,12 @@ public class WiringEventControllerContext implements EventControllerContext
       private final int type;
 
       /** . */
-      private final PortletWindowEvent event;
+      private final WindowEvent event;
 
       /** . */
       private final Object data;
 
-      private EventCallback(int type, PortletWindowEvent event, Object data)
+      private EventCallback(int type, WindowEvent event, Object data)
       {
          this.type = type;
          this.event = event;
@@ -135,7 +136,7 @@ public class WiringEventControllerContext implements EventControllerContext
          return type;
       }
 
-      public PortletWindowEvent getEvent()
+      public WindowEvent getEvent()
       {
          return event;
       }

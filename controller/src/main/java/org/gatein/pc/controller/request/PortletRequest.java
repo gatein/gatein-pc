@@ -22,26 +22,26 @@
  ******************************************************************************/
 package org.gatein.pc.controller.request;
 
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class PortletRequest extends ContainerRequest
+public abstract class PortletRequest extends ContainerRequest
 {
 
    /** . */
-   private final PortletPageNavigationalState pageNavigationalState;
+   protected final PageNavigationalState pageNavigationalState;
 
    /** . */
-   private final PortletWindowNavigationalState windowNavigationalState;
+   protected final WindowNavigationalState windowNavigationalState;
 
    PortletRequest(
       String windowId,
-      PortletWindowNavigationalState windowNavigationalState,
-      PortletPageNavigationalState pageNavigationalState)
+      WindowNavigationalState windowNavigationalState,
+      PageNavigationalState pageNavigationalState)
    {
       super(windowId);
 
@@ -50,12 +50,12 @@ public class PortletRequest extends ContainerRequest
       this.pageNavigationalState = pageNavigationalState;
    }
 
-   public PortletPageNavigationalState getPageNavigationalState()
+   public PageNavigationalState getPageNavigationalState()
    {
       return pageNavigationalState;
    }
 
-   public PortletWindowNavigationalState getWindowNavigationalState()
+   public WindowNavigationalState getWindowNavigationalState()
    {
       return windowNavigationalState;
    }

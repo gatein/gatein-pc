@@ -27,8 +27,7 @@ import org.gatein.pc.controller.response.ControllerResponse;
 import org.gatein.pc.controller.response.PageUpdateResponse;
 import org.gatein.pc.controller.response.PortletResponse;
 import org.gatein.pc.controller.response.ResourceResponse;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.StateControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.api.invocation.response.ErrorResponse;
 import org.gatein.pc.api.invocation.response.HTTPRedirectionResponse;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -49,20 +48,15 @@ public class ControllerResponseRendererFactory
    private boolean sendErrorOnProcessActionError;
 
    /** The page navigational state if there is one in the request. */
-   private PortletPageNavigationalState requestPageNavigationalState;
-
-   /** . */
-   private StateControllerContext stateControllerContext;
+   private PageNavigationalState requestPageNavigationalState;
 
    public ControllerResponseRendererFactory(
       boolean sendNoContentResponseOnEmptyResource,
       boolean sendErrorOnProcessActionError,
-      StateControllerContext stateControllerContext,
-      PortletPageNavigationalState requestPageNavigationalState)
+      PageNavigationalState requestPageNavigationalState)
    {
       this.sendNoContentResponseOnEmptyResource = sendNoContentResponseOnEmptyResource;
       this.sendErrorOnProcessActionError = sendErrorOnProcessActionError;
-      this.stateControllerContext = stateControllerContext;
       this.requestPageNavigationalState = requestPageNavigationalState;
    }
 
@@ -112,7 +106,7 @@ public class ControllerResponseRendererFactory
          }
          else
          {
-            return new PageRenderer(new ResponseProperties(), requestPageNavigationalState != null ? requestPageNavigationalState : stateControllerContext.createPortletPageNavigationalState(false));
+            return new PageRenderer(new ResponseProperties(), requestPageNavigationalState != null ? requestPageNavigationalState : new PageNavigationalState(false));
          }
       }
 

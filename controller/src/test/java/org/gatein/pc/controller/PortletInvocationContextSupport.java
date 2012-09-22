@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.controller;
 
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -35,9 +35,9 @@ public class PortletInvocationContextSupport extends org.gatein.pc.portlet.suppo
    private final String windowId;
 
    /** . */
-   private final PortletPageNavigationalState pageNavigationalState;
+   private final PageNavigationalState pageNavigationalState;
 
-   public PortletInvocationContextSupport(String windowId, PortletPageNavigationalState pageNavigationalState)
+   public PortletInvocationContextSupport(String windowId, PageNavigationalState pageNavigationalState)
    {
       super(null);
       this.windowId = windowId;
@@ -49,7 +49,7 @@ public class PortletInvocationContextSupport extends org.gatein.pc.portlet.suppo
       return windowId;
    }
 
-   public PortletPageNavigationalState getPageNavigationalState()
+   public PageNavigationalState getPageNavigationalState()
    {
       return pageNavigationalState;
    }

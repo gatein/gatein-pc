@@ -23,16 +23,17 @@
 package org.gatein.pc.test.unit;
 
 import org.gatein.pc.controller.PortletController;
-import org.gatein.pc.controller.impl.ControllerRequestFactory;
-import org.gatein.pc.controller.impl.URLParameterConstants;
+import org.gatein.pc.test.controller.unit.ControllerRequestFactory;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.test.controller.unit.URLParameterConstants;
 import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.controller.response.ControllerResponse;
 import org.gatein.pc.api.invocation.response.ResponseProperties;
 import org.gatein.pc.test.controller.ControllerResponseRendererFactory;
 import org.gatein.pc.test.controller.PageRenderer;
-import org.gatein.pc.test.controller.PortletControllerContextImpl;
+import org.gatein.pc.test.controller.unit.PortletControllerContextImpl;
 import org.gatein.pc.test.controller.Renderer;
-import org.gatein.pc.test.controller.RendererContextImpl;
+import org.gatein.pc.test.controller.unit.RendererContextImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -95,7 +96,6 @@ public class PortalTestServlet extends HttpServlet
          ControllerResponseRendererFactory rendererFactory = new ControllerResponseRendererFactory(
             true,
             true,
-            context.getStateControllerContext(),
             request.getPageNavigationalState());
 
          //
@@ -107,7 +107,7 @@ public class PortalTestServlet extends HttpServlet
       else
       {
 
-         PageRenderer renderer = new PageRenderer(new ResponseProperties(), context.getStateControllerContext().createPortletPageNavigationalState(false));
+         PageRenderer renderer = new PageRenderer(new ResponseProperties(), new PageNavigationalState(false));
 
          //
          renderer.render(new RendererContextImpl(context));

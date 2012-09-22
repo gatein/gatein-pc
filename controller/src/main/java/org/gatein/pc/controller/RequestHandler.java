@@ -51,7 +51,7 @@ abstract class RequestHandler<T extends ControllerRequest>
       this.controller = controller;
    }
 
-   public ControllerResponse handle(PortletControllerContext controllerContext, ControllerRequest request) throws PortletInvokerException
+   public ControllerResponse handle(ControllerContext controllerContext, ControllerRequest request) throws PortletInvokerException
    {
       if (!t.isInstance(request))
       {
@@ -60,12 +60,10 @@ abstract class RequestHandler<T extends ControllerRequest>
 
       //
       T req = t.cast(request);
-      PortletInvocationResponse response = invoke(controllerContext, req);
+      PortletInvocationResponse response = req.invoke(controllerContext);
 
       return processResponse(controllerContext, req, response);
    }
 
-   abstract ControllerResponse processResponse(PortletControllerContext controllerContext, T request, PortletInvocationResponse response) throws PortletInvokerException;
-
-   abstract PortletInvocationResponse invoke(PortletControllerContext controllerContext, T controllerRequest) throws PortletInvokerException;
+   abstract ControllerResponse processResponse(ControllerContext controllerContext, T request, PortletInvocationResponse response) throws PortletInvokerException;
 }

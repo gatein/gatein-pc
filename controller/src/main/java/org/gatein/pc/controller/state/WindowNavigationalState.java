@@ -20,33 +20,58 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.test.controller;
+package org.gatein.pc.controller.state;
 
-import org.gatein.pc.api.Portlet;
-import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.Mode;
+import org.gatein.pc.api.StateString;
 
-import java.util.Collection;
+import java.io.Serializable;
 
 /**
+ * The navigational state of a window that contains the portlet navigational state, the mode and window state.
+ * This class is immutable.
+ *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
- * @version $Revision: 630 $
+ * @version $Revision: 1.1 $
  */
-public class RendererContextImpl extends AbstractRendererContext
+public final class WindowNavigationalState implements Serializable
 {
 
    /** . */
-   private final Collection<Portlet> portlets;
+   private final StateString portletNavigationalState;
 
-   public RendererContextImpl(PortletControllerContextImpl portletControllerContext) throws PortletInvokerException
+   /** . */
+   private final org.gatein.pc.api.Mode mode;
+
+   /** . */
+   private final org.gatein.pc.api.WindowState windowState;
+
+   public WindowNavigationalState()
    {
-      super(portletControllerContext);
-
-      //
-      this.portlets = portletControllerContext.getPortlets();
+      this.portletNavigationalState = null;
+      this.mode = org.gatein.pc.api.Mode.VIEW;
+      this.windowState = org.gatein.pc.api.WindowState.NORMAL;
    }
 
-   public Collection<Portlet> getPortlets()
+   public WindowNavigationalState(StateString portletNavigationalState, org.gatein.pc.api.Mode mode, org.gatein.pc.api.WindowState windowState)
    {
-      return portlets;
+      this.portletNavigationalState = portletNavigationalState;
+      this.mode = mode;
+      this.windowState = windowState;
+   }
+
+   public StateString getPortletNavigationalState()
+   {
+      return portletNavigationalState;
+   }
+
+   public Mode getMode()
+   {
+      return mode;
+   }
+
+   public org.gatein.pc.api.WindowState getWindowState()
+   {
+      return windowState;
    }
 }

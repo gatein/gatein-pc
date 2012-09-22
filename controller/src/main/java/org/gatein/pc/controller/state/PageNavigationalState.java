@@ -23,6 +23,7 @@
 package org.gatein.pc.controller.state;
 
 import javax.xml.namespace.QName;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,66 +35,83 @@ import java.util.Set;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public interface PortletPageNavigationalState
+public final class PageNavigationalState
 {
 
+   /** . */
+   protected final Map<String, WindowNavigationalState> windows;
+
+   /** . */
+   protected final Map<QName, String[]> page;
+
+   /** . */
+   private final boolean modifiable;
+
+   public PageNavigationalState(boolean modifiable)
+   {
+      this.windows = new HashMap<String, WindowNavigationalState>();
+      this.page = new HashMap<QName, String[]>();
+      this.modifiable = modifiable;
+   }
+
+   public PageNavigationalState(PageNavigationalState original, boolean modifiable)
+   {
+      this.windows = new HashMap<String, WindowNavigationalState>(original.windows);
+      this.page = new HashMap<QName, String[]>(original.page);
+      this.modifiable = modifiable;
+   }
+
    /**
-    * Returns the portlet window ids referenced.
+    * Returns the window ids referenced.
     *
     * @return a set of window id
     */
-   Set<String> getPortletWindowIds();
+   public Set<String> getWindowIds()
+   {
+      return windows.keySet();
+   }
 
    /**
     * Returns the navigational state of a portlet window or null if it does not exist.
     *
-    * @param portletWindowId the portlet window id
+    * @param windowId the portlet window id
     * @return the portlet window navigational state
     * @throws IllegalArgumentException if an argument is not valid
     */
-   PortletWindowNavigationalState getPortletWindowNavigationalState(String portletWindowId) throws IllegalArgumentException;
+   public WindowNavigationalState getWindowNavigationalState(String windowId)  throws IllegalArgumentException
+   {
+      return windows.get(windowId);
+   }
 
    /**
     * Update the navigational state of a portlet window.
     *
-    * @param portletWindowId the portlet window id
-    * @param portletWindowState the portlet window state
+    * @param windowId the portlet window id
+    * @param windowState the portlet window state
     * @throws IllegalArgumentException if an argument is not valid
     * @throws IllegalStateException if the page state is read only
     */
-   void setPortletWindowNavigationalState(String portletWindowId, PortletWindowNavigationalState portletWindowState) throws IllegalArgumentException, IllegalStateException;
+   public void setWindowNavigationalState(String windowId, WindowNavigationalState windowState) throws IllegalArgumentException, IllegalStateException
+   {
+      if (!modifiable)
+      {
+         throw new IllegalStateException("The page navigational state is not modifiable");
+      }
 
-   /**
-    * Obtain the public navigational state of a portlet window. The interpretation of what should be retrieved is left up
-    * to the implementor. An example of implementation would use the mapping between qnames and name provided by the
-    * referenced portlet info.
-    *
-    * @param portletWindowId the portlet window id
-    * @return the portlet public navigational state
-    * @throws IllegalArgumentException if an argument is not valid
-    */
-   Map<String, String[]> getPortletPublicNavigationalState(String portletWindowId) throws IllegalArgumentException;
+      //
+      windows.put(windowId, windowState);
+   }
 
-   /**
-    * <p>Update the public navigational state of a portlet window. The interpretation of what should be updated is left up
-    * to the implementor. An example of implementation would use the mapping between qname and name provided by the referenced
-    * portlet info.</p>
-    *
-    * <p>The update argument values with a length of zero should be treated as removals.</p>
-    *
-    * @param portletWindowId the portlet window id
-    * @param update the updates
-    * @throws IllegalArgumentException if an argument is not valid
-    * @throws IllegalStateException if the page state is read only
-    */
-   void setPortletPublicNavigationalState(String portletWindowId, Map<String, String[]> update) throws IllegalArgumentException, IllegalStateException;
 
    /**
     * Returns the set of public names.
     *
     * @return the public names
     */
-   Set<QName> getPublicNames();
+   public Set<QName> getPublicNames()
+   {
+      return page.keySet();
+   }
 
    /**
     * Returns a public navigational state entry or null if it is not found.
@@ -102,7 +120,11 @@ public interface PortletPageNavigationalState
     * @return the entry value
     * @throws IllegalArgumentException if an argument is not valid
     */
-   String[] getPublicNavigationalState(QName name) throws IllegalArgumentException;
+   public String[] getPublicNavigationalState(QName name) throws IllegalArgumentException
+   {
+      String[] values = page.get(name);
+      return values != null ? values.clone() : null;
+   }
 
    /**
     * Sets a public navigational state entry.
@@ -112,7 +134,16 @@ public interface PortletPageNavigationalState
     * @throws IllegalArgumentException if an argument is not valid
     * @throws IllegalStateException if the page state is read only
     */
-   void setPublicNavigationalState(QName name, String[] value) throws IllegalArgumentException, IllegalStateException;
+   public void setPublicNavigationalState(QName name, String[] value) throws IllegalArgumentException, IllegalStateException
+   {
+      if (!modifiable)
+      {
+         throw new IllegalStateException("The page navigational state is not modifiable");
+      }
+
+      // We clone the value in order to keep the state not mutated by a side effect
+      page.put(name, value.clone());
+   }
 
    /**
     * Removes a public navigational state entry.
@@ -121,5 +152,14 @@ public interface PortletPageNavigationalState
     * @throws IllegalArgumentException if an argument is not valid
     * @throws IllegalStateException if the page state is read only
     */
-   void removePublicNavigationalState(QName name) throws IllegalArgumentException, IllegalStateException;
+   public void removePublicNavigationalState(QName name) throws IllegalArgumentException, IllegalStateException
+   {
+      if (!modifiable)
+      {
+         throw new IllegalStateException("The page navigational state is not modifiable");
+      }
+
+      //
+      page.remove(name);
+   }
 }

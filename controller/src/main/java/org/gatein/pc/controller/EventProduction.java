@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.controller;
 
-import org.gatein.pc.controller.event.PortletWindowEvent;
+import org.gatein.pc.controller.event.WindowEvent;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -32,23 +32,23 @@ class EventProduction
 {
 
    /** . */
-   private final PortletWindowEvent consumedEvent;
+   private final WindowEvent consumedEvent;
 
    /** . */
-   private final PortletWindowEvent producedEvent;
+   private final WindowEvent producedEvent;
 
-   EventProduction(PortletWindowEvent consumedEvent, PortletWindowEvent producedEvent)
+   EventProduction(WindowEvent consumedEvent, WindowEvent producedEvent)
    {
       this.consumedEvent = consumedEvent;
       this.producedEvent = producedEvent;
    }
 
-   public PortletWindowEvent getConsumedEvent()
+   public WindowEvent getConsumedEvent()
    {
       return consumedEvent;
    }
 
-   public PortletWindowEvent getProducedEvent()
+   public WindowEvent getProducedEvent()
    {
       return producedEvent;
    }

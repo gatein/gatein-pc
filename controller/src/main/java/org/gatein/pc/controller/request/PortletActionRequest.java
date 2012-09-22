@@ -22,9 +22,16 @@
  ******************************************************************************/
 package org.gatein.pc.controller.request;
 
+import org.gatein.common.util.ParameterMap;
+import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.StateString;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
+import org.gatein.pc.api.WindowState;
+import org.gatein.pc.api.invocation.ActionInvocation;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.api.spi.PortletInvocationContext;
+import org.gatein.pc.controller.ControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 
 import java.util.Map;
 
@@ -55,8 +62,8 @@ public class PortletActionRequest extends PortletRequest
       String windowId,
       StateString interactionState,
       Map<String, String[]> bodyParameters,
-      PortletWindowNavigationalState windowNavigationalState,
-      PortletPageNavigationalState pageNavigationalState) throws IllegalArgumentException
+      WindowNavigationalState windowNavigationalState,
+      PageNavigationalState pageNavigationalState) throws IllegalArgumentException
    {
       super(windowId, windowNavigationalState, pageNavigationalState);
 
@@ -79,5 +86,43 @@ public class PortletActionRequest extends PortletRequest
    public Map<String, String[]> getBodyParameters()
    {
       return bodyParameters;
+   }
+
+   @Override
+   public PortletInvocationResponse invoke(ControllerContext context) throws PortletInvokerException
+   {
+      org.gatein.pc.api.Mode mode = windowNavigationalState.getMode();
+      if (mode == null)
+      {
+         mode = org.gatein.pc.api.Mode.VIEW;
+      }
+
+      //
+      WindowState windowState = windowNavigationalState.getWindowState();
+      if (windowState == null)
+      {
+         windowState = WindowState.NORMAL;
+      }
+
+      //
+      Map<String, String[]> publicNS = null;
+      if (pageNavigationalState != null)
+      {
+         publicNS = context.getStateControllerContext().getPublicWindowNavigationalState(context, pageNavigationalState, windowId);
+      }
+
+      PortletInvocationContext portletInvocationContext = context.createPortletInvocationContext(windowId, pageNavigationalState);
+      ActionInvocation actionInvocation = new ActionInvocation(portletInvocationContext);
+
+      //
+      actionInvocation.setMode(mode);
+      actionInvocation.setWindowState(windowState);
+      actionInvocation.setNavigationalState(windowNavigationalState.getPortletNavigationalState());
+      actionInvocation.setPublicNavigationalState(publicNS);
+      actionInvocation.setInteractionState(interactionState);
+      actionInvocation.setForm(bodyParameters != null ? ParameterMap.clone(bodyParameters) : null);
+
+      //
+      return context.invoke(windowId, actionInvocation);
    }
 }

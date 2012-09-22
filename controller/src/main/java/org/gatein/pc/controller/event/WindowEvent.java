@@ -20,61 +20,72 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.test.tck;
+package org.gatein.pc.controller.event;
 
-import org.gatein.pc.test.controller.AbstractRendererContext;
-import org.gatein.pc.api.Portlet;
-import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.api.NoSuchPortletException;
-
-import java.util.Collection;
-import java.util.ArrayList;
+import javax.xml.namespace.QName;
+import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
+ * An event associated with a portlet window.
+ *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class TCKRendererContext extends AbstractRendererContext
+public class WindowEvent
 {
 
+   private static final AtomicLong generator = new AtomicLong();
+
    /** . */
-   private final Collection<Portlet> involvedPortlets;
+   private final QName name;
 
-   public TCKRendererContext(
-      TCKPortletControllerContext portletControllerContext,
-      TCKPortletPageNavigationalState tckPageNavigationalState) throws PortletInvokerException
+   /** . */
+   private final Serializable payload;
+
+   /** . */
+   private final String windowId;
+
+   /** . */
+   private final long serialNumber = generator.incrementAndGet();
+
+   public WindowEvent(QName name, Serializable payload, String windowId)
    {
-      super(portletControllerContext);
-
-      //
-      Collection<Portlet> involvedPortlets = new ArrayList<Portlet>();
-
-      // Page state could be null for some requests
-      if (tckPageNavigationalState != null)
+      if (name == null)
       {
-         for (String involvedPortletId : tckPageNavigationalState.getInvolvedPortlets())
-         {
-            try
-            {
-               Portlet involvedPortlet = portletControllerContext.getPortlet(involvedPortletId);
-               involvedPortlets.add(involvedPortlet);
-            }
-            catch (NoSuchPortletException e)
-            {
-               // It happen when a portlet becomes unavailable and
-               // therefore is removed from the available portlet
-               // in that case it should not prevent the other portlets to be
-               // rendered
-            }
-         }
+         throw new IllegalArgumentException();
       }
-
-      //
-      this.involvedPortlets = involvedPortlets;
+      if (windowId == null)
+      {
+         throw new IllegalArgumentException();
+      }
+      this.name = name;
+      this.payload = payload;
+      this.windowId = windowId;
    }
 
-   public Collection<Portlet> getPortlets()
+   public QName getName()
    {
-      return involvedPortlets;
+      return name;
+   }
+
+   public Serializable getPayload()
+   {
+      return payload;
+   }
+
+   public String getWindowId()
+   {
+      return windowId;
+   }
+
+   public long getSerialNumber()
+   {
+      return serialNumber;
+   }
+
+   public String toString()
+   {
+      return "Event[name=" + name + ",windowId=" + windowId + ",payload=" + payload + ",serialNumber=" + serialNumber + "]";
    }
 }

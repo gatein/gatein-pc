@@ -23,6 +23,7 @@
 package org.gatein.pc.controller.event;
 
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.controller.EventPhaseContext;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -55,13 +56,13 @@ public interface EventControllerContext
    /**
     * <p>Context call back  when an event is produced. The session
     * argument gives to the context the capability to queue events in response
-    * of the produced event or to interrupt the session. It has also access
-    * to the full history of distributed events in order to provide advanced
+    * of the produced event or to interrupt the phase by returning a null value.
+    * It has also access to the full history of distributed events in order to provide advanced
     * implementation of event cycle detection.</p>
     *
-    * <p>During the invocation of this method, any runtime exception thrown will signal
-    * a failure and the produced event will be discarded although the event
-    * distribution will continue.</p>
+    * <p>The method can translate produced event to event to consume by returning
+    * an serie of events. When the context wants to interrupt the phase it should
+    * return the null value instead of an iterable.</p>
     *
     * <p>During the invocation of this method, any error thrown will be propagated
     * to the portlet controller invoker.</p>
@@ -69,8 +70,9 @@ public interface EventControllerContext
     * @param context the session
     * @param producedEvent the produced event
     * @param sourceEvent the source event
+    * @return a sequence of event to consume
     */
-   void eventProduced(EventPhaseContext context, PortletWindowEvent producedEvent, PortletWindowEvent sourceEvent);
+   Iterable<WindowEvent> eventProduced(EventPhaseContext context, WindowEvent producedEvent, WindowEvent sourceEvent);
 
    /**
     * <p>Context call back  when an event is consumed by a portlet. The session argument
@@ -87,7 +89,7 @@ public interface EventControllerContext
     * @param consumedEvent the consumed event
     * @param consumerResponse the consumer response
     */
-   void eventConsumed(EventPhaseContext context, PortletWindowEvent consumedEvent, PortletInvocationResponse consumerResponse);
+   void eventConsumed(EventPhaseContext context, WindowEvent consumedEvent, PortletInvocationResponse consumerResponse);
 
    /**
     * <p>Context call back when an event failed to be delivered because the invoker threw an exception.
@@ -104,7 +106,7 @@ public interface EventControllerContext
     * @param failedEvent the failed event
     * @param throwable the throwable
     */
-   void eventFailed(EventPhaseContext context, PortletWindowEvent failedEvent, Throwable throwable);
+   void eventFailed(EventPhaseContext context, WindowEvent failedEvent, Throwable throwable);
 
    /**
     * <p>Context call back when an event is discarded by the controller for a specific reason.
@@ -132,6 +134,6 @@ public interface EventControllerContext
     * @param discardedEvent the discarded event
     * @param cause the cause
     */
-   void eventDiscarded(EventPhaseContext context, PortletWindowEvent discardedEvent, int cause);
+   void eventDiscarded(EventPhaseContext context, WindowEvent discardedEvent, int cause);
 
 }

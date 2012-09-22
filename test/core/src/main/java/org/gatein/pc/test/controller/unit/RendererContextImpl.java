@@ -20,72 +20,35 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.controller.event;
+package org.gatein.pc.test.controller.unit;
 
-import javax.xml.namespace.QName;
-import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicLong;
+import org.gatein.pc.api.Portlet;
+import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.test.controller.AbstractRendererContext;
+import org.gatein.pc.test.controller.unit.PortletControllerContextImpl;
+
+import java.util.Collection;
 
 /**
- * An event associated with a portlet window.
- *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class PortletWindowEvent
+public class RendererContextImpl extends AbstractRendererContext
 {
 
-   private static final AtomicLong generator = new AtomicLong();
-
    /** . */
-   private final QName name;
+   private final Collection<Portlet> portlets;
 
-   /** . */
-   private final Serializable payload;
-
-   /** . */
-   private final String windowId;
-
-   /** . */
-   private final long serialNumber = generator.incrementAndGet();
-
-   public PortletWindowEvent(QName name, Serializable payload, String windowId)
+   public RendererContextImpl(PortletControllerContextImpl portletControllerContext) throws PortletInvokerException
    {
-      if (name == null)
-      {
-         throw new IllegalArgumentException();
-      }
-      if (windowId == null)
-      {
-         throw new IllegalArgumentException();
-      }
-      this.name = name;
-      this.payload = payload;
-      this.windowId = windowId;
+      super(portletControllerContext);
+
+      //
+      this.portlets = portletControllerContext.getPortlets();
    }
 
-   public QName getName()
+   public Collection<Portlet> getPortlets()
    {
-      return name;
-   }
-
-   public Serializable getPayload()
-   {
-      return payload;
-   }
-
-   public String getWindowId()
-   {
-      return windowId;
-   }
-
-   public long getSerialNumber()
-   {
-      return serialNumber;
-   }
-
-   public String toString()
-   {
-      return "Event[name=" + name + ",windowId=" + windowId + ",payload=" + payload + ",serialNumber=" + serialNumber + "]";
+      return portlets;
    }
 }

@@ -25,9 +25,8 @@ package org.gatein.pc.controller;
 import org.gatein.pc.controller.request.PortletActionRequest;
 import org.gatein.pc.controller.request.PortletRenderRequest;
 import org.gatein.pc.controller.request.PortletResourceRequest;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.OpaqueStateString;
 import org.gatein.common.util.ParameterMap;
@@ -46,8 +45,8 @@ public class PortletControllerRequestConstructorTestCase extends junit.framework
    private StateString interactionState = new OpaqueStateString("");
    private StateString resourceState = new OpaqueStateString("");
    private ParameterMap body = new ParameterMap();
-   private PortletWindowNavigationalState windowNS = new PortletWindowNavigationalState();
-   private PortletPageNavigationalState pageNS = new StateControllerContextImpl(new PortletControllerContextSupport()).createPortletPageNavigationalState(false);
+   private WindowNavigationalState windowNS = new WindowNavigationalState();
+   private PageNavigationalState pageNS = new PageNavigationalState(false);
    private Map<String, String[]> pageNSChanges = Collections.emptyMap();
 
    public void testWithNonNullArgs()

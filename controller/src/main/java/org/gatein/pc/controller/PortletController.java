@@ -32,8 +32,8 @@ import org.gatein.pc.controller.request.ControllerRequest;
 import org.gatein.pc.controller.request.PortletRequest;
 import org.gatein.pc.controller.request.PortletResourceRequest;
 import org.gatein.pc.controller.response.ControllerResponse;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 import org.gatein.pc.api.Mode;
 
 import javax.servlet.http.Cookie;
@@ -45,7 +45,6 @@ import java.util.List;
  * event phase. It really only does that and not more.</p>
  *
  * <p>The event distribution is based on a fifo policy.</p>
- *
  *
  * <p/>
  * 1/ introduce EventRequest so the portal can send events directly to a portlet
@@ -148,7 +147,7 @@ public class PortletController
       this.consumedEventThreshold = consumedEventThreshold;
    }
 
-   public ControllerResponse process(PortletControllerContext controllerContext, ControllerRequest controllerRequest) throws PortletInvokerException
+   public ControllerResponse process(ControllerContext controllerContext, ControllerRequest controllerRequest) throws PortletInvokerException
    {
       if (controllerContext == null)
       {
@@ -179,22 +178,22 @@ public class PortletController
    }
 
    public PortletInvocationResponse render(
-      PortletControllerContext controllerContext,
+      ControllerContext controllerContext,
       List<Cookie> cookies,
-      PortletPageNavigationalState pageNavigationalState,
+      PageNavigationalState pageNavigationalState,
       String windowId) throws PortletInvokerException
    {
-      PortletWindowNavigationalState windowNS = null;
+      WindowNavigationalState windowNS = null;
       if (pageNavigationalState != null)
       {
-         windowNS = pageNavigationalState.getPortletWindowNavigationalState(windowId);
+         windowNS = pageNavigationalState.getWindowNavigationalState(windowId);
       }
 
       //
       Map<String, String[]> publicNS = null;
       if (pageNavigationalState != null)
       {
-         publicNS = pageNavigationalState.getPortletPublicNavigationalState(windowId);
+         publicNS = controllerContext.getStateControllerContext().getPublicWindowNavigationalState(controllerContext, pageNavigationalState, windowId);
       }
 
       //
@@ -232,6 +231,6 @@ public class PortletController
       render.setPublicNavigationalState(publicNS);
 
       //
-      return controllerContext.invoke(cookies, render);
+      return controllerContext.invoke(windowId, cookies, render);
    }
 }

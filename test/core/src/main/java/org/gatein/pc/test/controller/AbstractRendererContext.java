@@ -22,10 +22,10 @@
  ******************************************************************************/
 package org.gatein.pc.test.controller;
 
-import org.gatein.pc.controller.PortletControllerContext;
+import org.gatein.pc.controller.ControllerContext;
 import org.gatein.pc.controller.PortletController;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.impl.AbstractPortletControllerContext;
+import org.gatein.pc.controller.impl.AbstractControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.PortletInvokerException;
 
@@ -42,9 +42,9 @@ public abstract class AbstractRendererContext implements RendererContext
 {
 
    /** . */
-   private final AbstractPortletControllerContext portletControllerContext;
+   private final AbstractControllerContext portletControllerContext;
 
-   protected AbstractRendererContext(AbstractPortletControllerContext portletControllerContext)
+   protected AbstractRendererContext(AbstractControllerContext portletControllerContext)
    {
       this.portletControllerContext = portletControllerContext;
    }
@@ -59,12 +59,12 @@ public abstract class AbstractRendererContext implements RendererContext
       return portletControllerContext.getClientResponse();
    }
 
-   public PortletControllerContext getPortletControllerContext()
+   public ControllerContext getPortletControllerContext()
    {
       return portletControllerContext;
    }
 
-   public PortletInvocationResponse render(List<Cookie> cookies, PortletPageNavigationalState pageNavigationalState, String windowId) throws PortletInvokerException
+   public PortletInvocationResponse render(List<Cookie> cookies, PageNavigationalState pageNavigationalState, String windowId) throws PortletInvokerException
    {
       return new PortletController().render(portletControllerContext, cookies, pageNavigationalState, windowId);
    }

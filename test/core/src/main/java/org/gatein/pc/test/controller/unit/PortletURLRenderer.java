@@ -21,7 +21,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
 
-package org.gatein.pc.controller.impl;
+package org.gatein.pc.test.controller.unit;
 
 import org.gatein.common.io.IOTools;
 import org.gatein.common.io.Serialization;
@@ -31,9 +31,8 @@ import org.gatein.common.text.FastURLEncoder;
 import org.gatein.common.util.Base64;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.URLFormat;
-import static org.gatein.pc.controller.impl.URLParameterConstants.PORTLET_TYPE;
-import static org.gatein.pc.controller.impl.URLParameterConstants.TYPE;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+
+import org.gatein.pc.controller.state.PageNavigationalState;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +49,7 @@ public class PortletURLRenderer
 {
 
    /** . */
-   final Serialization<PortletPageNavigationalState> serialization;
+   final Serialization<PageNavigationalState> serialization;
 
    /** . */
    final HttpServletRequest clientReq;
@@ -59,13 +58,13 @@ public class PortletURLRenderer
    final HttpServletResponse clientResp;
 
    /** . */
-   final PortletPageNavigationalState pageNS;
+   final PageNavigationalState pageNS;
 
    public PortletURLRenderer(
-      PortletPageNavigationalState pageNS,
+      PageNavigationalState pageNS,
       HttpServletRequest clientReq,
       HttpServletResponse clientResp,
-      Serialization<PortletPageNavigationalState> serialization)
+      Serialization<PageNavigationalState> serialization)
    {
       this.pageNS = pageNS;
       this.clientReq = clientReq;
@@ -143,7 +142,7 @@ public class PortletURLRenderer
       Map<String, String> parameters = factory.encode(pageNS, windowId, containerURL);
 
       //
-      parameters.put(TYPE, PORTLET_TYPE);
+      parameters.put(URLParameterConstants.TYPE, URLParameterConstants.PORTLET_TYPE);
 
       //
       return renderURL(parameters, format);

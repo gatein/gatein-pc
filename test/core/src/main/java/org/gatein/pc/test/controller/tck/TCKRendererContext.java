@@ -20,29 +20,62 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.controller.event;
+package org.gatein.pc.test.controller.tck;
+
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.test.controller.AbstractRendererContext;
+import org.gatein.pc.api.Portlet;
+import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.NoSuchPortletException;
+
+import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public interface EventPhaseContext
+public class TCKRendererContext extends AbstractRendererContext
 {
 
-   /**
-    * Queue an event for consumption. The queue is a FIFO queue.
-    *
-    * @param event an event
-    * @throws IllegalArgumentException if the event is null
-    * @throws IllegalStateException if an event cannot be published
-    */
-   void queueEvent(PortletWindowEvent event) throws IllegalArgumentException, IllegalStateException;
+   /** . */
+   private final Collection<Portlet> involvedPortlets;
 
-   /**
-    * Stop processing of all events and returns from the controller.
-    *
-    * @throws IllegalStateException if the session cannot be interrupted.
-    */
-   void interrupt() throws IllegalStateException;
+   public TCKRendererContext(
+      TCKPortletControllerContext portletControllerContext,
+      PageNavigationalState tckPageNavigationalState) throws PortletInvokerException
+   {
+      super(portletControllerContext);
 
+      //
+      Collection<Portlet> involvedPortlets = new ArrayList<Portlet>();
+
+      // Page state could be null for some requests
+      if (tckPageNavigationalState != null)
+      {
+         for (String involvedPortletId : tckPageNavigationalState.getWindowIds())
+         {
+            try
+            {
+               Portlet involvedPortlet = portletControllerContext.getPortlet(involvedPortletId);
+               involvedPortlets.add(involvedPortlet);
+            }
+            catch (NoSuchPortletException e)
+            {
+               // It happen when a portlet becomes unavailable and
+               // therefore is removed from the available portlet
+               // in that case it should not prevent the other portlets to be
+               // rendered
+            }
+         }
+      }
+
+      //
+      this.involvedPortlets = involvedPortlets;
+   }
+
+   public Collection<Portlet> getPortlets()
+   {
+      return involvedPortlets;
+   }
 }

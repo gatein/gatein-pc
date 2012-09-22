@@ -20,13 +20,14 @@
 * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 */
 
-package org.gatein.pc.test.tck;
+package org.gatein.pc.test.controller.tck;
 
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.test.controller.Renderer;
 import org.gatein.pc.test.controller.ControllerResponseRendererFactory;
 import org.gatein.pc.test.controller.PageRenderer;
-import org.gatein.pc.controller.impl.URLParameterConstants;
-import org.gatein.pc.controller.impl.ControllerRequestFactory;
+import org.gatein.pc.test.controller.unit.URLParameterConstants;
+import org.gatein.pc.test.controller.unit.ControllerRequestFactory;
 import org.gatein.pc.controller.PortletController;
 import org.gatein.pc.controller.response.ControllerResponse;
 import org.gatein.pc.controller.request.ControllerRequest;
@@ -93,7 +94,7 @@ public class TCKServlet extends HttpServlet
          ControllerRequest request = factory.decode(req);
 
          // We must have one!!!
-         TCKPortletPageNavigationalState tckPageNavigationalState = (TCKPortletPageNavigationalState)request.getPageNavigationalState();
+         PageNavigationalState tckPageNavigationalState = request.getPageNavigationalState();
 
          //
          ControllerResponse response = controller.process(context, request);
@@ -102,7 +103,6 @@ public class TCKServlet extends HttpServlet
          ControllerResponseRendererFactory rendererFactory = new ControllerResponseRendererFactory(
             false,
             false,
-            context.getStateControllerContext(),
             request.getPageNavigationalState());
 
          //
@@ -138,7 +138,7 @@ public class TCKServlet extends HttpServlet
             throw new IllegalStateException("Portlets requested by TCK were not found");
          }
 
-         TCKPortletPageNavigationalState tckPageNavigationalState = new TCKPortletPageNavigationalState(context.getStateControllerContext().createPortletPageNavigationalState(false), involvedPortlets);
+         PageNavigationalState tckPageNavigationalState = new PageNavigationalState(false);
 
          //
          PageRenderer renderer = new PageRenderer(new ResponseProperties(), tckPageNavigationalState);

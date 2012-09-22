@@ -20,62 +20,62 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
+package org.gatein.pc.test.controller.tck;
 
-package org.gatein.pc.test.controller;
-
+import org.gatein.pc.api.spi.PortletInvocationContext;
+import org.gatein.pc.controller.impl.AbstractControllerContext;
 import org.gatein.pc.api.Portlet;
-import org.gatein.pc.api.PortletContext;
-import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.PortletInvoker;
+import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.controller.event.EventControllerContext;
-import org.gatein.pc.controller.impl.event.EventControllerContextImpl;
-import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
-import org.gatein.pc.controller.impl.AbstractPortletControllerContext;
+import org.gatein.pc.test.controller.unit.ControllerPortletInvocationContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.controller.state.StateControllerContext;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.PortletPageNavigationalStateSerialization;
-import org.gatein.pc.api.invocation.PortletInvocation;
+import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
+import org.gatein.pc.controller.impl.event.EventControllerContextImpl;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.portlet.impl.spi.AbstractServerContext;
-import org.gatein.pc.test.unit.PortletTestServlet;
+import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.common.io.Serialization;
+import org.gatein.pc.test.controller.unit.PageNavigationalStateSerialization;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletContext;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 630 $
  */
-public class PortletControllerContextImpl extends AbstractPortletControllerContext
+public class TCKPortletControllerContext extends AbstractControllerContext
 {
 
    /** . */
    private final PortletInvoker portletInvoker;
-   
+
+   /** . */
+   private final StateControllerContextImpl stateControllerContext;
+
    /** . */
    private final EventControllerContext eventControllerContext;
 
    /** . */
-   private final StateControllerContext stateControllerContext;
+   private final Serialization<PageNavigationalState> serialization;
 
-   /** . */
-   private final Serialization<PortletPageNavigationalState> serialization;
-
-   public PortletControllerContextImpl(HttpServletRequest req, HttpServletResponse resp, ServletContext servletContext)
-      throws IOException, ClassNotFoundException
+   public TCKPortletControllerContext(
+      HttpServletRequest req,
+      HttpServletResponse resp,
+      ServletContext servletContext) throws IOException
    {
       super(req, resp);
 
       //
       this.portletInvoker = (PortletInvoker)servletContext.getAttribute("ConsumerPortletInvoker");
+      this.stateControllerContext = new StateControllerContextImpl();
       this.eventControllerContext = new EventControllerContextImpl(portletInvoker);
-      this.stateControllerContext = new StateControllerContextImpl(this);
-      this.serialization = new PortletPageNavigationalStateSerialization(stateControllerContext);
+      this.serialization = new PageNavigationalStateSerialization(stateControllerContext);
    }
 
    public PortletInvoker getPortletInvoker()
@@ -83,42 +83,24 @@ public class PortletControllerContextImpl extends AbstractPortletControllerConte
       return portletInvoker;
    }
 
+   public Set<Portlet> getPortlets() throws PortletInvokerException
+   {
+      return portletInvoker.getPortlets();
+   }
+
    protected Portlet getPortlet(String windowId) throws PortletInvokerException
    {
       return portletInvoker.getPortlet(PortletContext.createPortletContext(windowId));
    }
 
-   public StateControllerContext getStateControllerContext()
+   protected PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
    {
-      return stateControllerContext;
+      return portletInvoker.invoke(invocation);
    }
 
-   public PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException
+   public PortletInvocationContext createPortletInvocationContext(String windowId, PageNavigationalState pageNavigationalState)
    {
-
-      // Override ServerContext
-      invocation.setServerContext(new AbstractServerContext(
-         getClientRequest(), getClientResponse()
-      ) {
-
-         @Override
-         public void dispatch(ServletContext target, HttpServletRequest request, HttpServletResponse response, Callable callable) throws Exception
-         {
-            RequestDispatcher dispatcher = target.getRequestDispatcher("/portlet");
-            PortletTestServlet.callback.set(callable);
-            try
-            {
-               dispatcher.include(getClientRequest(), getClientResponse());
-            }
-            finally
-            {
-               PortletTestServlet.callback.set(null);
-            }
-         }
-      });
-
-      //
-      return portletInvoker.invoke(invocation);
+      return new ControllerPortletInvocationContext(serialization, req, resp, windowId, pageNavigationalState, MARKUP_INFO);
    }
 
    public EventControllerContext getEventControllerContext()
@@ -126,12 +108,12 @@ public class PortletControllerContextImpl extends AbstractPortletControllerConte
       return eventControllerContext;
    }
 
-   public Collection<Portlet> getPortlets() throws PortletInvokerException
+   public StateControllerContext getStateControllerContext()
    {
-      return portletInvoker.getPortlets();
+      return stateControllerContext;
    }
 
-   public Serialization<PortletPageNavigationalState> getPageNavigationalStateSerialization()
+   public Serialization<PageNavigationalState> getPageNavigationalStateSerialization()
    {
       return serialization;
    }

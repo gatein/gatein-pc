@@ -22,7 +22,10 @@
  ******************************************************************************/
 package org.gatein.pc.controller.request;
 
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.controller.ControllerContext;
+import org.gatein.pc.controller.state.PageNavigationalState;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -40,5 +43,10 @@ public abstract class ControllerRequest
     *
     * @return the page state
     */
-   public abstract PortletPageNavigationalState getPageNavigationalState();
+   public abstract PageNavigationalState getPageNavigationalState();
+
+   public abstract PortletInvocationResponse invoke(ControllerContext controllerContext) throws PortletInvokerException;
+
+//   abstract ControllerResponse processResponse(ControllerContext controllerContext, PortletInvocationResponse response) throws PortletInvokerException;
+
 }

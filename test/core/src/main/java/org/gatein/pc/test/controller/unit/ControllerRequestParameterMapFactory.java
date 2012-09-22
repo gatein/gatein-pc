@@ -20,7 +20,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.gatein.pc.controller.impl;
+package org.gatein.pc.test.controller.unit;
 
 import org.gatein.common.io.IOTools;
 import org.gatein.common.io.Serialization;
@@ -33,7 +33,7 @@ import org.gatein.pc.api.RenderURL;
 import org.gatein.pc.api.ResourceURL;
 import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.cache.CacheLevel;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,14 +46,14 @@ public class ControllerRequestParameterMapFactory
 {
 
    /** . */
-   private final Serialization<PortletPageNavigationalState> serialization;
+   private final Serialization<PageNavigationalState> serialization;
 
-   public ControllerRequestParameterMapFactory(Serialization<PortletPageNavigationalState> serialization)
+   public ControllerRequestParameterMapFactory(Serialization<PageNavigationalState> serialization)
    {
       this.serialization = serialization;
    }
 
-   public Map<String, String> encode(PortletPageNavigationalState pageNS, String windowId, ContainerURL containerURL)
+   public Map<String, String> encode(PageNavigationalState pageNS, String windowId, ContainerURL containerURL)
    {
       // todo: optimize by removing redundant calls based on the fact that ContainerURL has mode, window state and NS now
 

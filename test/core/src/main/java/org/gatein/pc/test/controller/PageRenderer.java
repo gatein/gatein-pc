@@ -31,7 +31,7 @@ import org.gatein.pc.api.invocation.response.ErrorResponse;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.api.invocation.response.ResponseProperties;
 import org.gatein.pc.api.invocation.response.ContentResponse;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.w3c.dom.Element;
 
 import javax.servlet.http.HttpServletResponse;
@@ -51,9 +51,9 @@ public class PageRenderer extends AbstractMarkupRenderer
    protected FragmentRenderer fragmentRenderer = new SimpleFragmentRenderer();
    protected List<ContentResponse> fragments;
    protected List<ErrorResponse> errors;
-   protected PortletPageNavigationalState pageNavigationalState;
+   protected PageNavigationalState pageNavigationalState;
 
-   public PageRenderer(ResponseProperties properties, PortletPageNavigationalState pageNavigationalState)
+   public PageRenderer(ResponseProperties properties, PageNavigationalState pageNavigationalState)
    {
       super(properties);
 

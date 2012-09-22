@@ -26,10 +26,12 @@ import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletInvoker;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.controller.event.PortletWindowEvent;
+import org.gatein.pc.controller.event.WindowEvent;
 import org.gatein.pc.controller.event.EventControllerContext;
-import org.gatein.pc.controller.event.EventPhaseContext;
+import org.gatein.pc.controller.EventPhaseContext;
 import org.gatein.pc.api.info.PortletInfo;
+
+import java.util.LinkedList;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -46,36 +48,38 @@ public class EventControllerContextImpl implements EventControllerContext
       this.invoker = invoker;
    }
 
-   public void eventProduced(EventPhaseContext context, PortletWindowEvent producedEvent, PortletWindowEvent sourceEvent)
+   public Iterable<WindowEvent> eventProduced(EventPhaseContext context, WindowEvent producedEvent, WindowEvent sourceEvent)
    {
       try
       {
+         LinkedList<WindowEvent> toConsume = new LinkedList<WindowEvent>();
          for (Portlet portlet : invoker.getPortlets())
          {
             PortletInfo portletInfo = portlet.getInfo();
             if (portletInfo.getEventing().getConsumedEvents().containsKey(producedEvent.getName()))
             {
-               PortletWindowEvent distributedEvent = new PortletWindowEvent(producedEvent.getName(), producedEvent.getPayload(), portlet.getContext().getId());
-               context.queueEvent(distributedEvent);
+               WindowEvent distributedEvent = new WindowEvent(producedEvent.getName(), producedEvent.getPayload(), portlet.getContext().getId());
+               toConsume.addLast(distributedEvent);
             }
          }
+         return toConsume;
       }
       catch (PortletInvokerException e)
       {
          System.out.println("e = " + e);
-         context.interrupt();
+         return null;
       }
    }
 
-   public void eventConsumed(EventPhaseContext context, PortletWindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
+   public void eventConsumed(EventPhaseContext context, WindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
    {
    }
 
-   public void eventFailed(EventPhaseContext context, PortletWindowEvent failedEvent, Throwable throwable)
+   public void eventFailed(EventPhaseContext context, WindowEvent failedEvent, Throwable throwable)
    {
    }
 
-   public void eventDiscarded(EventPhaseContext context, PortletWindowEvent discardedEvent, int cause)
+   public void eventDiscarded(EventPhaseContext context, WindowEvent discardedEvent, int cause)
    {
    }
 }

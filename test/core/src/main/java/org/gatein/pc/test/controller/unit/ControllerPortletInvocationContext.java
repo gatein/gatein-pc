@@ -21,14 +21,13 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
 
-package org.gatein.pc.controller.impl;
+package org.gatein.pc.test.controller.unit;
 
 import org.gatein.common.util.MarkupInfo;
 import org.gatein.common.io.Serialization;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.URLFormat;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.impl.PortletURLRenderer;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.portlet.impl.spi.AbstractPortletInvocationContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,11 +56,11 @@ public class ControllerPortletInvocationContext extends AbstractPortletInvocatio
    private final HttpServletResponse clientResponse;
 
    public ControllerPortletInvocationContext(
-      Serialization<PortletPageNavigationalState> serialization,
+      Serialization<PageNavigationalState> serialization,
       HttpServletRequest clientRequest,
       HttpServletResponse clientResponse,
       String windowId,
-      PortletPageNavigationalState pageNavigationalState,
+      PageNavigationalState pageNavigationalState,
       MarkupInfo markupInfo)
    {
       super(markupInfo);

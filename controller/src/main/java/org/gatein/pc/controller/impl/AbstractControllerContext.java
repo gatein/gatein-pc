@@ -25,12 +25,10 @@ package org.gatein.pc.controller.impl;
 
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.common.util.MarkupInfo;
-import org.gatein.common.io.Serialization;
 import org.gatein.common.net.media.MediaType;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletInvokerException;
-import org.gatein.pc.controller.PortletControllerContext;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.ControllerContext;
 import org.gatein.pc.portlet.impl.spi.AbstractClientContext;
 import org.gatein.pc.portlet.impl.spi.AbstractRequestContext;
 import org.gatein.pc.portlet.impl.spi.AbstractSecurityContext;
@@ -46,7 +44,6 @@ import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.ResourceInvocation;
 import org.gatein.pc.api.invocation.RenderInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.spi.PortletInvocationContext;
 import org.gatein.pc.api.spi.PortalContext;
 import org.gatein.common.logging.Logger;
 
@@ -61,11 +58,11 @@ import java.util.Collections;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public abstract class AbstractPortletControllerContext implements PortletControllerContext
+public abstract class AbstractControllerContext implements ControllerContext
 {
 
    /** . */
-   private static Logger log = LoggerFactory.getLogger(AbstractPortletControllerContext.class);
+   private static Logger log = LoggerFactory.getLogger(AbstractControllerContext.class);
 
    /** . */
    public static final PortalContext PORTAL_CONTEXT = new AbstractPortalContext(Collections.singletonMap("javax.portlet.markup.head.element.support", "true"));
@@ -74,18 +71,12 @@ public abstract class AbstractPortletControllerContext implements PortletControl
    public static final MarkupInfo MARKUP_INFO = new MarkupInfo(MediaType.TEXT_HTML, "UTF8");
 
    /** . */
-   public static final int NAV_SCOPE = 0;
+   protected final HttpServletRequest req;
 
    /** . */
-   public static final int SESSION_SCOPE = 1;
+   protected final HttpServletResponse resp;
 
-   /** . */
-   private final HttpServletRequest req;
-
-   /** . */
-   private final HttpServletResponse resp;
-
-   public AbstractPortletControllerContext(HttpServletRequest req, HttpServletResponse resp
+   public AbstractControllerContext(HttpServletRequest req, HttpServletResponse resp
    )
       throws IOException
    {
@@ -122,14 +113,9 @@ public abstract class AbstractPortletControllerContext implements PortletControl
 
    protected abstract PortletInvocationResponse invoke(PortletInvocation invocation) throws PortletInvokerException;
 
-   protected abstract Serialization<PortletPageNavigationalState> getPageNavigationalStateSerialization();
-
-   public PortletInvocationResponse invoke(ActionInvocation actionInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, ActionInvocation actionInvocation) throws PortletInvokerException
    {
-      ControllerPortletInvocationContext context = (ControllerPortletInvocationContext)actionInvocation.getContext();
-
       //
-      String windowId = context.getWindowId();
       Portlet portlet = getPortlet(windowId);
 
       //
@@ -144,15 +130,11 @@ public abstract class AbstractPortletControllerContext implements PortletControl
       actionInvocation.setTarget(portlet.getContext());
 
       //
-      return invoke((PortletInvocation)actionInvocation);
+      return invoke(actionInvocation);
    }
 
-   public PortletInvocationResponse invoke(List<Cookie> requestCookies, EventInvocation eventInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, List<Cookie> requestCookies, EventInvocation eventInvocation) throws PortletInvokerException
    {
-      ControllerPortletInvocationContext context = (ControllerPortletInvocationContext)eventInvocation.getContext();
-
-      //
-      String windowId = context.getWindowId();
       Portlet portlet = getPortlet(windowId);
 
       //
@@ -169,12 +151,8 @@ public abstract class AbstractPortletControllerContext implements PortletControl
       return invoke(eventInvocation);
    }
 
-   public PortletInvocationResponse invoke(List<Cookie> requestCookies, RenderInvocation renderInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, List<Cookie> requestCookies, RenderInvocation renderInvocation) throws PortletInvokerException
    {
-      ControllerPortletInvocationContext context = (ControllerPortletInvocationContext)renderInvocation.getContext();
-
-      //
-      String windowId = context.getWindowId();
       Portlet portlet = getPortlet(windowId);
 
       //
@@ -191,12 +169,8 @@ public abstract class AbstractPortletControllerContext implements PortletControl
       return invoke(renderInvocation);
    }
 
-   public PortletInvocationResponse invoke(ResourceInvocation resourceInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, ResourceInvocation resourceInvocation) throws PortletInvokerException
    {
-      ControllerPortletInvocationContext context = (ControllerPortletInvocationContext)resourceInvocation.getContext();
-
-      //
-      String windowId = context.getWindowId();
       Portlet portlet = getPortlet(windowId);
 
       //
@@ -211,13 +185,6 @@ public abstract class AbstractPortletControllerContext implements PortletControl
       resourceInvocation.setTarget(portlet.getContext());
 
       //
-      return invoke((PortletInvocation)resourceInvocation);
-   }
-
-   public PortletInvocationContext createPortletInvocationContext(
-      String windowId,
-      PortletPageNavigationalState pageNavigationalState)
-   {
-      return new ControllerPortletInvocationContext(getPageNavigationalStateSerialization(), req, resp, windowId, pageNavigationalState, MARKUP_INFO);
+      return invoke(resourceInvocation);
    }
 }

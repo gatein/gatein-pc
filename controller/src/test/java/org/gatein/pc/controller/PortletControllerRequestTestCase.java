@@ -23,6 +23,8 @@
 package org.gatein.pc.controller;
 
 import junit.framework.TestCase;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.PortletSupport;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
@@ -36,8 +38,6 @@ import org.gatein.pc.api.cache.CacheLevel;
 import org.gatein.pc.controller.request.PortletActionRequest;
 import org.gatein.pc.controller.request.PortletResourceRequest;
 import org.gatein.pc.controller.request.PortletRenderRequest;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
 import org.gatein.common.util.ParameterMap;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.WindowState;
@@ -59,19 +59,16 @@ public class PortletControllerRequestTestCase extends TestCase
    PortletControllerContextSupport context = new PortletControllerContextSupport();
 
    /** . */
-   WiringEventControllerContext eventControllerContext = new WiringEventControllerContext();
-
-   /** . */
    PortletInvokerSupport invoker = context.getInvoker();
 
    /** . */
-   PortletPageNavigationalState pageNS = context.getStateControllerContext().createPortletPageNavigationalState(false);
+   PageNavigationalState pageNS = new PageNavigationalState(false);
 
    /** . */
    StateString portletNS = new OpaqueStateString("abc");
 
    /** . */
-   PortletWindowNavigationalState windowNS = new PortletWindowNavigationalState(portletNS, org.gatein.pc.api.Mode.EDIT, org.gatein.pc.api.WindowState.MAXIMIZED);
+   WindowNavigationalState windowNS = new WindowNavigationalState(portletNS, org.gatein.pc.api.Mode.EDIT, org.gatein.pc.api.WindowState.MAXIMIZED);
 
    /** . */
    ParameterMap body = new ParameterMap(Collections.singletonMap("param", new String[]{"value"}));

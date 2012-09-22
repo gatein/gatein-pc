@@ -24,9 +24,9 @@ package org.gatein.pc.controller;
 
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.spi.PortletInvocationContext;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.controller.state.StateControllerContext;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
 import org.gatein.pc.controller.event.EventControllerContext;
 import org.gatein.pc.controller.request.ControllerRequest;
@@ -40,7 +40,6 @@ import org.gatein.pc.api.invocation.RenderInvocation;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.PortletContext;
 import org.gatein.pc.api.OpaqueStateString;
-import org.gatein.pc.controller.PortletControllerContext;
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.PortletSupport;
 import org.gatein.common.util.ParameterMap;
@@ -52,11 +51,11 @@ import java.util.List;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public final class PortletControllerContextSupport implements PortletControllerContext
+public final class PortletControllerContextSupport implements ControllerContext
 {
 
    /** . */
-   private final StateControllerContext stateControllerContext = new StateControllerContextImpl(this);
+   private final StateControllerContext stateControllerContext = new StateControllerContextImpl();
 
    /** . */
    private EventControllerContext eventControllerContext;
@@ -84,7 +83,7 @@ public final class PortletControllerContextSupport implements PortletControllerC
    }
 
    //
-   public PortletInvocationContext createPortletInvocationContext(String windowId, PortletPageNavigationalState pageNavigationalState)
+   public PortletInvocationContext createPortletInvocationContext(String windowId, PageNavigationalState pageNavigationalState)
    {
       if (windowId == null)
       {
@@ -109,22 +108,22 @@ public final class PortletControllerContextSupport implements PortletControllerC
       return invoker.invoke(invocation);
    }
 
-   public PortletInvocationResponse invoke(ActionInvocation actionInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, ActionInvocation actionInvocation) throws PortletInvokerException
    {
       return invoke((PortletInvocation)actionInvocation);
    }
 
-   public PortletInvocationResponse invoke(List<Cookie> requestCookies, EventInvocation eventInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, List<Cookie> requestCookies, EventInvocation eventInvocation) throws PortletInvokerException
    {
       return invoke(eventInvocation);
    }
 
-   public PortletInvocationResponse invoke(List<Cookie> requestCookies, RenderInvocation renderInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, List<Cookie> requestCookies, RenderInvocation renderInvocation) throws PortletInvokerException
    {
       return invoke((PortletInvocation)renderInvocation);
    }
 
-   public PortletInvocationResponse invoke(ResourceInvocation resourceInvocation) throws PortletInvokerException
+   public PortletInvocationResponse invoke(String windowId, ResourceInvocation resourceInvocation) throws PortletInvokerException
    {
       return invoke((PortletInvocation)resourceInvocation);
    }
@@ -150,8 +149,8 @@ public final class PortletControllerContextSupport implements PortletControllerC
          windowId,
          new OpaqueStateString(""),
          new ParameterMap(),
-         new PortletWindowNavigationalState(),
-         getStateControllerContext().createPortletPageNavigationalState(false)
+         new WindowNavigationalState(),
+         new PageNavigationalState(true)
       );
    }
 }

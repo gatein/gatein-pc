@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.controller.response;
 
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.api.invocation.response.ResponseProperties;
 import org.gatein.pc.api.invocation.response.UpdateNavigationalStateResponse;
 
@@ -37,12 +37,12 @@ public class PageUpdateResponse extends PortletResponse
    private ResponseProperties properties;
 
    /** . */
-   private PortletPageNavigationalState pageNavigationalState;
+   private PageNavigationalState pageNavigationalState;
 
    public PageUpdateResponse(
       UpdateNavigationalStateResponse update,
       ResponseProperties properties,
-      PortletPageNavigationalState pageNavigationalState,
+      PageNavigationalState pageNavigationalState,
       int eventCycleStatus)
    {
       super(update, eventCycleStatus);
@@ -57,7 +57,7 @@ public class PageUpdateResponse extends PortletResponse
       return properties;
    }
 
-   public PortletPageNavigationalState getPageNavigationalState()
+   public PageNavigationalState getPageNavigationalState()
    {
       return pageNavigationalState;
    }

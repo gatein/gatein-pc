@@ -24,7 +24,7 @@ package org.gatein.pc.controller;
 
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.controller.event.EventControllerContext;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
+import org.gatein.pc.controller.state.PageNavigationalState;
 import org.gatein.pc.controller.state.StateControllerContext;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.invocation.ActionInvocation;
@@ -43,8 +43,12 @@ import java.util.List;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 1.1 $
  */
-public interface PortletControllerContext
+public interface ControllerContext
 {
+
+   EventControllerContext getEventControllerContext();
+
+   StateControllerContext getStateControllerContext();
 
    /**
     * Returns the portet info for a specified window.
@@ -58,21 +62,17 @@ public interface PortletControllerContext
     * Create a portlet invocation context for the specified window id.
     *
     * @param windowId the window id
-    * @param pageNavigationalState
-    * @return
+    * @param pageNavigationalState the page navigational state
+    * @return the portlet invocation context
     */
-   PortletInvocationContext createPortletInvocationContext(String windowId, PortletPageNavigationalState pageNavigationalState);
+   PortletInvocationContext createPortletInvocationContext(String windowId, PageNavigationalState pageNavigationalState);
 
-   PortletInvocationResponse invoke(ActionInvocation actionInvocation) throws PortletInvokerException;
+   PortletInvocationResponse invoke(String windowId, ActionInvocation actionInvocation) throws PortletInvokerException;
 
-   PortletInvocationResponse invoke(List<Cookie> requestCookies, EventInvocation eventInvocation) throws PortletInvokerException;
+   PortletInvocationResponse invoke(String windowId, List<Cookie> requestCookies, EventInvocation eventInvocation) throws PortletInvokerException;
 
-   PortletInvocationResponse invoke(List<Cookie> requestCookies, RenderInvocation renderInvocation) throws PortletInvokerException;
+   PortletInvocationResponse invoke(String windowId, List<Cookie> requestCookies, RenderInvocation renderInvocation) throws PortletInvokerException;
 
-   PortletInvocationResponse invoke(ResourceInvocation resourceInvocation) throws PortletInvokerException;
-
-   EventControllerContext getEventControllerContext();
-
-   StateControllerContext getStateControllerContext();
+   PortletInvocationResponse invoke(String windowId, ResourceInvocation resourceInvocation) throws PortletInvokerException;
 
 }

@@ -24,30 +24,14 @@ package org.gatein.pc.controller;
 
 import junit.framework.TestCase;
 import org.gatein.pc.controller.impl.state.StateControllerContextImpl;
-import org.gatein.pc.controller.state.PortletPageNavigationalState;
-import org.gatein.pc.controller.state.StateControllerContext;
-import org.gatein.pc.controller.state.PortletWindowNavigationalState;
-import org.gatein.pc.controller.state.PortletPageNavigationalStateSerialization;
-import org.gatein.pc.controller.event.EventControllerContext;
-import org.gatein.pc.api.info.PortletInfo;
-import org.gatein.pc.api.PortletInvokerException;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.test.controller.unit.PageNavigationalStateSerialization;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 import org.gatein.pc.api.ParametersStateString;
 import org.gatein.pc.api.StateString;
-import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
-import org.gatein.pc.api.invocation.ActionInvocation;
-import org.gatein.pc.api.invocation.EventInvocation;
-import org.gatein.pc.api.invocation.ResourceInvocation;
-import org.gatein.pc.api.invocation.RenderInvocation;
-import org.gatein.pc.api.spi.PortletInvocationContext;
-import org.gatein.common.NotYetImplemented;
 import org.gatein.common.io.IOTools;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.WindowState;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
-import java.util.List;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -57,11 +41,11 @@ public class StateControllerContextTestCase extends TestCase
 {
 
    /** . */
-   private StateControllerContextImpl cc = new StateControllerContextImpl(dummyContext);
+   private StateControllerContextImpl cc = new StateControllerContextImpl();
 
    public void testMarshalling1()
    {
-      PortletPageNavigationalState pageNS = cc.createPortletPageNavigationalState(true);
+      PageNavigationalState pageNS = new PageNavigationalState(true);
       assertMarshallable(pageNS);
    }
 
@@ -87,77 +71,23 @@ public class StateControllerContextTestCase extends TestCase
 
    private void test(StateString portletNavigationalState, org.gatein.pc.api.Mode mode, WindowState windowState)
    {
-      PortletPageNavigationalState pageNS = cc.createPortletPageNavigationalState(true);
-      pageNS.setPortletWindowNavigationalState("foo", new PortletWindowNavigationalState(portletNavigationalState, mode, windowState));
+      PageNavigationalState pageNS = new PageNavigationalState(true);
+      pageNS.setWindowNavigationalState("foo", new WindowNavigationalState(portletNavigationalState, mode, windowState));
       assertMarshallable(pageNS);
    }
 
-   private void assertMarshallable(PortletPageNavigationalState pageNS)
+   private void assertMarshallable(PageNavigationalState pageNS)
    {
-      byte[] bytes = IOTools.serialize(new PortletPageNavigationalStateSerialization(cc), /*SerializationFilter.COMPRESSOR, */pageNS);
-      PortletPageNavigationalState expectedPageNS = IOTools.unserialize(new PortletPageNavigationalStateSerialization(cc), /*SerializationFilter.COMPRESSOR, */bytes);
-      assertEquals(expectedPageNS.getPortletWindowIds(), pageNS.getPortletWindowIds());
-      for (String windowId : expectedPageNS.getPortletWindowIds())
+      byte[] bytes = IOTools.serialize(new PageNavigationalStateSerialization(cc), /*SerializationFilter.COMPRESSOR, */pageNS);
+      PageNavigationalState expectedPageNS = IOTools.unserialize(new PageNavigationalStateSerialization(cc), /*SerializationFilter.COMPRESSOR, */bytes);
+      assertEquals(expectedPageNS.getWindowIds(), pageNS.getWindowIds());
+      for (String windowId : expectedPageNS.getWindowIds())
       {
-         PortletWindowNavigationalState windowNS = expectedPageNS.getPortletWindowNavigationalState(windowId);
-         PortletWindowNavigationalState expectedWindowNS = pageNS.getPortletWindowNavigationalState(windowId);
+         WindowNavigationalState windowNS = expectedPageNS.getWindowNavigationalState(windowId);
+         WindowNavigationalState expectedWindowNS = pageNS.getWindowNavigationalState(windowId);
          assertEquals(windowNS.getPortletNavigationalState(), expectedWindowNS.getPortletNavigationalState());
          assertEquals(windowNS.getMode(), expectedWindowNS.getMode());
          assertEquals(windowNS.getWindowState(), expectedWindowNS.getWindowState());
       }
    }
-
-   private static final PortletControllerContext dummyContext = new PortletControllerContext()
-   {
-      public HttpServletRequest getClientRequest()
-      {
-         throw new NotYetImplemented();
-      }
-
-      public HttpServletResponse getClientResponse()
-      {
-         throw new NotYetImplemented();
-      }
-
-      public PortletInfo getPortletInfo(String windowId) 
-      {
-         throw new NotYetImplemented();
-      }
-
-      public PortletInvocationContext createPortletInvocationContext(String windowId, PortletPageNavigationalState pageNavigationalState)
-      {
-         throw new NotYetImplemented();
-      }
-
-      public PortletInvocationResponse invoke(ActionInvocation actionInvocation) throws PortletInvokerException
-      {
-         throw new NotYetImplemented();
-      }
-
-      public PortletInvocationResponse invoke(List<Cookie> requestCookies, EventInvocation eventInvocation) throws PortletInvokerException
-      {
-         throw new NotYetImplemented();
-      }
-
-      public PortletInvocationResponse invoke(ResourceInvocation resourceInvocation) throws PortletInvokerException
-      {
-         throw new NotYetImplemented();
-      }
-
-      public PortletInvocationResponse invoke(List<Cookie> requestCookies, RenderInvocation renderInvocation) throws PortletInvokerException
-      {
-         throw new NotYetImplemented();
-      }
-
-      public EventControllerContext getEventControllerContext()
-      {
-         throw new NotYetImplemented();
-      }
-
-      public StateControllerContext getStateControllerContext()
-      {
-         throw new NotYetImplemented();
-      }
-   };
-
 }

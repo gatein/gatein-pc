@@ -23,6 +23,9 @@
 package org.gatein.pc.controller.event;
 
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
+import org.gatein.pc.controller.EventPhaseContext;
+
+import java.util.Collections;
 
 /**
  * An implementation of the event controller context that do no ops.
@@ -32,19 +35,20 @@ import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
  */
 public class AbstractEventControllerContext implements EventControllerContext
 {
-   public void eventProduced(EventPhaseContext context, PortletWindowEvent producedEvent, PortletWindowEvent sourceEvent)
+   public Iterable<WindowEvent> eventProduced(EventPhaseContext context, WindowEvent producedEvent, WindowEvent sourceEvent)
+   {
+      return Collections.emptyList();
+   }
+
+   public void eventConsumed(EventPhaseContext context, WindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
    {
    }
 
-   public void eventConsumed(EventPhaseContext context, PortletWindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
+   public void eventFailed(EventPhaseContext context, WindowEvent consumedEvent, Throwable throwable)
    {
    }
 
-   public void eventFailed(EventPhaseContext context, PortletWindowEvent consumedEvent, Throwable throwable)
-   {
-   }
-
-   public void eventDiscarded(EventPhaseContext context, PortletWindowEvent discardedEvent, int cause)
+   public void eventDiscarded(EventPhaseContext context, WindowEvent discardedEvent, int cause)
    {
    }
 }

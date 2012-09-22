@@ -22,11 +22,10 @@
  */
 package org.gatein.pc.controller;
 
+import org.gatein.pc.controller.event.WindowEvent;
 import org.gatein.pc.portlet.support.PortletInvokerSupport;
 import org.gatein.pc.portlet.support.PortletSupport;
 import org.gatein.pc.controller.request.ControllerRequest;
-import org.gatein.pc.controller.event.EventPhaseContext;
-import org.gatein.pc.controller.event.PortletWindowEvent;
 import org.gatein.pc.controller.event.AbstractEventControllerContext;
 import org.gatein.pc.controller.response.ControllerResponse;
 import org.gatein.pc.controller.response.PageUpdateResponse;
@@ -90,7 +89,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
    {
       WiringEventControllerContext ecc = new WiringEventControllerContext()
       {
-         public void eventConsumed(EventPhaseContext context, PortletWindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
+         public void eventConsumed(EventPhaseContext context, WindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
          {
             called = true;
             throw new RuntimeException();
@@ -112,7 +111,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
       final Error error = new Error();
       ecc = new WiringEventControllerContext()
       {
-         public void eventConsumed(EventPhaseContext context, PortletWindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
+         public void eventConsumed(EventPhaseContext context, WindowEvent consumedEvent, PortletInvocationResponse consumerResponse)
          {
             called = true;
             throw error;
@@ -140,7 +139,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
    {
       AbstractEventControllerContext ecc = new AbstractEventControllerContext()
       {
-         public void eventProduced(EventPhaseContext context, PortletWindowEvent producedEvent, PortletWindowEvent sourceEvent)
+         public Iterable<WindowEvent> eventProduced(EventPhaseContext context, WindowEvent producedEvent, WindowEvent sourceEvent)
          {
             called = true;
             throw new RuntimeException();
@@ -160,7 +159,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
       final Error error = new Error();
       ecc = new AbstractEventControllerContext()
       {
-         public void eventProduced(EventPhaseContext context, PortletWindowEvent producedEvent, PortletWindowEvent sourceEvent)
+         public Iterable<WindowEvent> eventProduced(EventPhaseContext context, WindowEvent producedEvent, WindowEvent sourceEvent)
          {
             called = true;
             throw error;
@@ -186,7 +185,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
    {
       WiringEventControllerContext ecc = new WiringEventControllerContext()
       {
-         public void eventFailed(EventPhaseContext context, PortletWindowEvent failedEvent, Throwable throwable)
+         public void eventFailed(EventPhaseContext context, WindowEvent failedEvent, Throwable throwable)
          {
             called = true;
             throw new RuntimeException();
@@ -208,7 +207,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
       final Error error = new Error();
       ecc = new WiringEventControllerContext()
       {
-         public void eventFailed(EventPhaseContext context, PortletWindowEvent failedEvent, Throwable throwable)
+         public void eventFailed(EventPhaseContext context, WindowEvent failedEvent, Throwable throwable)
          {
             called = true;
             throw error;
@@ -236,7 +235,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
    {
       WiringEventControllerContext ecc = new WiringEventControllerContext()
       {
-         public void eventDiscarded(EventPhaseContext context, PortletWindowEvent discardedEvent, int cause)
+         public void eventDiscarded(EventPhaseContext context, WindowEvent discardedEvent, int cause)
          {
             assertEquals(EVENT_CONSUMER_INFO_NOT_AVAILABLE, cause);
             called = true;
@@ -258,7 +257,7 @@ public class EventControllerContextFailureTestCase extends junit.framework.TestC
       final Error error = new Error();
       ecc = new WiringEventControllerContext()
       {
-         public void eventDiscarded(EventPhaseContext context, PortletWindowEvent discardedEvent, int cause)
+         public void eventDiscarded(EventPhaseContext context, WindowEvent discardedEvent, int cause)
          {
             assertEquals(EVENT_CONSUMER_INFO_NOT_AVAILABLE, cause);
             called = true;

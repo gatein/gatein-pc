@@ -32,7 +32,7 @@ public abstract class ContainerRequest extends ControllerRequest
 {
 
    /** . */
-   private final String windowId;
+   protected final String windowId;
 
    /**
     * @param windowId the target window id
@@ -52,4 +52,5 @@ public abstract class ContainerRequest extends ControllerRequest
    {
       return windowId;
    }
+
 }

@@ -20,12 +20,15 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.controller.state;
+package org.gatein.pc.test.controller.unit;
 
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.WindowState;
 import org.gatein.common.io.Serialization;
 import org.gatein.pc.api.StateString;
+import org.gatein.pc.controller.state.PageNavigationalState;
+import org.gatein.pc.controller.state.StateControllerContext;
+import org.gatein.pc.controller.state.WindowNavigationalState;
 
 import javax.xml.namespace.QName;
 import java.io.DataInputStream;
@@ -43,7 +46,7 @@ import java.util.Set;
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
-public class PortletPageNavigationalStateSerialization implements Serialization<PortletPageNavigationalState>
+public class PageNavigationalStateSerialization implements Serialization<PageNavigationalState>
 {
 
    /** . */
@@ -77,7 +80,7 @@ public class PortletPageNavigationalStateSerialization implements Serialization<
    /** . */
    private final StateControllerContext context;
 
-   public PortletPageNavigationalStateSerialization(StateControllerContext context)
+   public PageNavigationalStateSerialization(StateControllerContext context)
    {
       if (context == null)
       {
@@ -86,16 +89,16 @@ public class PortletPageNavigationalStateSerialization implements Serialization<
       this.context = context;
    }
 
-   public void serialize(PortletPageNavigationalState pageNavigationalState, OutputStream out) throws IOException, IllegalArgumentException
+   public void serialize(PageNavigationalState pageNavigationalState, OutputStream out) throws IOException, IllegalArgumentException
    {
       DataOutputStream data = out instanceof DataOutputStream ? (DataOutputStream)out : new DataOutputStream(out);
 
       //
-      data.writeInt(pageNavigationalState.getPortletWindowIds().size());
-      for (String windowId : pageNavigationalState.getPortletWindowIds())
+      data.writeInt(pageNavigationalState.getWindowIds().size());
+      for (String windowId : pageNavigationalState.getWindowIds())
       {
          data.writeUTF(windowId);
-         PortletWindowNavigationalState windowNS = pageNavigationalState.getPortletWindowNavigationalState(windowId);
+         WindowNavigationalState windowNS = pageNavigationalState.getWindowNavigationalState(windowId);
          byte header = 0;
          int decision = 0;
          if (windowNS.getPortletNavigationalState() != null)
@@ -165,12 +168,12 @@ public class PortletPageNavigationalStateSerialization implements Serialization<
       data.flush();
    }
 
-   public PortletPageNavigationalState unserialize(InputStream in) throws IOException, IllegalArgumentException
+   public PageNavigationalState unserialize(InputStream in) throws IOException, IllegalArgumentException
    {
       DataInputStream data = in instanceof DataInputStream ? (DataInputStream)in : new DataInputStream(in);
 
       //
-      PortletPageNavigationalState pageNS = context.createPortletPageNavigationalState(true);
+      PageNavigationalState pageNS = new PageNavigationalState(true);
 
       //
       int size = data.readInt();
@@ -207,8 +210,8 @@ public class PortletPageNavigationalStateSerialization implements Serialization<
             default:
                mode = codeToMode.get(modeStateHeader);
          }
-         PortletWindowNavigationalState windowNS = new PortletWindowNavigationalState(portletNS, mode, windowState);
-         pageNS.setPortletWindowNavigationalState(windowId, windowNS);
+         WindowNavigationalState windowNS = new WindowNavigationalState(portletNS, mode, windowState);
+         pageNS.setWindowNavigationalState(windowId, windowNS);
       }
 
       //
