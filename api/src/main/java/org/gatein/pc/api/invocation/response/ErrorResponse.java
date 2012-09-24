@@ -63,16 +63,6 @@ public class ErrorResponse extends PortletInvocationResponse
       this.message = message;
    }
 
-   public ErrorResponse(String message)
-   {
-      if (message == null)
-      {
-         throw new IllegalArgumentException("Message cannot be null.");
-      }
-      this.message = message;
-      this.cause = null;
-   }
-
    /** The throwable. Can be a null object. */
    public Throwable getCause()
    {
@@ -94,8 +84,8 @@ public class ErrorResponse extends PortletInvocationResponse
     * Logs an error message to the specified logger, using either the message or this ErrorResult's Throwable if
     * available.
     *
-    * @param log
-    * @param logMessage
+    * @param log the logger
+    * @param logMessage the additional message to log
     */
    public void logErrorTo(Logger log, String logMessage)
    {
@@ -112,7 +102,7 @@ public class ErrorResponse extends PortletInvocationResponse
    /**
     * Provides an HTML description of the error, using either the message or the encapsulated Throwable.
     *
-    * @return
+    * @return an html formatted string
     */
    public String toHTML()
    {
@@ -122,7 +112,7 @@ public class ErrorResponse extends PortletInvocationResponse
       }
       else
       {
-         StringBuffer sb = new StringBuffer(255);
+         StringBuilder sb = new StringBuilder(255);
          sb.append("<div><code>").append(message).append("</code></div>");
          return sb.toString();
       }
