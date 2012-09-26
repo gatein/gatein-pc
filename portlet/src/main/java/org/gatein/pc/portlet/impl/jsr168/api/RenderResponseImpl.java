@@ -142,16 +142,26 @@ public class RenderResponseImpl extends MimeResponseImpl implements RenderRespon
       throw new IllegalArgumentException("Mime type " + contentType + " not accepted as content type");
    }
 
-   protected ContentResponse createMarkupResponse(ResponseProperties properties, Map<String, Object> attributeMap, String contentType, byte[] bytes, String chars, CacheControl cacheControl)
+   public String getCharacterEncoding()
    {
-      return new FragmentResponse(
-         properties,
-         attributeMap,
-         contentType,
-         bytes,
-         chars,
-         responseTitle,
-         cacheControl,
-         responseNextModes != null ? responseNextModes : preq.supportedModes);
+      return ((RenderInvocation)invocation).getEncoding();
+   }
+
+   @Override
+   protected ContentResponse createResponse(ResponseProperties props, Map<String, Object> attrs, String contentType, byte[] bytes, CacheControl cacheControl)
+   {
+      return new FragmentResponse(props, attrs, contentType, null,  bytes, responseTitle, cacheControl, responseNextModes != null ? responseNextModes : preq.supportedModes);
+   }
+
+   @Override
+   protected ContentResponse createResponse(ResponseProperties props, Map<String, Object> attrs, String contentType, String chars, CacheControl cacheControl)
+   {
+      return new FragmentResponse(props, attrs, contentType, null, chars, responseTitle, cacheControl, responseNextModes != null ? responseNextModes : preq.supportedModes);
+   }
+
+   @Override
+   protected ContentResponse createResponse(ResponseProperties props, Map<String, Object> attrs, String contentType, CacheControl cacheControl)
+   {
+      return new FragmentResponse(props, attrs, contentType, responseTitle, cacheControl, responseNextModes != null ? responseNextModes : preq.supportedModes);
    }
 }

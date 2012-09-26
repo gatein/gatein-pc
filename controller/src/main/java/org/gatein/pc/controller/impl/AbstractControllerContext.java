@@ -24,8 +24,6 @@
 package org.gatein.pc.controller.impl;
 
 import org.gatein.common.logging.LoggerFactory;
-import org.gatein.common.util.MarkupInfo;
-import org.gatein.common.net.media.MediaType;
 import org.gatein.pc.api.Portlet;
 import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.controller.ControllerContext;
@@ -66,9 +64,6 @@ public abstract class AbstractControllerContext implements ControllerContext
 
    /** . */
    public static final PortalContext PORTAL_CONTEXT = new AbstractPortalContext(Collections.singletonMap("javax.portlet.markup.head.element.support", "true"));
-
-   /** . */
-   public static final MarkupInfo MARKUP_INFO = new MarkupInfo(MediaType.TEXT_HTML, "UTF8");
 
    /** . */
    protected final HttpServletRequest req;

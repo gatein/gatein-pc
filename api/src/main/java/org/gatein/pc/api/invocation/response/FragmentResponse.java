@@ -47,13 +47,45 @@ public class FragmentResponse extends ContentResponse
       ResponseProperties properties,
       Map<String, Object> attributes,
       String contentType,
+      String encoding,
       byte[] bytes,
+      String title,
+      CacheControl cacheControl,
+      Set<Mode> nextModes)
+   {
+      super(properties, attributes, contentType, encoding, bytes, cacheControl);
+
+      //
+      this.title = title;
+      this.nextModes = nextModes;
+   }
+
+   public FragmentResponse(
+      ResponseProperties properties,
+      Map<String, Object> attributes,
+      String contentType,
+      String encoding,
       String chars,
       String title,
       CacheControl cacheControl,
       Set<Mode> nextModes)
    {
-      super(properties, attributes, contentType, bytes, chars, cacheControl);
+      super(properties, attributes, contentType, encoding, chars, cacheControl);
+
+      //
+      this.title = title;
+      this.nextModes = nextModes;
+   }
+
+   public FragmentResponse(
+      ResponseProperties properties,
+      Map<String, Object> attributes,
+      String contentType,
+      String title,
+      CacheControl cacheControl,
+      Set<Mode> nextModes)
+   {
+      super(properties, attributes, contentType, cacheControl);
 
       //
       this.title = title;

@@ -34,12 +34,16 @@ public class RenderInvocation extends PortletInvocation
    /** . */
    private String validationToken;
 
+   /** . */
+   private String encoding;
+
    public RenderInvocation(PortletInvocationContext ctx) throws IllegalArgumentException
    {
       super(ctx);
 
       //
       this.ctx = ctx;
+      this.encoding = "utf-8";
    }
 
    public String getValidationToken()
@@ -50,5 +54,15 @@ public class RenderInvocation extends PortletInvocation
    public void setValidationToken(String validationToken)
    {
       this.validationToken = validationToken;
+   }
+
+   public String getEncoding()
+   {
+      return encoding;
+   }
+
+   public void setEncoding(String encoding)
+   {
+      this.encoding = encoding;
    }
 }

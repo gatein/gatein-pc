@@ -30,7 +30,9 @@ import org.gatein.pc.api.invocation.response.ResponseProperties;
 import org.gatein.pc.api.info.PortletInfo;
 import org.gatein.pc.api.info.CacheInfo;
 import org.gatein.pc.api.cache.CacheScope;
-import org.gatein.pc.portlet.impl.jsr168.ContentBuffer;
+import org.gatein.pc.portlet.impl.jsr168.Buffer;
+import org.gatein.pc.portlet.impl.jsr168.ByteBuffer;
+import org.gatein.pc.portlet.impl.jsr168.CharBuffer;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletURL;
@@ -56,35 +58,40 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
    protected CacheControlImpl cacheControl;
 
    /** . */
-   private boolean contentTypeSet;
+   private Buffer buffer;
 
    /** . */
-   private ContentBuffer responseContent;
-
-   /** . */
-   private boolean canSetContentType;
-
+   private String contentType;
 
    public MimeResponseImpl(PortletInvocation invocation, PortletRequestImpl preq)
    {
       super(invocation, preq);
 
-      // Configure expiration value
-      PortletInfo info = preq.container.getInfo();
-
       // 0 means no buffering - we say no buffering
       this.bufferSize = 0;
-      this.contentTypeSet = false;
-      this.canSetContentType = true;
-      this.responseContent = new ContentBuffer();
+      this.buffer = null;
    }
 
-   protected abstract ContentResponse createMarkupResponse(
-      ResponseProperties properties,
-      Map<String, Object> attributeMap,
+   protected abstract ContentResponse createResponse(
+      ResponseProperties props,
+      Map<String, Object> attrs,
       String contentType,
       byte[] bytes,
+      org.gatein.pc.api.cache.CacheControl cacheControl
+   );
+
+   protected abstract ContentResponse createResponse(
+      ResponseProperties props,
+      Map<String, Object> attrs,
+      String contentType,
       String chars,
+      org.gatein.pc.api.cache.CacheControl cacheControl
+   );
+
+   protected abstract ContentResponse createResponse(
+      ResponseProperties props,
+      Map<String, Object> attrs,
+      String contentType,
       org.gatein.pc.api.cache.CacheControl cacheControl
    );
 
@@ -112,52 +119,76 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
       }
       else
       {
-         return createMarkupResponse(
-            getProperties(false),
-            preq.attributes.getAttributeMap(),
-            responseContent.getContentType(),
-            responseContent.getBytes(),
-            responseContent.getChars(),
-            cc);
+         ResponseProperties props = getProperties(false);
+         Map<String, Object> attrs = preq.attributes.getAttributeMap();
+         if (buffer instanceof CharBuffer)
+         {
+            return createResponse(props, attrs, contentType, ((CharBuffer)buffer).getChars(), cc);
+         }
+         else if (buffer instanceof ByteBuffer)
+         {
+            return createResponse(props, attrs, contentType, ((ByteBuffer)buffer).getBytes(), cc);
+         }
+         else
+         {
+            return createResponse(props, attrs, contentType, cc);
+         }
       }
    }
 
    public String getContentType()
    {
-      return contentTypeSet ? responseContent.getContentType() : null;
+      return contentType;
    }
 
    public void setContentType(String contentType)
    {
-	  if (canSetContentType)
+	  if (buffer == null)
 	  {
-		  responseContent.setContentType(contentType);
-		  contentTypeSet = true;
+		  this.contentType = contentType;
 	  }
    }
 
    public PrintWriter getWriter() throws IOException
    {
-      canSetContentType = false;  
-      if (responseContent.getContentType() == null)
+      CharBuffer charBuffer;
+      if (buffer != null)
       {
-         responseContent.setContentType(preq.getResponseContentType());
+         if (buffer instanceof CharBuffer)
+         {
+            charBuffer = (CharBuffer)buffer;
+         }
+         else
+         {
+            throw new IllegalStateException("The method getPortletOutputStream() was already called");
+         }
       }
-
-      //
-      return responseContent.getWriter();
+      else
+      {
+         buffer = charBuffer = new CharBuffer();
+      }
+      return charBuffer.getWriter();
    }
 
    public OutputStream getPortletOutputStream() throws IOException
    {
-      canSetContentType = false;  
-      if (responseContent.getContentType() == null)
+      ByteBuffer byteBuffer;
+      if (buffer != null)
       {
-         responseContent.setContentType(preq.getResponseContentType());
+         if (buffer instanceof ByteBuffer)
+         {
+            byteBuffer = (ByteBuffer)buffer;
+         }
+         else
+         {
+            throw new IllegalStateException("The method getWriter() was already called");
+         }
       }
-
-      //
-      return responseContent.getOutputStream();
+      else
+      {
+         buffer = byteBuffer = new ByteBuffer();
+      }
+      return byteBuffer.getOutputStream();
    }
 
    public PortletURL createRenderURL()
@@ -168,11 +199,6 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
    public PortletURL createActionURL()
    {
       return PortletURLImpl.createActionURL(invocation, preq);
-   }
-
-   public String getCharacterEncoding()
-   {
-      return invocation.getContext().getMarkupInfo().getCharset();
    }
 
    public Locale getLocale()
@@ -195,13 +221,19 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
 
    public void flushBuffer() throws IOException
    {
-      responseContent.commit();
+      if (buffer != null)
+      {
+         buffer.commit();
+      }
    }
 
    public void resetBuffer()
    {
       // Clear the buffer
-      responseContent.reset();
+      if (buffer != null)
+      {
+         buffer.reset();
+      }
    }
 
    public void reset()
@@ -215,7 +247,7 @@ public abstract class MimeResponseImpl extends PortletResponseImpl implements Mi
 
    public boolean isCommitted()
    {
-      return responseContent.isCommited();
+      return buffer != null && buffer.isCommited();
    }
 
    public ResourceURL createResourceURL()

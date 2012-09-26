@@ -100,7 +100,7 @@ public class TCKPortletControllerContext extends AbstractControllerContext
 
    public PortletInvocationContext createPortletInvocationContext(String windowId, PageNavigationalState pageNavigationalState)
    {
-      return new ControllerPortletInvocationContext(serialization, req, resp, windowId, pageNavigationalState, MARKUP_INFO);
+      return new ControllerPortletInvocationContext(serialization, req, resp, windowId, pageNavigationalState);
    }
 
    public EventControllerContext getEventControllerContext()

@@ -25,6 +25,7 @@ package org.gatein.pc.api.spi;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.gatein.common.net.media.MediaType;
 import org.gatein.common.util.MarkupInfo;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.URLFormat;
@@ -39,13 +40,11 @@ public interface PortletInvocationContext
 {
 
    /**
-    * todo : move me to client content // see if it is still needed with CC/PP
+    * Returns the response content type
     *
-    * Return information about the underlying http wire this invocation is performed.
-    *
-    * @return the stream info
+    * @return the response content type
     */
-   MarkupInfo getMarkupInfo();
+   MediaType getResponseContentType();
 
    /**
     * <p>Encodes the specified URL by including the session ID in it, or, if encoding is not needed, returns the URL

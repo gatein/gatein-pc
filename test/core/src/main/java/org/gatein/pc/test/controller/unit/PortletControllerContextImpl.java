@@ -133,7 +133,7 @@ public class PortletControllerContextImpl extends AbstractControllerContext
 
    public PortletInvocationContext createPortletInvocationContext(String windowId, PageNavigationalState pageNavigationalState)
    {
-      return new ControllerPortletInvocationContext(serialization, req, resp, windowId, pageNavigationalState, MARKUP_INFO);
+      return new ControllerPortletInvocationContext(serialization, req, resp, windowId, pageNavigationalState);
    }
 
    public Serialization<PageNavigationalState> getPageNavigationalStateSerialization()

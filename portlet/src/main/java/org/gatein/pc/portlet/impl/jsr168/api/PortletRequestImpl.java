@@ -24,11 +24,11 @@ package org.gatein.pc.portlet.impl.jsr168.api;
 
 import org.gatein.common.logging.Logger;
 import org.gatein.common.logging.LoggerFactory;
+import org.gatein.common.net.media.MediaType;
 import org.gatein.common.util.Tools;
 import org.gatein.common.util.ParameterMap;
 import org.gatein.common.util.MultiValuedPropertyMap;
 import org.gatein.common.util.SimpleMultiValuedPropertyMap;
-import org.gatein.common.util.ContentInfo;
 import org.gatein.pc.portlet.impl.jsr168.PortletApplicationImpl;
 import org.gatein.pc.portlet.impl.jsr168.PortletContainerImpl;
 import org.gatein.pc.portlet.impl.jsr168.PortletUtils;
@@ -368,7 +368,7 @@ public abstract class PortletRequestImpl implements PortletRequest
 
    public String getResponseContentType()
    {
-      return invocation.getContext().getMarkupInfo().getMediaType().getValue();
+      return invocation.getContext().getResponseContentType().getValue();
    }
 
    public Enumeration<String> getResponseContentTypes()
@@ -579,8 +579,8 @@ public abstract class PortletRequestImpl implements PortletRequest
     */
    private Set<org.gatein.pc.api.Mode> buildSupportedModes()
    {
-      // Get content type
-      ContentInfo si = invocation.getContext().getMarkupInfo();
+      // Get response content type
+      MediaType responseContentType = invocation.getContext().getResponseContentType();
 
       //
       org.gatein.pc.api.spi.PortalContext  portalContext =invocation.getPortalContext();
@@ -590,7 +590,7 @@ public abstract class PortletRequestImpl implements PortletRequest
 
       // Add all the modes
       Set<org.gatein.pc.api.Mode> modes = new HashSet<org.gatein.pc.api.Mode>();
-      for (ModeInfo modeInfo : capabilities.getModes(si.getMediaType()))
+      for (ModeInfo modeInfo : capabilities.getModes(responseContentType))
       {
          org.gatein.pc.api.Mode mode = modeInfo.getMode();
 

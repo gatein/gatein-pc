@@ -39,7 +39,6 @@ public class PortletInvocationContextSupport extends org.gatein.pc.portlet.suppo
 
    public PortletInvocationContextSupport(String windowId, PageNavigationalState pageNavigationalState)
    {
-      super(null);
       this.windowId = windowId;
       this.pageNavigationalState = pageNavigationalState;
    }

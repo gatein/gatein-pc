@@ -22,6 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.api.invocation.response;
 
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
 
 import org.gatein.pc.api.cache.CacheControl;
@@ -34,6 +36,9 @@ import org.gatein.pc.api.cache.CacheControl;
  */
 public class ContentResponse extends PortletInvocationResponse
 {
+
+   /** . */
+   private static final Charset UTF_8 = Charset.forName("UTF-8");
 
    /** . */
    public static final int TYPE_EMPTY = 0;
@@ -53,6 +58,9 @@ public class ContentResponse extends PortletInvocationResponse
    /** The result content type if any. */
    private String contentType;
 
+   /** The optional encoding. */
+   private final String encoding;
+
    /** . */
    private final byte[] bytes;
 
@@ -66,15 +74,48 @@ public class ContentResponse extends PortletInvocationResponse
       ResponseProperties properties,
       Map<String, Object> attributes,
       String contentType,
+      String encoding,
       byte[] bytes,
+      CacheControl cacheControl)
+   {
+      this.properties = properties;
+      this.attributes = attributes;
+      this.contentType = contentType;
+      this.encoding = encoding;
+      this.bytes = bytes;
+      this.chars = null;
+      this.cacheControl = cacheControl;
+   }
+
+   public ContentResponse(
+      ResponseProperties properties,
+      Map<String, Object> attributes,
+      String contentType,
+      String encoding,
       String chars,
       CacheControl cacheControl)
    {
       this.properties = properties;
       this.attributes = attributes;
       this.contentType = contentType;
-      this.bytes = bytes;
+      this.encoding = encoding;
+      this.bytes = null;
       this.chars = chars;
+      this.cacheControl = cacheControl;
+   }
+
+   public ContentResponse(
+      ResponseProperties properties,
+      Map<String, Object> attributes,
+      String contentType,
+      CacheControl cacheControl)
+   {
+      this.properties = properties;
+      this.attributes = attributes;
+      this.contentType = contentType;
+      this.encoding = null;
+      this.bytes = null;
+      this.chars = null;
       this.cacheControl = cacheControl;
    }
 
@@ -89,9 +130,15 @@ public class ContentResponse extends PortletInvocationResponse
       this.properties = that.properties;
       this.attributes = that.attributes;
       this.contentType = that.contentType;
+      this.encoding = that.encoding;
       this.bytes = that.bytes;
       this.chars = that.chars;
       this.cacheControl = cacheControl;
+   }
+
+   public String getEncoding()
+   {
+      return encoding;
    }
 
    public ResponseProperties getProperties()
@@ -129,18 +176,39 @@ public class ContentResponse extends PortletInvocationResponse
    }
 
    /**
-    * Return the content as a string.
+    * Return the content as a string, when the character encoding is set, it will be used
+    * for binary content, otherwise the <code>UTF-8</code> will be used.
+    *
+    * @return the content
+    * @throws UnsupportedCharsetException when the response encoding is not supported
+    */
+   public String getContent() throws UnsupportedCharsetException
+   {
+      Charset charset = UTF_8;
+      if (encoding != null)
+      {
+         charset = Charset.forName(encoding);
+      }
+      return getContent(charset);
+   }
+
+   /**
+    * Return the content as a string, the provided charset will be used for binary content.
     *
     * @return the content
     */
-   public String getContent()
+   public String getContent(Charset charset)
    {
+      if (charset == null)
+      {
+         throw new NullPointerException("No null charset accepted");
+      }
       switch (getType())
       {
          case TYPE_CHARS:
             return getChars();
          case TYPE_BYTES:
-            return new String(bytes);
+            return new String(bytes, charset);
          case TYPE_EMPTY:
             return "";
          default:

@@ -20,18 +20,48 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA         *
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
-package org.gatein.pc.test.portlet.state;
-
-import org.gatein.pc.api.spi.PortletInvocationContext;
-import org.gatein.pc.portlet.support.spi.PortletInvocationContextSupport;
+package org.gatein.pc.portlet.impl.jsr168;
 
 /**
+ * Data produced.
+ *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
- * @version $Revision: 5113 $
+ * @version $Revision: 5602 $
  */
-public class ActionContextImpl extends PortletInvocationContextSupport implements PortletInvocationContext
+public abstract class Buffer
 {
-   public ActionContextImpl()
+
+   /** . */
+   protected boolean commited;
+
+   Buffer()
    {
+      this.commited = false;
+   }
+
+   public void reset()
+   {
+      if (commited)
+      {
+         throw new IllegalStateException("Cannot reset a commited stream");
+      }
+      doReset();
+   }
+
+   protected abstract void doReset();
+
+   /**
+    * Simulate a response commit.
+    *
+    * @throws IllegalStateException if no content type is defined
+    */
+   public void commit() throws IllegalStateException
+   {
+      commited = true;
+   }
+
+   public boolean isCommited()
+   {
+      return commited;
    }
 }

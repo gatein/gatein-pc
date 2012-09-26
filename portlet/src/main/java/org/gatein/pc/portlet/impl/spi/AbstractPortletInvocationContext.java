@@ -22,7 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.spi;
 
-import org.gatein.common.util.MarkupInfo;
+import org.gatein.common.net.media.MediaType;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.URLFormat;
 import org.gatein.pc.api.spi.PortletInvocationContext;
@@ -42,11 +42,19 @@ public abstract class AbstractPortletInvocationContext implements PortletInvocat
 {
 
    /** . */
-   protected final MarkupInfo markupInfo;
+   protected final MediaType responseContentType;
 
-   protected AbstractPortletInvocationContext(MarkupInfo markupInfo)
+   /**
+    * Create a context with the {@link MediaType#TEXT_HTML} response content type.
+    */
+   protected AbstractPortletInvocationContext()
    {
-      this.markupInfo = markupInfo;
+      this(MediaType.TEXT_HTML);
+   }
+
+   protected AbstractPortletInvocationContext(MediaType responseContentType)
+   {
+      this.responseContentType = responseContentType;
    }
 
    /**
@@ -83,9 +91,10 @@ public abstract class AbstractPortletInvocationContext implements PortletInvocat
       throw new IllegalArgumentException("Invalid URL " + url);
    }
 
-   public MarkupInfo getMarkupInfo()
+   @Override
+   public MediaType getResponseContentType()
    {
-      return markupInfo;
+      return responseContentType;
    }
 
    /**

@@ -23,7 +23,8 @@
 package org.gatein.pc.test.portlet;
 
 import junit.framework.TestCase;
-import org.gatein.pc.portlet.impl.jsr168.ContentBuffer;
+import org.gatein.pc.portlet.impl.jsr168.ByteBuffer;
+import org.gatein.pc.portlet.impl.jsr168.CharBuffer;
 
 import java.io.PrintWriter;
 import java.io.OutputStream;
@@ -39,8 +40,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testResetChars()
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      CharBuffer buffer = new CharBuffer();
       PrintWriter writer = buffer.getWriter();
       writer.print("foo");
       buffer.reset();
@@ -49,8 +49,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testResetBytes() throws IOException
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      ByteBuffer buffer = new ByteBuffer();
       OutputStream out = buffer.getOutputStream();
       out.write("foo".getBytes("UTF8"));
       buffer.reset();
@@ -59,12 +58,21 @@ public class ContentBufferTestCase extends TestCase
 
    public void testResetAfterCommit()
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
-      buffer.commit();
+      ByteBuffer buffer1 = new ByteBuffer();
+      buffer1.commit();
       try
       {
-         buffer.reset();
+         buffer1.reset();
+         fail();
+      }
+      catch (IllegalStateException ignore)
+      {
+      }
+      CharBuffer buffer2 = new CharBuffer();
+      buffer2.commit();
+      try
+      {
+         buffer2.reset();
          fail();
       }
       catch (IllegalStateException ignore)
@@ -74,17 +82,19 @@ public class ContentBufferTestCase extends TestCase
 
    public void testCommit()
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
-      assertFalse(buffer.isCommited());
-      buffer.commit();
-      assertTrue(buffer.isCommited());
+      ByteBuffer buffer1 = new ByteBuffer();
+      assertFalse(buffer1.isCommited());
+      buffer1.commit();
+      assertTrue(buffer1.isCommited());
+      CharBuffer buffer2 = new CharBuffer();
+      assertFalse(buffer2.isCommited());
+      buffer2.commit();
+      assertTrue(buffer2.isCommited());
    }
 
    public void testWriteCharsAfterCommit()
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      CharBuffer buffer = new CharBuffer();
       buffer.commit();
       PrintWriter writer = buffer.getWriter();
       assertNotNull(writer);
@@ -95,8 +105,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testWriteCharsAndCommit()
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      CharBuffer buffer = new CharBuffer();
       PrintWriter writer = buffer.getWriter();
       assertNotNull(writer);
       writer.print("foo");
@@ -108,8 +117,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testWriteBytesAfterCommit() throws IOException
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      ByteBuffer buffer = new ByteBuffer();
       buffer.commit();
       OutputStream out = buffer.getOutputStream();
       assertNotNull(out);
@@ -120,8 +128,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testWriteBytesAndCommit() throws IOException
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      ByteBuffer buffer = new ByteBuffer();
       buffer.commit();
       OutputStream out = buffer.getOutputStream();
       out.write("foo".getBytes("UTF8"));
@@ -133,8 +140,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testFlushWriterDoesCommit()
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      CharBuffer buffer = new CharBuffer();
       PrintWriter writer = buffer.getWriter();
       writer.print("foo");
       writer.flush();
@@ -143,8 +149,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testCloseWriterDoesCommit()
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      CharBuffer buffer = new CharBuffer();
       PrintWriter writer = buffer.getWriter();
       writer.print("foo");
       writer.close();
@@ -153,8 +158,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testFlushStreamDoesCommit() throws IOException
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      ByteBuffer buffer = new ByteBuffer();
       OutputStream out = buffer.getOutputStream();
       out.write("foo".getBytes("UTF8"));
       out.flush();
@@ -163,8 +167,7 @@ public class ContentBufferTestCase extends TestCase
 
    public void testClosestreamDoesCommit() throws IOException
    {
-      ContentBuffer buffer = new ContentBuffer();
-      buffer.setContentType("text/html");
+      ByteBuffer buffer = new ByteBuffer();
       OutputStream out = buffer.getOutputStream();
       out.write("foo".getBytes("UTF8"));
       out.close();

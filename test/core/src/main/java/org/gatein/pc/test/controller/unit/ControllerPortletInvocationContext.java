@@ -60,10 +60,9 @@ public class ControllerPortletInvocationContext extends AbstractPortletInvocatio
       HttpServletRequest clientRequest,
       HttpServletResponse clientResponse,
       String windowId,
-      PageNavigationalState pageNavigationalState,
-      MarkupInfo markupInfo)
+      PageNavigationalState pageNavigationalState)
    {
-      super(markupInfo);
+      super();
 
       //
       this.clientRequest = clientRequest;

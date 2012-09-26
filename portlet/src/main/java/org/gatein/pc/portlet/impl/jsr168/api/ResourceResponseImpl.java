@@ -22,9 +22,6 @@
  */
 package org.gatein.pc.portlet.impl.jsr168.api;
 
-import org.gatein.common.net.media.ContentType;
-import org.gatein.common.net.media.MediaType;
-import org.gatein.common.net.media.Parameter;
 import org.gatein.pc.api.cache.CacheControl;
 import org.gatein.pc.api.cache.CacheLevel;
 import org.gatein.pc.api.invocation.ResourceInvocation;
@@ -34,8 +31,6 @@ import org.gatein.pc.api.invocation.response.ResponseProperties;
 import javax.portlet.PortletURL;
 import javax.portlet.ResourceResponse;
 import javax.portlet.ResourceURL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -49,6 +44,9 @@ public class ResourceResponseImpl extends MimeResponseImpl implements ResourceRe
    /** . */
    private final CacheLevel cacheability;
 
+   /** . */
+   private String encoding;
+
    public ResourceResponseImpl(ResourceInvocation invocation, PortletRequestImpl preq)
    {
       super(invocation, preq);
@@ -60,6 +58,7 @@ public class ResourceResponseImpl extends MimeResponseImpl implements ResourceRe
          cacheLevel = CacheLevel.PAGE;
       }
       this.cacheability = cacheLevel;
+      this.encoding = encoding;
    }
 
    public void setLocale(Locale locale)
@@ -80,32 +79,23 @@ public class ResourceResponseImpl extends MimeResponseImpl implements ResourceRe
       }
    }
 
-   public void setCharacterEncoding(String s)
+   @Override
+   public void setContentType(String contentType)
    {
-      List<Parameter> parameters = new ArrayList<Parameter>();
-      MediaType mediaType = null;
+      // todo : it should be possible to set the encoding via the content type
+      // although it is not possible on the RenderResponse
+      super.setContentType(contentType);
+   }
 
-      String contentTypeString = getContentType();
-      if (contentTypeString != null)
-      {
-         ContentType contentType = ContentType.create(contentTypeString);
-         mediaType = contentType.getMediaType();
-         for (Parameter parameter : contentType.getParameters())
-         {
-            if (!parameter.getName().trim().toLowerCase().equals("charset"))
-            {
-               parameters.add(parameter);
-            }
-         }
-      }
-      else
-      {
-         // Default to "text/html"
-         mediaType = MediaType.TEXT_HTML;
-      }
-      parameters.add(new Parameter("charset", s));
+   public void setCharacterEncoding(String charset)
+   {
+      this.encoding = charset;
+   }
 
-      setContentType(new ContentType(mediaType, parameters).getValue());
+   @Override
+   public String getCharacterEncoding()
+   {
+      return encoding;
    }
 
    public void setContentLength(int i)
@@ -134,14 +124,21 @@ public class ResourceResponseImpl extends MimeResponseImpl implements ResourceRe
       }
    }
 
-   protected ContentResponse createMarkupResponse(ResponseProperties properties, Map<String, Object> attributeMap, String contentType, byte[] bytes, String chars, CacheControl cacheControl)
+   @Override
+   protected ContentResponse createResponse(ResponseProperties props, Map<String, Object> attrs, String contentType, byte[] bytes, CacheControl cacheControl)
    {
-      return new ContentResponse(
-         properties,
-         attributeMap,
-         contentType,
-         bytes,
-         chars,
-         cacheControl);
+      return new ContentResponse(props, attrs, contentType, encoding,  bytes, cacheControl);
+   }
+
+   @Override
+   protected ContentResponse createResponse(ResponseProperties props, Map<String, Object> attrs, String contentType, String chars, CacheControl cacheControl)
+   {
+      return new ContentResponse(props, attrs, contentType, encoding, chars, cacheControl);
+   }
+
+   @Override
+   protected ContentResponse createResponse(ResponseProperties props, Map<String, Object> attrs, String contentType, CacheControl cacheControl)
+   {
+      return new ContentResponse(props, attrs, contentType, cacheControl);
    }
 }
