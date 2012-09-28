@@ -149,7 +149,7 @@ public abstract class PortletRequestImpl implements PortletRequest
       ContainerPreferencesInfo containerPrefs = info.getPreferences();
       ContainerNavigationInfo navigationInfo = info.getNavigation();
       UserContext userContext = invocation.getUserContext();
-      HttpServletRequestWrapper realReq = new HttpServletRequestWrapper(invocation.getDispatchedRequest());
+      HttpServletRequestWrapper realReq = new HttpServletRequestWrapper(invocation.getRequest());
 
       //
       PortletRequestAttributes attributes = new PortletRequestAttributes(invocation.getSecurityContext(), container, userContext, realReq);
@@ -159,7 +159,16 @@ public abstract class PortletRequestImpl implements PortletRequest
       }
 
       //
-      this.contextPath = (String)invocation.getDispatchedRequest().getAttribute("javax.servlet.include.context_path");
+      String dispatchedPath = (String)invocation.getRequest().getAttribute("javax.servlet.include.context_path");
+      if (dispatchedPath == null)
+      {
+         // It can be null when the request dispatch is done in the same war (i.e the portlet
+         // is in the portal war, in that case we use the context path provided by the request
+         dispatchedPath = invocation.getRequest().getContextPath();
+      }
+
+      //
+      this.contextPath = dispatchedPath;
       this.invocation = invocation;
       this.userContext = userContext;
       this.securityContext = invocation.getSecurityContext();

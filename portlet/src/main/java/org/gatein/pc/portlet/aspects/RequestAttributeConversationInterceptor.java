@@ -185,7 +185,7 @@ public class RequestAttributeConversationInterceptor extends PortletInvokerInter
          if (id != null)
          {
             // Get the http session if any
-            HttpServletRequest request = invocation.getDispatchedRequest();
+            HttpServletRequest request = invocation.getRequest();
             HttpSession session = request.getSession(false);
 
             //
@@ -244,7 +244,7 @@ public class RequestAttributeConversationInterceptor extends PortletInvokerInter
             if (!conversation.stored && maxScope > 0)
             {
                // Get the http session
-               HttpServletRequest request = invocation.getDispatchedRequest();
+               HttpServletRequest request = invocation.getRequest();
                HttpSession session = request.getSession();
 
                // Make a first can
@@ -300,7 +300,7 @@ public class RequestAttributeConversationInterceptor extends PortletInvokerInter
             if (conversation.stored)
             {
                // Get the http session
-               HttpServletRequest request = invocation.getDispatchedRequest();
+               HttpServletRequest request = invocation.getRequest();
                HttpSession session = request.getSession();
 
                //

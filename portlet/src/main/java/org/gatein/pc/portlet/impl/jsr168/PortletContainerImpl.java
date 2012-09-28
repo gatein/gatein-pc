@@ -460,7 +460,7 @@ public class PortletContainerImpl implements PortletContainerObject
 
    public PortletInvocationResponse dispatch(PortletInvocation invocation) throws PortletInvokerException, InvocationException
    {
-      HttpServletRequest dreq = invocation.getDispatchedRequest();
+      HttpServletRequest dreq = invocation.getRequest();
 
       //
       PortletRequestImpl req;

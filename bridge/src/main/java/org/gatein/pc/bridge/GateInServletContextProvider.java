@@ -102,7 +102,7 @@ public class GateInServletContextProvider implements ServletContextProvider
    /** Lazy initialisation of the bridge info. */
    private void init(BridgeInfo bridgeInfo)
    {
-      bridgeInfo.breq = bridgeInfo.getInvocation().getDispatchedRequest();
+      bridgeInfo.breq = bridgeInfo.getInvocation().getRequest();
       bridgeInfo.bresp = new BridgeResponse(bridgeInfo);
    }
 

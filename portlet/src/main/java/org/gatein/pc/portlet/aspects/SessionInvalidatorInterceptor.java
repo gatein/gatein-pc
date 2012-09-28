@@ -47,7 +47,7 @@ public class SessionInvalidatorInterceptor extends PortletInvokerInterceptor
    public PortletInvocationResponse invoke(PortletInvocation invocation) throws IllegalArgumentException, PortletInvokerException
    {
       //req = RequestContext.<PortalRequestContext>getCurrentInstance().getRequest();
-      HttpServletRequest req = invocation.getDispatchedRequest();
+      HttpServletRequest req = invocation.getRequest();
 
       check(req);
       try

@@ -63,6 +63,6 @@ public class EventRequestImpl extends PortletRequestImpl implements EventRequest
    public String getMethod()
    {
       // Does it make sense in the remote case ?
-      return invocation.getDispatchedRequest().getMethod();
+      return invocation.getRequest().getMethod();
    }
 }

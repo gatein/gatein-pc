@@ -54,9 +54,9 @@ public class BridgeResponse extends HttpServletResponseWrapper
 
    public BridgeResponse(GateInServletContextProvider.BridgeInfo info)
    {
-      super(info.getInvocation().getDispatchedResponse());
+      super(info.getInvocation().getResponse());
       invocation = info.getInvocation();
-      HttpServletRequest hreq = invocation.getDispatchedRequest();
+      HttpServletRequest hreq = invocation.getRequest();
       this.presp = (PortletResponse)hreq.getAttribute("javax.portlet.response");
       this.sos = null;
    }

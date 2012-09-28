@@ -62,7 +62,7 @@ public class PortletTag extends TagSupport
    protected HttpServletRequest getDispatchedRequest()
    {
       PortletInvocation invocation = getInvocation();
-      return invocation.getDispatchedRequest();
+      return invocation.getRequest();
    }
 
    protected PortletRequest getPortletRequest()
