@@ -285,7 +285,44 @@
             <version>2.0.0-alpha-1</version>
          </dependency>
 
-         <!-- Arquillian container -->
+        <!-- Drone -->
+        <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-drone-impl</artifactId>
+          <version>1.0.0.CR4</version>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-drone-selenium</artifactId>
+          <version>1.0.0.CR4</version>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-drone-webdriver</artifactId>
+          <version>1.0.0.CR4</version>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+          <version>2.20.0</version>
+        </dependency>
+        <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-htmlunit-driver</artifactId>
+          <version>2.20.0</version>
+        </dependency>
+        <dependency>
+          <groupId>net.sourceforge.htmlunit</groupId>
+          <artifactId>htmlunit</artifactId>
+          <version>2.9</version>
+        </dependency>
+        <dependency>
+          <groupId>net.sourceforge.nekohtml</groupId>
+          <artifactId>nekohtml</artifactId>
+          <version>1.9.15</version>
+        </dependency>
+
+        <!-- Arquillian Tomcat container -->
          <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-tomcat-embedded-7</artifactId>
