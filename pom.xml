@@ -62,8 +62,9 @@
       <version.discovery>0.4</version.discovery>
       <version.servlet>3.0.1</version.servlet>
       <version.junit>4.8.2</version.junit>
+      <version.org.slf4j>1.6.1</version.org.slf4j>
 
-      <!-- maven-release-plugin -->
+     <!-- maven-release-plugin -->
       <useReleaseProfile>false</useReleaseProfile>
       <arguments>-Prelease</arguments>
       <version.release.plugin>2.2.1</version.release.plugin>
@@ -107,42 +108,10 @@
 
    <dependencyManagement>
       <dependencies>
-         <!-- Import dependency management configuration -->
-         <dependency>
-            <groupId>org.gatein</groupId>
-            <artifactId>gatein-dep</artifactId>
-            <version>1.2.0.Alpha03</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
+
+
 
          <!-- Internal dependencies -->
-         <dependency>
-            <groupId>org.gatein.common</groupId>
-            <artifactId>common-common</artifactId>
-            <version>${version.gatein.common}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.gatein.common</groupId>
-            <artifactId>common-logging</artifactId>
-            <version>${version.gatein.common}</version>
-            <exclusions>
-               <exclusion>
-                  <groupId>jboss</groupId>
-                  <artifactId>jboss-logging-spi</artifactId>
-               </exclusion>
-               <exclusion>
-                  <groupId>jboss</groupId>
-                  <artifactId>jboss-common-logging-spi</artifactId>
-               </exclusion>
-               <exclusion>
-                  <groupId>org.jboss.logging</groupId>
-                  <artifactId>jboss-logging-spi</artifactId>
-               </exclusion>
-            </exclusions>
-         </dependency>
-
          <dependency>
             <groupId>org.gatein.pc</groupId>
             <artifactId>pc-portlet</artifactId>
@@ -161,7 +130,6 @@
             <classifier>tests</classifier>
             <version>${project.version}</version>
          </dependency>
-
          <dependency>
             <groupId>org.gatein.pc</groupId>
             <artifactId>pc-controller</artifactId>
@@ -190,32 +158,57 @@
            <type>test-jar</type>
            <classifier>test-sources</classifier>
          </dependency>
-
          <dependency>
             <groupId>org.gatein.pc</groupId>
             <artifactId>pc-test-servers-jboss7-dependencies</artifactId>
             <version>${project.version}</version>
          </dependency>
 
+         <!-- GateIn dependencies -->
          <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${version.apache.taglibs}</version>
+            <groupId>org.gatein.common</groupId>
+            <artifactId>common-common</artifactId>
+            <version>${version.gatein.common}</version>
          </dependency>
+         <dependency>
+            <groupId>org.gatein.common</groupId>
+            <artifactId>common-logging</artifactId>
+            <version>${version.gatein.common}</version>
+         </dependency>
+
+         <!-- API dependencies -->
+        <dependency>
+           <groupId>javax.portlet</groupId>
+           <artifactId>portlet-api</artifactId>
+           <version>2.0</version>
+           <exclusions>
+             <exclusion>
+               <groupId>javax.servlet</groupId>
+               <artifactId>servlet-api</artifactId>
+             </exclusion>
+           </exclusions>
+         </dependency>
+         <dependency>
+           <groupId>javax.servlet.jsp</groupId>
+           <artifactId>jsp-api</artifactId>
+           <version>2.1</version>
+         </dependency>
+         <dependency>
+           <groupId>sun-jaxb</groupId>
+           <artifactId>jaxb-api</artifactId>
+           <version>2.1.4</version>
+         </dependency>
+         <dependency>
+           <groupId>javax.ccpp</groupId>
+           <artifactId>ccpp</artifactId>
+           <version>1.0</version>
+         </dependency>
+
+         <!-- Thirdparty (runtime) dependencies -->
          <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${version.servlet}</version>
-         </dependency>
-         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${version.junit}</version>
-         </dependency>
-         <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>${version.apache.taglibs}</version>
          </dependency>
          <dependency>
             <groupId>org.staxnav</groupId>
@@ -227,13 +220,35 @@
             <artifactId>portals-bridges-common</artifactId>
             <version>${version.apache.portals.bridges}</version>
          </dependency>
+
+         <!-- Dependencies for unit tests -->
          <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
          </dependency>
+         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+         </dependency>
+         <dependency>
+           <groupId>log4j</groupId>
+           <artifactId>log4j</artifactId>
+           <version>1.2.16</version>
+         </dependency>
+         <dependency>
+           <groupId>commons-logging</groupId>
+           <artifactId>commons-logging</artifactId>
+           <version>1.1.1</version>
+         </dependency>
+         <dependency>
+           <groupId>org.slf4j</groupId>
+           <artifactId>slf4j-simple</artifactId>
+           <version>${version.org.slf4j}</version>
+         </dependency>
 
-         <!-- Arquillian/Shrinkwrap stack -->
+        <!-- Arquillian/Shrinkwrap stack -->
          <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-container-spi</artifactId>
@@ -300,45 +315,6 @@
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <version>2.2</version>
-         </dependency>
-
-         <!-- Dependencies induced by the upgrade of gatein-dep -->
-         <!-- Should be aligned with : https://github.com/jbossas/jboss-as/blob/7.1/pom.xml -->
-         <dependency>
-           <groupId>javax.portlet</groupId>
-           <artifactId>portlet-api</artifactId>
-           <version>2.0</version>
-           <exclusions>
-             <exclusion>
-               <groupId>javax.servlet</groupId>
-               <artifactId>servlet-api</artifactId>
-             </exclusion>
-           </exclusions>
-         </dependency>
-         <dependency>
-           <groupId>javax.servlet.jsp</groupId>
-           <artifactId>jsp-api</artifactId>
-           <version>2.1</version>
-         </dependency>
-         <dependency>
-           <groupId>sun-jaxb</groupId>
-           <artifactId>jaxb-api</artifactId>
-           <version>2.1.4</version>
-         </dependency>
-         <dependency>
-           <groupId>javax.ccpp</groupId>
-           <artifactId>ccpp</artifactId>
-           <version>1.0</version>
-         </dependency>
-         <dependency>
-           <groupId>log4j</groupId>
-           <artifactId>log4j</artifactId>
-           <version>1.2.16</version>
-         </dependency>
-         <dependency>
-           <groupId>commons-logging</groupId>
-           <artifactId>commons-logging</artifactId>
-           <version>1.1.1</version>
          </dependency>
 
       </dependencies>
