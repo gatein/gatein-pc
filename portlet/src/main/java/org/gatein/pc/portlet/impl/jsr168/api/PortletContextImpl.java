@@ -134,7 +134,7 @@ public class PortletContextImpl implements PortletContext
    {
       if (s == null || !s.startsWith("/"))
       {
-         throw new MalformedURLException("invalid resource");
+         throw new MalformedURLException("Invalid resource: " + s + ". Must not be null and start with '/'.");
       }
       return servletContext.getResource(s);
    }
