@@ -22,8 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.api.invocation.response;
 
-import org.gatein.common.util.Exceptions;
 import org.gatein.common.logging.Logger;
+import org.gatein.common.util.Exceptions;
 
 /**
  * Application level error.
@@ -39,11 +39,21 @@ public class ErrorResponse extends PortletInvocationResponse
    /** There must be one error message. */
    private final String message;
 
+   public ErrorResponse(String message)
+   {
+      if (message == null)
+      {
+         throw new IllegalArgumentException("There must be a message");
+      }
+      this.message = message;
+      cause = null;
+   }
+
    public ErrorResponse(Throwable cause)
    {
       if (cause == null)
       {
-         throw new IllegalArgumentException("There must be a cause");
+         throw new IllegalArgumentException("There must be a cause if there is no message");
       }
       this.cause = cause;
       this.message = cause.getMessage();
@@ -72,11 +82,6 @@ public class ErrorResponse extends PortletInvocationResponse
    /** The logged message. */
    public String getMessage()
    {
-      if (message == null)
-      {
-         return cause.getClass().getName();
-      }
-
       return message;
    }
 
@@ -84,7 +89,7 @@ public class ErrorResponse extends PortletInvocationResponse
     * Logs an error message to the specified logger, using either the message or this ErrorResult's Throwable if
     * available.
     *
-    * @param log the logger
+    * @param log        the logger
     * @param logMessage the additional message to log
     */
    public void logErrorTo(Logger log, String logMessage)
