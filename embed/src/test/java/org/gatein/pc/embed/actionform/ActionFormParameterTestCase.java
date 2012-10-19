@@ -17,7 +17,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.pc.embed.actionurlparameter;
+package org.gatein.pc.embed.actionform;
 
 import junit.framework.Assert;
 import org.gatein.pc.embed.AbstractTestCase;
@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
-public class ActionURLParameterTestCase extends AbstractTestCase
+public class ActionFormParameterTestCase extends AbstractTestCase
 {
 
    @Deployment
@@ -47,15 +47,15 @@ public class ActionURLParameterTestCase extends AbstractTestCase
    {
       return deployment(PORTLET_APP_PROLOG +
          "<portlet>" +
-         "<portlet-name>" + ActionURLParameterPortlet.class.getSimpleName() + "</portlet-name>" +
-         "<portlet-class>" + ActionURLParameterPortlet.class.getName() + "</portlet-class>" +
+         "<portlet-name>" + ActionFormParameterPortlet.class.getSimpleName() + "</portlet-name>" +
+         "<portlet-class>" + ActionFormParameterPortlet.class.getName() + "</portlet-class>" +
          "<supports>\n" +
          "<mime-type>text/html</mime-type>\n" +
          "<portlet-mode>VIEW</portlet-mode>\n" +
          "<portlet-mode>EDIT</portlet-mode>\n" +
          "</supports>\n" +
          "<portlet-info>" +
-         "<title>" + ActionURLParameterPortlet.class.getSimpleName() + "</title>" +
+         "<title>" + ActionFormParameterPortlet.class.getSimpleName() + "</title>" +
          "</portlet-info>" +
          "</portlet>" +
          PORTLET_APP_EPILOG);
@@ -68,12 +68,12 @@ public class ActionURLParameterTestCase extends AbstractTestCase
    @InSequence(0)
    public void init()
    {
-      Assert.assertNull(ActionURLParameterPortlet.actionFoo);
-      Assert.assertNull(ActionURLParameterPortlet.actionPortletMode);
-      Assert.assertNull(ActionURLParameterPortlet.actionWindowState);
-      Assert.assertNull(ActionURLParameterPortlet.renderFoo);
-      Assert.assertNull(ActionURLParameterPortlet.renderPortletMode);
-      Assert.assertNull(ActionURLParameterPortlet.renderWindowState);
+      Assert.assertNull(ActionFormParameterPortlet.actionFoo);
+      Assert.assertNull(ActionFormParameterPortlet.actionPortletMode);
+      Assert.assertNull(ActionFormParameterPortlet.actionWindowState);
+      Assert.assertNull(ActionFormParameterPortlet.renderFoo);
+      Assert.assertNull(ActionFormParameterPortlet.renderPortletMode);
+      Assert.assertNull(ActionFormParameterPortlet.renderWindowState);
    }
 
    @Test
@@ -81,7 +81,7 @@ public class ActionURLParameterTestCase extends AbstractTestCase
    @InSequence(1)
    public void display(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/ActionURLParameterPortlet").toURL();
+      URL url = deploymentURL.toURI().resolve("embed/ActionFormParameterPortlet").toURL();
       driver.get(url.toString());
    }
 
@@ -89,12 +89,12 @@ public class ActionURLParameterTestCase extends AbstractTestCase
    @InSequence(2)
    public void testDisplay()
    {
-      Assert.assertNull(ActionURLParameterPortlet.actionFoo);
-      Assert.assertNull(ActionURLParameterPortlet.actionPortletMode);
-      Assert.assertNull(ActionURLParameterPortlet.actionWindowState);
-      Assert.assertNull(ActionURLParameterPortlet.renderFoo);
-      Assert.assertEquals(PortletMode.VIEW, ActionURLParameterPortlet.renderPortletMode);
-      Assert.assertEquals(WindowState.NORMAL, ActionURLParameterPortlet.renderWindowState);
+      Assert.assertNull(ActionFormParameterPortlet.actionFoo);
+      Assert.assertNull(ActionFormParameterPortlet.actionPortletMode);
+      Assert.assertNull(ActionFormParameterPortlet.actionWindowState);
+      Assert.assertNull(ActionFormParameterPortlet.renderFoo);
+      Assert.assertEquals(PortletMode.VIEW, ActionFormParameterPortlet.renderPortletMode);
+      Assert.assertEquals(WindowState.NORMAL, ActionFormParameterPortlet.renderWindowState);
    }
 
    @Test
@@ -102,7 +102,7 @@ public class ActionURLParameterTestCase extends AbstractTestCase
    @InSequence(3)
    public void interaction() throws Exception
    {
-      WebElement link = driver.findElement(By.id("url"));
+      WebElement link = driver.findElement(By.id("submit"));
       link.click();
    }
 
@@ -110,12 +110,12 @@ public class ActionURLParameterTestCase extends AbstractTestCase
    @InSequence(4)
    public void testInteraction()
    {
-      Assert.assertNotNull(ActionURLParameterPortlet.actionFoo);
-      Assert.assertEquals(Collections.singletonList("foo_value"), Arrays.asList(ActionURLParameterPortlet.actionFoo));
-      Assert.assertEquals(PortletMode.EDIT, ActionURLParameterPortlet.actionPortletMode);
-      Assert.assertEquals(WindowState.MAXIMIZED, ActionURLParameterPortlet.actionWindowState);
-      Assert.assertNull(ActionURLParameterPortlet.renderFoo);
-      Assert.assertEquals(PortletMode.EDIT, ActionURLParameterPortlet.renderPortletMode);
-      Assert.assertEquals(WindowState.MAXIMIZED, ActionURLParameterPortlet.renderWindowState);
+      Assert.assertNotNull(ActionFormParameterPortlet.actionFoo);
+      Assert.assertEquals(Collections.singletonList("foo_value"), Arrays.asList(ActionFormParameterPortlet.actionFoo));
+      Assert.assertEquals(PortletMode.EDIT, ActionFormParameterPortlet.actionPortletMode);
+      Assert.assertEquals(WindowState.MAXIMIZED, ActionFormParameterPortlet.actionWindowState);
+      Assert.assertNull(ActionFormParameterPortlet.renderFoo);
+      Assert.assertEquals(PortletMode.EDIT, ActionFormParameterPortlet.renderPortletMode);
+      Assert.assertEquals(WindowState.MAXIMIZED, ActionFormParameterPortlet.renderWindowState);
    }
 }

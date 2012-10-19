@@ -17,7 +17,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.pc.embed.actionurlparameter;
+package org.gatein.pc.embed.actionform;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
-public class ActionURLParameterPortlet extends GenericPortlet
+public class ActionFormParameterPortlet extends GenericPortlet
 {
 
    /** . */
@@ -68,12 +68,15 @@ public class ActionURLParameterPortlet extends GenericPortlet
       renderPortletMode = request.getPortletMode();
       renderWindowState = request.getWindowState();
       PortletURL url = response.createActionURL();
-      url.setParameter("foo", "foo_value");
       url.setWindowState(WindowState.MAXIMIZED);
       url.setPortletMode(PortletMode.EDIT);
       response.setContentType("text/html");
       PrintWriter writer = response.getWriter();
-      writer.print("<a href='" + url + "' id='url'>render</a>");
+      writer.print(
+         "<form action='" + url + "' method='post'>" +
+         "<input type='text' name='foo' value='foo_value'/>" +
+         "<input type='submit' id='submit'/>" +
+         "</form>");
       writer.close();
    }
 }
