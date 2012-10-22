@@ -189,11 +189,11 @@ abstract class Chunk
    public String toString()
    {
       StringBuilder sb = new StringBuilder();
-      writeTo(sb);
+      writeTo(sb, "oijoijoij");
       return sb.toString();
    }
 
-   protected abstract void writeTo(StringBuilder sb);
+   protected abstract void writeTo(StringBuilder sb, String amp);
 
    private static int hexa(char c)
    {

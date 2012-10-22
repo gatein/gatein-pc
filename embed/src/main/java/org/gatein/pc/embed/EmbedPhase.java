@@ -21,6 +21,7 @@ package org.gatein.pc.embed;
 
 import org.gatein.common.util.MultiValuedPropertyMap;
 import org.gatein.common.util.SimpleMultiValuedPropertyMap;
+import org.gatein.pc.api.URLFormat;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.ParametersStateString;
 import org.gatein.pc.api.PortletInvoker;
@@ -322,7 +323,7 @@ enum EmbedPhase
                   return Collections.emptyMap();
                }
             };
-            String uri = context.renderURL(url, null);
+            String uri = context.renderURL(url, URL_FORMAT);
 
             //
             ResponseProperties properties = update.getProperties();
@@ -457,6 +458,9 @@ enum EmbedPhase
    ;
 
    abstract void service(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
+
+   /** . */
+   private static final URLFormat URL_FORMAT = new URLFormat(null, null, null, false);
 
    /** . */
    private static final Charset UTF_8 = Charset.forName("UTF-8");

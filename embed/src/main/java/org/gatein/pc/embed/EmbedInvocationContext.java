@@ -19,8 +19,6 @@
 
 package org.gatein.pc.embed;
 
-import org.gatein.common.net.media.MediaType;
-import org.gatein.common.util.MarkupInfo;
 import org.gatein.pc.api.ActionURL;
 import org.gatein.pc.api.ContainerURL;
 import org.gatein.pc.api.Mode;
@@ -213,7 +211,7 @@ class EmbedInvocationContext extends AbstractPortletInvocationContext
       //
       StringBuilder sb = new StringBuilder();
       sb.append(baseURL);
-      head.writeTo(sb);
+      head.writeTo(sb, Boolean.TRUE == format.getWantEscapeXML() ? "&amp;" : "&");
       return sb.toString();
    }
 }

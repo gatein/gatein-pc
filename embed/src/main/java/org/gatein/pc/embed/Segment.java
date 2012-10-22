@@ -98,7 +98,7 @@ class Segment extends Chunk implements Iterable<Segment>
    }
 
    @Override
-   protected void writeTo(StringBuilder sb)
+   protected void writeTo(StringBuilder sb, String amp)
    {
       sb.append('/');
       encode(sb, value, SEGMENT_VALUE);
@@ -117,7 +117,7 @@ class Segment extends Chunk implements Iterable<Segment>
       }
       if (next != null)
       {
-         next.writeTo(sb);
+         next.writeTo(sb, amp);
       }
    }
 }

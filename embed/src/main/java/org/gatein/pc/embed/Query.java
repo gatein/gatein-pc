@@ -46,7 +46,7 @@ class Query extends Chunk
    }
 
    @Override
-   protected void writeTo(StringBuilder sb)
+   protected void writeTo(StringBuilder sb, String amp)
    {
       if (parameters.size() > 0)
       {
@@ -60,7 +60,7 @@ class Query extends Chunk
                encode(sb, name, QUERY_PARAM);
                sb.append('=');
                encode(sb, value, QUERY_PARAM);
-               previous = "&amp;";
+               previous = amp;
             }
          }
       }
