@@ -189,7 +189,7 @@ abstract class Chunk
    public String toString()
    {
       StringBuilder sb = new StringBuilder();
-      writeTo(sb, "oijoijoij");
+      writeTo(sb, "&");
       return sb.toString();
    }
 
