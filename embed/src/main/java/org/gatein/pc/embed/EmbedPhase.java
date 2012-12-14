@@ -30,6 +30,8 @@ import org.gatein.pc.api.RenderURL;
 import org.gatein.pc.api.StateString;
 import org.gatein.pc.api.WindowState;
 import org.gatein.pc.api.invocation.ActionInvocation;
+import org.gatein.pc.api.invocation.EventInvocation;
+import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.RenderInvocation;
 import org.gatein.pc.api.invocation.ResourceInvocation;
 import org.gatein.pc.api.invocation.response.ContentResponse;
@@ -60,24 +62,57 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
-enum EmbedPhase
+abstract class EmbedPhase
 {
 
-   RENDER()
+   /** . */
+   protected final Page page;
+
+   /** . */
+   protected final PortletInvoker invoker;
+
+   /** . */
+   protected final HashMap<String, String[]> parameters;
+
+   /** . */
+   protected final HttpServletRequest req;
+
+   /** . */
+   protected final HttpServletResponse resp;
+
+   protected EmbedPhase(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp)
    {
+      this.page = page;
+      this.invoker = invoker;
+      this.parameters = parameters;
+      this.req = req;
+      this.resp = resp;
+   }
+
+   static class Render extends EmbedPhase
+   {
+      Render(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp)
+      {
+         super(page, invoker, parameters, req, resp);
+      }
+
       @Override
-      void service(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
+      void invoke() throws IOException, ServletException
       {
          //
          StringBuilder body = new StringBuilder();
@@ -234,16 +269,184 @@ enum EmbedPhase
       }
    }
 
-   ,
-
-   ACTION()
+   static abstract class Interaction extends EmbedPhase
    {
+
+      /** . */
+      int count;
+
+      protected Interaction(int count, Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp)
+      {
+         super(page, invoker, parameters, req, resp);
+
+         //
+         this.count = count;
+      }
+
+      PortletInvocationResponse invoke(final EmbedInvocationContext context, PortletInvocation invocation) throws ServletException, IOException
+      {
+         if (count > EmbedServlet.MAX_EVENT_COUNT)
+         {
+            throw new ServletException("Too many events");
+         }
+
+         //
+         PortletInvocationResponse response;
+         try
+         {
+            response = invoker.invoke(invocation);
+         }
+         catch (PortletInvokerException e)
+         {
+            throw new ServletException("Unexpected exception", e);
+         }
+
+         // Increment count
+         count++;
+
+         //
+         if (response instanceof ErrorResponse)
+         {
+            throw createException(context.target, (ErrorResponse)response);
+         }
+         else if (response instanceof UpdateNavigationalStateResponse)
+         {
+            final UpdateNavigationalStateResponse update = (UpdateNavigationalStateResponse)response;
+
+            // Update window navigational state
+            if (update.getNavigationalState() != null)
+            {
+               context.target.parameters = ((ParametersStateString)update.getNavigationalState()).getParameters();
+            }
+            if (update.getMode() != null)
+            {
+               context.target.mode = update.getMode();
+            }
+            if (update.getWindowState() != null)
+            {
+               context.target.state = update.getWindowState();
+            }
+
+            // Update public navigational state
+            if (update.getPublicNavigationalStateUpdates() != null)
+            {
+               for (Map.Entry<String, String[]> change : update.getPublicNavigationalStateUpdates().entrySet())
+               {
+                  if (change.getValue() == null || change.getValue().length == 0)
+                  {
+                     page.parameters.remove(change.getKey());
+                  }
+                  else
+                  {
+                     page.parameters.put(change.getKey(), change.getValue());
+                  }
+               }
+            }
+
+            //
+            for (UpdateNavigationalStateResponse.Event producedEvent : update.getEvents())
+            {
+               Collection<Window> consumers = page.getConsumers (producedEvent.getName());
+               for (Window consumer : consumers)
+               {
+                  Event event = new Event(
+                     consumer,
+                     producedEvent.getName(),
+                     producedEvent.getPayload(),
+                     count,
+                     page,
+                     invoker,
+                     null,
+                     req,
+                     resp);
+
+                  //
+                  event.invoke();
+
+                  // Update our count
+                  this.count = event.count;
+               }
+            }
+         }
+
+         //
+         return response;
+      }
+   }
+
+   static class Event extends Interaction
+   {
+
+      /** . */
+      final Window target;
+
+      /** . */
+      final QName name;
+
+      /** . */
+      final Serializable payload;
+
+      Event(
+         Window target,
+         QName name,
+         Serializable payload,
+         int count,
+         Page page,
+         PortletInvoker invoker,
+         HashMap<String, String[]> parameters,
+         HttpServletRequest req,
+         HttpServletResponse resp)
+      {
+         super(count, page, invoker, parameters, req, resp);
+
+         //
+         this.target = target;
+         this.name = name;
+         this.payload = payload;
+      }
+
       @Override
-      void service(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+      void invoke() throws IOException, ServletException
+      {
+         EmbedInvocationContext context = new EmbedInvocationContext(page, target, req, resp);
+         EventInvocation event = new EventInvocation(context);
+
+         //
+         event.setName(name);
+         event.setPayload(payload);
+         event.setTarget(target.portlet.getContext());
+         event.setRequest(req);
+         event.setResponse(resp);
+         event.setUserContext(new AbstractUserContext(req));
+         event.setWindowContext(new AbstractWindowContext("" + target.id));
+         event.setServerContext(new AbstractServerContext(req, resp));
+         event.setSecurityContext(new AbstractSecurityContext(req));
+         event.setClientContext(new AbstractClientContext(req));
+         event.setPortalContext(new AbstractPortalContext());
+         event.setInstanceContext(new AbstractInstanceContext("" + target.id));
+         event.setWindowState(target.state != null ? target.state : WindowState.NORMAL);
+         event.setMode(target.mode != null ? target.mode : Mode.VIEW);
+         event.setNavigationalState(target.parameters != null ? ParametersStateString.create(target.parameters) : null);
+         event.setPublicNavigationalState(page.parameters);
+
+         //
+         invoke(context, event);
+      }
+   }
+
+   static class Action extends Interaction
+   {
+      Action(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp)
+      {
+         super(0, page, invoker, parameters, req, resp);
+      }
+
+      @Override
+      void invoke() throws IOException, ServletException
       {
          String id = parameters.remove("javax.portlet.id")[0];
          Window window = page.windows.get(id);
-         EmbedInvocationContext context = new EmbedInvocationContext(page, window, req, resp);
+         final EmbedInvocationContext context = new EmbedInvocationContext(page, window, req, resp);
          ActionInvocation action = new ActionInvocation(context);
 
          //
@@ -271,50 +474,38 @@ enum EmbedPhase
          action.setPublicNavigationalState(page.parameters);
 
          //
-         PortletInvocationResponse response;
-         try
-         {
-            response = invoker.invoke(action);
-         }
-         catch (PortletInvokerException e)
-         {
-            throw new ServletException("Unexpected exception", e);
-         }
+         PortletInvocationResponse response = invoke(context, action);
 
          //
-         if (response instanceof ErrorResponse)
+         if (response instanceof UpdateNavigationalStateResponse)
          {
-            throw createException(window, (ErrorResponse)response);
-         }
-         else if (response instanceof UpdateNavigationalStateResponse)
-         {
-            final UpdateNavigationalStateResponse update = (UpdateNavigationalStateResponse)response;
-            
+            UpdateNavigationalStateResponse update = (UpdateNavigationalStateResponse)response;
+
             // Compute redirect URI
             RenderURL url = new RenderURL()
             {
                @Override
                public Map<String, String[]> getPublicNavigationalStateChanges()
                {
-                  return update.getPublicNavigationalStateUpdates();
+                  return Collections.emptyMap();
                }
 
                @Override
                public Mode getMode()
                {
-                  return update.getMode();
+                  return context.target.mode;
                }
 
                @Override
                public WindowState getWindowState()
                {
-                  return update.getWindowState();
+                  return context.target.state;
                }
 
                @Override
                public StateString getNavigationalState()
                {
-                  return update.getNavigationalState();
+                  return ParametersStateString.create(context.target.parameters);
                }
 
                @Override
@@ -345,12 +536,15 @@ enum EmbedPhase
       }
    }
 
-   ,
-
-   RESOURCE()
+   static class Resource extends EmbedPhase
    {
+      Resource(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp)
+      {
+         super(page, invoker, parameters, req, resp);
+      }
+
       @Override
-      void service(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
+      void invoke() throws IOException, ServletException
       {
          String id = parameters.remove("javax.portlet.id")[0];
          Window window = page.windows.get(id);
@@ -455,9 +649,7 @@ enum EmbedPhase
       }
    }
 
-   ;
-
-   abstract void service(Page page, PortletInvoker invoker, HashMap<String, String[]> parameters, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
+   abstract void invoke() throws IOException, ServletException;
 
    /** . */
    private static final URLFormat URL_FORMAT = new URLFormat(null, null, null, false);

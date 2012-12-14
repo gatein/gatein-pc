@@ -26,7 +26,13 @@ import org.gatein.pc.api.PortletInvokerException;
 import org.gatein.pc.api.WindowState;
 
 import javax.servlet.ServletException;
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
@@ -48,7 +54,7 @@ class Page
       //
       if (s == null ||  s.length() == 0 || (s.length() == 1 && s.charAt(0) == '/'))
       {
-         parameters = null;
+         parameters = new HashMap<String, String[]>();
       }
       else
       {
@@ -58,7 +64,7 @@ class Page
          segments = (Segment)segments.next;
 
          // Servlet parameter
-         parameters = segments.parameters;
+         parameters = segments.parameters != null ? segments.parameters : new HashMap<String, String[]>();
 
          //
          for (Segment segment : (Segment)segments.next)
@@ -113,5 +119,34 @@ class Page
       //
       this.windows = windows;
       this.parameters = parameters;
+   }
+
+   /**
+    * Returns the windows that can consume the wanted event name.
+    *
+    * @param wanted the wanted event name
+    * @return the collection of windows that can consume the wanted event
+    */
+   Collection<Window> getConsumers(QName wanted)
+   {
+      List<Window> consumers = null;
+      for (Window window : windows.values())
+      {
+         if (window.portlet != null)
+         {
+            for (QName name : window.portlet.getInfo().getEventing().getConsumedEvents().keySet())
+            {
+               if (wanted.equals(name))
+               {
+                  if (consumers == null)
+                  {
+                     consumers = new ArrayList<Window>();
+                  }
+                  consumers.add(window);
+               }
+            }
+         }
+      }
+      return consumers == null ? Collections.<Window>emptyList() : consumers;
    }
 }

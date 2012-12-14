@@ -49,8 +49,7 @@ public abstract class AbstractTestCase
    public static WebArchive deployment(Class<? extends Portlet>... portlets)
    {
       StringBuilder descriptor = new StringBuilder();
-      descriptor.append(
-         PORTLET_APP_PROLOG);
+      descriptor.append(PORTLET_APP_PROLOG);
       for (Class<? extends Portlet> portlet : portlets)
       {
          descriptor.append("<portlet>\n");

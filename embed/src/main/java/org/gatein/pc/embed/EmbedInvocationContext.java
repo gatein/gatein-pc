@@ -49,7 +49,7 @@ class EmbedInvocationContext extends AbstractPortletInvocationContext
    private final HttpServletResponse clientResponse;
 
    /** . */
-   private final Window target;
+   final Window target;
 
    /** . */
    final String baseURL;

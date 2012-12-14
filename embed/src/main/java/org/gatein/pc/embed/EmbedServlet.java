@@ -51,6 +51,9 @@ import java.util.HashMap;
 public class EmbedServlet extends HttpServlet
 {
 
+   /** No more than 100 events. */
+   static final int MAX_EVENT_COUNT = 100;
+
    /** . */
    private PortletApplicationDeployer deployer;
 
@@ -124,23 +127,6 @@ public class EmbedServlet extends HttpServlet
    {
       HashMap<String, String[]> parameters = new HashMap<String, String[]>(req.getParameterMap());
 
-      EmbedPhase phase;
-      String[] phaseParam = parameters.remove("javax.portlet.phase");
-      if (phaseParam != null)
-      {
-         phase = EmbedPhase.valueOf(phaseParam[0].toUpperCase());
-      }
-      else
-      {
-         phase = EmbedPhase.RENDER;
-      }
-
-      // Decode invocation
-      if (phase == null)
-      {
-         throw new ServletException("Illegal phase value " + req.getParameter("javax.portlet.phase"));
-      }
-
       // Parse page
       Page page = new Page(invoker, req.getRequestURI());
 
@@ -162,7 +148,68 @@ public class EmbedServlet extends HttpServlet
       }
       else
       {
-         phase.service(page, invoker, parameters, req, resp);
+         // Build phase
+         EmbedPhase phase;
+         String[] phaseParam = parameters.remove("javax.portlet.phase");
+         if (phaseParam != null)
+         {
+            if ("render".equalsIgnoreCase(phaseParam[0]))
+            {
+               phase = new EmbedPhase.Render(page, invoker, parameters, req, resp);
+            }
+            else if ("action".equalsIgnoreCase(phaseParam[0]))
+            {
+               phase = new EmbedPhase.Action(page, invoker, parameters, req, resp);
+            }
+            else if ("resource".equalsIgnoreCase(phaseParam[0]))
+            {
+               phase = new EmbedPhase.Resource(page, invoker, parameters, req, resp);
+            }
+            else
+            {
+               phase = null;
+            }
+         }
+         else
+         {
+            phase = new EmbedPhase.Render(page, invoker, parameters, req, resp);
+         }
+
+         // Decode invocation
+         if (phase == null)
+         {
+            throw new ServletException("Illegal phase value " + req.getParameter("javax.portlet.phase"));
+         }
+
+         //
+         phase.invoke();
+
+         //
+
+         // Setup the queue with the initial phase
+//         LinkedList<EmbedPhase> queue = new LinkedList<EmbedPhase>();
+//         queue.addLast(phase);
+//
+//
+//         //
+//         while (queue.size() > 0)
+//         {
+//            EmbedPhase current = queue.removeFirst();
+//            if (current instanceof EmbedPhase.Interaction)
+//            {
+//               EmbedPhase.Interaction interaction = (EmbedPhase.Interaction)current;
+//               for (UpdateNavigationalStateResponse.Event producedEvent : interaction.producedEvents)
+//               {
+///*
+//                  for (Window consumer : page.getConsumers(producedEvent.getName()))
+//                  {
+//                     EmbedPhase.Event eventPhase = new EmbedPhase.Event(page, invoker, parameters, req, resp);
+//                     queue.add(eventPhase);
+//                  }
+//*/
+//               }
+//            }
+//         }
       }
    }
 

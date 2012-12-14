@@ -37,13 +37,13 @@ class Window
    final String name;
 
    /** The navigation parameters. */
-   final Map<String, String[]> parameters;
+   Map<String, String[]> parameters;
 
    /** . */
-   final Mode mode;
+   Mode mode;
 
    /** . */
-   final WindowState state;
+   WindowState state;
 
    /** The related portlet. */
    final Portlet portlet;
