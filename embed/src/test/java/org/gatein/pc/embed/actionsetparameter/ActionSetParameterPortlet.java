@@ -17,7 +17,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.pc.embed.setparameter;
+package org.gatein.pc.embed.actionsetparameter;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -32,14 +32,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
-public class SetParameterPortlet extends GenericPortlet
+public class ActionSetParameterPortlet extends GenericPortlet
 {
 
    /** . */
    static String[] foo;
 
    /** . */
-   static PortletMode porteltMode;
+   static PortletMode portletMode;
 
    /** . */
    static WindowState windowState;
@@ -56,7 +56,7 @@ public class SetParameterPortlet extends GenericPortlet
    public void render(RenderRequest request, RenderResponse response) throws PortletException, IOException
    {
       foo = request.getParameterValues("foo");
-      porteltMode = request.getPortletMode();
+      portletMode = request.getPortletMode();
       windowState = request.getWindowState();
       PortletURL url = response.createActionURL();
       response.setContentType("text/html");

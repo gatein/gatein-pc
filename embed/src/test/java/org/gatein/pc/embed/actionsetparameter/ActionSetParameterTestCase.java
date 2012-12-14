@@ -17,7 +17,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.gatein.pc.embed.setparameter;
+package org.gatein.pc.embed.actionsetparameter;
 
 import junit.framework.Assert;
 import org.gatein.pc.embed.AbstractTestCase;
@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
-public class SetParameterTestCase extends AbstractTestCase
+public class ActionSetParameterTestCase extends AbstractTestCase
 {
 
    @Deployment
@@ -47,15 +47,15 @@ public class SetParameterTestCase extends AbstractTestCase
    {
       return deployment(PORTLET_APP_PROLOG +
          "<portlet>" +
-         "<portlet-name>" + SetParameterPortlet.class.getSimpleName() + "</portlet-name>" +
-         "<portlet-class>" + SetParameterPortlet.class.getName() + "</portlet-class>" +
+         "<portlet-name>" + ActionSetParameterPortlet.class.getSimpleName() + "</portlet-name>" +
+         "<portlet-class>" + ActionSetParameterPortlet.class.getName() + "</portlet-class>" +
          "<supports>\n" +
          "<mime-type>text/html</mime-type>\n" +
          "<portlet-mode>VIEW</portlet-mode>\n" +
          "<portlet-mode>EDIT</portlet-mode>\n" +
          "</supports>\n" +
          "<portlet-info>" +
-         "<title>" + SetParameterPortlet.class.getSimpleName() + "</title>" +
+         "<title>" + ActionSetParameterPortlet.class.getSimpleName() + "</title>" +
          "</portlet-info>" +
          "</portlet>" +
          PORTLET_APP_EPILOG);
@@ -68,9 +68,9 @@ public class SetParameterTestCase extends AbstractTestCase
    @InSequence(0)
    public void init()
    {
-      Assert.assertNull(SetParameterPortlet.foo);
-      Assert.assertNull(SetParameterPortlet.porteltMode);
-      Assert.assertNull(SetParameterPortlet.windowState);
+      Assert.assertNull(ActionSetParameterPortlet.foo);
+      Assert.assertNull(ActionSetParameterPortlet.portletMode);
+      Assert.assertNull(ActionSetParameterPortlet.windowState);
    }
 
    @Test
@@ -78,7 +78,7 @@ public class SetParameterTestCase extends AbstractTestCase
    @InSequence(1)
    public void display(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/SetParameterPortlet").toURL();
+      URL url = deploymentURL.toURI().resolve("embed/ActionSetParameterPortlet").toURL();
       driver.get(url.toString());
    }
 
@@ -86,9 +86,9 @@ public class SetParameterTestCase extends AbstractTestCase
    @InSequence(2)
    public void testAfterDisplay()
    {
-      Assert.assertNull(SetParameterPortlet.foo);
-      Assert.assertEquals(PortletMode.VIEW, SetParameterPortlet.porteltMode);
-      Assert.assertEquals(WindowState.NORMAL, SetParameterPortlet.windowState);
+      Assert.assertNull(ActionSetParameterPortlet.foo);
+      Assert.assertEquals(PortletMode.VIEW, ActionSetParameterPortlet.portletMode);
+      Assert.assertEquals(WindowState.NORMAL, ActionSetParameterPortlet.windowState);
    }
 
    @Test
@@ -104,9 +104,9 @@ public class SetParameterTestCase extends AbstractTestCase
    @InSequence(4)
    public void testInvoked()
    {
-      Assert.assertNotNull(SetParameterPortlet.foo);
-      Assert.assertEquals(Collections.singletonList("foo_value"), Arrays.asList(SetParameterPortlet.foo));
-      Assert.assertEquals(PortletMode.EDIT, SetParameterPortlet.porteltMode);
-      Assert.assertEquals(WindowState.MAXIMIZED, SetParameterPortlet.windowState);
+      Assert.assertNotNull(ActionSetParameterPortlet.foo);
+      Assert.assertEquals(Collections.singletonList("foo_value"), Arrays.asList(ActionSetParameterPortlet.foo));
+      Assert.assertEquals(PortletMode.EDIT, ActionSetParameterPortlet.portletMode);
+      Assert.assertEquals(WindowState.MAXIMIZED, ActionSetParameterPortlet.windowState);
    }
 }
