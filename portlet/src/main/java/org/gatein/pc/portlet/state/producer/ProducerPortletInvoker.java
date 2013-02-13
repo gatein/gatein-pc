@@ -719,12 +719,13 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
             Boolean persistLocally = stateManagementPolicy.persistLocally();
 
             PortletState portletState = getStateConverter().unmarshall(stateType, statefulPortletContext.getState());
+            String originalPortletId = portletState.getPortletId();
             //
             if (persistLocally)
             {
                // Create the new state
 
-               String cloneStateId = persistenceManager.createState(statefulPortletContext.getId(), portletState.getProperties());
+               String cloneStateId = persistenceManager.createState(originalPortletId, portletState.getProperties());
 
                // Return the clone context
                String cloneId = PortletContext.PRODUCER_CLONE_ID_PREFIX + cloneStateId;
@@ -732,7 +733,7 @@ public class ProducerPortletInvoker extends PortletInvokerInterceptor
             }
             else
             {
-               return marshall(statefulPortletContext.getType(), statefulPortletContext.getId(), portletState.getProperties());
+               return marshall(stateType, originalPortletId, portletState.getProperties());
             }
          }
          else
