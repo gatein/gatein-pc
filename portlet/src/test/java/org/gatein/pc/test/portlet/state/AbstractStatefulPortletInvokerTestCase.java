@@ -1039,13 +1039,16 @@ public abstract class AbstractStatefulPortletInvokerTestCase extends TestCase
       //Check by doing an import
       checkWithImportPortlet(export2Ctx, ccp1Ctx, expectedProperties);
 
+      // check that we should also be able to import the portlet from the cloned context
+      checkWithImportPortlet(ccp1Ctx, ccp1Ctx, expectedProperties);
+
       PortletContext ccp2Ctx = createClone(ccp1Ctx);
       //make sure that adding a property to the already cloned ccp1Ctx doesn't interfere with exports
       PropertyChange[] propertyChanges = new PropertyChange[1];
       propertyChanges[0] = PropertyChange.newUpdate("123", Arrays.asList("456"));
       ccp1Ctx = setProperties(ccp1Ctx, propertyChanges);
       assertTrue(getProperties(ccp1Ctx).containsKey("123"));
-      assertFalse(getProperties(export2Ctx).containsKey("123"));
+      assertFalse(getProperties(ccp2Ctx).containsKey("123"));
 
       PortletContext export3Ctx = exportPortletContext(ccp2Ctx);
 
@@ -1053,6 +1056,9 @@ public abstract class AbstractStatefulPortletInvokerTestCase extends TestCase
       assertEquals(PORTLET_ID, export3Ctx.getId());
       //Check by doing an import
       checkWithImportPortlet(export3Ctx, ccp2Ctx, expectedProperties);
+
+      // check that we should also be able to import the portlet from the cloned context
+      checkWithImportPortlet(ccp2Ctx, ccp2Ctx, expectedProperties);
    }
 
    protected void checkWithImportPortlet(PortletContext exportedPortletContext, PortletContext originalPortletContext, PropertyMap expectedProperties) throws Exception
