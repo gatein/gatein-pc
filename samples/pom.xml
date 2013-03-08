@@ -21,7 +21,8 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.gatein.pc</groupId>
       <artifactId>pc-parent</artifactId>
@@ -67,6 +68,17 @@
                   <descriptor>src/assemble/samples-eventdebug-portlet.xml</descriptor>
                </descriptors>
             </configuration>
+            <executions>
+               <execution>
+                  <id>make-assembly</id>
+                  <!-- this is used for inheritance merges -->
+                  <phase>package</phase>
+                  <!-- bind to the packaging phase -->
+                  <goals>
+                     <goal>single</goal>
+                  </goals>
+               </execution>
+            </executions>
          </plugin>
       </plugins>
    </build>
