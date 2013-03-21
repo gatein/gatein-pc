@@ -29,6 +29,7 @@ import org.gatein.pc.api.invocation.PortletInvocation;
 import org.gatein.pc.api.invocation.response.PortletInvocationResponse;
 import org.gatein.pc.portlet.container.object.PortletContainerObject;
 
+import javax.portlet.Portlet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +90,12 @@ public class PortletContainerObjectSupport extends ObjectSupport implements Port
       filters.remove(filter.getId());
    }
 
-   public PortletInfo getInfo()
+    @Override
+    public Portlet getPortletInstance() {
+        throw new UnsupportedOperationException();
+    }
+
+    public PortletInfo getInfo()
    {
       throw new UnsupportedOperationException();
    }

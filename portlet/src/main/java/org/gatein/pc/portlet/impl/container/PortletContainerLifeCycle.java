@@ -22,6 +22,7 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.container;
 
+import org.gatein.pc.portlet.container.managed.ManagedObjectLifeCycleEvent;
 import org.gatein.pc.portlet.container.object.PortletContainerObject;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
 import org.gatein.pc.portlet.container.managed.ManagedPortletContainer;
@@ -29,6 +30,8 @@ import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListene
 import org.gatein.pc.portlet.container.PortletContainerContext;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.api.info.PortletInfo;
+
+import javax.portlet.Portlet;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -73,6 +76,10 @@ public class PortletContainerLifeCycle extends LifeCycle implements ManagedPortl
       }
 
       //
+      portletContainer.create();
+
+      getListener().onEvent(new ManagedObjectLifeCycleEvent(this, LifeCycleStatus.CREATED));
+
       portletContainer.start();
    }
 
@@ -95,6 +102,10 @@ public class PortletContainerLifeCycle extends LifeCycle implements ManagedPortl
    {
       return portletApplicationLifeCycle;
    }
+
+    public Portlet getPortletInstance() {
+        return portletContainer.getPortletInstance();
+    }
 
    public String toString()
    {

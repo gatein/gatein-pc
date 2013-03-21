@@ -27,9 +27,11 @@ import org.gatein.pc.portlet.container.PortletContainerContext;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.PortletFilter;
 
+import javax.portlet.Portlet;
+
 /**
  * Contains life cycle and wiring details for the kernel environment.
- * 
+ *
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
  */
@@ -65,6 +67,13 @@ public interface PortletContainerObject extends PortletContainer
    void removePortletFilter(PortletFilter filter);
 
    /**
+    * Creates the portlet container.
+    *
+    * @throws Exception any exception preventing the creation
+    */
+   void create() throws Exception;
+
+   /**
     * Starts the portlet container.
     *
     * @throws Exception any exception preventing the start
@@ -75,4 +84,9 @@ public interface PortletContainerObject extends PortletContainer
     * Stops the portlet container.
     */
    void stop();
+
+   /**
+    * @return The current portlet instance held by the portlet container.
+    */
+   Portlet getPortletInstance();
 }

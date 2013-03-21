@@ -24,6 +24,8 @@ package org.gatein.pc.portlet.container.managed;
 
 import org.gatein.pc.api.info.PortletInfo;
 
+import javax.portlet.Portlet;
+
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -37,4 +39,5 @@ public interface ManagedPortletContainer extends ManagedObject
 
    ManagedPortletApplication getManagedPortletApplication();
 
+   Portlet getPortletInstance();
 }
