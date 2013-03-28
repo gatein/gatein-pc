@@ -35,10 +35,16 @@ public class ObjectSupport
    /** . */
    private int started;
 
+    /** . */
+    private int created;
+
    /** . */
    private int stopped;
 
-   /** . */
+    /** . */
+    Callback createCallback;
+
+    /** . */
    Callback startCallback;
 
    /** . */
@@ -49,6 +55,7 @@ public class ObjectSupport
       this.id = id;
       this.startCallback = null;
       this.stopCallback = null;
+      this.createCallback = null;
    }
 
    public String getId()
@@ -60,6 +67,11 @@ public class ObjectSupport
    {
       return started;
    }
+
+    public int getCreated()
+    {
+        return created;
+    }
 
    public int getStopped()
    {
@@ -87,6 +99,17 @@ public class ObjectSupport
          stopCallback.execute();
       }
    }
+
+    public void create() throws Exception
+    {
+        created++;
+
+        //
+        if (createCallback != null)
+        {
+            createCallback.execute();
+        }
+    }
 
    public interface Callback
    {

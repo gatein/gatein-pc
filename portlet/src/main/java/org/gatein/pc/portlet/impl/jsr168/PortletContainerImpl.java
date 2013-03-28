@@ -201,72 +201,91 @@ public class PortletContainerImpl implements PortletContainerObject
       filters.remove((PortletFilterImpl)filter);
    }
 
+    public void create() throws PortletInitializationException
+    {
+        // Set class name
+        this.className = info.getClassName();
+
+        //
+        ContainerPreferencesInfo preferences = info.getPreferences();
+        if (preferences != null)
+        {
+            String validatorClassName = preferences.getValidatorClassName();
+            if (validatorClassName != null)
+            {
+                try
+                {
+                    if (validatorClassName != null)
+                    {
+                        // Load the class
+                        ClassLoader loader = application.getContext().getClassLoader();
+                        ClassLoader old = Thread.currentThread().getContextClassLoader();
+                        try
+                        {
+                            Thread.currentThread().setContextClassLoader(loader);
+                            Class preferencesValidatorClass = loader.loadClass(validatorClassName);
+                            preferencesValidator = (PreferencesValidator)preferencesValidatorClass.newInstance();
+                        }
+                        finally
+                        {
+                            Thread.currentThread().setContextClassLoader(old);
+                        }
+                    }
+                }
+                catch (ClassNotFoundException e)
+                {
+                    log.error("Class for preference validator not found", e);
+                }
+                catch (InstantiationException e)
+                {
+                    log.error("Cannot instantiate preference validator", e);
+                }
+                catch (IllegalAccessException e)
+                {
+                    throw new Error();
+                }
+            }
+        }
+
+        //
+        ResourceBundleManager bundleManager = PortletResourceBundleFactory.createResourceBundleManager(info.getBundleManager(), info);
+
+        // Portlet config object
+        PortletConfig config = new PortletConfigImpl(info, application.info, application.portletContext, bundleManager);
+
+        // Finally initialize the porlet instance
+        try
+        {
+//         log.debug("Loading portlet class " + className);
+            Class portletClass = application.getContext().getClassLoader().loadClass(className);
+//         log.debug("Creating portlet object " + className);
+            this.portlet = (Portlet)portletClass.newInstance();
+            this.config = config;
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new PortletInitializationException("Portlet class not accessible " + className, e);
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new PortletInitializationException("Portlet class not found " + className, e);
+        }
+        catch (InstantiationException e)
+        {
+            throw new PortletInitializationException("Portlet class cannot be instantiated " + className, e);
+        }
+    }
+
    public void start() throws PortletInitializationException
    {
-      // Set class name
-      this.className = info.getClassName();
-
-      //
-      ContainerPreferencesInfo preferences = info.getPreferences();
-      if (preferences != null)
-      {
-         String validatorClassName = preferences.getValidatorClassName();
-         if (validatorClassName != null)
-         {
-            try
-            {
-               if (validatorClassName != null)
-               {
-                  // Load the class
-                  ClassLoader loader = application.getContext().getClassLoader();
-                  ClassLoader old = Thread.currentThread().getContextClassLoader();
-                  try
-                  {
-                     Thread.currentThread().setContextClassLoader(loader);
-                     Class preferencesValidatorClass = loader.loadClass(validatorClassName);
-                     preferencesValidator = (PreferencesValidator)preferencesValidatorClass.newInstance();
-                  }
-                  finally
-                  {
-                     Thread.currentThread().setContextClassLoader(old);
-                  }
-               }
-            }
-            catch (ClassNotFoundException e)
-            {
-               log.error("Class for preference validator not found", e);
-            }
-            catch (InstantiationException e)
-            {
-               log.error("Cannot instantiate preference validator", e);
-            }
-            catch (IllegalAccessException e)
-            {
-               throw new Error();
-            }
-         }
-      }
-
-      //
-      ResourceBundleManager bundleManager = PortletResourceBundleFactory.createResourceBundleManager(info.getBundleManager(), info);
-
-      // Portlet config object
-      PortletConfig config = new PortletConfigImpl(info, application.info, application.portletContext, bundleManager);
-
+      boolean initFailed = false;
       // Finally initialize the porlet instance
       try
       {
-//         log.debug("Loading portlet class " + className);
-         Class portletClass = application.getContext().getClassLoader().loadClass(className);
-//         log.debug("Creating portlet object " + className);
-         Portlet portlet = (Portlet)portletClass.newInstance();
-//         log.debug("Created portlet object " + className);
          initPortlet(portlet, config);
 //         log.debug("Initialized portlet object " + className);
 
          // We are safe, update state
-         this.portlet = portlet;
-         this.config = config;
          this.started = true;
 
          //
@@ -275,29 +294,27 @@ public class PortletContainerImpl implements PortletContainerObject
          // Let invocation flow in
          valve.open();
       }
-      catch (IllegalAccessException e)
-      {
-         throw new PortletInitializationException("Portlet class not accessible " + className, e);
-      }
-      catch (ClassNotFoundException e)
-      {
-         throw new PortletInitializationException("Portlet class not found " + className, e);
-      }
-      catch (InstantiationException e)
-      {
-         throw new PortletInitializationException("Portlet class cannot be instantiated " + className, e);
-      }
       catch (PortletException e)
       {
+         initFailed = true;
          throw new PortletInitializationException("The portlet " + getId() + " threw a portlet exception during init", e);
       }
       catch (RuntimeException e)
       {
+         initFailed = true;
          throw new PortletInitializationException("The portlet " + getId() + " threw a runtime exception during init", e);
       }
       catch (Error e)
       {
+         initFailed = true;
          throw new PortletInitializationException("The portlet " + getId() + " threw an error during init", e);
+      }
+      finally
+      {
+         if (initFailed) {
+             this.portlet = null;
+             this.config = null;
+         }
       }
    }
 
@@ -381,6 +398,11 @@ public class PortletContainerImpl implements PortletContainerObject
    {
       return portlet;
    }
+
+    public Portlet getPortletInstance()
+    {
+        return portlet;
+    }
 
    // Cannot use covariant here as it will break the javabean property getter convention used by MC.
    public PortletApplication getPortletApplication()
