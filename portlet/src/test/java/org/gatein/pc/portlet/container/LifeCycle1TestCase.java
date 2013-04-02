@@ -244,7 +244,7 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          1, 0, LifeCycleStatus.STARTED, null,
-         1, 0, LifeCycleStatus.FAILED, containerLC.getFailure(),
+         1, 0, LifeCycleStatus.STOPPED, containerLC.getFailure(),
          1, 0, LifeCycleStatus.STARTED, null);
       events.assertStartedEvent(applicationLC);
       events.assertStartedEvent(filterLC);
@@ -257,7 +257,7 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          1, 1, LifeCycleStatus.STOPPED, null,
-         1, 0, LifeCycleStatus.FAILED, null,
+         1, 0, LifeCycleStatus.STOPPED, null,
          1, 1, LifeCycleStatus.STOPPED, null);
       events.assertStoppedEvent(filterLC);
       events.assertStoppedEvent(applicationLC);
@@ -269,10 +269,11 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
-         2, 0, LifeCycleStatus.FAILED, null,
+         2, 0, LifeCycleStatus.STOPPED, null,
          2, 1, LifeCycleStatus.STARTED, null);
       events.assertStartedEvent(applicationLC);
       events.assertStartedEvent(filterLC);
+      events.assertFailedEvent(containerLC);
       events.assertEmpty();
 
       //
@@ -281,8 +282,9 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
-         3, 0, LifeCycleStatus.FAILED, failure.getFailure(),
+         3, 0, LifeCycleStatus.STOPPED, failure.getFailure(),
          2, 1, LifeCycleStatus.STARTED, null);
+      events.assertFailedEvent(containerLC);
       events.assertEmpty();
 
       //
@@ -291,7 +293,7 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
-         3, 0, LifeCycleStatus.FAILED, null,
+         3, 0, LifeCycleStatus.STOPPED, null,
          2, 1, LifeCycleStatus.STARTED, null);
       events.assertEmpty();
 
@@ -301,7 +303,7 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
-         3, 0, LifeCycleStatus.FAILED, null,
+         3, 0, LifeCycleStatus.STOPPED, null,
          2, 2, LifeCycleStatus.STOPPED, null);
       events.assertStoppedEvent(filterLC);
       events.assertEmpty();
@@ -312,9 +314,10 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
-         4, 0, LifeCycleStatus.FAILED, failure.getFailure(),
+         4, 0, LifeCycleStatus.STOPPED, failure.getFailure(),
          3, 2, LifeCycleStatus.STARTED, null);
       events.assertStartedEvent(filterLC);
+      events.assertFailedEvent(containerLC);
       events.assertEmpty();
    }
 
@@ -331,7 +334,7 @@ public class LifeCycle1TestCase extends TestCase
 
       //
       testState(
-         1, 0, LifeCycleStatus.FAILED, applicationLC.getFailure(),
+         1, 0, LifeCycleStatus.STOPPED, applicationLC.getFailure(),
          0, 0, LifeCycleStatus.STOPPED, null,
          0, 0, LifeCycleStatus.STOPPED, null);
       events.assertFailedEvent(applicationLC);
@@ -342,9 +345,10 @@ public class LifeCycle1TestCase extends TestCase
 
       //
       testState(
-         2, 0, LifeCycleStatus.FAILED, failure.getFailure(),
+         2, 0, LifeCycleStatus.STOPPED, failure.getFailure(),
          0, 0, LifeCycleStatus.STOPPED, null,
          0, 0, LifeCycleStatus.STOPPED, null);
+      events.assertFailedEvent(applicationLC);
       events.assertEmpty();
 
       //
@@ -352,7 +356,7 @@ public class LifeCycle1TestCase extends TestCase
 
       //
       testState(
-         2, 0, LifeCycleStatus.FAILED, null,
+         2, 0, LifeCycleStatus.STOPPED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
          0, 0, LifeCycleStatus.STOPPED, null);
       events.assertEmpty();
@@ -373,7 +377,7 @@ public class LifeCycle1TestCase extends TestCase
       testState(
          1, 0, LifeCycleStatus.STARTED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
-         1, 0, LifeCycleStatus.FAILED, filterLC.getFailure());
+         1, 0, LifeCycleStatus.STOPPED, filterLC.getFailure());
       events.assertStartedEvent(applicationLC);
       events.assertFailedEvent(filterLC);
       events.assertEmpty();
@@ -385,7 +389,7 @@ public class LifeCycle1TestCase extends TestCase
       testState(
          1, 1, LifeCycleStatus.STOPPED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
-         1, 0, LifeCycleStatus.FAILED, null);
+         1, 0, LifeCycleStatus.STOPPED, null);
       events.assertStoppedEvent(applicationLC);
       events.assertEmpty();
 
@@ -396,8 +400,9 @@ public class LifeCycle1TestCase extends TestCase
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
-         2, 0, LifeCycleStatus.FAILED, failure.getFailure());
+         2, 0, LifeCycleStatus.STOPPED, failure.getFailure());
       events.assertStartedEvent(applicationLC);
+      events.assertFailedEvent(filterLC);
       events.assertEmpty();
 
       //
@@ -407,7 +412,8 @@ public class LifeCycle1TestCase extends TestCase
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
-         3, 0, LifeCycleStatus.FAILED, failure.getFailure());
+         3, 0, LifeCycleStatus.STOPPED, failure.getFailure());
+      events.assertFailedEvent(filterLC);
       events.assertEmpty();
 
       //
@@ -417,7 +423,7 @@ public class LifeCycle1TestCase extends TestCase
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
-         3, 0, LifeCycleStatus.FAILED, null);
+         3, 0, LifeCycleStatus.STOPPED, null);
       events.assertEmpty();
 
       //
@@ -427,7 +433,8 @@ public class LifeCycle1TestCase extends TestCase
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
-         4, 0, LifeCycleStatus.FAILED, failure.getFailure());
+         4, 0, LifeCycleStatus.STOPPED, failure.getFailure());
+      events.assertFailedEvent(filterLC);
       events.assertEmpty();
 
       //
@@ -437,7 +444,7 @@ public class LifeCycle1TestCase extends TestCase
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
          0, 0, LifeCycleStatus.STOPPED, null,
-         4, 0, LifeCycleStatus.FAILED, failure.getFailure());
+         4, 0, LifeCycleStatus.STOPPED, failure.getFailure());
       events.assertEmpty();
    }
 

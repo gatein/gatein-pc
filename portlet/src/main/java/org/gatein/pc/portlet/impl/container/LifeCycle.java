@@ -25,6 +25,8 @@ package org.gatein.pc.portlet.impl.container;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
+import org.gatein.pc.portlet.container.managed.ManagedObjectEvent;
+import org.gatein.pc.portlet.container.managed.ManagedObjectFailedEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectLifeCycleEvent;
 import org.gatein.common.logging.Logger;
@@ -92,12 +94,9 @@ public abstract class LifeCycle implements ManagedObject
          }
 
          //
-         LifeCycleStatus previousStatus = status;
-
-         //
          if (status != LifeCycleStatus.STARTED)
          {
-            LifeCycleStatus status = LifeCycleStatus.FAILED;
+            LifeCycleStatus status = LifeCycleStatus.STOPPED;
             try
             {
                invokeStart();
@@ -122,17 +121,25 @@ public abstract class LifeCycle implements ManagedObject
                this.status = status;
 
                //
-               if (status == LifeCycleStatus.FAILED)
+               if (failure != null)
                {
                   faileds.get().add(this);
                }
             }
-         }
 
-         //
-         if (status != previousStatus)
-         {
-            getListener().onEvent(new ManagedObjectLifeCycleEvent(this, status));
+            //
+            if (failure == null)
+            {
+               if (status == LifeCycleStatus.STARTED)
+               {
+                  getListener().onEvent(new ManagedObjectLifeCycleEvent(this, status));
+               }
+            }
+            else
+            {
+               getListener().onEvent(new ManagedObjectFailedEvent(this, status));
+            }
+
          }
 
          //

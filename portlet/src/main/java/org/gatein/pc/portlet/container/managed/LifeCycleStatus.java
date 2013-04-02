@@ -29,6 +29,6 @@ package org.gatein.pc.portlet.container.managed;
 public enum LifeCycleStatus
 {
 
-   STOPPED, STARTED, FAILED
+   STOPPED, STARTED
 
 }

@@ -23,6 +23,8 @@
 package org.gatein.pc.portlet.container;
 
 import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
+import org.gatein.pc.portlet.container.managed.ManagedObjectFailedEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
@@ -65,7 +67,8 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
 
    public void assertFailedEvent(ManagedObject managedObject)
    {
-      assertLifeCycleEvent(managedObject, LifeCycleStatus.FAILED);
+      ManagedObjectFailedEvent event = nextEvent(ManagedObjectFailedEvent.class);
+      Assert.assertSame(managedObject, event.getManagedObject());
    }
 
    public void assertLifeCycleEvent(ManagedObject managedObject, LifeCycleStatus status)
@@ -77,7 +80,7 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
 
    public void assertEmpty()
    {
-      Assert.assertTrue(list.isEmpty());
+      Assert.assertTrue("Was expecting " + list + " to be empty", list.isEmpty());
    }
 
    public void clear()

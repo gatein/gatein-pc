@@ -37,8 +37,7 @@ public interface ManagedObject
    LifeCycleStatus getStatus();
 
    /**
-    * Returns the last known failure when the managed object is in {@link LifeCycleStatus#FAILED} status,
-    * otherwise return null.
+    * Returns the last known failure when the managed object attempted a transition, otherwise return null.
     *
     * @return the failure
     */
