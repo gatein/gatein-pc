@@ -47,7 +47,7 @@ public abstract class LifeCycle implements ManagedObject
    private Logger log = LoggerFactory.getLogger(LifeCycle.class);
 
    /** . */
-   private LifeCycleStatus status = LifeCycleStatus.CREATED;
+   private LifeCycleStatus status = LifeCycleStatus.INITIALIZED;
 
    /** Cheap reentrancy detection. */
    private boolean active = false;
@@ -186,7 +186,7 @@ public abstract class LifeCycle implements ManagedObject
 
    public final void managedStop()
    {
-      demote(LifeCycleStatus.CREATED);
+      demote(LifeCycleStatus.INITIALIZED);
    }
 
    public final synchronized void demote(LifeCycleStatus to) throws IllegalStateException
@@ -195,7 +195,7 @@ public abstract class LifeCycle implements ManagedObject
       {
          throw new IllegalStateException("Reentrancy detected");
       }
-      if (to != LifeCycleStatus.CREATED)
+      if (to != LifeCycleStatus.INITIALIZED)
       {
          throw new UnsupportedOperationException("Not yet implemented");
       }
@@ -230,7 +230,7 @@ public abstract class LifeCycle implements ManagedObject
          {
             switch (to)
             {
-               case CREATED:
+               case INITIALIZED:
                   invokeStop();
             }
          }

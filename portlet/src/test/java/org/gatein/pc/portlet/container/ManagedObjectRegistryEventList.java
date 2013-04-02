@@ -61,7 +61,7 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
 
    public void assertStoppedEvent(ManagedObject managedObject)
    {
-      assertLifeCycleEvent(managedObject, LifeCycleStatus.CREATED);
+      assertLifeCycleEvent(managedObject, LifeCycleStatus.INITIALIZED);
    }
 
    public void assertFailedEvent(ManagedObject managedObject)

@@ -185,7 +185,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
 
    public PortletContainerLifeCycle addPortletContainer(PortletContainerContext portletContainerContext, PortletContainerObject portletContainer)
    {
-      if (getStatus() != LifeCycleStatus.CREATED)
+      if (getStatus() != LifeCycleStatus.INITIALIZED)
       {
          throw new IllegalStateException("Cannot add portlet container because not stopped");
       }
@@ -211,7 +211,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
 
    public PortletFilterLifeCycle addPortletFilter(PortletFilterContext portletFilterContext, PortletFilterObject portletFilter)
    {
-      if (getStatus() != LifeCycleStatus.CREATED)
+      if (getStatus() != LifeCycleStatus.INITIALIZED)
       {
          throw new IllegalStateException("Cannot add portlet container because not stopped");
       }
