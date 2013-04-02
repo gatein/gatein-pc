@@ -72,8 +72,12 @@ public abstract class LifeCycle implements ManagedObject
       promote(LifeCycleStatus.STARTED);
    }
 
-   @Override
-   public final synchronized void promote(LifeCycleStatus to) throws IllegalStateException
+   /**
+    * Attempt to promote the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
+   final synchronized void promote(LifeCycleStatus to) throws IllegalStateException
    {
       if (active)
       {
@@ -194,7 +198,12 @@ public abstract class LifeCycle implements ManagedObject
       demote(LifeCycleStatus.INITIALIZED);
    }
 
-   public final synchronized void demote(LifeCycleStatus to) throws IllegalStateException
+   /**
+    * Attempt to demote the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
+   final synchronized void demote(LifeCycleStatus to) throws IllegalStateException
    {
       if (active)
       {
