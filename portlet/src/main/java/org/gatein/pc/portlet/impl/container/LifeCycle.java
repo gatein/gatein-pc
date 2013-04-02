@@ -79,10 +79,6 @@ public abstract class LifeCycle implements ManagedObject
       {
          throw new IllegalStateException("Reentrancy detected");
       }
-      if (to != LifeCycleStatus.STARTED)
-      {
-         throw new UnsupportedOperationException("Not yet implemented");
-      }
 
       // Avoid attempt to re promote if failed previously
       boolean clearFaileds = false;
@@ -101,9 +97,14 @@ public abstract class LifeCycle implements ManagedObject
       failure = null;
       try
       {
-         if (to.getStage() > status.getStage())
+         while (to.getStage() > status.getStage())
          {
+            LifeCycleStatus current = status;
             promote();
+            if (current == status)
+            {
+               break;
+            }
          }
 
          //
@@ -184,7 +185,7 @@ public abstract class LifeCycle implements ManagedObject
       }
    }
 
-   public final void managedStop()
+   public final void managedDestroy()
    {
       demote(LifeCycleStatus.INITIALIZED);
    }
@@ -195,10 +196,6 @@ public abstract class LifeCycle implements ManagedObject
       {
          throw new IllegalStateException("Reentrancy detected");
       }
-      if (to != LifeCycleStatus.INITIALIZED)
-      {
-         throw new UnsupportedOperationException("Not yet implemented");
-      }
 
       //
       active = true;
@@ -208,9 +205,14 @@ public abstract class LifeCycle implements ManagedObject
          demoteDependents(to);
 
          //
-         if (to.getStage() < status.getStage())
+         while (to.getStage() < status.getStage())
          {
+            LifeCycleStatus current = status;
             demote();
+            if (current == status)
+            {
+               break;
+            }
          }
       }
       finally
@@ -230,7 +232,7 @@ public abstract class LifeCycle implements ManagedObject
          {
             switch (to)
             {
-               case INITIALIZED:
+               case CREATED:
                   invokeStop();
             }
          }

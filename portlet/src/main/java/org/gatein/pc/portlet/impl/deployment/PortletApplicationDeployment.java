@@ -158,7 +158,7 @@ public class PortletApplicationDeployment
       log.debug("Uninstalling");
 
       //
-      portletApplicationLifeCycle.managedStop();
+      portletApplicationLifeCycle.managedDestroy();
 
       //
       log.debug("Uninstalled");

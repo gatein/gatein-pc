@@ -29,7 +29,7 @@ package org.gatein.pc.portlet.container.managed;
 public enum LifeCycleStatus
 {
 
-   INITIALIZED(0), STARTED(1);
+   INITIALIZED(0), CREATED(1), STARTED(2);
 
    /** . */
    private final int stage;
@@ -61,6 +61,8 @@ public enum LifeCycleStatus
          case 0:
             return INITIALIZED;
          case 1:
+            return CREATED;
+         case 2:
             return STARTED;
          default:
             return null;

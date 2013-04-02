@@ -41,6 +41,6 @@ public class PortletFilterContextImpl implements PortletFilterContext
 
    public void managedStop()
    {
-      managedPortletFilter.managedStop();
+      managedPortletFilter.managedDestroy();
    }
 }

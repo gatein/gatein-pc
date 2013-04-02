@@ -65,10 +65,10 @@ public interface ManagedObject
    void managedStart() throws IllegalStateException;
 
    /**
-    * Start the managed object, same as calling <code>demote(LifeCycleStatus.STOPPED)</code>.
+    * Destroy the managed object, same as calling <code>demote(LifeCycleStatus.INITIALIZED)</code>.
     *
     * @throws IllegalStateException when reentrency is detected
     */
-   void managedStop() throws IllegalStateException;
+   void managedDestroy() throws IllegalStateException;
    
 }

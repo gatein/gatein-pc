@@ -77,7 +77,7 @@ public class LifeCycleReentranceDetectionTestCase extends TestCase
             }
             else
             {
-               lifeCycle.managedStop();
+               lifeCycle.managedDestroy();
             }
          }
          catch (IllegalStateException e)

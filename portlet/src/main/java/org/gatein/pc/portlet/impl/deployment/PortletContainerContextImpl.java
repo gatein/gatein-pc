@@ -42,6 +42,6 @@ public class PortletContainerContextImpl implements PortletContainerContext
 
    public void managedStop()
    {
-      managedPortletContainer.managedStop();
+      managedPortletContainer.managedDestroy();
    }
 }

@@ -54,12 +54,22 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
       Assert.assertSame(managedObject, event.getManagedObject());
    }
 
+   public void assertCreatedEvent(ManagedObject managedObject)
+   {
+      assertLifeCycleEvent(managedObject, LifeCycleStatus.CREATED);
+   }
+
    public void assertStartedEvent(ManagedObject managedObject)
    {
       assertLifeCycleEvent(managedObject, LifeCycleStatus.STARTED);
    }
 
    public void assertStoppedEvent(ManagedObject managedObject)
+   {
+      assertLifeCycleEvent(managedObject, LifeCycleStatus.CREATED);
+   }
+
+   public void assertDestroyedEvent(ManagedObject managedObject)
    {
       assertLifeCycleEvent(managedObject, LifeCycleStatus.INITIALIZED);
    }

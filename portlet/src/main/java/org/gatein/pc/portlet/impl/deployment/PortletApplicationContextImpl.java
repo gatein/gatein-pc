@@ -67,6 +67,6 @@ public class PortletApplicationContextImpl implements PortletApplicationContext
 
    public void managedStop()
    {
-      managedPortletApplication.managedStop();
+      managedPortletApplication.managedDestroy();
    }
 }

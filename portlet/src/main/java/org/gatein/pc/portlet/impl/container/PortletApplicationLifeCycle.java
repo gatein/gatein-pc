@@ -143,7 +143,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
    {
       if (getStatus() == LifeCycleStatus.STARTED)
       {
-         managedStop();
+         managedDestroy();
       }
 
       //
