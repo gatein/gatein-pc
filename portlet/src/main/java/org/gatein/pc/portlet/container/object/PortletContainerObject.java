@@ -27,6 +27,8 @@ import org.gatein.pc.portlet.container.PortletContainerContext;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.portlet.container.PortletFilter;
 
+import javax.portlet.Portlet;
+
 /**
  * Contains life cycle and wiring details for the kernel environment.
  * 
@@ -87,4 +89,11 @@ public interface PortletContainerObject extends PortletContainer
     * Destroys the portlet container.
     */
    void destroy();
+
+   /**
+    * Returns the current instance held by the container.
+    *
+    * @return the instance
+    */
+   Portlet getPortletInstance();
 }

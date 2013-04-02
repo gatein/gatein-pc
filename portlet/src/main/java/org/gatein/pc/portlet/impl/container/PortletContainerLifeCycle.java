@@ -30,6 +30,8 @@ import org.gatein.pc.portlet.container.PortletContainerContext;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.api.info.PortletInfo;
 
+import javax.portlet.Portlet;
+
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -100,6 +102,12 @@ public class PortletContainerLifeCycle extends LifeCycle implements ManagedPortl
    protected void invokeStop()
    {
       portletContainer.stop();
+   }
+
+   @Override
+   public Portlet getPortletInstance()
+   {
+      return portletContainer.getPortletInstance();
    }
 
    @Override

@@ -187,6 +187,11 @@ public class PortletContainerImpl implements PortletContainerObject
       throw new IllegalStateException("Portlet " + info.getName() + " is not started");
    }
 
+   public Portlet getPortletInstance()
+   {
+      return portlet;
+   }
+
    public String getId()
    {
       return info.getName();
