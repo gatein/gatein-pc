@@ -269,7 +269,7 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          2, 1, LifeCycleStatus.STARTED, null,
-         2, 0, LifeCycleStatus.CREATED, null,
+         2, 0, LifeCycleStatus.CREATED, containerLC.getFailure(),
          2, 1, LifeCycleStatus.STARTED, null);
       events.assertStartedEvent(applicationLC);
       events.assertStartedEvent(filterLC);

@@ -333,13 +333,14 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       portletApplication.start();
    }
 
-   protected void startDependents()
+   @Override
+   protected void promoteDependents(LifeCycleStatus to)
    {
       for (PortletFilterLifeCycle portletFilterLifeCycle : portletFilterLifeCycles.values())
       {
          try
          {
-            portletFilterLifeCycle.managedStart();
+            portletFilterLifeCycle.promote(to);
          }
          catch (IllegalStateException ignore)
          {
@@ -351,7 +352,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       {
          try
          {
-            portletContainerLifeCycle.managedStart();
+            portletContainerLifeCycle.promote(to);
          }
          catch (IllegalStateException ignore)
          {
@@ -359,17 +360,18 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       }
    }
 
-   protected void stopDependents()
+   @Override
+   protected void demoteDependents(LifeCycleStatus to)
    {
       for (PortletContainerLifeCycle portletContainerLifeCycle : portletContainerLifeCycles.values())
       {
-         portletContainerLifeCycle.managedStop();
+         portletContainerLifeCycle.demote(to);
       }
 
       //
       for (PortletFilterLifeCycle portletFilterLifeCycle : portletFilterLifeCycles.values())
       {
-         portletFilterLifeCycle.managedStop();
+         portletFilterLifeCycle.demote(to);
       }
    }
 

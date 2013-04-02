@@ -44,14 +44,28 @@ public interface ManagedObject
    Throwable getFailure();
 
    /**
-    * Attempt to start the managed object.
+    * Attempt to promote the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
+   void promote(LifeCycleStatus to) throws IllegalStateException;
+
+   /**
+    * Attempt to demote the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
+   void demote(LifeCycleStatus to) throws IllegalStateException;
+
+   /**
+    * Attempt to start the managed object, same as calling <code>promote(LifeCycleStatus.STARTED)</code>.
     *
     * @throws IllegalStateException when reentrency is detected
     */
    void managedStart() throws IllegalStateException;
 
    /**
-    * Start the managed object.
+    * Start the managed object, same as calling <code>demote(LifeCycleStatus.STOPPED)</code>.
     *
     * @throws IllegalStateException when reentrency is detected
     */
