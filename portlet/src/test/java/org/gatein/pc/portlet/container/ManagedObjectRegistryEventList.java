@@ -23,7 +23,6 @@
 package org.gatein.pc.portlet.container;
 
 import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 import org.gatein.pc.portlet.container.managed.ManagedObjectFailedEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEvent;
@@ -62,7 +61,7 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
 
    public void assertStoppedEvent(ManagedObject managedObject)
    {
-      assertLifeCycleEvent(managedObject, LifeCycleStatus.STOPPED);
+      assertLifeCycleEvent(managedObject, LifeCycleStatus.CREATED);
    }
 
    public void assertFailedEvent(ManagedObject managedObject)

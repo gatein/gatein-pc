@@ -37,13 +37,10 @@ import org.gatein.pc.portlet.container.PortletFilterContext;
 import org.gatein.pc.portlet.container.PortletApplication;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Collection;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -188,7 +185,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
 
    public PortletContainerLifeCycle addPortletContainer(PortletContainerContext portletContainerContext, PortletContainerObject portletContainer)
    {
-      if (getStatus() != LifeCycleStatus.STOPPED)
+      if (getStatus() != LifeCycleStatus.CREATED)
       {
          throw new IllegalStateException("Cannot add portlet container because not stopped");
       }
@@ -214,7 +211,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
 
    public PortletFilterLifeCycle addPortletFilter(PortletFilterContext portletFilterContext, PortletFilterObject portletFilter)
    {
-      if (getStatus() != LifeCycleStatus.STOPPED)
+      if (getStatus() != LifeCycleStatus.CREATED)
       {
          throw new IllegalStateException("Cannot add portlet container because not stopped");
       }

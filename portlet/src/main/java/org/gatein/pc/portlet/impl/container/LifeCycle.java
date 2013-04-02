@@ -25,7 +25,6 @@ package org.gatein.pc.portlet.impl.container;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
-import org.gatein.pc.portlet.container.managed.ManagedObjectEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObjectFailedEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectLifeCycleEvent;
@@ -48,7 +47,7 @@ public abstract class LifeCycle implements ManagedObject
    private Logger log = LoggerFactory.getLogger(LifeCycle.class);
 
    /** . */
-   private LifeCycleStatus status = LifeCycleStatus.STOPPED;
+   private LifeCycleStatus status = LifeCycleStatus.CREATED;
 
    /** Cheap reentrancy detection. */
    private boolean active = false;
@@ -96,7 +95,7 @@ public abstract class LifeCycle implements ManagedObject
          //
          if (status != LifeCycleStatus.STARTED)
          {
-            LifeCycleStatus status = LifeCycleStatus.STOPPED;
+            LifeCycleStatus status = LifeCycleStatus.CREATED;
             try
             {
                invokeStart();
@@ -104,7 +103,7 @@ public abstract class LifeCycle implements ManagedObject
             }
             catch (DependencyNotResolvedException ignore)
             {
-               status = LifeCycleStatus.STOPPED;
+               status = LifeCycleStatus.CREATED;
             }
             catch (Exception e)
             {
@@ -194,11 +193,11 @@ public abstract class LifeCycle implements ManagedObject
             }
             finally
             {
-               status = LifeCycleStatus.STOPPED;
+               status = LifeCycleStatus.CREATED;
             }
 
             //
-            getListener().onEvent(new ManagedObjectLifeCycleEvent(this, LifeCycleStatus.STOPPED));
+            getListener().onEvent(new ManagedObjectLifeCycleEvent(this, LifeCycleStatus.CREATED));
          }
       }
       finally
