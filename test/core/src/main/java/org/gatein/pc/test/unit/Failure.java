@@ -69,7 +69,7 @@ public class Failure implements Serializable
       this.message = message;
       this.cause = cause;
       this.type = type;
-      this.stackTrace = cause != null ? cause : new Exception("Failed at");
+      this.stackTrace = cause != null ? cause : new Exception(message != null ? message : "Failed at");
    }
 
    public String getMessage()
