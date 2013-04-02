@@ -48,14 +48,26 @@ public interface PortletFilterObject extends PortletFilter
    void setContext(PortletFilterContext context);
 
    /**
-    * Starts the portlet container.
+    * Creates the portlet filter.
+    *
+    * @throws Exception any exception preventing the creation
+    */
+   void create() throws Exception;
+
+   /**
+    * Starts the portlet filer.
     *
     * @throws Exception any exception preventing the start
     */
    void start() throws Exception;
 
    /**
-    * Stops the portlet container.
+    * Stops the portlet filter.
     */
    void stop();
+
+   /**
+    * Destroys the portlet filter.
+    */
+   void destroy();
 }

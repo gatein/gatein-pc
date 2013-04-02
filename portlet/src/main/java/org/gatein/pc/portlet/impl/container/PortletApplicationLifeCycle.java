@@ -322,6 +322,12 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       return dependencies;
    }
 
+   @Override
+   protected void invokeCreate() throws Exception
+   {
+      //
+   }
+
    protected void invokeStart() throws Exception
    {
       if (!created)
@@ -378,6 +384,12 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
    protected void invokeStop()
    {
       portletApplication.stop();
+   }
+
+   @Override
+   protected void invokeDestroy() throws Exception
+   {
+      //
    }
 
    public String getId()

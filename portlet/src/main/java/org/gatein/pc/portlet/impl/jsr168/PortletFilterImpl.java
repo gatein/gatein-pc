@@ -125,36 +125,36 @@ public class PortletFilterImpl implements PortletFilterObject
       return context;
    }
 
-   public void start() throws Exception
+   @Override
+   public void create() throws Exception
    {
       PortletContext portletContext = application.portletContext;
       String className = info.getClassName();
       ClassLoader classLoader = application.getContext().getClassLoader();
 
       //
-      PortletApplicationImpl.FilterLifecycle lifeCycle = new PortletApplicationImpl.FilterLifecycle(
+      lifeCycle = new PortletApplicationImpl.FilterLifecycle(
          log,
          classLoader,
          className,
          "filter",
          info,
          portletContext);
+   }
 
-      //
+   public void start() throws Exception
+   {
       lifeCycle.create();
-
-      //
-      this.lifeCycle = lifeCycle;
    }
 
    public void stop()
    {
-      if (lifeCycle != null)
-      {
-         lifeCycle.destroy();
+      lifeCycle.destroy();
+   }
 
-         //
-         lifeCycle = null;
-      }
+   @Override
+   public void destroy()
+   {
+      lifeCycle = null;
    }
 }

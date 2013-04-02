@@ -55,9 +55,20 @@ public class PortletFilterLifeCycle extends LifeCycle implements ManagedPortletF
       this.portletFilter = portletFilter;
    }
 
+   protected void invokeCreate() throws Exception
+   {
+      if (portletApplicationLifeCycle.getStatus().getStage() < LifeCycleStatus.CREATED.getStage())
+      {
+         throw new DependencyNotResolvedException("The parent application is not created");
+      }
+
+      //
+      portletFilter.create();
+   }
+
    protected void invokeStart() throws Exception
    {
-      if (portletApplicationLifeCycle.getStatus() != LifeCycleStatus.STARTED)
+      if (portletApplicationLifeCycle.getStatus().getStage() < LifeCycleStatus.STARTED.getStage())
       {
          throw new DependencyNotResolvedException("The parent application is not started");
       }
@@ -88,6 +99,11 @@ public class PortletFilterLifeCycle extends LifeCycle implements ManagedPortletF
    protected void invokeStop()
    {
       portletFilter.stop();
+   }
+
+   protected void invokeDestroy()
+   {
+      portletFilter.destroy();
    }
 
    public String getId()

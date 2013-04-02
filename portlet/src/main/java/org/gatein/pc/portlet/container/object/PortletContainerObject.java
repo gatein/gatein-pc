@@ -65,6 +65,13 @@ public interface PortletContainerObject extends PortletContainer
    void removePortletFilter(PortletFilter filter);
 
    /**
+    * Creates the portlet container.
+    *
+    * @throws Exception any exception preventing the creation
+    */
+   void create() throws Exception;
+
+   /**
     * Starts the portlet container.
     *
     * @throws Exception any exception preventing the start
@@ -75,4 +82,9 @@ public interface PortletContainerObject extends PortletContainer
     * Stops the portlet container.
     */
    void stop();
+
+   /**
+    * Destroys the portlet container.
+    */
+   void destroy();
 }

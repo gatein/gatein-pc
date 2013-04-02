@@ -135,8 +135,12 @@ public abstract class LifeCycle implements ManagedObject
             {
                switch (to)
                {
+                  case CREATED:
+                     invokeCreate();
+                     break;
                   case STARTED:
                      invokeStart();
+                     break;
                }
                next = to;
             }
@@ -234,6 +238,10 @@ public abstract class LifeCycle implements ManagedObject
             {
                case CREATED:
                   invokeStop();
+                  break;
+               case INITIALIZED:
+                  invokeDestroy();
+                  break;
             }
          }
          catch (Exception e)
@@ -262,9 +270,13 @@ public abstract class LifeCycle implements ManagedObject
    {
    }
 
+   protected abstract void invokeCreate() throws Exception;
+
    protected abstract void invokeStart() throws Exception;
 
    protected abstract void invokeStop();
+
+   protected abstract void invokeDestroy() throws Exception;
 
    protected abstract ManagedObjectRegistryEventListener getListener();
 

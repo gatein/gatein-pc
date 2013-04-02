@@ -188,9 +188,8 @@ public class LifeCycle1TestCase extends TestCase
       //
       testState(
          1, 0, LifeCycleStatus.STARTED, null,
-         1, 1, LifeCycleStatus.CREATED, null,
+         1, 1, LifeCycleStatus.INITIALIZED, null,
          1, 1, LifeCycleStatus.INITIALIZED, null);
-      events.assertCreatedEvent(containerLC);
       events.assertEmpty();
 
       // Filter start triggers container start
@@ -203,6 +202,7 @@ public class LifeCycle1TestCase extends TestCase
          2, 1, LifeCycleStatus.STARTED, null);
       events.assertCreatedEvent(filterLC);
       events.assertStartedEvent(filterLC);
+      events.assertCreatedEvent(containerLC);
       events.assertStartedEvent(containerLC);
       events.assertEmpty();
    }
