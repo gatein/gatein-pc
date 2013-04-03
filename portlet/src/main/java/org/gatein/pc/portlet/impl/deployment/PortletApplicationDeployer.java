@@ -194,7 +194,7 @@ public class PortletApplicationDeployer implements PortletApplicationRegistry
       PortletApplication10MetaData metaData = buildPortletApplicationMetaData(webApp);
       if (metaData != null)
       {
-         PortletApplicationDeployment deployment = new PortletApplicationDeployment(broadcaster, webApp, metaData);
+         PortletApplicationDeployment deployment = createPortletApplicationDeployment(webApp, metaData);
          deploymentMap.put(webApp.getContextPath(), deployment);
          deployment.install();
 
@@ -222,6 +222,9 @@ public class PortletApplicationDeployer implements PortletApplicationRegistry
       }
    }
 
+   protected PortletApplicationDeployment createPortletApplicationDeployment(ServletContext webApp, PortletApplication10MetaData metaData) {
+       return new PortletApplicationDeployment(broadcaster, webApp, metaData);
+   }
 
    protected PortletApplication10MetaData buildPortletApplicationMetaData(ServletContext webApp) throws DeploymentException
    {
