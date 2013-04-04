@@ -37,25 +37,24 @@ public interface ManagedObject
    LifeCycleStatus getStatus();
 
    /**
-    * Returns the last known failure when the managed object is in {@link LifeCycleStatus#FAILED} status,
-    * otherwise return null.
+    * Returns the last known failure when the managed object attempted a transition, otherwise return null.
     *
     * @return the failure
     */
    Throwable getFailure();
 
    /**
-    * Attempt to start the managed object.
+    * Attempt to start the managed object, same as calling <code>promote(LifeCycleStatus.STARTED)</code>.
     *
     * @throws IllegalStateException when reentrency is detected
     */
    void managedStart() throws IllegalStateException;
 
    /**
-    * Start the managed object.
+    * Destroy the managed object, same as calling <code>demote(LifeCycleStatus.INITIALIZED)</code>.
     *
     * @throws IllegalStateException when reentrency is detected
     */
-   void managedStop() throws IllegalStateException;
+   void managedDestroy() throws IllegalStateException;
    
 }

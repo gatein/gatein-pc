@@ -22,6 +22,8 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.container.managed;
 
+import org.gatein.pc.portlet.container.PortletApplication;
+
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -41,4 +43,5 @@ public interface ManagedPortletApplication extends ManagedObject
 
    ManagedPortletFilter getManagedPortletFilter(String portletFilterId);
 
+   PortletApplication getPortletApplication();
 }

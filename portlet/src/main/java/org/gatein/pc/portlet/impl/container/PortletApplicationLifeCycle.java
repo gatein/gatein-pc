@@ -37,13 +37,10 @@ import org.gatein.pc.portlet.container.PortletFilterContext;
 import org.gatein.pc.portlet.container.PortletApplication;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Collection;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -146,7 +143,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
    {
       if (getStatus() == LifeCycleStatus.STARTED)
       {
-         managedStop();
+         managedDestroy();
       }
 
       //
@@ -188,7 +185,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
 
    public PortletContainerLifeCycle addPortletContainer(PortletContainerContext portletContainerContext, PortletContainerObject portletContainer)
    {
-      if (getStatus() != LifeCycleStatus.STOPPED)
+      if (getStatus() != LifeCycleStatus.INITIALIZED)
       {
          throw new IllegalStateException("Cannot add portlet container because not stopped");
       }
@@ -214,7 +211,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
 
    public PortletFilterLifeCycle addPortletFilter(PortletFilterContext portletFilterContext, PortletFilterObject portletFilter)
    {
-      if (getStatus() != LifeCycleStatus.STOPPED)
+      if (getStatus() != LifeCycleStatus.INITIALIZED)
       {
          throw new IllegalStateException("Cannot add portlet container because not stopped");
       }
@@ -325,6 +322,12 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       return dependencies;
    }
 
+   @Override
+   protected void invokeCreate() throws Exception
+   {
+      //
+   }
+
    protected void invokeStart() throws Exception
    {
       if (!created)
@@ -336,13 +339,14 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       portletApplication.start();
    }
 
-   protected void startDependents()
+   @Override
+   protected void promoteDependents(LifeCycleStatus to)
    {
       for (PortletFilterLifeCycle portletFilterLifeCycle : portletFilterLifeCycles.values())
       {
          try
          {
-            portletFilterLifeCycle.managedStart();
+            portletFilterLifeCycle.promote(to);
          }
          catch (IllegalStateException ignore)
          {
@@ -354,7 +358,7 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       {
          try
          {
-            portletContainerLifeCycle.managedStart();
+            portletContainerLifeCycle.promote(to);
          }
          catch (IllegalStateException ignore)
          {
@@ -362,23 +366,30 @@ public class PortletApplicationLifeCycle extends LifeCycle implements ManagedPor
       }
    }
 
-   protected void stopDependents()
+   @Override
+   protected void demoteDependents(LifeCycleStatus to)
    {
       for (PortletContainerLifeCycle portletContainerLifeCycle : portletContainerLifeCycles.values())
       {
-         portletContainerLifeCycle.managedStop();
+         portletContainerLifeCycle.demote(to);
       }
 
       //
       for (PortletFilterLifeCycle portletFilterLifeCycle : portletFilterLifeCycles.values())
       {
-         portletFilterLifeCycle.managedStop();
+         portletFilterLifeCycle.demote(to);
       }
    }
 
    protected void invokeStop()
    {
       portletApplication.stop();
+   }
+
+   @Override
+   protected void invokeDestroy() throws Exception
+   {
+      //
    }
 
    public String getId()

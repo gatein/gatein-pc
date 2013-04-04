@@ -23,6 +23,7 @@
 package org.gatein.pc.portlet.container;
 
 import junit.framework.Assert;
+import org.gatein.pc.portlet.container.managed.ManagedObjectFailedEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
@@ -53,6 +54,11 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
       Assert.assertSame(managedObject, event.getManagedObject());
    }
 
+   public void assertCreatedEvent(ManagedObject managedObject)
+   {
+      assertLifeCycleEvent(managedObject, LifeCycleStatus.CREATED);
+   }
+
    public void assertStartedEvent(ManagedObject managedObject)
    {
       assertLifeCycleEvent(managedObject, LifeCycleStatus.STARTED);
@@ -60,12 +66,18 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
 
    public void assertStoppedEvent(ManagedObject managedObject)
    {
-      assertLifeCycleEvent(managedObject, LifeCycleStatus.STOPPED);
+      assertLifeCycleEvent(managedObject, LifeCycleStatus.CREATED);
+   }
+
+   public void assertDestroyedEvent(ManagedObject managedObject)
+   {
+      assertLifeCycleEvent(managedObject, LifeCycleStatus.INITIALIZED);
    }
 
    public void assertFailedEvent(ManagedObject managedObject)
    {
-      assertLifeCycleEvent(managedObject, LifeCycleStatus.FAILED);
+      ManagedObjectFailedEvent event = nextEvent(ManagedObjectFailedEvent.class);
+      Assert.assertSame(managedObject, event.getManagedObject());
    }
 
    public void assertLifeCycleEvent(ManagedObject managedObject, LifeCycleStatus status)
@@ -77,7 +89,7 @@ public class ManagedObjectRegistryEventList implements ManagedObjectRegistryEven
 
    public void assertEmpty()
    {
-      Assert.assertTrue(list.isEmpty());
+      Assert.assertTrue("Was expecting " + list + " to be empty", list.isEmpty());
    }
 
    public void clear()

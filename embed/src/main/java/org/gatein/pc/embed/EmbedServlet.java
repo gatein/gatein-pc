@@ -110,7 +110,7 @@ public class EmbedServlet extends HttpServlet
 
    private void checkLifeCycle(ManagedObject managed) throws ServletException
    {
-      if (managed.getStatus() == LifeCycleStatus.FAILED)
+      if (managed.getStatus() != LifeCycleStatus.STARTED)
       {
          throw new ServletException("Portlet application start failed", managed.getFailure());
       }

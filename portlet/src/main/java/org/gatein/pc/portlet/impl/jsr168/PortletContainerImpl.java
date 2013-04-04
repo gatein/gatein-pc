@@ -40,6 +40,7 @@ import org.gatein.pc.portlet.aspects.ContextDispatcherInterceptor;
 import org.gatein.pc.portlet.container.PortletApplication;
 import org.gatein.pc.portlet.container.PortletContainerContext;
 import org.gatein.pc.portlet.container.PortletInitializationException;
+import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
 import org.gatein.pc.portlet.container.object.PortletContainerObject;
 import org.gatein.pc.portlet.impl.info.ContainerPortletInfo;
 import org.gatein.pc.portlet.impl.info.ContainerPreferencesInfo;
@@ -118,7 +119,7 @@ public class PortletContainerImpl implements PortletContainerObject
    protected final Valve valve;
 
    /** Are we started or not. */
-   protected boolean started;
+   protected LifeCycleStatus status;
 
    /** User data constraint. */
    protected Set userDataConstraints;
@@ -161,7 +162,7 @@ public class PortletContainerImpl implements PortletContainerObject
       this.info = info;
       this.valve = new Valve();
       this.log = LoggerFactory.getLogger("org.gatein.pc.container." + info.getClassName().replace('.', '_'));
-      this.started = false;
+      this.status = LifeCycleStatus.INITIALIZED;
       this.filters = new HashSet<PortletFilterImpl>();
    }
 
@@ -177,13 +178,18 @@ public class PortletContainerImpl implements PortletContainerObject
 
    public ContainerPortletInfo getInfo()
    {
-      if (started)
+      if (status == LifeCycleStatus.STARTED)
       {
          return info;
       }
 
       //
       throw new IllegalStateException("Portlet " + info.getName() + " is not started");
+   }
+
+   public Portlet getPortletInstance()
+   {
+      return portlet;
    }
 
    public String getId()
@@ -201,7 +207,8 @@ public class PortletContainerImpl implements PortletContainerObject
       filters.remove((PortletFilterImpl)filter);
    }
 
-   public void start() throws PortletInitializationException
+   @Override
+   public void create() throws Exception
    {
       // Set class name
       this.className = info.getClassName();
@@ -261,19 +268,11 @@ public class PortletContainerImpl implements PortletContainerObject
 //         log.debug("Creating portlet object " + className);
          Portlet portlet = (Portlet)portletClass.newInstance();
 //         log.debug("Created portlet object " + className);
-         initPortlet(portlet, config);
-//         log.debug("Initialized portlet object " + className);
-
-         // We are safe, update state
-         this.portlet = portlet;
-         this.config = config;
-         this.started = true;
 
          //
-         buildFilterChains();
-
-         // Let invocation flow in
-         valve.open();
+         this.portlet = portlet;
+         this.config = config;
+         this.status = LifeCycleStatus.CREATED;
       }
       catch (IllegalAccessException e)
       {
@@ -286,6 +285,23 @@ public class PortletContainerImpl implements PortletContainerObject
       catch (InstantiationException e)
       {
          throw new PortletInitializationException("Portlet class cannot be instantiated " + className, e);
+      }
+   }
+
+   @Override
+   public void start() throws Exception
+   {
+      try
+      {
+         initPortlet(portlet, config);
+//         log.debug("Initialized portlet object " + className);
+
+         //
+         buildFilterChains();
+
+         // Let invocation flow in
+         valve.open();
+         this.status = LifeCycleStatus.STARTED;
       }
       catch (PortletException e)
       {
@@ -343,33 +359,33 @@ public class PortletContainerImpl implements PortletContainerObject
 
    public void stop()
    {
-      // If the portlet is not started, we shouldn't be trying to stop it...
-      if (started)
+      // Wait at most 60 seconds before all invocations are done
+      log.debug("Trying to close the valve");
+      boolean done = valve.closing(60000);
+      if (!done)
       {
-         // Wait at most 60 seconds before all invocations are done
-         log.debug("Trying to close the valve");
-         boolean done = valve.closing(60000);
-         if (!done)
-         {
-            log.warn("The valve is still holding invocations, continue anyway");
-         }
-
-         //
-         valve.closed();
-
-         //
-         started = false;
-
-         // Destroy the portlet object
-         destroyPortlet(portlet);
-
-         // Update state
-         preferencesValidator = null;
-         className = null;
-         portlet = null;
-         config = null;
-         userDataConstraints = null;
+         log.warn("The valve is still holding invocations, continue anyway");
       }
+
+      //
+      valve.closed();
+
+      //
+      status = LifeCycleStatus.CREATED;
+
+      // Destroy the portlet object
+      destroyPortlet(portlet);
+   }
+
+   @Override
+   public void destroy()
+   {
+      preferencesValidator = null;
+      className = null;
+      portlet = null;
+      config = null;
+      userDataConstraints = null;
+      status = LifeCycleStatus.INITIALIZED;
    }
 
    public PortletConfig getConfig()

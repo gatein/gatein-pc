@@ -29,6 +29,43 @@ package org.gatein.pc.portlet.container.managed;
 public enum LifeCycleStatus
 {
 
-   STOPPED, STARTED, FAILED
+   INITIALIZED(0), CREATED(1), STARTED(2);
 
+   /** . */
+   private final int stage;
+
+   private LifeCycleStatus(int stage)
+   {
+      this.stage = stage;
+   }
+
+   public int getStage()
+   {
+      return stage;
+   }
+
+   public LifeCycleStatus getPromotion()
+   {
+      return getByStage(stage + 1);
+   }
+
+   public LifeCycleStatus getDemotion()
+   {
+      return getByStage(stage - 1);
+   }
+
+   private static LifeCycleStatus getByStage(int stage)
+   {
+      switch (stage)
+      {
+         case 0:
+            return INITIALIZED;
+         case 1:
+            return CREATED;
+         case 2:
+            return STARTED;
+         default:
+            return null;
+      }
+   }
 }

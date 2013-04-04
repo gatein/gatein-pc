@@ -25,6 +25,7 @@ package org.gatein.pc.portlet.impl.container;
 import org.gatein.common.logging.LoggerFactory;
 import org.gatein.pc.portlet.container.managed.ManagedObject;
 import org.gatein.pc.portlet.container.managed.LifeCycleStatus;
+import org.gatein.pc.portlet.container.managed.ManagedObjectFailedEvent;
 import org.gatein.pc.portlet.container.managed.ManagedObjectRegistryEventListener;
 import org.gatein.pc.portlet.container.managed.ManagedObjectLifeCycleEvent;
 import org.gatein.common.logging.Logger;
@@ -46,7 +47,7 @@ public abstract class LifeCycle implements ManagedObject
    private Logger log = LoggerFactory.getLogger(LifeCycle.class);
 
    /** . */
-   private LifeCycleStatus status = LifeCycleStatus.STOPPED;
+   private LifeCycleStatus status = LifeCycleStatus.INITIALIZED;
 
    /** Cheap reentrancy detection. */
    private boolean active = false;
@@ -65,81 +66,53 @@ public abstract class LifeCycle implements ManagedObject
       return failure;
    }
 
-   public synchronized final void managedStart() throws IllegalStateException
+   @Override
+   public final void managedStart() throws IllegalStateException
+   {
+      promote(LifeCycleStatus.STARTED);
+   }
+
+   /**
+    * Attempt to promote the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
+   final synchronized void promote(LifeCycleStatus to) throws IllegalStateException
    {
       if (active)
       {
          throw new IllegalStateException("Reentrancy detected");
       }
 
-      // Update state
-      active = true;
-      failure = null;
+      // Avoid attempt to re promote if failed previously
+      boolean clearFaileds = false;
+      if (faileds.get() == null)
+      {
+         clearFaileds = true;
+         faileds.set(new HashSet<Object>());
+      }
+      else if (faileds.get().contains(this))
+      {
+         return;
+      }
 
       //
-      boolean clearFaileds = false;
-      Throwable failure = null;
+      active = true;
+      failure = null;
       try
       {
-         if (faileds.get() == null)
+         while (to.getStage() > status.getStage())
          {
-            clearFaileds = true;
-            faileds.set(new HashSet<Object>());
-         }
-         else if (faileds.get().contains(this))
-         {
-            return;
-         }
-
-         //
-         LifeCycleStatus previousStatus = status;
-
-         //
-         if (status != LifeCycleStatus.STARTED)
-         {
-            LifeCycleStatus status = LifeCycleStatus.FAILED;
-            try
+            LifeCycleStatus current = status;
+            promote();
+            if (current == status)
             {
-               invokeStart();
-               status = LifeCycleStatus.STARTED;
-            }
-            catch (DependencyNotResolvedException ignore)
-            {
-               status = LifeCycleStatus.STOPPED;
-            }
-            catch (Exception e)
-            {
-               log.error("Cannot start object", e);
-               failure = e;
-            }
-            catch (Error e)
-            {
-               log.error("Cannot start object", e);
-               failure = e;
-            }
-            finally
-            {
-               this.status = status;
-
-               //
-               if (status == LifeCycleStatus.FAILED)
-               {
-                  faileds.get().add(this);
-               }
+               break;
             }
          }
 
          //
-         if (status != previousStatus)
-         {
-            getListener().onEvent(new ManagedObjectLifeCycleEvent(this, status));
-         }
-
-         //
-         if (status == LifeCycleStatus.STARTED)
-         {
-            startDependents();
-         }
+         promoteDependents(to);
       }
       finally
       {
@@ -147,14 +120,90 @@ public abstract class LifeCycle implements ManagedObject
          {
             faileds.set(null);
          }
-
-         //
-         this.active = false;
-         this.failure = failure;
+         active = false;
       }
    }
 
-   public synchronized final void managedStop()
+   private void promote() throws IllegalStateException
+   {
+      LifeCycleStatus to = status.getPromotion();
+
+      //
+      if (to != null)
+      {
+         Throwable failure = null;
+         try
+         {
+            LifeCycleStatus next = status;
+            try
+            {
+               switch (to)
+               {
+                  case CREATED:
+                     invokeCreate();
+                     break;
+                  case STARTED:
+                     invokeStart();
+                     break;
+               }
+               next = to;
+            }
+            catch (DependencyNotResolvedException ignore)
+            {
+               // We stay in current status
+            }
+            catch (Exception e)
+            {
+               log.error("Cannot promote object to " + to, e);
+               failure = e;
+            }
+            catch (Error e)
+            {
+               log.error("Cannot promote object to " + to, e);
+               failure = e;
+            }
+            finally
+            {
+               this.status = next;
+
+               //
+               if (failure != null)
+               {
+                  faileds.get().add(this);
+               }
+            }
+
+            //
+            if (failure == null)
+            {
+               if (next == to)
+               {
+                  getListener().onEvent(new ManagedObjectLifeCycleEvent(this, next));
+               }
+            }
+            else
+            {
+               getListener().onEvent(new ManagedObjectFailedEvent(this, next));
+            }
+         }
+         finally
+         {
+            this.failure = failure;
+         }
+      }
+   }
+
+   public final void managedDestroy()
+   {
+      demote(LifeCycleStatus.INITIALIZED);
+   }
+
+   /**
+    * Attempt to demote the managed object.
+    *
+    * @throws IllegalStateException when reentrency is detected
+    */
+   final synchronized void demote(LifeCycleStatus to) throws IllegalStateException
    {
       if (active)
       {
@@ -164,34 +213,19 @@ public abstract class LifeCycle implements ManagedObject
       //
       active = true;
       failure = null;
-
-      //
       try
       {
-         stopDependents();
+         demoteDependents(to);
 
          //
-         if (status == LifeCycleStatus.STARTED)
+         while (to.getStage() < status.getStage())
          {
-            try
+            LifeCycleStatus current = status;
+            demote();
+            if (current == status)
             {
-               invokeStop();
+               break;
             }
-            catch (Exception e)
-            {
-               log.error("Error during object stop", e);
-            }
-            catch (Error e)
-            {
-               log.error("Error during object stop", e);
-            }
-            finally
-            {
-               status = LifeCycleStatus.STOPPED;
-            }
-
-            //
-            getListener().onEvent(new ManagedObjectLifeCycleEvent(this, LifeCycleStatus.STOPPED));
          }
       }
       finally
@@ -200,17 +234,58 @@ public abstract class LifeCycle implements ManagedObject
       }
    }
 
-   protected void startDependents()
+   private void demote() throws IllegalStateException
+   {
+      LifeCycleStatus to = status.getDemotion();
+
+      //
+      if (to != null)
+      {
+         try
+         {
+            switch (to)
+            {
+               case CREATED:
+                  invokeStop();
+                  break;
+               case INITIALIZED:
+                  invokeDestroy();
+                  break;
+            }
+         }
+         catch (Exception e)
+         {
+            log.error("Error during object demotion to " + to, e);
+         }
+         catch (Error e)
+         {
+            log.error("Error during object demotion to " + to, e);
+         }
+         finally
+         {
+            status = to;
+         }
+
+         //
+         getListener().onEvent(new ManagedObjectLifeCycleEvent(this, to));
+      }
+   }
+
+   protected void promoteDependents(LifeCycleStatus to)
    {
    }
 
-   protected void stopDependents()
+   protected void demoteDependents(LifeCycleStatus to)
    {
    }
+
+   protected abstract void invokeCreate() throws Exception;
 
    protected abstract void invokeStart() throws Exception;
 
    protected abstract void invokeStop();
+
+   protected abstract void invokeDestroy() throws Exception;
 
    protected abstract ManagedObjectRegistryEventListener getListener();
 

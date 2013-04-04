@@ -55,9 +55,20 @@ public class PortletFilterLifeCycle extends LifeCycle implements ManagedPortletF
       this.portletFilter = portletFilter;
    }
 
+   protected void invokeCreate() throws Exception
+   {
+      if (portletApplicationLifeCycle.getStatus().getStage() < LifeCycleStatus.CREATED.getStage())
+      {
+         throw new DependencyNotResolvedException("The parent application is not created");
+      }
+
+      //
+      portletFilter.create();
+   }
+
    protected void invokeStart() throws Exception
    {
-      if (portletApplicationLifeCycle.getStatus() != LifeCycleStatus.STARTED)
+      if (portletApplicationLifeCycle.getStatus().getStage() < LifeCycleStatus.STARTED.getStage())
       {
          throw new DependencyNotResolvedException("The parent application is not started");
       }
@@ -66,26 +77,33 @@ public class PortletFilterLifeCycle extends LifeCycle implements ManagedPortletF
       portletFilter.start();
    }
 
-   protected void startDependents()
+   @Override
+   protected void promoteDependents(LifeCycleStatus to)
    {
       // Dependent containers may or not start (for instance if a container depends on several filters)
       for (PortletContainerLifeCycle portletContainerLifeCycle : portletApplicationLifeCycle.getDependencies(this))
       {
-         portletContainerLifeCycle.managedStart();
+         portletContainerLifeCycle.promote(to);
       }
    }
 
-   protected void stopDependents()
+   @Override
+   protected void demoteDependents(LifeCycleStatus to)
    {
       for (PortletContainerLifeCycle portletContainerLifeCycle : portletApplicationLifeCycle.getDependencies(this))
       {
-         portletContainerLifeCycle.managedStop();
+         portletContainerLifeCycle.demote(to);
       }
    }
 
    protected void invokeStop()
    {
       portletFilter.stop();
+   }
+
+   protected void invokeDestroy()
+   {
+      portletFilter.destroy();
    }
 
    public String getId()

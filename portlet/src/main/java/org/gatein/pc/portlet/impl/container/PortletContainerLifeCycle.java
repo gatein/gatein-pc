@@ -30,6 +30,8 @@ import org.gatein.pc.portlet.container.PortletContainerContext;
 import org.gatein.pc.portlet.container.PortletContainer;
 import org.gatein.pc.api.info.PortletInfo;
 
+import javax.portlet.Portlet;
+
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
  * @version $Revision: 630 $
@@ -56,9 +58,30 @@ public class PortletContainerLifeCycle extends LifeCycle implements ManagedPortl
       this.portletContainer = portletContainer;
    }
 
+   @Override
+   protected void invokeCreate() throws Exception
+   {
+      if (portletApplicationLifeCycle.getStatus().getStage() < LifeCycleStatus.CREATED.getStage())
+      {
+         throw new DependencyNotResolvedException("The parent application is not created");
+      }
+
+      //
+      for (PortletFilterLifeCycle portletFilterLifeCycle : portletApplicationLifeCycle.getDependencies(this))
+      {
+         if (portletFilterLifeCycle.getStatus().getStage() < LifeCycleStatus.CREATED.getStage())
+         {
+            throw new DependencyNotResolvedException("The filter " + portletFilterLifeCycle + " is not created");
+         }
+      }
+
+      //
+      portletContainer.create();
+   }
+
    protected void invokeStart() throws Exception
    {
-      if (portletApplicationLifeCycle.getStatus() != LifeCycleStatus.STARTED)
+      if (portletApplicationLifeCycle.getStatus().getStage() < LifeCycleStatus.STARTED.getStage())
       {
          throw new DependencyNotResolvedException("The parent application is not started");
       }
@@ -66,7 +89,7 @@ public class PortletContainerLifeCycle extends LifeCycle implements ManagedPortl
       //
       for (PortletFilterLifeCycle portletFilterLifeCycle : portletApplicationLifeCycle.getDependencies(this))
       {
-         if (portletFilterLifeCycle.getStatus() != LifeCycleStatus.STARTED)
+         if (portletFilterLifeCycle.getStatus().getStage() < LifeCycleStatus.STARTED.getStage())
          {
             throw new DependencyNotResolvedException("The filter " + portletFilterLifeCycle + " is not started");
          }
@@ -79,6 +102,18 @@ public class PortletContainerLifeCycle extends LifeCycle implements ManagedPortl
    protected void invokeStop()
    {
       portletContainer.stop();
+   }
+
+   @Override
+   public Portlet getPortletInstance()
+   {
+      return portletContainer.getPortletInstance();
+   }
+
+   @Override
+   protected void invokeDestroy() throws Exception
+   {
+      portletContainer.destroy();
    }
 
    public String getId()
