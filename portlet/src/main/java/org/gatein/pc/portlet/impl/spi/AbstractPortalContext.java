@@ -26,6 +26,7 @@ import org.gatein.common.util.Tools;
 import org.gatein.pc.api.Mode;
 import org.gatein.pc.api.WindowState;
 import org.gatein.pc.api.spi.PortalContext;
+import org.gatein.pc.portlet.Version;
 
 import java.util.Collections;
 import java.util.Map;
@@ -37,6 +38,11 @@ import java.util.Set;
  */
 public class AbstractPortalContext implements PortalContext
 {
+
+   /**
+    * The default info returned by the Portal.
+    * . */
+   public static final String DEFAULT_INFO = "GateIn/" + Version.VALUE;
 
    /** . */
    private static final Map<String, String> EMPTY_STRING_TO_STRING_MAP = Collections.emptyMap();
@@ -87,7 +93,7 @@ public class AbstractPortalContext implements PortalContext
 
    public String getInfo()
    {
-      return PortalContext.PORTLET_SPEC_FORMAT.toString(VERSION);
+      return DEFAULT_INFO;
    }
 
    public Set<WindowState> getWindowStates()

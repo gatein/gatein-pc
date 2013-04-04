@@ -47,10 +47,7 @@ public class ServerInfo
 {
 
    /** . */
-   private static final String VERSION_REGEX = "GateInPortletContainer/[0-9]+\\.[0-9]+(|\\.CR[0-9]{2})(|\\.SNAPSHOT)(|\\.ALPHA[0-9]{2})(|\\.BETA[0-9]{2})(|\\.SP[0-9]{2})(|\\.CP[0-9]{2})(|\\.GA)";
-
-   /** . */
-   private static final Pattern VERSION_PATTERN = Pattern.compile(VERSION_REGEX, Pattern.CASE_INSENSITIVE);
+   private static final Pattern VERSION_PATTERN = Pattern.compile("GateInPC/[^/]+");
 
    public ServerInfo(PortletTestCase seq)
    {

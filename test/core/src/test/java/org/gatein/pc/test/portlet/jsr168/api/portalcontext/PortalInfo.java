@@ -22,7 +22,6 @@
  ******************************************************************************/
 package org.gatein.pc.test.portlet.jsr168.api.portalcontext;
 
-import org.gatein.pc.api.spi.PortalContext;
 import org.gatein.pc.test.unit.web.UTP1;
 import org.gatein.pc.test.unit.Assertion;
 import org.gatein.pc.test.unit.PortletTestCase;
@@ -36,7 +35,10 @@ import javax.portlet.Portlet;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import static org.gatein.pc.test.unit.Assert.assertTrue;
+import java.util.regex.Pattern;
+
+import static org.gatein.pc.test.unit.Assert.assertNotNull;
+import static org.gatein.pc.test.unit.Assert.fail;
 
 /**
  * @author <a href="mailto:julien@jboss.org">Julien Viet</a>
@@ -45,6 +47,10 @@ import static org.gatein.pc.test.unit.Assert.assertTrue;
 @TestCase({Assertion.API286_PORTAL_CONTEXT_2})
 public class PortalInfo
 {
+
+   /** . */
+   Pattern PATTERN = Pattern.compile("^[^/]+/[^/]+$");
+
    public PortalInfo(PortletTestCase seq)
    {
       seq.bindAction(0, UTP1.RENDER_JOIN_POINT, new PortletRenderTestAction()
@@ -52,16 +58,11 @@ public class PortalInfo
          protected Response run(Portlet portlet, RenderRequest request, RenderResponse response, PortletTestContext context)
          {
             String info = request.getPortalContext().getPortalInfo();
-
-            assertTrue(info.length() > 0);
-
-            String[] components = info.split("/");
-            assertTrue(components.length == 2);
-            assertTrue(PortalContext.VERSION.getName().equals(components[0]));
-            String version = PortalContext.VERSION.getMajor() + "." + PortalContext.VERSION.getMinor() + "."
-               + PortalContext.VERSION.getPatch() + "-" + PortalContext.VERSION.getQualifier();
-            assertTrue(version.equals(components[1]));
-
+            assertNotNull(info);
+            if (!PATTERN.matcher(info).matches())
+            {
+               fail("Bad portal context info " + info);
+            }
             return new EndTestResponse();
          }
       });

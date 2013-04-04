@@ -22,9 +22,9 @@
  ******************************************************************************/
 package org.gatein.pc.portlet.impl.jsr168.api;
 
+import org.gatein.pc.portlet.Version;
 import org.gatein.pc.portlet.impl.info.ContainerPortletApplicationInfo;
 import org.gatein.pc.api.info.RuntimeOptionInfo;
-import org.gatein.pc.api.spi.PortalContext;
 
 import javax.portlet.PortletContext;
 import javax.portlet.PortletRequestDispatcher;
@@ -50,10 +50,6 @@ public class PortletContextImpl implements PortletContext
    /** . */
    private ContainerPortletApplicationInfo info;
 
-   private static final String VERSION = PortalContext.VERSION.getName().replace(" ", "") + "/"
-      + PortalContext.VERSION.getMajor() + "." + PortalContext.VERSION.getMinor() + "."
-      + PortalContext.VERSION.getQualifier();
-
    public PortletContextImpl(ServletContext servletContext)
    {
       this.servletContext = servletContext;
@@ -61,7 +57,7 @@ public class PortletContextImpl implements PortletContext
 
    public String getServerInfo()
    {
-      return VERSION;
+      return "GateInPC/" + Version.VALUE;
    }
 
    public PortletRequestDispatcher getRequestDispatcher(String path)
@@ -105,12 +101,12 @@ public class PortletContextImpl implements PortletContext
 
    public int getMajorVersion()
    {
-      return 2;
+      return Version.MAJOR;
    }
 
    public int getMinorVersion()
    {
-      return 0;
+      return Version.MINOR;
    }
 
    public String getMimeType(String s)
