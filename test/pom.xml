@@ -18,4 +18,35 @@
      <!-- THIS MUST BE EMPTY (cf test/servers/jboss7/dependencies) -->
    </dependencies>
 
+   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-test</id>
+              <configuration>
+                <systemProperties>
+                  <property>
+                    <name>log4j.configuration</name>
+                    <value>pc-log4j.properties</value>
+                  </property>
+                  <property>
+                    <name>log4j.path</name>
+                    <value>${project.build.directory}</value>
+                  </property>
+                  <property>
+                    <name>log4j.level</name>
+                    <value>debug</value>
+                  </property>
+                </systemProperties>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+   </build>
+
 </project>

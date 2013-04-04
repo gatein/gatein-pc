@@ -75,12 +75,6 @@
                 <excludes>
                   <exclude>**/EventPayloadBetweenApplicationsWarTestCase.java</exclude>
                 </excludes>
-                <systemProperties>
-                  <property>
-                    <name>log4j.configuration</name>
-                    <value>pc-log4j.properties</value>
-                  </property>
-                </systemProperties>
               </configuration>
             </execution>
           </executions>
