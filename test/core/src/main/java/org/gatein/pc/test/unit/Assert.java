@@ -192,12 +192,12 @@ public final class Assert
    {
       if (actual == null)
       {
-         if (msg == null)
-         {
-            msg = "Expected a null object";
-         }
          if (expected != null)
          {
+            if (msg == null)
+            {
+               msg = "Expected " + format(expected) + " instead of null";
+            }
             fail(msg);
          }
       }

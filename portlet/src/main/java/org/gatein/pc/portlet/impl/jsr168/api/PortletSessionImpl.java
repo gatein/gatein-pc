@@ -209,13 +209,17 @@ public class PortletSessionImpl implements PortletSession
    public Map<String, Object> getAttributeMap(int i)
    {
       Enumeration attributes = getAttributeNames(i);
-      Map<String, Object> attrs = new HashMap<String, Object>();
+      Map<String, Object> attrs = Collections.emptyMap();
       while (attributes.hasMoreElements())
       {
+         if (attrs.isEmpty())
+         {
+            attrs = new HashMap<String, Object>();
+         }
          String name = (String)attributes.nextElement();
-         attrs.put(name, getAttribute(name));
+         attrs.put(name, getAttribute(name, i));
       }
-      return Collections.unmodifiableMap(attrs);
+      return attrs.isEmpty() ? attrs : Collections.unmodifiableMap(attrs);
    }
 
    /**
