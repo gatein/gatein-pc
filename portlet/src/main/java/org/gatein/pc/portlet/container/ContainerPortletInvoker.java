@@ -60,11 +60,11 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
    public static final String PORTLET_CONTAINER = "PORTLET_CONTAINER";
 
    /** . */
-   private Map<String, Portlet> portlets = new HashMap<String, Portlet>();
+   private volatile Map<String, PortletImpl> portlets = new HashMap<String, PortletImpl>();
 
-   public void addPortletContainer(PortletContainer portletContainer)
+   public synchronized void addPortletContainer(PortletContainer portletContainer)
    {
-      Map<String, Portlet> portlets = new HashMap<String, Portlet>(this.portlets);
+      Map<String, PortletImpl> portlets = new HashMap<String, PortletImpl>(this.portlets);
       PortletImpl portlet = new PortletImpl(portletContainer);
       portlets.put(portlet.getContext().getId(), portlet);
 
@@ -72,9 +72,9 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
       this.portlets = portlets;
    }
 
-   public void removePortletContainer(PortletContainer portletContainer)
+   public synchronized void removePortletContainer(PortletContainer portletContainer)
    {
-      Map<String, Portlet> portlets = new HashMap<String, Portlet>(this.portlets);
+      Map<String, PortletImpl> portlets = new HashMap<String, PortletImpl>(this.portlets);
       PortletImpl portlet = new PortletImpl(portletContainer);
       portlets.remove(portlet.getContext().getId());
 
@@ -107,7 +107,7 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
          throw new IllegalArgumentException("No null portlet id accepted");
       }
       String portletId = portletContext.getId();
-      PortletImpl portlet = (PortletImpl)portlets.get(portletId);
+      PortletImpl portlet = portlets.get(portletId);
       if (portlet == null)
       {
          throw new NoSuchPortletException(portletId);
@@ -153,13 +153,13 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
 
    public PropertyMap getProperties(PortletContext portletContext, Set<String> keys) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
-      PortletImpl portlet = (PortletImpl)portlets.get(portletContext.getId());
+      PortletImpl portlet = portlets.get(portletContext.getId());
       if (portlet == null)
       {
          throw new NoSuchPortletException(portletContext.getId());
       }
       ContainerPortletInfo info = (ContainerPortletInfo)portlet.getInfo();
-      ContainerPreferencesInfo prefs = (ContainerPreferencesInfo)info.getPreferences();
+      ContainerPreferencesInfo prefs = info.getPreferences();
       PropertyMap result = new SimplePropertyMap();
       for (String key : keys)
       {
@@ -174,13 +174,13 @@ public class ContainerPortletInvoker extends PortletInvokerInterceptor
 
    public PropertyMap getProperties(PortletContext portletContext) throws IllegalArgumentException, PortletInvokerException, UnsupportedOperationException
    {
-      PortletImpl portlet = (PortletImpl)portlets.get(portletContext.getId());
+      PortletImpl portlet = portlets.get(portletContext.getId());
       if (portlet == null)
       {
          throw new NoSuchPortletException(portletContext.getId());
       }
       ContainerPortletInfo info = (ContainerPortletInfo)portlet.getInfo();
-      ContainerPreferencesInfo prefs = (ContainerPreferencesInfo)info.getPreferences();
+      ContainerPreferencesInfo prefs = info.getPreferences();
       PropertyMap result = new SimplePropertyMap();
       for (String key : prefs.getKeys())
       {

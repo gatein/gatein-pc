@@ -132,7 +132,9 @@ public class FederatingPortletInvokerService implements FederatingPortletInvoker
          {
             synchronized (this)
             {
-               invokerCache.put(federatedId, federatedPortletInvoker); // put newly resolved invoker in cache
+               Map<String, FederatedPortletInvoker> copy = new HashMap<String, FederatedPortletInvoker>(invokerCache);
+               copy.put(federatedId, federatedPortletInvoker); // put newly resolved invoker in cache
+               invokerCache = copy;
             }
          }
       }
