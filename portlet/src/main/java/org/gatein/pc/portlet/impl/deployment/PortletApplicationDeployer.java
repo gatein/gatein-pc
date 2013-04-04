@@ -283,6 +283,6 @@ public class PortletApplicationDeployer implements PortletApplicationRegistry
 
    public void removeListener(ManagedObjectRegistryEventListener listener)
    {
-      broadcaster.addListener(listener);
+      broadcaster.removeListener(listener);
    }
 }
