@@ -52,7 +52,7 @@ public class ActionCookieTestCase extends AbstractTestCase
    @RunAsClient
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/ActionCookiePortlet").toURL();
+      URL url = renderURL(deploymentURL, ActionCookiePortlet.class);
       driver.get(url.toString());
       WebElement link = driver.findElement(By.id("url"));
       url = new URL(link.getAttribute("href"));

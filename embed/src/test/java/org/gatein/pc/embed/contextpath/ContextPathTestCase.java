@@ -46,7 +46,7 @@ public class ContextPathTestCase extends AbstractTestCase
    @InSequence(0)
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/ContextPathPortlet").toURL();
+      URL url = renderURL(deploymentURL, ContextPathPortlet.class);
       HttpURLConnection conn = (HttpURLConnection)url.openConnection();
       conn.connect();
       Assert.assertEquals(200, conn.getResponseCode());

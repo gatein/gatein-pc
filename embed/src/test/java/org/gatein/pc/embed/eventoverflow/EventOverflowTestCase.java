@@ -32,7 +32,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import javax.xml.namespace.QName;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -76,7 +75,7 @@ public class EventOverflowTestCase extends AbstractTestCase
    @InSequence(1)
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/EventOverflowPortlet").toURL();
+      URL url = renderURL(deploymentURL, EventOverflowPortlet.class);
       driver.get(url.toString());
       WebElement link = driver.findElement(By.id("url"));
       url = new URL(link.getAttribute("href"));

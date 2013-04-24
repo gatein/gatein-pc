@@ -78,7 +78,7 @@ public class RenderURLParameterTestCase extends AbstractTestCase
    @InSequence(1)
    public void display(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/RenderURLParameterPortlet").toURL();
+      URL url = renderURL(deploymentURL, RenderURLParameterPortlet.class);
       driver.get(url.toString());
    }
 

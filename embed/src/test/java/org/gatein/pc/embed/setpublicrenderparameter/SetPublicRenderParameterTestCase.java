@@ -83,7 +83,7 @@ public class SetPublicRenderParameterTestCase extends AbstractTestCase
    @InSequence(1)
    public void setPortlet1(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/SetPublicRenderParameterPortlet1/SetPublicRenderParameterPortlet2").toURL();
+      URL url = renderURL(deploymentURL, SetPublicRenderParameterPortlet1.class, SetPublicRenderParameterPortlet2.class);
       driver.get(url.toString());
       WebElement link = driver.findElement(By.id("url"));
       link.click();

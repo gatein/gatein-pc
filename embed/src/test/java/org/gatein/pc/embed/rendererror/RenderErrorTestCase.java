@@ -45,7 +45,7 @@ public class RenderErrorTestCase extends AbstractTestCase
    @RunAsClient
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/RenderErrorPortlet").toURL();
+      URL url = renderURL(deploymentURL, RenderErrorPortlet.class);
       HttpURLConnection conn = (HttpURLConnection)url.openConnection();
       conn.connect();
       Assert.assertEquals(500, conn.getResponseCode());

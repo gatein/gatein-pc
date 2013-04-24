@@ -85,7 +85,7 @@ public class EventSetParameterTestCase extends AbstractTestCase
    @InSequence(1)
    public void display(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/EventSetParameterPortlet").toURL();
+      URL url = renderURL(deploymentURL, EventSetParameterPortlet.class);
       driver.get(url.toString());
    }
 

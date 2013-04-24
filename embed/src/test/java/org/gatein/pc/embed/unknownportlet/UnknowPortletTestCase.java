@@ -28,6 +28,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
+import javax.portlet.GenericPortlet;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -41,11 +42,13 @@ public class UnknowPortletTestCase extends AbstractTestCase
       return deployment(PORTLET_APP_PROLOG + PORTLET_APP_EPILOG);
    }
 
+   static class FooPortlet extends GenericPortlet {}
+
    @Test
    @RunAsClient
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/FooPortlet").toURL();
+      URL url = renderURL(deploymentURL, FooPortlet.class);
       HttpURLConnection conn = (HttpURLConnection)url.openConnection();
       conn.connect();
       Assert.assertEquals(404, conn.getResponseCode());

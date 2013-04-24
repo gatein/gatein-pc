@@ -59,7 +59,7 @@ public class ActionTestCase extends AbstractTestCase
    @InSequence(1)
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/ActionPortlet").toURL();
+      URL url = renderURL(deploymentURL, ActionPortlet.class);
       driver.get(url.toString());
       WebElement link = driver.findElement(By.id("url"));
       link.click();

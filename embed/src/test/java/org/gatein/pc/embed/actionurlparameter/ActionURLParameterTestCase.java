@@ -81,7 +81,7 @@ public class ActionURLParameterTestCase extends AbstractTestCase
    @InSequence(1)
    public void display(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/ActionURLParameterPortlet").toURL();
+      URL url = renderURL(deploymentURL, ActionURLParameterPortlet.class);
       driver.get(url.toString());
    }
 

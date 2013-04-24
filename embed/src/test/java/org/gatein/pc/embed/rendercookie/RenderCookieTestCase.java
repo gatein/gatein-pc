@@ -45,7 +45,7 @@ public class RenderCookieTestCase extends AbstractTestCase
    @RunAsClient
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/RenderCookiePortlet").toURL();
+      URL url = renderURL(deploymentURL, RenderCookiePortlet.class);
       HttpURLConnection conn = (HttpURLConnection)url.openConnection();
       conn.connect();
       Assert.assertEquals(200, conn.getResponseCode());

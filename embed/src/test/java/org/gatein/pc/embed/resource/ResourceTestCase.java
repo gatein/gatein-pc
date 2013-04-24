@@ -51,26 +51,29 @@ public class ResourceTestCase extends AbstractTestCase
    WebDriver driver;
 
    @Test
+   @RunAsClient
    @InSequence(0)
-   public void init()
+   public void init(@ArquillianResource URL deploymentURL) throws Exception
    {
       Assert.assertEquals(0, ResourcePortlet.count);
+      URL url = deploymentURL.toURI().resolve("embed/ResourcePortlet").toURL();
+      driver.get(url.toString());
    }
 
    @Test
    @RunAsClient
    @InSequence(1)
-   public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
+   public void updateNavigationalState() throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/ResourcePortlet;foo=foo_value").toURL();
-      driver.get(url.toString());
+      Assert.assertEquals(1, ResourcePortlet.count);
+      driver.get(ResourcePortlet.navigationURL);
    }
 
    @Test
    @InSequence(2)
    public void testParams()
    {
-      Assert.assertEquals(0, ResourcePortlet.count);
+      Assert.assertEquals(2, ResourcePortlet.count);
       Assert.assertEquals("foo_value", ResourcePortlet.foo);
       Assert.assertNull(ResourcePortlet.bar);
       Assert.assertNull("id_value", ResourcePortlet.resourceId);
@@ -96,7 +99,7 @@ public class ResourceTestCase extends AbstractTestCase
    @InSequence(4)
    public void testInvoked()
    {
-      Assert.assertEquals(1, ResourcePortlet.count);
+      Assert.assertEquals(3, ResourcePortlet.count);
       Assert.assertEquals("foo_value", ResourcePortlet.foo);
       Assert.assertEquals("bar_value", ResourcePortlet.bar);
       Assert.assertEquals("id_value", ResourcePortlet.resourceId);

@@ -35,8 +35,6 @@ import org.openqa.selenium.WebElement;
 import javax.portlet.PortletMode;
 import javax.portlet.WindowState;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
 
 /** @author <a href="mailto:julien.viet@exoplatform.com">Julien Viet</a> */
 public class RenderFormParameterTestCase extends AbstractTestCase
@@ -78,7 +76,7 @@ public class RenderFormParameterTestCase extends AbstractTestCase
    @InSequence(1)
    public void display(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/RenderFormParameterPortlet").toURL();
+      URL url = renderURL(deploymentURL, RenderFormParameterPortlet.class);
       driver.get(url.toString());
    }
 

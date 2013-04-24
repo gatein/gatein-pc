@@ -49,7 +49,7 @@ public class XmlEscapingTestCase extends AbstractTestCase
    @RunAsClient
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/XmlEscapingPortlet").toURL();
+      URL url = renderURL(deploymentURL, XmlEscapingPortlet.class);
       HttpURLConnection conn = (HttpURLConnection)url.openConnection();
       conn.connect();
       junit.framework.Assert.assertEquals(200, conn.getResponseCode());

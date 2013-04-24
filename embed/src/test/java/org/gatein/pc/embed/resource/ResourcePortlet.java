@@ -21,6 +21,7 @@ package org.gatein.pc.embed.resource;
 
 import javax.portlet.GenericPortlet;
 import javax.portlet.PortletException;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -37,6 +38,9 @@ public class ResourcePortlet extends GenericPortlet
    static int count = 0;
 
    /** . */
+   static String navigationURL;
+
+   /** . */
    static String foo;
 
    /** . */
@@ -48,27 +52,42 @@ public class ResourcePortlet extends GenericPortlet
    @Override
    public void render(RenderRequest request, RenderResponse response) throws PortletException, IOException
    {
-      foo = request.getParameter("foo");
-      bar = request.getParameter("bar");
-      ResourceURL url = response.createResourceURL();
-      url.setParameter("bar", "bar_value");
-      url.setResourceID("id_value");
-      response.setContentType("text/html");
-      PrintWriter writer = response.getWriter();
-      writer.print("<a href='" + url + "' id='url'>resource</a>");
-      writer.close();
+      switch (count) {
+         case 0: {
+            PortletURL url = response.createRenderURL();
+            url.setParameter("foo", "foo_value");
+            navigationURL = url.toString();
+            count = 1;
+            break;
+         }
+         case 1: {
+            foo = request.getParameter("foo");
+            bar = request.getParameter("bar");
+            ResourceURL url = response.createResourceURL();
+            url.setParameter("bar", "bar_value");
+            url.setResourceID("id_value");
+            response.setContentType("text/html");
+            PrintWriter writer = response.getWriter();
+            writer.print("<a href='" + url + "' id='url'>resource</a>");
+            writer.close();
+            count = 2;
+            break;
+         }
+      }
    }
 
    @Override
    public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException
    {
-      foo = request.getParameter("foo");
-      bar = request.getParameter("bar");
-      resourceId = request.getResourceID();
-      count++;
-      response.setContentType("text/plain");
-      response.setCharacterEncoding("utf-8");
-      PrintWriter writer = response.getWriter();
-      writer.print("SERVE_RESOURCE");
+      if (count >= 2) {
+         foo = request.getParameter("foo");
+         bar = request.getParameter("bar");
+         resourceId = request.getResourceID();
+         count++;
+         response.setContentType("text/plain");
+         response.setCharacterEncoding("utf-8");
+         PrintWriter writer = response.getWriter();
+         writer.print("SERVE_RESOURCE");
+      }
    }
 }

@@ -19,7 +19,7 @@
 
 package org.gatein.pc.embed;
 
-import org.gatein.pc.embed.EmbedServlet;
+import junit.framework.AssertionFailedError;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
@@ -28,6 +28,8 @@ import org.junit.runner.RunWith;
 
 import javax.portlet.Portlet;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,5 +105,59 @@ public abstract class AbstractTestCase
          }
       }
       return headers;
+   }
+
+   /**
+    * Create a render URL for the specified portlet, delegating to {@link #renderURL(java.net.URL, Iterable)}.
+    *
+    * @param deploymentURL the deployment URL
+    * @param portlet the portlet
+    * @return the URL
+    */
+   protected URL renderURL(URL deploymentURL, Class<? extends Portlet> portlet)
+   {
+      return renderURL(deploymentURL, Collections.<Class<? extends Portlet>>singletonList(portlet));
+   }
+
+   /**
+    * Create a render URL for the specified portlets, delegating to {@link #renderURL(java.net.URL, Iterable)}.
+    *
+    * @param deploymentURL the deployment URL
+    * @param portlet1 the portlet numero 1
+    * @param portlet2 the portlet numero 2
+    * @return the URL
+    */
+   protected URL renderURL(URL deploymentURL, Class<? extends Portlet> portlet1, Class<? extends Portlet> portlet2)
+   {
+      ArrayList<Class<? extends Portlet>> portlets = new ArrayList<Class<? extends Portlet>>();
+      portlets.add(portlet1);
+      portlets.add(portlet2);
+      return renderURL(deploymentURL, portlets);
+   }
+
+   /**
+    * Create a render URL for the specified portlets.
+    *
+    * @param deploymentURL the deployment URL
+    * @param portlets the portlets
+    * @return the URL
+    */
+   protected URL renderURL(URL deploymentURL, Iterable<Class<? extends Portlet>> portlets)
+   {
+      StringBuilder path = new StringBuilder("embed");
+      for (Class<? extends Portlet> portlet : portlets)
+      {
+         path.append("/").append(portlet.getSimpleName());
+      }
+      try
+      {
+         return deploymentURL.toURI().resolve(path.toString()).toURL();
+      }
+      catch (Exception e)
+      {
+         AssertionFailedError afe = new AssertionFailedError();
+         afe.initCause(e);
+         throw afe;
+      }
    }
 }

@@ -50,7 +50,7 @@ public class HtmlHeaderTestCase extends AbstractTestCase
    @RunAsClient
    public void testInteraction(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/HtmlHeaderPortlet").toURL();
+      URL url = renderURL(deploymentURL, HtmlHeaderPortlet.class);
       driver.get(url.toString());
       WebElement title = driver.findElement(By.tagName("title"));
       Assert.assertEquals("_title_", title.getText());

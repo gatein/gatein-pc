@@ -55,7 +55,7 @@ public class ResourceBinaryTestCase extends AbstractTestCase
    @InSequence(0)
    public void display(@ArquillianResource URL deploymentURL) throws Exception
    {
-      URL url = deploymentURL.toURI().resolve("embed/ResourceBinaryPortlet").toURL();
+      URL url = renderURL(deploymentURL, ResourceBinaryPortlet.class);
       driver.get(url.toString());
       WebElement link = driver.findElement(By.id("url"));
       url = new URL(link.getAttribute("href"));
