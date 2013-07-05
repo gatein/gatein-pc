@@ -183,7 +183,7 @@ public abstract class BaseURLImpl implements BaseURL
 
    public void write(Writer writer) throws IOException
    {
-      write(writer, false);
+      write(writer, true);
    }
 
    public void write(Writer writer, boolean b) throws IOException
