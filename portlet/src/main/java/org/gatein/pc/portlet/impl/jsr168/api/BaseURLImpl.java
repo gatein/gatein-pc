@@ -47,9 +47,9 @@ public abstract class BaseURLImpl implements BaseURL
    /** . */
    private static final URLFormat[][] FORMATS = {
       {
-         new URLFormat(null, null, true, null),
-         new URLFormat(false, null, true, null),
-         new URLFormat(true, null, true, null)
+         new URLFormat(null, null, true, false),
+         new URLFormat(false, null, true, false),
+         new URLFormat(true, null, true, false)
       },
       {
          new URLFormat(null, null, true, true),
