@@ -65,6 +65,16 @@ public class EscapeXML
             //
             url.setParameter("foo", "bar");
 
+            // calling BaseURL.toString should result in a non XML-escaped String
+            writer.write("@BEFORE_TOSTRING@");
+            writer.write(url.toString());
+            writer.write("@AFTER_TOSTRING@");
+
+            // calling write should result in the URL being XML-escaped by default
+            writer.write("@BEFORE_DEFAULT@");
+            url.write(writer);
+            writer.write("@AFTER_DEFAULT@");
+
             //
             writer.write("@BEFORE_ESCAPED@");
             url.write(writer, true);
@@ -86,22 +96,18 @@ public class EscapeXML
             byte[] content = context.getResponseBody();
             String text = new String(content, "UTF-8");
 
+            String toString = getURL(text, "TOSTRING");
+            checkNonEscaped(toString);
+
+            String defaultWrite = getURL(text, "DEFAULT");
+            checkEscaped(defaultWrite);
+
             //
             String escapedURL = getURL(text, "ESCAPED");
-            for (int pos = escapedURL.indexOf('&'); pos != -1; pos = escapedURL.indexOf('&', pos + 1))
-            {
-               String s = escapedURL.substring(pos, pos + "&amp;".length());
-               assertEquals("&amp;", s);
-            }
+            checkEscaped(escapedURL);
 
             String nonEscapedURL = getURL(text, "NON_ESCAPED");
-            for (int pos = nonEscapedURL.indexOf('&'); pos != -1; pos = nonEscapedURL.indexOf('&', pos + 1))
-            {
-               int end = Math.min(pos + "&amp;".length(), nonEscapedURL.length());               
-               String s = nonEscapedURL.substring(pos, end);
-               String comparison = "&amp;".substring(0, end - pos);
-               assertNotEquals(comparison, s);
-            }
+            checkNonEscaped(nonEscapedURL);
 
             //
             return new EndTestResponse();
@@ -109,6 +115,26 @@ public class EscapeXML
       });
 
 
+   }
+
+   private void checkNonEscaped(String nonEscapedURL)
+   {
+      for (int pos = nonEscapedURL.indexOf('&'); pos != -1; pos = nonEscapedURL.indexOf('&', pos + 1))
+      {
+         int end = Math.min(pos + "&amp;".length(), nonEscapedURL.length());
+         String s = nonEscapedURL.substring(pos, end);
+         String comparison = "&amp;".substring(0, end - pos);
+         assertNotEquals(comparison, s);
+      }
+   }
+
+   private void checkEscaped(String escapedURL)
+   {
+      for (int pos = escapedURL.indexOf('&'); pos != -1; pos = escapedURL.indexOf('&', pos + 1))
+      {
+         String s = escapedURL.substring(pos, pos + "&amp;".length());
+         assertEquals("&amp;", s);
+      }
    }
 
    private String getURL(String text, String type)
