@@ -53,8 +53,8 @@ public class EventResponseImpl extends StateAwareResponseImpl implements EventRe
 
       //
       WantUpdate update = wantUpdate();
-      update.mode = invocation.getMode();
-      update.windowState = invocation.getWindowState();
+//      update.mode = invocation.getMode();
+//      update.windowState = invocation.getWindowState();
 
 //      update.navigationalState = ParametersStateString.create(context.getNavigationalState()).getParameters();
 //      update.publicNavigationalState = context.getPublicNavigationalState();
