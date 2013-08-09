@@ -32,6 +32,8 @@
       <portlet-class>org.gatein.pc.test.unit.web.UTP1</portlet-class>
       <supports>
         <mime-type>text/html</mime-type>
+        <portlet-mode>VIEW</portlet-mode>
+        <portlet-mode>EDIT</portlet-mode>
       </supports>
       <supported-processing-event>
          <name>Foo</name>
