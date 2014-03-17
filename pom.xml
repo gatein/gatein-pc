@@ -28,7 +28,7 @@
    <parent>
       <groupId>org.gatein</groupId>
       <artifactId>gatein-parent</artifactId>
-      <version>1.2.1.Final</version>
+      <version>1.3.0.Final</version>
    </parent>
 
    <groupId>org.gatein.pc</groupId>
@@ -55,7 +55,8 @@
    </scm>
 
    <properties>
-      <version.gatein.common>2.2.0.Beta01</version.gatein.common>
+      <version.gatein.common>2.2.2.Final</version.gatein.common>
+      <version.gatein.dep>1.4.0.Final</version.gatein.dep>
       <version.apache.portals.bridges>1.0.4</version.apache.portals.bridges>
       <version.apache.taglibs>1.1.2</version.apache.taglibs>
       <version.apache.log4j>1.2.14</version.apache.log4j>
@@ -111,7 +112,7 @@
          <dependency>
             <groupId>org.gatein</groupId>
             <artifactId>gatein-dep</artifactId>
-            <version>1.3.0.Beta01</version>
+            <version>${version.gatein.dep}</version>
             <type>pom</type>
             <scope>import</scope>
          </dependency>
