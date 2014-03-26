@@ -27,13 +27,16 @@ public final class ManagedObjectFailedEvent extends ManagedObjectEvent
 
    /** . */
    private final LifeCycleStatus status;
+   private final LifeCycleStatus fromStatus;
 
-   public ManagedObjectFailedEvent(ManagedObject managedObject, LifeCycleStatus status)
+
+   public ManagedObjectFailedEvent(ManagedObject managedObject, LifeCycleStatus status, LifeCycleStatus fromStatus)
    {
       super(managedObject);
 
       //
       this.status = status;
+      this.fromStatus = fromStatus;
    }
 
    public LifeCycleStatus getStatus()
@@ -41,9 +44,14 @@ public final class ManagedObjectFailedEvent extends ManagedObjectEvent
       return status;
    }
 
+   public LifeCycleStatus getFromStatus()
+   {
+      return fromStatus;
+   }
+
    @Override
    public String toString()
    {
-      return getClass().getSimpleName() + "[status=" + status + ",managed=" + managedObject + "]";
+      return getClass().getSimpleName() + "[status=" + status + " from=" + fromStatus + ",managed=" + managedObject + "]";
    }
 }

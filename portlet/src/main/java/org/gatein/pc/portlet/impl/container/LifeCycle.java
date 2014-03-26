@@ -127,6 +127,7 @@ public abstract class LifeCycle implements ManagedObject
    private void promote() throws IllegalStateException
    {
       LifeCycleStatus to = status.getPromotion();
+      LifeCycleStatus current = status;
 
       //
       if (to != null)
@@ -178,12 +179,12 @@ public abstract class LifeCycle implements ManagedObject
             {
                if (next == to)
                {
-                  getListener().onEvent(new ManagedObjectLifeCycleEvent(this, next));
+                  getListener().onEvent(new ManagedObjectLifeCycleEvent(this, next, current));
                }
             }
             else
             {
-               getListener().onEvent(new ManagedObjectFailedEvent(this, next));
+               getListener().onEvent(new ManagedObjectFailedEvent(this, next, current));
             }
          }
          finally
@@ -237,6 +238,7 @@ public abstract class LifeCycle implements ManagedObject
    private void demote() throws IllegalStateException
    {
       LifeCycleStatus to = status.getDemotion();
+      LifeCycleStatus from = status;
 
       //
       if (to != null)
@@ -267,7 +269,7 @@ public abstract class LifeCycle implements ManagedObject
          }
 
          //
-         getListener().onEvent(new ManagedObjectLifeCycleEvent(this, to));
+         getListener().onEvent(new ManagedObjectLifeCycleEvent(this, to, from));
       }
    }
 
